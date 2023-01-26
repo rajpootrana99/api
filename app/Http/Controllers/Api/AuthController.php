@@ -23,7 +23,7 @@ class AuthController extends Controller
         return $this->success([
             'user' => $user,
             'token' => $user->createToken('Api Token of '.$user->name)->plainTextToken
-        ]);
+        ], 'Login Successfully');
     }
 
     public function register(StoreUserRequest $request){
@@ -37,7 +37,7 @@ class AuthController extends Controller
         return $this->success([
             'user' => $user,
             'token' => $user->createToken('Api Token of '.$user->name)->plainTextToken
-        ]);
+        ],'Register Successfully');
 
     }
 
