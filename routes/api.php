@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
-use GuzzleHttp\Middleware;
+use App\Http\Controllers\Api\ForgetController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
