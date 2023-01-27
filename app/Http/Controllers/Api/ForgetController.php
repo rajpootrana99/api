@@ -16,7 +16,7 @@ use App\Traits\HttpResponses;
 class ForgetController extends Controller
 {
     use HttpResponses; 
-    public function forgot(ForgetRequest $request){
+    public function forget(ForgetRequest $request){
         $email = $request->input('email');
         if(User::where('email', $email)->doesntExist()){
             return $this->error('', 'User doesn\'t exist!', 404);
