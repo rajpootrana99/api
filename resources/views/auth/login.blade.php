@@ -94,8 +94,9 @@
                                                 action="{{ route('login') }}"
                                             >
                                             @csrf
-                                            <span class="text-danger error-text">{{ $errors->first('email') }}</span><br>
-                                            <span class="text-danger error-text">{{ $errors->first('password') }}</span>
+                                            @foreach ($errors->all() as $error)
+                                                <span class="text-danger error-text">{{ $error }}</span><br>
+                                            @endforeach
                                                 <div class="form-group mb-2">
                                                     <label for="email"
                                                         >Email</label
