@@ -29,7 +29,7 @@
                 <ul class="metismenu left-sidenav-menu">
                     <li class="menu-label mt-0">Main</li>
                     <li>
-                        <a href="">
+                        <a href="{{ route('index') }}">
                             <i
                                 data-feather="home"
                                 class="align-self-center menu-icon"
@@ -39,7 +39,7 @@
                     </li>
 
                     <li>
-                        <a href="javascript: void(0);"
+                        <a href="{{ route('user.index')}}"
                             ><i
                                 data-feather="grid"
                                 class="align-self-center menu-icon"
