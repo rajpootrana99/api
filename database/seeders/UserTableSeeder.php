@@ -22,6 +22,13 @@ class UserTableSeeder extends Seeder
             'is_admin' => 1,
             'is_approved' => 1,
             'password' => Hash::make('password'),
+        ],
+        [
+            'name' => 'User',
+            'email' => 'user@user.com',
+            'is_admin' => 0,
+            'is_approved' => 0,
+            'password' => Hash::make('12345678'),
         ]);
     }
 }
