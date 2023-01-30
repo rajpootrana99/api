@@ -21,7 +21,21 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'is_approved',
+        'is_admin',
+        'image',
     ];
+
+    public function getIsApprovedAttribute($attribute){
+        return $this->isApprovedOptions()[$attribute] ?? 0;
+    }
+
+    public function isApprovedOptions(){
+        return [
+            1 => 'Approved',
+            0 => 'Not Approved',
+        ];
+    }
 
     /**
      * The attributes that should be hidden for serialization.
