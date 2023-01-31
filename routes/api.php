@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ForgetController;
+use App\Http\Controllers\Api\SiteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,7 @@ Route::post('/forget', [ForgetController::class, 'forget']);
 Route::post('/reset', [ForgetController::class, 'reset']);
 Route::post('/checkToken', [ForgetController::class], 'checkToken');
 
-Route::group(['middleware' => ['auth:sanctum']], function(){
+Route::group(['middleware' => ['auth:sanctum', 'user_verified']], function(){
     Route::get('/logout', [AuthController::class, 'logout']);
+    Route::get('/fetchSites', [SiteController::class, 'fetchSites']);
 });
