@@ -51,9 +51,21 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show($user)
     {
-        //
+        $user = User::with('sites')->where('id', $user)->first();
+        if($user){
+            return response()->json([
+                'status' => 200,
+                'user' => $user
+            ]);
+        }
+        else{
+            return response()->json([
+                'status' => 404,
+                'message' => 'User not found'
+            ]);
+        }
     }
 
     /**

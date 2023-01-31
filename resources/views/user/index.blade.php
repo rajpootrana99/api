@@ -30,9 +30,10 @@
                                     <th width="5%">#</th>
                                     <th width="20%">Name</th>
                                     <th width="20%">Email</th>
-                                    <th width="8%">Status</th>          
-                                    <th width="3%">Verified</th>
-                                    <th width="3%">Delete</th>
+                                    <th width="8%">Status</th>  
+                                    <th width="1%">View</th>       
+                                    <th width="1%">Verified</th>
+                                    <th width="1%">Delete</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -74,6 +75,31 @@
         </div><!--end modal-dialog-->
     </div>
 
+    <div class="modal fade" id="showUser" tabindex="-1" role="dialog" aria-labelledby="showUserLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h6 class="modal-title m-0 text-white" id="showUserLabel"></h6>
+                    <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="la la-times text-white"></i></span>
+                    </button>
+                </div><!--end modal-header-->
+                <div class="modal-body text-center">
+                    <img src="assets/images/users/user-5.jpg" alt="" class="thumb-lg rounded-circle">
+                    <h4 class="mb-1" id="name"></h4> 
+                    <p class="mb-0 text-muted" id="email"></p>  
+                    <h4 class="mb-1">Sites</h4>  
+                    <p class="mb-0 text-muted" id="sites"></p>                                                  
+                </div><!--end modal-body-->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary btn-sm">Yes</button>
+                </div><!--end modal-footer-->
+                
+            </div><!--end modal-content-->
+        </div><!--end modal-dialog-->
+    </div>
+
     <script>
         $(document).ready(function (){
 
@@ -106,6 +132,7 @@
                             <td>'+user.name +'</td>\
                             <td>'+user.email+'</td>\
                             <td>'+status+'</td>\
+                            <td><button value="'+user.id+'" style="border: none; background-color: #fff" class="view_btn"><i class="fas fa-eye"></i></button></td>\
                             <td><button value="'+user.id+'" style="border: none; background-color: #fff" class="approve_btn"><i class="fa fa-check-circle"></i></button></td>\
                             <td><button value="'+user.id+'" style="border: none; background-color: #fff" class="delete_btn"><i class="fa fa-trash"></i></button></td>\
                     </tr>');
@@ -113,6 +140,29 @@
                     }
                 });
             }
+
+            $(document).on('click', '.view_btn', function (e) {
+                e.preventDefault();
+                var user_id = $(this).val();
+                $('#showUser').modal('show');
+                $.ajax({
+                    type: "GET",
+                    url: 'user/'+user_id,
+                    success: function (response) {
+                        if (response.status == 404) {
+                            $('#showUser').modal('hide');
+                        }
+                        else {
+                            $('#showUserLabel').text('User ID '+response.user.id);
+                            $('#name').text(response.user.name);
+                            $('#email').text(response.user.email);
+                            $.each(response.user.sites, function (site) {
+                                $('#sites').append('<p class="mb-0 text-muted" id="sites">'+response.user.sites[site].site+'</p>')
+                            });
+                        }
+                    }
+                });
+            });
 
             $(document).on('click', '.approve_btn', function (e) {
                 e.preventDefault();

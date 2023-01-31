@@ -49,10 +49,10 @@
     <div class="modal fade" id="addSite" tabindex="-1" role="dialog" aria-labelledby="addSiteLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title m-0" id="addSiteLabel"></h6>
+                <div class="modal-header bg-primary">
+                    <h6 class="modal-title m-0 text-white" id="addSiteLabel">Add Site</h6>
                     <button type="button" class="close " data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true"><i class="la la-times"></i></span>
+                        <span aria-hidden="true"><i class="la la-times text-white"></i></span>
                     </button>
                 </div><!--end modal-header-->
                 <form method="post" id="addSiteForm">
@@ -91,10 +91,10 @@
     <div class="modal fade" id="editSite" tabindex="-1" role="dialog" aria-labelledby="editSiteLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title m-0" id="editSiteLabel"></h6>
+                <div class="modal-header bg-primary">
+                    <h6 class="modal-title m-0 text-white" id="editSiteLabel"></h6>
                     <button type="button" class="close " data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true"><i class="la la-times"></i></span>
+                        <span aria-hidden="true"><i class="la la-times text-white"></i></span>
                     </button>
                 </div><!--end modal-header-->
                 <form method="post" id="editSiteForm">

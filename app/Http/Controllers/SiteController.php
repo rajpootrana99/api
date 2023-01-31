@@ -68,9 +68,9 @@ class SiteController extends Controller
      * @param  \App\Models\Site  $site
      * @return \Illuminate\Http\Response
      */
-    public function show(Site $site)
+    public function show($site)
     {
-        //
+        
     }
 
     /**
