@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SiteController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,8 +26,9 @@ Route::get('/unathorized', function () {
 Route::middleware(['auth', 'verified', 'user_admin'])->group(function () {
     Route::resource('user', UserController::class);
     Route::get('/fetchUsers', [UserController::class, 'fetchUsers'])->name('user.get');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/approveUser/{user}', [UserController::class, 'approveUser'])->name('user.approve');
+    Route::resource('site', SiteController::class);
+    Route::get('/fetchSites', [SiteController::class, 'fetchSites'])->name('site.get');
 });
 
 require __DIR__.'/auth.php';

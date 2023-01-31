@@ -18,7 +18,7 @@ class UserController extends Controller
     }
 
     public function fetchUsers(){
-        $users = User::all();
+        $users = User::where(['is_admin' => 0])->get();
         return response()->json([
             'users' => $users,
         ]);
@@ -87,6 +87,30 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $user->delete();
+        return response()->json([
+            'status' => 1,
+            'message' => 'User deleted successfully',
+        ]);
+
+    }
+
+    public function approveUser($user){
+        $user = User::find($user);
+        if ($user->is_approved == 'Not Approved'){
+            $value = 1;
+        }
+        else{
+            $value = 0;
+        }
+        $user->update([
+            'is_approved' => $value,
+        ]);
+        if ($user){
+            return response()->json([
+                'status' => 1,
+                'message' => 'Status changed successfully',
+            ]);
+        }
     }
 }
