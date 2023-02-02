@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ForgetController;
 use App\Http\Controllers\Api\SiteController;
+use App\Http\Controllers\Api\TaskController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,5 +31,9 @@ Route::post('/checkToken', [ForgetController::class], 'checkToken');
 
 Route::group(['middleware' => ['auth:sanctum', 'user_verified']], function(){
     Route::get('/logout', [AuthController::class, 'logout']);
+    Route::post('/update-user', [AuthController::class, 'update']);
     Route::get('/fetchSites', [SiteController::class, 'fetchSites']);
+    Route::post('/create-task', [TaskController::class, 'createTask']);
+    Route::post('/add-item', [TaskController::class, 'addItem']);
+    Route::get('/fetchTasks', [TaskController::class, 'fetchTasks']);
 });

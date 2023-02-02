@@ -59,4 +59,8 @@ class User extends Authenticatable
     public function sites(){
         return $this->hasMany(Site::class);
     }
+
+    public function tasks(){
+        return $this->hasMany(Task::class);
+    }
 }
