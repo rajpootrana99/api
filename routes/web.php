@@ -3,6 +3,7 @@
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,6 +33,8 @@ Route::middleware(['auth', 'verified', 'user_admin'])->group(function () {
     Route::get('/fetchSites', [SiteController::class, 'fetchSites'])->name('site.get');
     Route::resource('task', TaskController::class);
     Route::get('/fetchTasks', [TaskController::class, 'fetchTasks'])->name('task.get');
+    Route::resource('notification', NotificationController::class);
+    Route::get('/fetchNotifications', [NotificationController::class, 'fetchNotifications'])->name('notification.get');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
