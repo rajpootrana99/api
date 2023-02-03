@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Item;
 use App\Models\Task;
 use Illuminate\Http\Request;
 
@@ -35,5 +36,22 @@ class TaskController extends Controller
                 'message' => 'Task not found'
             ]);
         }
+    }
+
+    public function destroy($task){
+        $task = Task::find($task);
+        if($task){
+            $task->items()->delete();
+            $task->delete();
+            return response()->json([
+                'status' => 200,
+                'message' => 'Task Deleted Successfully'
+            ]);
+        }
+        return response()->json([
+            'status' => 404,
+            'message' => 'Task not found'
+        ]);
+
     }
 }
