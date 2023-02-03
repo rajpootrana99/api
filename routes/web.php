@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,6 +30,8 @@ Route::middleware(['auth', 'verified', 'user_admin'])->group(function () {
     Route::get('/approveUser/{user}', [UserController::class, 'approveUser'])->name('user.approve');
     Route::resource('site', SiteController::class);
     Route::get('/fetchSites', [SiteController::class, 'fetchSites'])->name('site.get');
+    Route::resource('task', TaskController::class);
+    Route::get('/fetchTasks', [TaskController::class, 'fetchTasks'])->name('task.get');
 });
 
 require __DIR__.'/auth.php';
