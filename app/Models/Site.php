@@ -15,7 +15,7 @@ class Site extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'sites_has_users', 'site_id', 'user_id');
+        return $this->belongsToMany(User::class);
     }
 
     public function task()

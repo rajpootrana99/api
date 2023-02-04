@@ -60,7 +60,7 @@ class User extends Authenticatable
 
     public function sites()
     {
-        return $this->hasMany(Site::class, 'users_has_sites', 'user_id', 'site_id');
+        return $this->hasMany(Site::class);
     }
 
     public function tasks()
