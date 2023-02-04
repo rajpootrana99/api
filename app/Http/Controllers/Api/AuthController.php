@@ -18,18 +18,20 @@ class AuthController extends Controller
     use HttpResponses;
     use ImageUpload;
 
-    public function login(LoginUserRequest $request){
-        if(!Auth::attempt($request->only(['email', 'password']))){
+    public function login(LoginUserRequest $request)
+    {
+        if (!Auth::attempt($request->only(['email', 'password']))) {
             return $this->error('', 'Credentials does not match', 401);
         }
         $user = User::where('email', $request->email)->first();
         return $this->success([
             'user' => $user,
-            'token' => $user->createToken('Api Token of '.$user->name)->plainTextToken
+            'token' => $user->createToken('Api Token of ' . $user->name)->plainTextToken
         ], 'Login Successfully');
     }
 
-    public function register(StoreUserRequest $request){
+    public function register(StoreUserRequest $request)
+    {
 
         $user = User::create([
             'name' => $request->name,
@@ -38,22 +40,22 @@ class AuthController extends Controller
         ]);
 
         return $this->success([
-            'user' => $user,
-            'token' => $user->createToken('Api Token of '.$user->name)->plainTextToken
-        ],'Register Successfully');
-
+            'user' => $user
+        ], 'Register Successfully');
     }
 
-    public function logout(Request $request){
+    public function logout(Request $request)
+    {
         $request->user()->currentAccessToken()->delete();
         return $this->success([
             'message' => 'You have successfully logged out and your token has been deleted'
         ]);
     }
 
-    public function update(UpdateUserRequest $request){
+    public function update(UpdateUserRequest $request)
+    {
         $user = User::find(Auth::id());
-        if($user->email == $request->email){
+        if ($user->email == $request->email) {
             $user->update([
                 'name' => $request->name,
             ]);
@@ -61,14 +63,13 @@ class AuthController extends Controller
             return $this->success([
                 'user' => $user,
             ], 'User Profile Update Successfully');
-        } 
-        else{
+        } else {
             return $this->error('', 'You cannot change user email', 401);
         }
-        
     }
 
-    public function storeImage($user){
+    public function storeImage($user)
+    {
         $user->update([
             'image' => $this->imagePath('image', 'user', $user),
         ]);
