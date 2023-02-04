@@ -19,8 +19,9 @@ class SiteController extends Controller
         return view('site.index');
     }
 
-    public function fetchSites(){
-        $sites = Site::with('user')->get();
+    public function fetchSites()
+    {
+        $sites = Site::with('users')->get();
         return response()->json([
             'status' => true,
             'sites' => $sites,
@@ -49,15 +50,15 @@ class SiteController extends Controller
             'user_id' => ['required'],
             'site' => ['required', 'string', 'min:3']
         ]);
-        if (!$validator->passes()){
+        if (!$validator->passes()) {
             return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
         }
 
         $site = Site::create([
-            'user_id' => $request->input('user_id'),
             'site' => $request->input('site'),
         ]);
-        if ($site){
+        $site->users()->attach($request->user_id);
+        if ($site) {
             return response()->json(['status' => 1, 'message' => 'Site Added Successfully']);
         }
     }
@@ -70,7 +71,6 @@ class SiteController extends Controller
      */
     public function show($site)
     {
-        
     }
 
     /**
@@ -81,16 +81,15 @@ class SiteController extends Controller
      */
     public function edit($site)
     {
-        $site = Site::with('user')->where('id', $site)->first();
+        $site = Site::with('users')->where('id', $site)->first();
         $users = User::where(['is_admin' => 0])->get();
-        if ($site){
+        if ($site) {
             return response()->json([
                 'status' => 200,
                 'site' => $site,
                 'users' => $users,
             ]);
-        }
-        else{
+        } else {
             return response()->json([
                 'status' => 404,
                 'message' => 'Site not found'
@@ -111,13 +110,15 @@ class SiteController extends Controller
             'user_id' => ['required'],
             'site' => ['required', 'string', 'min:3']
         ]);
-        if (!$validator->passes()){
+        if (!$validator->passes()) {
             return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
         }
 
         $site = Site::find($site);
         $site->update($request->all());
-        if ($site){
+        $site->users()->detach();
+        $site->users()->attach($request->user_id);
+        if ($site) {
             return response()->json(['status' => 1, 'message' => 'Site Updated Successfully']);
         }
     }
@@ -130,6 +131,7 @@ class SiteController extends Controller
      */
     public function destroy(Site $site)
     {
+        $site->users()->detach();
         $site->delete();
         return response()->json([
             'status' => 1,

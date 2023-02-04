@@ -10,16 +10,16 @@ class Site extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
         'site',
     ];
 
-    public function user(){
-        return $this->belongsTo(User::class);
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'sites_has_users', 'site_id', 'user_id');
     }
 
-    public function task(){
+    public function task()
+    {
         return $this->hasMany(Task::class);
     }
 }
-  

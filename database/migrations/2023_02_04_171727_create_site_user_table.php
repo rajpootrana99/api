@@ -13,9 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('sites', function (Blueprint $table) {
+        Schema::create('site_user', function (Blueprint $table) {
             $table->id();
-            $table->string('site');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('site_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('site_id')->references('id')->on('sites');
             $table->timestamps();
         });
     }
@@ -27,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sites');
+        Schema::dropIfExists('site_user');
     }
 };

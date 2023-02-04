@@ -26,11 +26,13 @@ class User extends Authenticatable
         'image',
     ];
 
-    public function getIsApprovedAttribute($attribute){
+    public function getIsApprovedAttribute($attribute)
+    {
         return $this->isApprovedOptions()[$attribute] ?? 0;
     }
 
-    public function isApprovedOptions(){
+    public function isApprovedOptions()
+    {
         return [
             1 => 'Approved',
             0 => 'Not Approved',
@@ -56,11 +58,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function sites(){
-        return $this->hasMany(Site::class);
+    public function sites()
+    {
+        return $this->hasMany(Site::class, 'users_has_sites', 'user_id', 'site_id');
     }
 
-    public function tasks(){
+    public function tasks()
+    {
         return $this->hasMany(Task::class);
     }
 }

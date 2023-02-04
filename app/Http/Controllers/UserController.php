@@ -17,7 +17,8 @@ class UserController extends Controller
         return view('user.index');
     }
 
-    public function fetchUsers(){
+    public function fetchUsers()
+    {
         $users = User::where(['is_admin' => 0])->get();
         return response()->json([
             'users' => $users,
@@ -53,14 +54,15 @@ class UserController extends Controller
      */
     public function show($user)
     {
-        $user = User::with('sites')->where('id', $user)->first();
-        if($user){
+        $user = User::where('id', $user)->first();
+        $sites = $user->sites;
+        if ($user) {
             return response()->json([
                 'status' => 200,
-                'user' => $user
+                'user' => $user,
+                'sites' => $sites
             ]);
-        }
-        else{
+        } else {
             return response()->json([
                 'status' => 404,
                 'message' => 'User not found'
@@ -104,21 +106,20 @@ class UserController extends Controller
             'status' => 1,
             'message' => 'User deleted successfully',
         ]);
-
     }
 
-    public function approveUser($user){
+    public function approveUser($user)
+    {
         $user = User::find($user);
-        if ($user->is_approved == 'Not Approved'){
+        if ($user->is_approved == 'Not Approved') {
             $value = 1;
-        }
-        else{
+        } else {
             $value = 0;
         }
         $user->update([
             'is_approved' => $value,
         ]);
-        if ($user){
+        if ($user) {
             return response()->json([
                 'status' => 1,
                 'message' => 'Status changed successfully',
