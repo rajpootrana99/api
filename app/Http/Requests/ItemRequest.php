@@ -30,7 +30,7 @@ class ItemRequest extends FormRequest
             'priority' => ['required', 'integer', Rule::in([0, 1, 2])],
             'status' => ['required', 'integer', Rule::in([0, 1, 2])],
             'progress' => ['required', 'integer', Rule::in([0, 1])],
-            'image' => ['file'],
+            'images[]' => ['mimes:png,jpg,mp4,mkv,doc,docx'],
         ];
     }
 }
