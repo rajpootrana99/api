@@ -84,8 +84,6 @@
                 <img src="assets/images/users/user-5.jpg" alt="" class="thumb-lg rounded-circle">
                 <h4 class="mb-1" id="name"></h4>
                 <p class="mb-0 text-muted" id="email"></p>
-                <h4 class="mb-1">Sites</h4>
-                <p class="mb-0 text-muted" id="sites"></p>
             </div><!--end modal-body-->
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
@@ -149,10 +147,6 @@
                         $('#showUserLabel').text('User ID ' + response.user.id);
                         $('#name').text(response.user.name);
                         $('#email').text(response.user.email);
-                        console.log(response.sites)
-                        $.each(response.sites, function(site) {
-                            $('#sites').append('<p class="mb-0 text-muted" id="sites">' + response.sites[site].site + '</p>')
-                        });
                     }
                 }
             });

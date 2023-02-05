@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Site;
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class SiteController extends Controller
+class SiteUserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,15 +17,15 @@ class SiteController extends Controller
      */
     public function index()
     {
-        return view('site.index');
+        return view('site_user.index');
     }
 
-    public function fetchSites()
+    public function fetchSiteUsers()
     {
-        $sites = Site::all();
+        $user_sites = User::with('sites')->where(['is_admin' => 0])->get();
         return response()->json([
             'status' => true,
-            'sites' => $sites,
+            'user_sites' => $user_sites,
         ]);
     }
 
@@ -35,7 +36,6 @@ class SiteController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -47,17 +47,19 @@ class SiteController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'site' => ['required', 'string', 'min:3']
+            'site_id' => ['required'],
+            'user_id' => ['required'],
         ]);
         if (!$validator->passes()) {
             return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
         }
-
-        $site = Site::create([
-            'site' => $request->input('site'),
-        ]);
-        if ($site) {
-            return response()->json(['status' => 1, 'message' => 'Site Added Successfully']);
+        $sites = Site::find($request->site_id);
+        // return response()->json($user);
+        for ($count = 0; $count < count($sites); $count++) {
+            $sites[$count]->users()->attach($request->user_id);
+        }
+        if ($sites) {
+            return response()->json(['status' => 1, 'message' => 'Site against User Added Successfully']);
         }
     }
 
@@ -67,8 +69,9 @@ class SiteController extends Controller
      * @param  \App\Models\Site  $site
      * @return \Illuminate\Http\Response
      */
-    public function show($site)
+    public function show(Site $site)
     {
+        //
     }
 
     /**
@@ -77,13 +80,17 @@ class SiteController extends Controller
      * @param  \App\Models\Site  $site
      * @return \Illuminate\Http\Response
      */
-    public function edit($site)
+    public function edit($user)
     {
-        $site = Site::where('id', $site)->first();
-        if ($site) {
+        $users = User::where(['is_admin' => 0])->get();
+        $sites = Site::all();
+        $site_user = User::with('sites')->where('id', $user)->first();
+        if ($site_user) {
             return response()->json([
                 'status' => 200,
-                'site' => $site,
+                'site_user' => $site_user,
+                'sites' => $sites,
+                'users' => $users,
             ]);
         } else {
             return response()->json([
@@ -100,21 +107,25 @@ class SiteController extends Controller
      * @param  \App\Models\Site  $site
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $site)
+    public function update(Request $request, $user)
     {
         $validator = Validator::make($request->all(), [
-            'site' => ['required', 'string', 'min:3']
+            'site_id' => ['required'],
+            'user_id' => ['required'],
         ]);
         if (!$validator->passes()) {
             return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
         }
-
-        $site = Site::find($site);
-        $site->update($request->all());
-        // $site->users()->detach();
+        $user = User::find($user);
+        $user->sites()->detach();
         // $site->users()->attach($request->user_id);
-        if ($site) {
-            return response()->json(['status' => 1, 'message' => 'Site Updated Successfully']);
+        $users = User::find($request->user_id);
+        // return response()->json($user);
+        for ($count = 0; $count < count($users); $count++) {
+            $users[$count]->sites()->sync($request->site_id);
+        }
+        if ($users) {
+            return response()->json(['status' => 1, 'message' => 'Site against User updated Successfully']);
         }
     }
 
@@ -124,13 +135,12 @@ class SiteController extends Controller
      * @param  \App\Models\Site  $site
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Site $site)
+    public function destroy($user)
     {
-        $site->users()->detach();
-        $site->delete();
-        return response()->json([
-            'status' => 1,
-            'message' => 'Site deleted successfully',
-        ]);
+        $user = User::find($user);
+        $user->sites()->detach();
+        if ($user) {
+            return response()->json(['status' => 1, 'message' => 'Site against User deleted Successfully']);
+        }
     }
 }

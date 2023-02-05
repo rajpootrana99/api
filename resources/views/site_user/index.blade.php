@@ -20,7 +20,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-title mt-4">
-                        <a href="" data-toggle="modal" data-target="#addSite" id="addSiteButton" class="btn btn-primary" style="float:right;margin-left: 10px"><i class="fa fa-plus"></i> New Site </a>
+                        <a href="" data-toggle="modal" data-target="#addSite" id="addSiteButton" class="btn btn-primary" style="float:right;margin-left: 10px"><i class="fa fa-plus"></i> Assign Site to User </a>
                     </div>
                 </div><!--end card-header-->
                 <div class="card-body">
@@ -29,7 +29,8 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Site</th>
+                                    <th>User</th>
+                                    <th>Sites</th>
                                     <th width="3%">Modify</th>
                                     <th width="3%">Delete</th>
                                 </tr>
@@ -60,11 +61,20 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="form-group">
-                                <div class="row"><label for="site" class="my-1 col-sm-3 control-label">Site Name</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" type="text" name="site" id="site">
-                                </div>
-                                <span class="text-danger error-text site_error"></span>
+                                <div class="row"><label for="user_id" class="text-left col-form-label col-lg-8">Select Users</label></div>
+                                <select class="select2 mb-3 select2-multiple form-control" name="user_id[]" id="user_id" style="width: 100%; height:30px;" multiple="multiple">
+
+                                </select>
+                                <span class="text-danger error-text user_id_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <div class="row"><label for="site_id" class="text-left col-form-label col-lg-8">Select Sites</label></div>
+                                <select class="select2 mb-3 select2-multiple form-control" name="site_id[]" id="site_id" style="width: 100%; height:30px;" multiple="multiple">
+
+                                </select>
+                                <span class="text-danger error-text site_id_error"></span>
                             </div>
                         </div>
                     </div><!--end row-->
@@ -78,26 +88,37 @@
     </div><!--end modal-dialog-->
 </div>
 
-<div class="modal fade" id="editSite" tabindex="-1" role="dialog" aria-labelledby="editSiteLabel" aria-hidden="true">
+<div class="modal fade" id="editSiteUser" tabindex="-1" role="dialog" aria-labelledby="editSiteUserLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header bg-primary">
-                <h6 class="modal-title m-0 text-white" id="editSiteLabel"></h6>
+                <h6 class="modal-title m-0 text-white" id="editSiteUserLabel"></h6>
                 <button type="button" class="close " data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true"><i class="la la-times text-white"></i></span>
                 </button>
             </div><!--end modal-header-->
-            <form method="post" id="editSiteForm">
+            <form method="post" id="editSiteUserForm">
                 @csrf
                 @method('PATCH')
                 <div class="modal-body">
                     <div class="row">
-                        <input type="hidden" id="site_id" name="site_id">
+                        <input type="hidden" id="user_site_id" name="user_site_id">
                         <div class="col-lg-12">
                             <div class="form-group">
-                                <div class="row"><label for="edit_site" class="col-form-label text-right">Site</label></div>
-                                <input class="form-control" style="height: 30px;" type="text" name="site" id="edit_site">
-                                <span class="text-danger error-text site_update_error"></span>
+                                <div class="row"><label for="edit_user_id" class="text-left col-form-label col-lg-8">Select Users</label></div>
+                                <select class="select2 mb-3 select2-multiple pl-1 form-control" name="user_id[]" id="edit_user_id" style="width: 100%; height:30px;" multiple="multiple">
+
+                                </select>
+                                <span class="text-danger error-text user_id_update_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <div class="row"><label for="edit_site_id" class="text-left col-form-label col-lg-8">Select Sites</label></div>
+                                <select class="select2 mb-3 select2-multiple pl-1 form-control" name="site_id[]" id="edit_site_id" style="width: 100%; height:30px;" multiple="multiple">
+
+                                </select>
+                                <span class="text-danger error-text site_id_update_error"></span>
                             </div>
                         </div>
 
@@ -126,7 +147,7 @@
                 @method('DELETE')
                 <div class="modal-body">
                     <div class="row">
-                        <input type="hidden" id="site_id" name="site_id">
+                        <input type="hidden" id="user_site_id" name="user_site_id">
                         <p class="mb-4">Are you sure want to delete?</p>
                     </div><!--end row-->
                 </div><!--end modal-body-->
@@ -148,7 +169,48 @@
             }
         });
 
-        fetchSites();
+        fetchSiteUsers();
+
+        function fetchSiteUsers() {
+            $.ajax({
+                type: "GET",
+                url: "fetchSiteUsers",
+                dataType: "json",
+                success: function(response) {
+                    $('tbody').html("");
+                    $.each(response.user_sites, function(key, user_site) {
+                        var options = new Array();
+                        let i = 0;
+                        user_site.sites.forEach(function(p) {
+                            options[i] = '<span class="badge badge-info">' + p.site + '</span>';
+                            i = i + 1;
+                        })
+                        $('tbody').append('<tr>\
+                            <td>' + user_site.id + '</td>\
+                            <td>' + user_site.name + '</td>\
+                            <td>' + options.join(' ') + '</td>\
+                            <td><button value="' + user_site.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
+                            <td><button value="' + user_site.id + '" style="border: none; background-color: #fff" class="delete_btn"><i class="fa fa-trash"></i></button></td>\
+                    </tr>');
+                    });
+                }
+            });
+        }
+
+        function fetchUsers() {
+            $.ajax({
+                type: "GET",
+                url: "fetchUsers",
+                dataType: "json",
+                success: function(response) {
+                    var user_id = $('#user_id');
+                    $('#user_id').children().remove().end();
+                    $.each(response.users, function(user) {
+                        user_id.append($("<option />").val(response.users[user].id).text(response.users[user].name));
+                    });
+                }
+            });
+        }
 
         function fetchSites() {
             $.ajax({
@@ -156,14 +218,10 @@
                 url: "fetchSites",
                 dataType: "json",
                 success: function(response) {
-                    $('tbody').html("");
-                    $.each(response.sites, function(key, site) {
-                        $('tbody').append('<tr>\
-                            <td>' + site.id + '</td>\
-                            <td>' + site.site + '</td>\
-                            <td><button value="' + site.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
-                            <td><button value="' + site.id + '" style="border: none; background-color: #fff" class="delete_btn"><i class="fa fa-trash"></i></button></td>\
-                    </tr>');
+                    var site_id = $('#site_id');
+                    $('#site_id').children().remove().end();
+                    $.each(response.sites, function(site) {
+                        site_id.append($("<option />").val(response.sites[site].id).text(response.sites[site].site));
                     });
                 }
             });
@@ -171,29 +229,30 @@
 
         $(document).on('click', '#addSiteButton', function(e) {
             e.preventDefault();
+            fetchUsers();
+            fetchSites();
             $(document).find('span.error-text').text('');
         });
 
         $(document).on('click', '.delete_btn', function(e) {
             e.preventDefault();
-            var site_id = $(this).val();
+            var user_site_id = $(this).val();
             $('#deleteSite').modal('show');
-            $('#site_id').val(site_id)
+            $('#user_site_id').val(user_site_id)
         });
 
         $(document).on('submit', '#deleteSiteForm', function(e) {
             e.preventDefault();
-            var site_id = $('#site_id').val();
-
+            var user_site_id = $('#user_site_id').val();
             $.ajax({
                 type: 'delete',
-                url: 'site/' + site_id,
+                url: 'site-user/' + user_site_id,
                 dataType: 'json',
                 success: function(response) {
                     if (response.status == 0) {
                         $('#deleteSite').modal('hide');
                     } else {
-                        fetchSites();
+                        fetchSiteUsers();
                         $('#deleteSite').modal('hide');
                     }
                 }
@@ -202,36 +261,50 @@
 
         $(document).on('click', '.edit_btn', function(e) {
             e.preventDefault();
-            var site_id = $(this).val();
-            $('#editSite').modal('show');
+            var user_site_id = $(this).val();
+            $('#editSiteUser').modal('show');
             $(document).find('span.error-text').text('');
             $.ajax({
                 type: "GET",
-                url: 'site/' + site_id + '/edit',
+                url: 'site-user/' + user_site_id + '/edit',
                 success: function(response) {
                     if (response.status == 404) {
-                        $('#editSite').modal('hide');
+                        $('#editSiteUser').modal('hide');
                     } else {
-                        $('#editSiteLabel').text('Site ID ' + response.site.id);
-                        $('#site_id').val(response.site.id);
-                        $('#edit_site').val(response.site.site);
+                        $('#editSiteUserLabel').text('Site User ID ' + response.site_user.id);
+                        var user_id = $('#edit_user_id');
+                        $('#edit_user_id').children().remove().end()
+                        $.each(response.users, function(user) {
+                            user_id.append($("<option />").val(response.users[user].id).text(response.users[user].name));
+                        });
+                        var site_id = $('#edit_site_id');
+                        $('#edit_site_id').children().remove().end()
+                        $.each(response.sites, function(site) {
+                            site_id.append($("<option />").val(response.sites[site].id).text(response.sites[site].site));
+                        });
+                        $('#user_site_id').val(response.site_user.id);
+                        var sites = new Array();
+                        $.each(response.site_user.sites, function(key, site) {
+                            sites[key] = site.id;
+                        });
+                        $('#edit_user_id').val(response.site_user.id)
+                        $('#edit_site_id').val(sites)
                     }
                 }
             });
         });
 
-        $(document).on('submit', '#editSiteForm', function(e) {
+        $(document).on('submit', '#editSiteUserForm', function(e) {
             e.preventDefault();
-            var site_id = $('#site_id').val();
-            let EditFormData = new FormData($('#editSiteForm')[0]);
-
+            var user_site_id = $('#user_site_id').val();
+            let EditFormData = new FormData($('#editSiteUserForm')[0]);
             $.ajax({
                 type: "post",
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf_token"]').attr('content'),
                     '_method': 'patch'
                 },
-                url: "site/" + site_id,
+                url: "site-user/" + user_site_id,
                 data: EditFormData,
                 contentType: false,
                 processData: false,
@@ -240,19 +313,19 @@
                 },
                 success: function(response) {
                     if (response.status == 0) {
-                        $('#editSite').modal('show')
+                        $('#editSiteUser').modal('show')
                         $.each(response.error, function(prefix, val) {
                             $('span.' + prefix + '_update_error').text(val[0]);
                         });
                     } else {
-                        $('#editSiteForm')[0].reset();
-                        $('#editSite').modal('hide');
-                        fetchSites();
+                        $('#editSiteUserForm')[0].reset();
+                        $('#editSiteUser').modal('hide');
+                        fetchSiteUsers();
                     }
                 },
                 error: function(error) {
                     console.log(error)
-                    $('#editSite').modal('show');
+                    $('#editSiteUser').modal('show');
                 }
             });
         })
@@ -262,7 +335,7 @@
             let formDate = new FormData($('#addSiteForm')[0]);
             $.ajax({
                 type: "post",
-                url: "site",
+                url: "site-user",
                 data: formDate,
                 contentType: false,
                 processData: false,
@@ -278,7 +351,7 @@
                     } else {
                         $('#addSiteForm')[0].reset();
                         $('#addSite').modal('hide');
-                        fetchSites();
+                        fetchSiteUsers();
                     }
                 },
                 error: function(error) {

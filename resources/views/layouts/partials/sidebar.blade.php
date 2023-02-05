@@ -23,6 +23,9 @@
                 <a href="{{ route('site.index')}}"><i data-feather="globe" class="align-self-center menu-icon"></i><span>Sites</span></a>
             </li>
             <li>
+                <a href="{{ route('site-user.index')}}"><i data-feather="globe" class="align-self-center menu-icon"></i><span>Site User</span></a>
+            </li>
+            <li>
                 <a href="{{ route('task.index')}}"><i data-feather="check-square" class="align-self-center menu-icon"></i><span>Task</span></a>
             </li>
             <li>

@@ -54,13 +54,11 @@ class UserController extends Controller
      */
     public function show($user)
     {
-        $user = User::where('id', $user)->first();
-        $sites = $user->sites;
+        $user = User::with('sites')->where('id', $user)->first();
         if ($user) {
             return response()->json([
                 'status' => 200,
                 'user' => $user,
-                'sites' => $sites
             ]);
         } else {
             return response()->json([
@@ -101,6 +99,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        $user->sites()->detach();
         $user->delete();
         return response()->json([
             'status' => 1,

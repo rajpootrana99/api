@@ -24,7 +24,7 @@ class TaskRequest extends FormRequest
     public function rules()
     {
         return [
-            'site_id' => ['required', 'integer'],
+            'site_id' => ['required', 'integer', 'exists:sites'],
             'title' => ['required', 'string', 'max:255'],
         ];
     }
