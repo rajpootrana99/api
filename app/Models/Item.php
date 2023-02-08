@@ -58,4 +58,8 @@ class Item extends Model
     public function itemGalleries(){
         return $this->hasMany(ItemGallery::class);
     }
+
+    public function messages(){
+        return $this->hasMany(Message::class);
+    }
 }

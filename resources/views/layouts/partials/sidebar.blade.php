@@ -29,7 +29,7 @@
                 <a href="{{ route('task.index')}}"><i data-feather="check-square" class="align-self-center menu-icon"></i><span>Task</span></a>
             </li>
             <li>
-                <a href="{{ route('chat.index')}}"><i data-feather="message-square" class="align-self-center menu-icon"></i><span>Chat</span></a>
+                <a href="{{ route('message.index')}}"><i data-feather="message-square" class="align-self-center menu-icon"></i><span>Chat</span></a>
             </li>
             <li>
                 <a href="{{ route('notification.index')}}"><i data-feather="bell" class="align-self-center menu-icon"></i><span>Notifications</span></a>

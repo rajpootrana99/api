@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ForgetController;
+use App\Http\Controllers\Api\MessageController;
 use App\Http\Controllers\Api\SiteController;
 use App\Http\Controllers\Api\TaskController;
 use Illuminate\Http\Request;
@@ -34,6 +35,7 @@ Route::group(['middleware' => ['auth:sanctum', 'user_verified']], function(){
     Route::post('/update-user', [AuthController::class, 'update']);
     Route::get('/fetchSites', [SiteController::class, 'fetchSites']);
     Route::post('/create-task', [TaskController::class, 'createTask']);
+    Route::post('/send-message', [MessageController::class, 'sendMessage']);
     Route::post('/add-item', [TaskController::class, 'addItem']);
     Route::get('/fetchTasks', [TaskController::class, 'fetchTasks']);
 });
