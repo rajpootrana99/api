@@ -83,8 +83,8 @@
                                 <div class="card-header">\
                                     <div class="row align-items-center">\
                                     <div class="col">\
-                                        <h4 class="card-title">Task ID # '+task.id+' - '+ task.title +'</h4>\
-                                        <p class="text-muted">'+ task.site.site +'</p>\
+                                        <h4 class="card-title">Task ID # ' + task.id + ' - ' + task.title + '</h4>\
+                                        <p class="text-muted">' + task.site.site + '</p>\
                                     </div>\
                                 </div>\
                             </div>\
@@ -102,7 +102,7 @@
                                         <th class="border-top-0">Progress</th>\
                                     </tr>\
                                     </thead>\
-                        <tbody id="item-body-'+task.id+'"> </tbody>');
+                        <tbody id="item-body-' + task.id + '"> </tbody>');
                         $.each(task.items, function(key, item) {
                             var options = new Array();
                             var priority = '';
@@ -124,7 +124,7 @@
                             }
                             item.item_galleries.forEach(function(p) {
                                 if (getFileExtension(p.image) === 'mp4' || getFileExtension(p.image) === 'mkv') {
-                                    options[i] = '<video width="200px" height="100px" controls><source src="' + p.image + '"></video>'
+                                    options[i] = '<video width="200px" height="100px" controls><source src="' + p.image + '" type="video/ogg"></video>'
                                 } else if (getFileExtension(p.image) === 'png' || getFileExtension(p.image) === 'jpg' || getFileExtension(p.image) === 'jpeg') {
                                     options[i] = '<img src="' + p.image + '" width="200px" height="100px" alt="" class="rounded float-left ml-3 mb-3">';
                                 } else {
@@ -132,14 +132,14 @@
                                 }
                                 i++;
                             });
-                            $('#item-body-'+task.id).append('<tr>\
-                                <td>'+item.id+'</td>\
-                                <td>'+item.description+'</td>\
-                                <td>'+task.user.name+'</td>\
-                                <td>'+options.join(' ')+'</td>\
-                                <td>'+priority+'</td>\
-                                <td>'+status+'</td>\
-                                <td>'+item.progress+'</td>\
+                            $('#item-body-' + task.id).append('<tr>\
+                                <td>' + item.id + '</td>\
+                                <td>' + item.description + '</td>\
+                                <td>' + task.user.name + '</td>\
+                                <td>' + options.join(' ') + '</td>\
+                                <td>' + priority + '</td>\
+                                <td>' + status + '</td>\
+                                <td>' + item.progress + '</td>\
                             </tr>')
                         });
                     });
