@@ -15,32 +15,7 @@
         </div><!--end col-->
     </div><!--end row-->
     <!-- end page title end breadcrumb -->
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered mb-0 table-centered">
-                            <thead>
-                                <tr>
-                                    <th width="5%">#</th>
-                                    <th width="20%">Title</th>
-                                    <th width="20%">Site</th>
-                                    <th width="8%">User</th>
-                                    <th width="20%">Items</th>
-                                    <th width="1%">View</th>
-                                    <th width="1%">Delete</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table><!--end /table-->
-                    </div><!--end /tableresponsive-->
-                </div><!--end card-body-->
-            </div><!--end card-->
-        </div> <!-- end col -->
-    </div> <!-- end row -->
+    <div id="task-section"></div>
 </div>
 <!-- Modal -->
 
@@ -67,74 +42,6 @@
                     <button type="submit" class="btn btn-primary btn-sm">Yes</button>
                 </div><!--end modal-footer-->
             </form>
-        </div><!--end modal-content-->
-    </div><!--end modal-dialog-->
-</div>
-
-<div class="modal fade" id="showTask" tabindex="-1" role="dialog" aria-labelledby="showTaskLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg-primary">
-                <h6 class="modal-title m-0 text-white" id="showTaskLabel"></h6>
-                <button type="button" class="close " data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true"><i class="la la-times text-white"></i></span>
-                </button>
-            </div><!--end modal-header-->
-            <div class="modal-body text-center">
-                <h4 class="mb-1" id="name"></h4>
-                <p class="mb-0 text-muted" id="description"></p>
-                <h3 class="mb-1">Site</h3>
-                <p class="mb-0 text-muted" id="site"></p>
-                <div class="accordion" id="itemAccordion">
-                    <!-- <div class="card border mb-1 shadow-none">
-                            <div class="card-header custom-accordion  rounded-0" id="headingOne">
-                                <a href="" class="text-dark" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    Collapsible Group Item #1
-                                </a>
-                            </div>
-                            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#itemAccordion">
-                                <div class="card-body">
-                                <p class="mb-0 text-muted">
-                                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
-                                </p> 
-                                </div>
-                            </div>
-                        </div> -->
-                    <!-- <div class="card mb-1 border shadow-none">
-                            <div class="card-header  rounded-0" id="headingTwo">
-                                <a href="" class="collapsed text-dark" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                    Collapsible Group Item #2
-                                </a>
-                            </div>
-                            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                                <div class="card-body">
-                                    <p class="mb-0 text-muted">
-                                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
-                                    </p> 
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card mb-0 border shadow-none">
-                            <div class="card-header  rounded-0" id="headingThree">
-                                <a href="" class="collapsed text-dark" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                    Collapsible Group Item #3
-                                </a>
-                            </div>
-                            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-                                <div class="card-body">
-                                    <p class="mb-0 text-muted">
-                                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
-                                    </p> 
-                                </div>
-                            </div>
-                        </div> -->
-                </div>
-            </div><!--end modal-body-->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary btn-sm">Yes</button>
-            </div><!--end modal-footer-->
-
         </div><!--end modal-content-->
     </div><!--end modal-dialog-->
 </div>
@@ -170,37 +77,33 @@
                             options[i] = '<span class="badge badge-info">Item # ' + p.id + '</span>';
                             i = i + 1;
                         });
-                        $('tbody').append('<tr>\
-                            <td>' + task.id + '</td>\
-                            <td>' + task.title + '</td>\
-                            <td>' + task.site.site + '</td>\
-                            <td>' + task.user.name + '</td>\
-                            <td>' + options.join(' ') + '</td>\
-                            <td><button value="' + task.id + '" style="border: none; background-color: #fff" class="view_btn"><i class="fas fa-eye"></i></button></td>\
-                            <td><button value="' + task.id + '" style="border: none; background-color: #fff" class="delete_btn"><i class="fa fa-trash"></i></button></td>\
-                    </tr>');
-                    });
-                }
-            });
-        }
-
-        $(document).on('click', '.view_btn', function(e) {
-            e.preventDefault();
-            var task_id = $(this).val();
-            $('#showTask').modal('show');
-            $.ajax({
-                type: "GET",
-                url: 'task/' + task_id,
-                success: function(response) {
-                    if (response.status == 404) {
-                        $('#showTask').modal('hide');
-                    } else {
-                        $('#itemAccordion').children().remove().end();
-                        $('#showTaskLabel').text('Task ID ' + response.task.id);
-                        $('#name').text(response.task.user.name);
-                        $('#site').text(response.task.site.site);
-                        $.each(response.task.items, function(key, item) {
-                            console.log(item.status);
+                        $('#task-section').append('<div class="row">\
+                            <div class="col-lg-12">\
+                                <div class="card">\
+                                <div class="card-header">\
+                                    <div class="row align-items-center">\
+                                    <div class="col">\
+                                        <h4 class="card-title">Task ID # '+task.id+' - '+ task.title +'</h4>\
+                                        <p class="text-muted">'+ task.site.site +'</p>\
+                                    </div>\
+                                </div>\
+                            </div>\
+                            <div class="card-body">\
+                                <div class="table-responsive">\
+                                <table class="table mb-0">\
+                                    <thead class="thead-light">\
+                                    <tr>\
+                                        <th class="border-top-0">Item ID</th>\
+                                        <th class="border-top-0">ITem Descrition</th>\
+                                        <th class="border-top-0">User Name</th>\
+                                        <th class="border-top-0">Gallery</th>\
+                                        <th class="border-top-0">Priority</th>\
+                                        <th class="border-top-0">Status</th>\
+                                        <th class="border-top-0">Progress</th>\
+                                    </tr>\
+                                    </thead>\
+                        <tbody id="item-body-'+task.id+'"> </tbody>');
+                        $.each(task.items, function(key, item) {
                             var options = new Array();
                             var priority = '';
                             var status = '';
@@ -229,36 +132,20 @@
                                 }
                                 i++;
                             });
-                            $('#itemAccordion').append('<div class="card border mb-1 shadow-none">\
-                                    <div class="card-header custom-accordion  rounded-0" id="headingOne">\
-                                        <a href="" class="text-dark" data-toggle="collapse" data-target="#collapse' + item.id + '" aria-expanded="true" aria-controls="collapseOne">Item ID # ' + item.id + '</a>\
-                                    </div>\
-                                    <div id="collapse' + item.id + '" class="collapse" aria-labelledby="heading' + item.id + '" data-parent="#itemAccordion">\
-                                        <div class="card-body">\
-                                        <div class="row">' + options.join(' ') + '\
-                                        </div>\
-                                        <div class="row">' + item.description + '\
-                                        </div>\
-                                        <div class="row">\
-                                            <div class="col-sm-6"><h5 class="mb-0 text-muted">Priority</h5></div>\
-                                            <div class="col-sm-6"><p class="mb-0 text-muted">' + priority + '</p></div>\
-                                        </div>\
-                                        <div class="row">\
-                                            <div class="col-sm-6"><h5 class="mb-0 text-muted">Status</h5></div>\
-                                            <div class="col-sm-6"><p class="mb-0 text-muted">' + status + '</p></div>\
-                                        </div>\
-                                        <div class="row">\
-                                            <div class="col-sm-6"><h5 class="mb-0 text-muted">Progress</h5></div>\
-                                            <div class="col-sm-6"><p class="mb-0 text-muted">' + item.progress + '</p></div>\
-                                        </div>\
-                                        </div>\
-                                    </div>\
-                                </div>')
+                            $('#item-body-'+task.id).append('<tr>\
+                                <td>'+item.id+'</td>\
+                                <td>'+item.description+'</td>\
+                                <td>'+task.user.name+'</td>\
+                                <td>'+options.join(' ')+'</td>\
+                                <td>'+priority+'</td>\
+                                <td>'+status+'</td>\
+                                <td>'+item.progress+'</td>\
+                            </tr>')
                         });
-                    }
+                    });
                 }
             });
-        });
+        }
 
         $(document).on('click', '.delete_btn', function(e) {
             e.preventDefault();
