@@ -53,12 +53,12 @@ class SiteUserController extends Controller
         if (!$validator->passes()) {
             return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
         }
-        $sites = Site::find($request->site_id);
+        $users = User::find($request->user_id);
         // return response()->json($user);
-        for ($count = 0; $count < count($sites); $count++) {
-            $sites[$count]->users()->attach($request->user_id);
+        for ($count = 0; $count < count($users); $count++) {
+            $users[$count]->sites()->sync($request->site_id);
         }
-        if ($sites) {
+        if ($users) {
             return response()->json(['status' => 1, 'message' => 'Site against User Added Successfully']);
         }
     }
