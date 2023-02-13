@@ -9,11 +9,13 @@ use Illuminate\Http\Request;
 class TaskController extends Controller
 {
 
-    public function index(){
+    public function index()
+    {
         return view('task.index');
     }
 
-    public function fetchTasks(){
+    public function fetchTasks()
+    {
         $tasks = Task::with('user', 'site', 'items', 'items.itemGalleries')->get();
         return response()->json([
             'status' => true,
@@ -21,16 +23,24 @@ class TaskController extends Controller
         ]);
     }
 
+    public function fetchItemGalleries($item)
+    {
+        $item = Item::with('itemGalleries')->where('id', $item)->first();
+        return response()->json([
+            'status' => true,
+            'item' => $item,
+        ]);
+    }
+
     public function show($task)
     {
         $task = Task::with('user', 'site', 'items', 'items.itemGalleries')->where('id', $task)->first();
-        if($task){
+        if ($task) {
             return response()->json([
                 'status' => 200,
                 'task' => $task
             ]);
-        }
-        else{
+        } else {
             return response()->json([
                 'status' => 404,
                 'message' => 'Task not found'
@@ -38,9 +48,10 @@ class TaskController extends Controller
         }
     }
 
-    public function destroy($task){
+    public function destroy($task)
+    {
         $task = Task::find($task);
-        if($task){
+        if ($task) {
             $task->items()->delete();
             $task->delete();
             return response()->json([
@@ -52,6 +63,5 @@ class TaskController extends Controller
             'status' => 404,
             'message' => 'Task not found'
         ]);
-
     }
 }

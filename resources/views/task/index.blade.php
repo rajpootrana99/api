@@ -18,8 +18,8 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
-                <div class="card-body" id="task-section" >
-                    
+                <div class="card-body" id="task-section">
+
                 </div><!--end card-body-->
             </div><!--end card-->
         </div> <!-- end col -->
@@ -67,16 +67,8 @@
                 <div class="row">
                     <div class="col-12 text-center">
                         <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-                            <div class="carousel-inner">
-                                <div class="carousel-item active">
-                                    <img src="assets/images/small/img-4.jpg" class="d-block w-100" alt="...">
-                                </div>
-                                <div class="carousel-item">
-                                    <img src="assets/images/small/img-5.jpg" class="d-block w-100" alt="...">
-                                </div>
-                                <div class="carousel-item">
-                                    <img src="assets/images/small/img-6.jpg" class="d-block w-100" alt="...">
-                                </div>
+                            <div class="carousel-inner" id="item_gallery_carousel">
+
                             </div>
                             <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -130,12 +122,12 @@
                         });
                         $('#task-section').append('<div class="accordion" id="accordionExample">\
                                         <div class="card border mb-1 shadow-none">\
-                                            <div class="card-header rounded-0" id="heading_'+task.id+'">\
-                                                <a href="" class="text-dark" data-toggle="collapse" data-target="#collapse_'+task.id+'" aria-expanded="true" aria-controls="collapse_'+task.id+'">\
+                                            <div class="card-header rounded-0" id="heading_' + task.id + '">\
+                                                <a href="" class="text-dark" data-toggle="collapse" data-target="#collapse_' + task.id + '" aria-expanded="true" aria-controls="collapse_' + task.id + '">\
                                                 <strong>Task ID # ' + task.id + ' - ' + task.title + '</strong>\
                                                 </a>\
                                             </div>\
-                                            <div id="collapse_'+task.id+'" class="collapse" aria-labelledby="heading'+task.id+'" data-parent="#accordionExample">\
+                                            <div id="collapse_' + task.id + '" class="collapse" aria-labelledby="heading' + task.id + '" data-parent="#accordionExample">\
                                                 <div class="card-body">\
                                                 <div class="table-responsive">\
                                                     <table class="table mb-0">\
@@ -173,8 +165,10 @@
                             } else {
                                 status = '<span class="badge badge-secondary">' + item.status + '</span>';
                             }
-                            if (getFileExtension(item.item_galleries[0].image) === 'mp4' || getFileExtension(item.item_galleries[0].image) === 'mkv') {
-                                    file = '<video width="200px" height="100px" controls><source src="' + item.item_galleries[0].image + '" type="video/ogg"></video>'
+                            if (item.item_galleries.length == 0) {
+                                file = 'No image or video file exists';
+                            } else if (getFileExtension(item.item_galleries[0].image) === 'mp4' || getFileExtension(item.item_galleries[0].image) === 'mkv') {
+                                file = '<video width="200px" height="100px" controls><source src="' + item.item_galleries[0].image + '" type="video/ogg"></video>'
                             } else if (getFileExtension(item.item_galleries[0].image) === 'png' || getFileExtension(item.item_galleries[0].image) === 'jpg' || getFileExtension(item.item_galleries[0].image) === 'jpeg') {
                                 file = '<img src="' + item.item_galleries[0].image + '" width="200px" height="100px" alt="" class="rounded float-left ml-3 mb-3">';
                             } else {
@@ -184,7 +178,7 @@
                                 <td>' + item.id + '</td>\
                                 <td>' + item.description + '</td>\
                                 <td>' + task.user.name + '</td>\
-                                <td class="view_galery">' + file + '</td>\
+                                <td><button value="' + item.id + '" style="border: none; background-color: none" class="view_galery">' + file + '</button></td>\
                                 <td>' + priority + '</td>\
                                 <td>' + status + '</td>\
                                 <td>' + item.progress + '</td>\
@@ -197,9 +191,35 @@
 
         $(document).on('click', '.view_galery', function(e) {
             e.preventDefault();
-            $('#viewGallery').modal('show');
+            var item_id = $(this).val();
+            $.ajax({
+                type: "GET",
+                url: "fetchItemGalleries/" + item_id,
+                dataType: "json",
+                success: function(response) {
+                    var file;
+                    var active = ""
+                    $('#viewGallery').modal('show');
+                    $('#item_gallery_carousel').children().remove().end();
+                    $.each(response.item.item_galleries, function(key, gallery) {
+                        if (getFileExtension(gallery.image) === 'mp4' || getFileExtension(gallery.image) === 'mkv') {
+                            file = '<video class="d-block w-100" height="400px" controls><source src="' + gallery.image + '" type="video/ogg"></video>'
+                        } else if (getFileExtension(gallery.image) === 'png' || getFileExtension(gallery.image) === 'jpg' || getFileExtension(gallery.image) === 'jpeg') {
+                            file = '<img height="400px" src="' + gallery.image + '" class="d-block w-100" alt="">';
+                        } else {
+                            file = 'No image or video file exists';
+                        }
+                        if (key == 0) {
+                            active = "active"
+                        } else {
+                            active = " "
+                        }
+                        $('#item_gallery_carousel').append('<div class="carousel-item ' + active + '">' + file + '</div>');
+                    });
+                }
+            });
         });
-        
+
         $(document).on('click', '.delete_btn', function(e) {
             e.preventDefault();
             var task_id = $(this).val();
