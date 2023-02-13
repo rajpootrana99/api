@@ -113,10 +113,9 @@
                                         </div>\
                                     </div>');
                         $.each(task.items, function(key, item) {
-                            var options = new Array();
                             var priority = '';
                             var status = '';
-                            let i = 0;
+                            var file;
                             if (item.priority === "High") {
                                 priority = '<span class="badge badge-warning">' + item.priority + '</span>';
                             } else if (item.priority === "Low") {
@@ -131,21 +130,18 @@
                             } else {
                                 status = '<span class="badge badge-secondary">' + item.status + '</span>';
                             }
-                            item.item_galleries.forEach(function(p) {
-                                if (getFileExtension(p.image) === 'mp4' || getFileExtension(p.image) === 'mkv') {
-                                    options[i] = '<video width="200px" height="100px" controls><source src="' + p.image + '" type="video/ogg"></video>'
-                                } else if (getFileExtension(p.image) === 'png' || getFileExtension(p.image) === 'jpg' || getFileExtension(p.image) === 'jpeg') {
-                                    options[i] = '<img src="' + p.image + '" width="200px" height="100px" alt="" class="rounded float-left ml-3 mb-3">';
-                                } else {
-                                    options[i] = 'No image or video file exists';
-                                }
-                                i++;
-                            });
+                            if (getFileExtension(item.item_galleries[0].image) === 'mp4' || getFileExtension(item.item_galleries[0].image) === 'mkv') {
+                                    file = '<video width="200px" height="100px" controls><source src="' + item.item_galleries[0].image + '" type="video/ogg"></video>'
+                            } else if (getFileExtension(item.item_galleries[0].image) === 'png' || getFileExtension(item.item_galleries[0].image) === 'jpg' || getFileExtension(item.item_galleries[0].image) === 'jpeg') {
+                                file = '<img src="' + item.item_galleries[0].image + '" width="200px" height="100px" alt="" class="rounded float-left ml-3 mb-3">';
+                            } else {
+                                file = 'No image or video file exists';
+                            }
                             $('#item-body-' + task.id).append('<tr>\
                                 <td>' + item.id + '</td>\
                                 <td>' + item.description + '</td>\
                                 <td>' + task.user.name + '</td>\
-                                <td>' + options.join(' ') + '</td>\
+                                <td>' + file + '</td>\
                                 <td>' + priority + '</td>\
                                 <td>' + status + '</td>\
                                 <td>' + item.progress + '</td>\
