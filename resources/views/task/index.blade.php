@@ -54,6 +54,49 @@
     </div><!--end modal-dialog-->
 </div>
 
+<div class="modal fade" id="viewGallery" tabindex="-1" role="dialog" aria-labelledby="viewGalleryLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title m-0" id="viewGalleryLabel">Images</h6>
+                <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="la la-times"></i></span>
+                </button>
+            </div><!--end modal-header-->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img src="assets/images/small/img-4.jpg" class="d-block w-100" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="assets/images/small/img-5.jpg" class="d-block w-100" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="assets/images/small/img-6.jpg" class="d-block w-100" alt="...">
+                                </div>
+                            </div>
+                            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end modal-body-->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+            </div><!--end modal-footer-->
+        </div><!--end modal-content-->
+    </div><!--end modal-dialog-->
+</div>
+
 <script>
     $(document).ready(function() {
 
@@ -141,7 +184,7 @@
                                 <td>' + item.id + '</td>\
                                 <td>' + item.description + '</td>\
                                 <td>' + task.user.name + '</td>\
-                                <td>' + file + '</td>\
+                                <td class="view_galery">' + file + '</td>\
                                 <td>' + priority + '</td>\
                                 <td>' + status + '</td>\
                                 <td>' + item.progress + '</td>\
@@ -152,6 +195,11 @@
             });
         }
 
+        $(document).on('click', '.view_galery', function(e) {
+            e.preventDefault();
+            $('#viewGallery').modal('show');
+        });
+        
         $(document).on('click', '.delete_btn', function(e) {
             e.preventDefault();
             var task_id = $(this).val();
