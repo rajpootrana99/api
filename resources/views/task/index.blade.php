@@ -15,7 +15,15 @@
         </div><!--end col-->
     </div><!--end row-->
     <!-- end page title end breadcrumb -->
-    <div id="task-section"></div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body" id="task-section" >
+                    
+                </div><!--end card-body-->
+            </div><!--end card-->
+        </div> <!-- end col -->
+    </div> <!-- end row -->
 </div>
 <!-- Modal -->
 
@@ -77,32 +85,33 @@
                             options[i] = '<span class="badge badge-info">Item # ' + p.id + '</span>';
                             i = i + 1;
                         });
-                        $('#task-section').append('<div class="row">\
-                            <div class="col-lg-12">\
-                                <div class="card">\
-                                <div class="card-header">\
-                                    <div class="row align-items-center">\
-                                    <div class="col">\
-                                        <h4 class="card-title">Task ID # ' + task.id + ' - ' + task.title + '</h4>\
-                                        <p class="text-muted">' + task.site.site + '</p>\
-                                    </div>\
-                                </div>\
-                            </div>\
-                            <div class="card-body">\
-                                <div class="table-responsive">\
-                                <table class="table mb-0">\
-                                    <thead class="thead-light">\
-                                    <tr>\
-                                        <th class="border-top-0">Item ID</th>\
-                                        <th class="border-top-0">ITem Descrition</th>\
-                                        <th class="border-top-0">User Name</th>\
-                                        <th class="border-top-0">Gallery</th>\
-                                        <th class="border-top-0">Priority</th>\
-                                        <th class="border-top-0">Status</th>\
-                                        <th class="border-top-0">Progress</th>\
-                                    </tr>\
-                                    </thead>\
-                        <tbody id="item-body-' + task.id + '"> </tbody>');
+                        $('#task-section').append('<div class="accordion" id="accordionExample">\
+                                        <div class="card border mb-1 shadow-none">\
+                                            <div class="card-header rounded-0" id="heading_'+task.id+'">\
+                                                <a href="" class="text-dark" data-toggle="collapse" data-target="#collapse_'+task.id+'" aria-expanded="true" aria-controls="collapse_'+task.id+'">\
+                                                <strong>Task ID # ' + task.id + ' - ' + task.title + '</strong>\
+                                                </a>\
+                                            </div>\
+                                            <div id="collapse_'+task.id+'" class="collapse" aria-labelledby="heading'+task.id+'" data-parent="#accordionExample">\
+                                                <div class="card-body">\
+                                                <div class="table-responsive">\
+                                                    <table class="table mb-0">\
+                                                        <thead class="thead-light">\
+                                                            <tr>\
+                                                                <th class="border-top-0">Item ID</th>\
+                                                                <th class="border-top-0">ITem Descrition</th>\
+                                                                <th class="border-top-0">User Name</th>\
+                                                                <th class="border-top-0">Gallery</th>\
+                                                                <th class="border-top-0">Priority</th>\
+                                                                <th class="border-top-0">Status</th>\
+                                                                <th class="border-top-0">Progress</th>\
+                                                            </tr>\
+                                                        </thead>\
+                                                    <tbody id="item-body-' + task.id + '"> </tbody>\
+                                                </div>\
+                                            </div>\
+                                        </div>\
+                                    </div>');
                         $.each(task.items, function(key, item) {
                             var options = new Array();
                             var priority = '';
