@@ -56,7 +56,7 @@ class SiteUserController extends Controller
         $users = User::find($request->user_id);
         // return response()->json($user);
         for ($count = 0; $count < count($users); $count++) {
-            $users[$count]->sites()->sync($request->site_id);
+            $users[$count]->sites()->sync($request->site_id, false);
         }
         if ($users) {
             return response()->json(['status' => 1, 'message' => 'Site against User Added Successfully']);
