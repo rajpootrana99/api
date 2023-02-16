@@ -19,7 +19,7 @@ class TaskController extends Controller
 {
     use HttpResponses;
 
-    public function createTask(TaskRequest $request){
+    public function createTask(Request $request){
         $validator = Validator::make($request->all(),[
             'site_id' => ['required', 'integer'],
             'title' => ['required', 'string', 'max:255'],
