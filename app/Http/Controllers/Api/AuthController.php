@@ -12,14 +12,25 @@ use App\Traits\ImageUpload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
     use HttpResponses;
     use ImageUpload;
 
-    public function login(LoginUserRequest $request)
+    public function login(Request $request)
     {
+        $validator = Validator::make($request->all(),[
+            'email' => ['required', 'string', 'max:255', 'email'],
+            'password' => ['required'],
+        ]);
+
+        if($validator->fails()){
+            $message = $validator->errors();
+            return $this->error('', $message->first(), 401);
+        }
+
         if (!Auth::attempt($request->only(['email', 'password']))) {
             return $this->error('', 'Credentials does not match', 401);
         }
@@ -30,8 +41,19 @@ class AuthController extends Controller
         ], 'Login Successfully');
     }
 
-    public function register(StoreUserRequest $request)
+    public function register(Request $request)
     {
+        $validator = Validator::make($request->all(),[
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'max:255', 'unique:users', 'email'],
+            'password' => ['required', 'min:8'],
+        ]);
+
+
+        if($validator->fails()){
+            $message = $validator->errors();
+            return $this->error('', $message->first(), 401);
+        }
 
         $user = User::create([
             'name' => $request->name,
@@ -52,8 +74,18 @@ class AuthController extends Controller
         ]);
     }
 
-    public function update(UpdateUserRequest $request)
+    public function update(Request $request)
     {
+        $validator = Validator::make($request->all(),[
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'exists:users'],
+        ]);
+
+        if($validator->fails()){
+            $message = $validator->errors();
+            return $this->error('', $message->first(), 401);
+        }
+
         $user = User::find(Auth::id());
         if ($user->email == $request->email) {
             $user->update([

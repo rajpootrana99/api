@@ -12,12 +12,22 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Traits\HttpResponses;
+use Illuminate\Support\Facades\Validator;
 
 class ForgetController extends Controller
 {
     use HttpResponses;
-    public function forget(ForgetRequest $request)
+    public function forget(Request $request)
     {
+        $validator = Validator::make($request->all(),[
+            'email' => ['required', 'email'],
+        ]);
+
+        if($validator->fails()){
+            $message = $validator->errors();
+            return $this->error('', $message->first(), 401);
+        }
+
         $email = $request->input('email');
         if (User::where('email', $email)->doesntExist()) {
             return $this->error('', 'User doesn\'t exist!', 404);
@@ -43,8 +53,19 @@ class ForgetController extends Controller
         }
     }
 
-    public function reset(ResetRequest $request)
+    public function reset(Request $request)
     {
+        $validator = Validator::make($request->all(),[
+            'token' => 'required',
+            'password' => 'required|min:8',
+            'password_confirm' => 'required|same:password'
+        ]);
+
+        if($validator->fails()){
+            $message = $validator->errors();
+            return $this->error('', $message->first(), 401);
+        }
+
         /** @var User $user */
         $token = $request->input('token');
         if (!$passwordResets = DB::table('password_resets')->where('token', $token)->first()) {
@@ -64,6 +85,14 @@ class ForgetController extends Controller
 
     public function checkToken(Request $request)
     {
+        $validator = Validator::make($request->all(),[
+            'token' => 'required',
+        ]);
+
+        if($validator->fails()){
+            $message = $validator->errors();
+            return $this->error('', $message->first(), 401);
+        } 
         $token = $request->input('token');
         if (!$passwordResets = DB::table('password_resets')->where('token', $token)->first()) {
             return $this->error('', 'Invalid Token', 400);
