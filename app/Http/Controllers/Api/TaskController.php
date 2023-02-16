@@ -41,7 +41,7 @@ class TaskController extends Controller
         ],'Task Created Successfully');
     }
 
-    public function addItem(ItemRequest $request){
+    public function addItem(Request $request){
         $validator = Validator::make($request->all(),[
             'task_id' => ['required', 'integer'],
             'description' => ['required', 'string', 'min:32'],

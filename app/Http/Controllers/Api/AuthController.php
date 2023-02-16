@@ -35,6 +35,9 @@ class AuthController extends Controller
             return $this->error('', 'Credentials does not match', 401);
         }
         $user = User::where('email', $request->email)->first();
+        if($user->is_approved == 0){
+            return $this->error('', 'User is not Approved', 401);
+        }
         return $this->success([
             'user' => $user,
             'token' => $user->createToken('Api Token of ' . $user->name)->plainTextToken
