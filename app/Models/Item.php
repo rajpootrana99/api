@@ -10,6 +10,7 @@ class Item extends Model
     use HasFactory;
     protected $fillable = [
         'task_id',
+        'user_id',
         'description',
         'priority',
         'status',
@@ -53,6 +54,10 @@ class Item extends Model
 
     public function task(){
         return $this->belongsTo(Task::class);
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class);
     }
 
     public function itemGalleries(){

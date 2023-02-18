@@ -38,4 +38,5 @@ Route::group(['middleware' => ['auth:sanctum', 'user_verified']], function(){
     Route::post('/send-message', [MessageController::class, 'sendMessage']);
     Route::post('/add-item', [TaskController::class, 'addItem']);
     Route::get('/fetchTasks', [TaskController::class, 'fetchTasks']);
+    Route::get('/groupTasks', [TaskController::class, 'groupTasks']);
 });

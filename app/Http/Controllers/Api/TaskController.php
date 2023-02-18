@@ -12,6 +12,7 @@ use App\Models\TaskGallery;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
@@ -58,6 +59,7 @@ class TaskController extends Controller
 
         $item = Item::create([
             'task_id' => $request->task_id,
+            'user_id' => Auth::id(),
             'description' => $request->description,
             'priority' => $request->priority,
             'status' => $request->status,
@@ -89,6 +91,11 @@ class TaskController extends Controller
         return $this->success([
             'tasks' => $tasks,
         ],'Fetch all the Tasks');
+    }
+
+    public function groupTasks(){
+        $tasks = Item::groupBy('status')->select('status', DB::raw('count(*) as total'))->get();
+        return $this->success($tasks,'Fetch all the Tasks');
     }
 
     // public function storeImage($taskGallery)
