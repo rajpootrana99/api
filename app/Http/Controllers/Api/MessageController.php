@@ -30,10 +30,10 @@ class MessageController extends Controller
             'message' => $request->message,
         ]);
         if($message){
-            return $this->success($message, 'Message Send Successfully', 200);
+            return response()->json($message);
         }
         else {
-            return $this->error('', 'Message not send Successfully', 401);
+            return response()->json('Message not send Successfully');
         }
     }
 }

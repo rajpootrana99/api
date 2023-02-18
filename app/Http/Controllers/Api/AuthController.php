@@ -38,10 +38,10 @@ class AuthController extends Controller
         if($user->is_approved == 0){
             return $this->error('', 'User is not Approved', 401);
         }
-        return $this->success([
+        return response()->json([
             'user' => $user,
             'token' => $user->createToken('Api Token of ' . $user->name)->plainTextToken
-        ], 'Login Successfully');
+        ]);
     }
 
     public function register(Request $request)
@@ -64,9 +64,7 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return $this->success([
-            'user' => $user
-        ], 'Register Successfully');
+        return response()->json($user);
     }
 
     public function logout(Request $request)

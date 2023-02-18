@@ -37,7 +37,7 @@ class TaskController extends Controller
             'title' => $request->title,
         ]);
 
-        return $this->success($task,'Task Created Successfully');
+        return response()->json($task);
     }
 
     public function addItem(Request $request){
@@ -79,17 +79,17 @@ class TaskController extends Controller
             }    
         }
 
-        return $this->success($item,'Item Added Successfully');
+        return response()->json($item);
     }
 
     public function fetchTasks(){
         $tasks = Task::with('user', 'site', 'items', 'items.itemGalleries')->where('user_id', Auth::id())->get();
-        return $this->success($tasks,'Fetch all the Tasks');
+        return response()->json($tasks);
     }
 
     public function groupTasks(){
         $tasks = Item::groupBy('status')->select('status', DB::raw('count(*) as total'))->where('user_id', Auth::id())->get();
-        return $this->success($tasks,'Fetch all the Tasks');
+        return response()->json($tasks);
     }
 
     // public function storeImage($taskGallery)

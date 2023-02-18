@@ -13,8 +13,6 @@ class SiteController extends Controller
     use HttpResponses;
     public function fetchSites(){
         $sites = Site::where('user_id', Auth::id())->get();
-        return $this->success([
-            'sites' => $sites,
-        ], 'Fetch all sites');
+        return response()->json($sites);
     }
 }
