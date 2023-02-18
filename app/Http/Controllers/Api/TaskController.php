@@ -37,9 +37,7 @@ class TaskController extends Controller
             'title' => $request->title,
         ]);
 
-        return $this->success([
-            'task' => $task,
-        ],'Task Created Successfully');
+        return $this->success($task,'Task Created Successfully');
     }
 
     public function addItem(Request $request){
@@ -81,20 +79,16 @@ class TaskController extends Controller
             }    
         }
 
-        return $this->success([
-            'item' => $item,
-        ],'Item Added Successfully');
+        return $this->success($item,'Item Added Successfully');
     }
 
     public function fetchTasks(){
         $tasks = Task::with('user', 'site', 'items', 'items.itemGalleries')->where('user_id', Auth::id())->get();
-        return $this->success([
-            'tasks' => $tasks,
-        ],'Fetch all the Tasks');
+        return $this->success($tasks,'Fetch all the Tasks');
     }
 
     public function groupTasks(){
-        $tasks = Item::groupBy('status')->select('status', DB::raw('count(*) as total'))->get();
+        $tasks = Item::groupBy('status')->select('status', DB::raw('count(*) as total'))->where('user_id', Auth::id())->get();
         return $this->success($tasks,'Fetch all the Tasks');
     }
 
