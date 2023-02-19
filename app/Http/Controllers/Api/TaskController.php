@@ -20,13 +20,14 @@ class TaskController extends Controller
 {
     use HttpResponses;
 
-    public function createTask(Request $request){
-        $validator = Validator::make($request->all(),[
+    public function createTask(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
             'site_id' => ['required', 'integer'],
             'title' => ['required', 'string', 'max:255'],
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             $message = $validator->errors();
             return $this->error('', $message->first(), 401);
         }
@@ -40,8 +41,9 @@ class TaskController extends Controller
         return response()->json($task);
     }
 
-    public function addItem(Request $request){
-        $validator = Validator::make($request->all(),[
+    public function addItem(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
             'task_id' => ['required', 'integer'],
             'description' => ['required', 'string', 'min:32'],
             'priority' => ['required', 'integer', Rule::in([0, 1, 2])],
@@ -50,7 +52,7 @@ class TaskController extends Controller
             'images[]' => ['mimes:png,jpg,mp4,mkv,doc,docx'],
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             $message = $validator->errors();
             return $this->error('', $message->first(), 401);
         }
@@ -64,30 +66,30 @@ class TaskController extends Controller
             'progress' => $request->progress,
         ]);
 
-        if($request->hasFile('images'))
-        {
-            foreach($request->file('images') as $image)
-            {
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
                 $itemGallery = new ItemGallery();
                 $destinationPath = 'item_images/';
-                $filename = $image->getClientOriginalName();
+                $filename = time() . '.' . $image->extension();
                 $image->move($destinationPath, $filename);
                 $fullPath = $destinationPath . $filename;
                 $itemGallery->item_id = $item->id;
                 $itemGallery->image = $fullPath;
                 $itemGallery->save();
-            }    
+            }
         }
 
         return response()->json($item);
     }
 
-    public function fetchTasks(){
+    public function fetchTasks()
+    {
         $tasks = Task::with('user', 'site', 'items', 'items.itemGalleries')->where('user_id', Auth::id())->get();
         return response()->json($tasks);
     }
 
-    public function groupTasks(){
+    public function groupTasks()
+    {
         $tasks = Item::groupBy('status')->select('status', DB::raw('count(*) as total'))->where('user_id', Auth::id())->get();
         return response()->json($tasks);
     }
