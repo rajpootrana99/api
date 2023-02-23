@@ -34,9 +34,9 @@ Route::group(['middleware' => ['auth:sanctum', 'user_verified']], function(){
     Route::get('/logout', [AuthController::class, 'logout']);
     Route::post('/update-user', [AuthController::class, 'update']);
     Route::get('/fetchSites', [SiteController::class, 'fetchSites']);
-    Route::post('/create-task', [TaskController::class, 'createTask']);
-    Route::post('/send-message', [MessageController::class, 'sendMessage']);
-    Route::post('/add-item', [TaskController::class, 'addItem']);
+    Route::post('/createTask', [TaskController::class, 'createTask']);
+    Route::post('/sendMessage', [MessageController::class, 'sendMessage']);
+    Route::post('/addItem', [TaskController::class, 'addItem']);
     Route::get('/fetchTasks', [TaskController::class, 'fetchTasks']);
     Route::get('/groupTasks', [TaskController::class, 'groupTasks']);
 });
