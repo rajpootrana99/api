@@ -21,12 +21,12 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'email' => ['required', 'string', 'max:255', 'email'],
             'password' => ['required'],
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             $message = $validator->errors();
             return $this->error('', $message->first(), 401);
         }
@@ -35,7 +35,7 @@ class AuthController extends Controller
             return $this->error('', 'Credentials does not match', 401);
         }
         $user = User::where('email', $request->email)->first();
-        if($user->is_approved == 0){
+        if ($user->is_approved == 0) {
             return $this->error('', 'User is not Approved', 401);
         }
         return response()->json([
@@ -46,14 +46,14 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'max:255', 'unique:users', 'email'],
             'password' => ['required', 'min:8'],
         ]);
 
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             $message = $validator->errors();
             return $this->error('', $message->first(), 401);
         }
@@ -67,6 +67,13 @@ class AuthController extends Controller
         return response()->json($user);
     }
 
+    public function user()
+    {
+        return response()->json([
+            'user' => Auth::user(),
+        ]);
+    }
+
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
@@ -77,12 +84,12 @@ class AuthController extends Controller
 
     public function update(Request $request)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'exists:users'],
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             $message = $validator->errors();
             return $this->error('', $message->first(), 401);
         }
