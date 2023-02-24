@@ -67,10 +67,11 @@ class AuthController extends Controller
         return response()->json($user);
     }
 
-    public function index()
+    public function user()
     {
+        $user = Auth::user();
         return response()->json([
-            'user' => Auth::user(),
+            'user' => $user,
         ]);
     }
 
