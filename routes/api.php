@@ -19,9 +19,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
@@ -30,7 +30,7 @@ Route::post('/reset', [ForgetController::class, 'reset']);
 Route::post('/checkToken', [ForgetController::class], 'checkToken');
 
 Route::group(['middleware' => ['auth:sanctum', 'user_verified']], function () {
-    Route::get('/user', [AuthController::class], 'user');
+    // Route::get('/user', [AuthController::class], 'user');
     Route::get('/logout', [AuthController::class, 'logout']);
     Route::post('/updatUser', [AuthController::class, 'update']);
     Route::get('/fetchSites', [SiteController::class, 'fetchSites']);
