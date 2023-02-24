@@ -30,9 +30,9 @@ Route::post('/forget', [ForgetController::class, 'forget']);
 Route::post('/reset', [ForgetController::class, 'reset']);
 Route::post('/checkToken', [ForgetController::class], 'checkToken');
 
-Route::group(['middleware' => ['auth:sanctum', 'user_verified']], function(){
+Route::group(['middleware' => ['auth:sanctum', 'user_verified']], function () {
     Route::get('/logout', [AuthController::class, 'logout']);
-    Route::post('/update-user', [AuthController::class, 'update']);
+    Route::post('/updatUser', [AuthController::class, 'update']);
     Route::get('/fetchSites', [SiteController::class, 'fetchSites']);
     Route::post('/createTask', [TaskController::class, 'createTask']);
     Route::post('/sendMessage', [MessageController::class, 'sendMessage']);
