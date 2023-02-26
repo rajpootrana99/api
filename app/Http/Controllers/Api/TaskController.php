@@ -52,6 +52,19 @@ class TaskController extends Controller
                 'status' => $request->status[$count],
                 'progress' => $request->progress[$count],
             ]);
+
+            if ($request->hasFile($request->images[$count])) {
+                foreach ($request->file($request->images[$count]) as $image) {
+                    $itemGallery = new ItemGallery();
+                    $destinationPath = 'item_images/';
+                    $filename = time() . '.' . $image->extension();
+                    $image->move($destinationPath, $filename);
+                    $fullPath = $destinationPath . $filename;
+                    $itemGallery->item_id = $item->id;
+                    $itemGallery->image = $fullPath;
+                    $itemGallery->save();
+                }
+            }
         }
 
         return response()->json($task);
