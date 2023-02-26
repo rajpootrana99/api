@@ -25,11 +25,6 @@ class TaskController extends Controller
         $validator = Validator::make($request->all(), [
             'site_id' => ['required', 'integer'],
             'title' => ['required', 'string', 'max:255'],
-            'description' => ['required'],
-            'priority' => ['required'],
-            'status' => ['required'],
-            'progress' => ['required'],
-            'images[]' => ['mimes:png,jpg,mp4,mkv,doc,docx'],
         ]);
 
         if ($validator->fails()) {
@@ -42,30 +37,6 @@ class TaskController extends Controller
             'user_id' => Auth::id(),
             'title' => $request->title,
         ]);
-        $description = $request->input('description');
-        for ($count = 0; $count < count($description); $count++) {
-            $item = Item::create([
-                'task_id' => $task->id,
-                'user_id' => Auth::id(),
-                'description' => $request->description[$count],
-                'priority' => $request->priority[$count],
-                'status' => $request->status[$count],
-                'progress' => $request->progress[$count],
-            ]);
-
-            if ($request->hasFile($request->images[$count])) {
-                foreach ($request->file($request->images[$count]) as $image) {
-                    $itemGallery = new ItemGallery();
-                    $destinationPath = 'item_images/';
-                    $filename = time() . '.' . $image->extension();
-                    $image->move($destinationPath, $filename);
-                    $fullPath = $destinationPath . $filename;
-                    $itemGallery->item_id = $item->id;
-                    $itemGallery->image = $fullPath;
-                    $itemGallery->save();
-                }
-            }
-        }
 
         return response()->json($task);
     }
