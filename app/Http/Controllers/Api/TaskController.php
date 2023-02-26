@@ -25,6 +25,11 @@ class TaskController extends Controller
         $validator = Validator::make($request->all(), [
             'site_id' => ['required', 'integer'],
             'title' => ['required', 'string', 'max:255'],
+            'description' => ['required', 'string', 'min:32'],
+            'priority' => ['required', 'integer', Rule::in([0, 1, 2])],
+            'status' => ['required', 'integer', Rule::in([0, 1, 2])],
+            'progress' => ['required', 'integer', Rule::in([0, 1])],
+            'images[]' => ['mimes:png,jpg,mp4,mkv,doc,docx'],
         ]);
 
         if ($validator->fails()) {
@@ -37,6 +42,17 @@ class TaskController extends Controller
             'user_id' => Auth::id(),
             'title' => $request->title,
         ]);
+        $description = $request->input('description');
+        for ($count = 0; $count < count($description); $count++) {
+            $item = Item::create([
+                'task_id' => $task->id,
+                'user_id' => Auth::id(),
+                'description' => $request->description[$count],
+                'priority' => $request->priority[$count],
+                'status' => $request->status[$count],
+                'progress' => $request->progress[$count],
+            ]);
+        }
 
         return response()->json($task);
     }
