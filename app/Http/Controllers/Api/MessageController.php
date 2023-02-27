@@ -12,13 +12,14 @@ use Illuminate\Support\Facades\Validator;
 class MessageController extends Controller
 {
     use HttpResponses;
-    public function sendMessage(Request $request){
-        $validator = Validator::make($request->all(),[
+    public function sendMessage(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
             'item_id' => ['required'],
             'message' => ['required', 'string'],
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             $message = $validator->errors();
             return $this->error('', $message->first(), 401);
         }
@@ -29,11 +30,28 @@ class MessageController extends Controller
             'item_id' => $request->item_id,
             'message' => $request->message,
         ]);
-        if($message){
+        if ($message) {
             return response()->json($message);
-        }
-        else {
+        } else {
             return response()->json('Message not send Successfully');
+        }
+    }
+
+    public function fetchMessages($item)
+    {
+        $messages = Message::with('sender', 'receiver', 'item')->where('sender_id', Auth::id())
+            ->orWhere('receiver_id', Auth::id())->orWhere('item_id', $item)
+            ->get();
+        if ($messages) {
+            return response()->json([
+                'status' => true,
+                'messages' => $messages,
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'No message yet',
+            ]);
         }
     }
 }

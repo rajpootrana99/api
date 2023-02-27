@@ -35,6 +35,7 @@ Route::group(['middleware' => ['auth:sanctum', 'user_verified']], function () {
     Route::get('/fetchSites', [SiteController::class, 'fetchSites']);
     Route::post('/createTask', [TaskController::class, 'createTask']);
     Route::post('/sendMessage', [MessageController::class, 'sendMessage']);
+    Route::get('/fetchMessages/{item}', [MessageController::class, 'fetchMessages']);
     Route::post('/addItem', [TaskController::class, 'addItem']);
     Route::get('/fetchTasks', [TaskController::class, 'fetchTasks']);
     Route::get('/groupTasks', [TaskController::class, 'groupTasks']);
