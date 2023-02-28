@@ -88,10 +88,24 @@ class TaskController extends Controller
         return response()->json($tasks);
     }
 
+    public function fetchItems()
+    {
+        $items = Item::with('task', 'user', 'itemGalleries')->where('user_id', Auth::id())->get();
+        return response()->json($items);
+    }
+
     public function groupTasks()
     {
         $tasks = Item::groupBy('status')->select('status', DB::raw('count(*) as total'))->where('user_id', Auth::id())->get();
-        return response()->json($tasks);
+        if ($tasks) {
+            return response()->json($tasks);
+        } else {
+            return response()->json([
+                'completed' => 0,
+                'overdue' => 0,
+                'ongoing' => 0,
+            ]);
+        }
     }
 
     // public function storeImage($taskGallery)
