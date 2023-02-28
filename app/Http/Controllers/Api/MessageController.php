@@ -43,10 +43,7 @@ class MessageController extends Controller
             ->orWhere('receiver_id', Auth::id())->orWhere('item_id', $item)
             ->get();
         if ($messages) {
-            return response()->json([
-                'status' => true,
-                'messages' => $messages,
-            ]);
+            return response()->json($messages);
         } else {
             return response()->json([
                 'status' => false,
