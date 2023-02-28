@@ -90,7 +90,7 @@ class TaskController extends Controller
 
     public function fetchItems()
     {
-        $items = Item::with('task', 'user', 'itemGalleries')->where('user_id', Auth::id())->get();
+        $items = Item::with('task', 'user', 'task.site', 'itemGalleries')->where('user_id', Auth::id())->get();
         return response()->json($items);
     }
 
