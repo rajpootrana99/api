@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('sender_id');
             $table->unsignedBigInteger('receiver_id');
-            $table->unsignedBigInteger('item_id');
+            $table->unsignedBigInteger('task_id');
             $table->string('message');
             $table->timestamps();
         });

@@ -15,7 +15,7 @@ class MessageController extends Controller
     public function sendMessage(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'item_id' => ['required'],
+            'task_id' => ['required'],
             'message' => ['required', 'string'],
         ]);
 
@@ -27,7 +27,7 @@ class MessageController extends Controller
         $message = Message::create([
             'sender_id' => Auth::id(),
             'receiver_id' => 1,
-            'item_id' => $request->item_id,
+            'task_id' => $request->task_id,
             'message' => $request->message,
         ]);
         if ($message) {

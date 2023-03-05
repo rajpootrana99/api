@@ -50,6 +50,7 @@ class AuthController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'max:255', 'unique:users', 'email'],
             'password' => ['required', 'min:8'],
+            'phone' => ['required'],
         ]);
 
 
@@ -61,6 +62,7 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'phone' => $request->phone,
             'password' => Hash::make($request->password),
         ]);
 
@@ -79,6 +81,7 @@ class AuthController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
+            'phone' => ['required'],
             'email' => ['required', 'email', 'exists:users'],
         ]);
 
@@ -91,6 +94,7 @@ class AuthController extends Controller
         if ($user->email == $request->email) {
             $user->update([
                 'name' => $request->name,
+                'phone' => $request->phone,
             ]);
             $this->storeImage($user);
             return $this->success([

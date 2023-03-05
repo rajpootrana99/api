@@ -20,6 +20,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'phone',
         'password',
         'is_approved',
         'is_admin',
@@ -73,7 +74,8 @@ class User extends Authenticatable
         return $this->hasMany(Item::class);
     }
 
-    public function messages(){
+    public function messages()
+    {
         return $this->hasMany(Message::class);
     }
 }

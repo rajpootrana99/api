@@ -17,11 +17,13 @@ class Item extends Model
         'progress'
     ];
 
-    public function getPriorityAttribute($attribute){
+    public function getPriorityAttribute($attribute)
+    {
         return $this->priorityOptions()[$attribute] ?? 0;
     }
 
-    public function priorityOptions(){
+    public function priorityOptions()
+    {
         return [
             2 => 'High',
             1 => 'Low',
@@ -29,11 +31,13 @@ class Item extends Model
         ];
     }
 
-    public function getStatusAttribute($attribute){
+    public function getStatusAttribute($attribute)
+    {
         return $this->statusOptions()[$attribute] ?? 0;
     }
 
-    public function statusOptions(){
+    public function statusOptions()
+    {
         return [
             2 => 'Overdue',
             1 => 'Completed',
@@ -41,30 +45,31 @@ class Item extends Model
         ];
     }
 
-    public function getProgressAttribute($attribute){
+    public function getProgressAttribute($attribute)
+    {
         return $this->progressOptions()[$attribute] ?? 0;
     }
 
-    public function progressOptions(){
+    public function progressOptions()
+    {
         return [
             1 => 'Proceed',
             0 => 'Quote',
         ];
     }
 
-    public function task(){
+    public function task()
+    {
         return $this->belongsTo(Task::class);
     }
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function itemGalleries(){
+    public function itemGalleries()
+    {
         return $this->hasMany(ItemGallery::class);
-    }
-
-    public function messages(){
-        return $this->hasMany(Message::class);
     }
 }

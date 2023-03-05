@@ -15,15 +15,23 @@ class Task extends Model
         'title',
     ];
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function site(){
+    public function site()
+    {
         return $this->belongsTo(Site::class);
     }
 
-    public function items(){
+    public function items()
+    {
         return $this->hasMany(Item::class);
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
     }
 }

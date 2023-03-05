@@ -12,19 +12,22 @@ class Message extends Model
     protected $fillable = [
         'sender_id',
         'receiver_id',
-        'item_id',
+        'task_id',
         'message'
     ];
 
-    public function sender(){
+    public function sender()
+    {
         return $this->belongsTo(User::class, 'sender_id', 'id');
     }
 
-    public function receiver(){
+    public function receiver()
+    {
         return $this->belongsTo(User::class, 'receiver_id', 'id');
     }
 
-    public function item(){
-        return $this->belongsTo(User::class);
+    public function task()
+    {
+        return $this->belongsTo(Task::class);
     }
 }

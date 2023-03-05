@@ -41,103 +41,112 @@
         @include('layouts.partials.header')
 
         <div class="page-content">
-        <div class="container-fluid">
-    <!-- Page-Title -->
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="page-title-box">
+            <div class="container-fluid">
+                <!-- Page-Title -->
                 <div class="row">
-                    <div class="col">
-                        <h4 class="page-title">Chat</h4>
-                    </div><!--end col--> 
-                </div><!--end row-->  
+                    <div class="col-sm-12">
+                        <div class="page-title-box">
+                            <div class="row">
+                                <div class="col">
+                                    <h4 class="page-title">Chat</h4>
+                                </div><!--end col-->
+                            </div><!--end row-->
+                            <div class="row">
+                                <div class="col">
+                                    <div class="alert alert-danger border-0" style="display: none" role="alert" id="warning_alert"></div>
+                                </div><!--end col-->
+                            </div><!--end row-->
+                        </div><!--end page-title-box-->
+                    </div><!--end col-->
+                </div><!--end row-->
+
+                <!-- end page title end breadcrumb -->
                 <div class="row">
-                    <div class="col">
-                    <div class="alert alert-danger border-0" style="display: none" role="alert" id="warning_alert"></div>
-                    </div><!--end col--> 
-                </div><!--end row-->                                                            
-            </div><!--end page-title-box-->
-        </div><!--end col-->
-    </div><!--end row-->
-    
-    <!-- end page title end breadcrumb -->
-    <div class="row">
-        <div class="col-12">
-            <div class="chat-box-left">
-                <div class="chat-search">
-                    <div class="form-group"> 
-                        <div class="input-group">                                                
-                            <input type="text" id="chat-search" name="chat-search" class="form-control form-control-sm" placeholder="Search">
-                            <span class="input-group-append">
-                                <button type="button" class="btn btn-soft-primary btn-sm shadow-none"><i class="fas fa-search"></i></button>
-                            </span>
-                        </div>                                                    
-                    </div>
-                </div><!--end chat-search-->
+                    <div class="col-8">
+                        <div class="chat-box-left">
+                            <div class="chat-header">
+                                <h4 class="text-center">User</h4>
+                            </div><!--end chat-search-->
+                            <hr>
+                            <div data-simplebar>
+                                <div class="tab-content chat-list" id="pills-tabContent">
+                                    <div class="tab-pane fade show active" id="people_list">
 
-                <div data-simplebar>
-                    <div class="tab-content chat-list" id="pills-tabContent" >
-                        <div class="tab-pane fade show active" id="people_list">
-                                                                 
-                        </div><!--end general chat-->
-                    </div><!--end tab-content-->
-                </div>
-            </div><!--end chat-box-left -->
-
-            <div class="chat-box-right">
-                <div class="chat-header">
-                    <a  class="media">
-                        <div class="media-left">
-                            <img src="assets/images/users/user-4.jpg" alt="user" class="rounded-circle thumb-md" id="sender-image">
-                        </div><!-- media-left -->
-                        <div class="media-body">
-                            <div>
-                                <h6 class="m-0" id="sender-name"></h6>
+                                    </div><!--end general chat-->
+                                </div><!--end tab-content-->
                             </div>
-                        </div><!-- end media-body -->
-                    </a><!--end media-->   
-                    <div class="chat-features">
-                        <div class="d-none d-sm-inline-block">
-                            <a href=""><i class="fas fa-trash-alt"></i></a>                                                      
-                        </div>
-                    </div><!-- end chat-features -->
-                </div><!-- end chat-header -->
-                <div class="chat-body" data-simplebar>
-                    <div class="chat-detail" id="messages">
-                        <div class="media">
-                            <p>Select User to Chat</p>
-                        </div><!--end media-->  
+                        </div><!--end chat-box-left -->
 
-                        
-                    </div>  <!-- end chat-detail -->                                               
-                </div><!-- end chat-body -->
-                <form id="sendMessageForm">
-                    @csrf
-                    <div class="chat-footer">
-                        <div class="row">                                                    
-                            <div class="col-12 col-md-9">
-                                <span class="chat-admin"><img src="assets/images/users/user-8.jpg" alt="user" class="rounded-circle thumb-sm"></span>
-                                <input type="hidden" name="receiver_id" id="receiver_id">
-                                <input type="hidden" name="item_id" id="item_id">
-                                <input type="text" class="form-control" name="message" id="message_input" placeholder="Type something here...">
-                            </div><!-- col-8 -->
-                            <div class="col-3 text-right">
-                                <div class="d-none d-sm-inline-block chat-features">
-                                    <button type="submit" class="btn btn-primary btn-sm" id="message_send"><i class="fas fa-paper-plane"></i></button>
-                                </div>
-                            </div><!-- end col -->  
-                        </div><!-- end row -->
-                    </div><!-- end chat-footer -->
-                </form>
-            </div><!--end chat-box-right --> 
-        </div> <!-- end col -->                           
-    </div><!-- end row -->
+                        <div class="chat-box-right">
+                            <div class="chat-header">
+                                <a class="media">
+                                    <div class="media-left">
+                                        <img src="assets/images/users/user-4.jpg" alt="user" class="rounded-circle thumb-md" id="sender-image">
+                                    </div><!-- media-left -->
+                                    <div class="media-body">
+                                        <div>
+                                            <h6 class="m-0" id="sender-name"></h6>
+                                        </div>
+                                    </div><!-- end media-body -->
+                                </a><!--end media-->
+                                <div class="chat-features">
+                                    <div class="d-none d-sm-inline-block">
+                                        <a href=""><i class="fas fa-trash-alt"></i></a>
+                                    </div>
+                                </div><!-- end chat-features -->
+                            </div><!-- end chat-header -->
+                            <div class="chat-body" data-simplebar>
+                                <div class="chat-detail" id="messages">
+                                    <div class="media">
+                                        <p>Select User to Chat</p>
+                                    </div><!--end media-->
 
-</div><!-- container -->
 
-@include('layouts.partials.footer')
-</div>
-</div>
+                                </div> <!-- end chat-detail -->
+                            </div><!-- end chat-body -->
+                            <form id="sendMessageForm">
+                                @csrf
+                                <div class="chat-footer">
+                                    <div class="row">
+                                        <div class="col-12 col-md-9">
+                                            <span class="chat-admin"><img src="assets/images/users/user-8.jpg" alt="user" class="rounded-circle thumb-sm"></span>
+                                            <input type="hidden" name="receiver_id" id="receiver_id">
+                                            <input type="hidden" name="task_id" id="task_id">
+                                            <input type="text" class="form-control" name="message" id="message_input" placeholder="Type something here...">
+                                        </div><!-- col-8 -->
+                                        <div class="col-3 text-right">
+                                            <div class="d-none d-sm-inline-block chat-features">
+                                                <button type="submit" class="btn btn-primary btn-sm" id="message_send"><i class="fas fa-paper-plane"></i></button>
+                                            </div>
+                                        </div><!-- end col -->
+                                    </div><!-- end row -->
+                                </div><!-- end chat-footer -->
+                            </form>
+                        </div><!--end chat-box-right -->
+                    </div> <!-- end col -->
+                    <div class="col-3">
+                        <div class="chat-box-left">
+                            <div class="chat-header">
+                                <h4 class="text-center">Task</h4>
+                            </div><!--end chat-search-->
+                            <hr>
+
+                            <div data-simplebar>
+                                <div class="tab-content chat-list" id="pills-tabContent">
+                                    <div class="tab-pane fade show active" id="task_list">
+
+                                    </div><!--end general chat-->
+                                </div><!--end tab-content-->
+                            </div>
+                        </div><!--end chat-box-left -->
+                    </div> <!-- end col -->
+                </div><!-- end row -->
+
+            </div><!-- container -->
+
+            @include('layouts.partials.footer')
+        </div>
+    </div>
 
     <!-- jQuery  -->
     <script src="{{ asset('assets/js/jquery.min.js')}}"></script>
@@ -172,124 +181,198 @@
     <script src="{{ asset('assets/js/app.js') }}"></script>
 
     <script>
-    $(document).ready(function () {
+        $(document).ready(function() {
 
-        var user_id;
+            var user_id;
+            var task_id;
+            var task = 0;
 
-        function fetchMessages(){
-            $.ajax({
-                type: "GET",
-                url: 'fetchMessages/' + user_id,
-                success: function(response) {
-                    console.log(response)
-                    $('#messages').children().remove().end();
-                    $('#sender-image').attr('src', 'storage/'+response.sender.image)
-                    $('#sender-name').text(response.sender.name);
-                    $.each(response.messages, function(key, message) {
-                        if(message.sender_id == 1){
-                            $('#receiver_id').val(message.receiver_id);
-                        }
-                        else{
-                            $('#receiver_id').val(message.sender_id);
-                        }
-                        $('#item_id').val(message.item_id);
-                        console.log(message);
-                        var reverse = '';
-                        if(message.sender_id == 1){
-                            reverse = "reverse";
-                        }
-                        $('#messages').append('<div class="media">\
-                            <div class="media-body '+reverse+'">\
+            function fetchMessages() {
+                $.ajax({
+                    type: "GET",
+                    url: 'fetchMessages/' + user_id,
+                    success: function(response) {
+                        task = 0;
+                        console.log(response)
+                        $('#messages').children().remove().end();
+                        $('#sender-image').attr('src', 'storage/' + response.sender.image)
+                        $('#sender-name').text(response.sender.name);
+                        $.each(response.messages, function(key, message) {
+                            if (message.sender_id == 1) {
+                                $('#receiver_id').val(message.receiver_id);
+                            } else {
+                                $('#receiver_id').val(message.sender_id);
+                            }
+                            $('#task_id').val(message.task_id);
+                            console.log(message);
+                            var reverse = '';
+                            if (message.sender_id == 1) {
+                                reverse = "reverse";
+                            }
+                            $('#messages').append('<div class="media">\
+                            <div class="media-body ' + reverse + '">\
                                 <div class="chat-msg">\
-                                    <p>'+message.message+'</p>\
+                                    <p>' + message.message + '</p>\
                                 </div>\
                             </div>\
                         </div>')
-                    });
-                }
-            });
-        }
-        fetchPeoples();
+                        });
+                    }
+                });
+            }
 
-        function fetchPeoples() {
-            $.ajax({
-                type: "GET",
-                url: "fetchPeoples",
-                dataType: "json",
-                success: function(response) {
-                    // $('tbody').html("");
-                    $.each(response.users, function(key, user) {
-                        var image;
-                        if(user.sender.image == " "){
-                            image = '<img src="assets/images/users/user-1.jpg" alt="user" class="rounded-circle thumb-md">'
+            function fetchTaskMessages() {
+                $.ajax({
+                    type: "GET",
+                    url: 'fetchTaskMessages/' + task_id,
+                    success: function(response) {
+                        if (response.status === true) {
+                            task = 1;
+                            console.log(response)
+                            $('#messages').children().remove().end();
+                            $('#sender-name').text(response.messages[0].task.title);
+                            $.each(response.messages, function(key, message) {
+                                if (message.sender_id == 1) {
+                                    $('#receiver_id').val(message.receiver_id);
+                                } else {
+                                    $('#receiver_id').val(message.sender_id);
+                                }
+                                $('#task_id').val(message.task_id);
+                                console.log(message);
+                                var reverse = '';
+                                if (message.sender_id == 1) {
+                                    reverse = "reverse";
+                                }
+                                $('#messages').append('<div class="media">\
+                                        <div class="media-body ' + reverse + '">\
+                                            <div class="chat-msg">\
+                                                <p>' + message.message + '</p>\
+                                            </div>\
+                                        </div>\
+                                    </div>')
+                            });
+                        } else {
+                            $('#messages').children().remove().end();
+                            $('#messages').append('<p>' + response.message + '</p>')
+                            $('#task_id').val(task_id);
                         }
-                        else{
-                            image = '<img src="storage/'+user.sender.image+'" height="50px" alt="user" class="rounded-circle thumb-md">'
-                        }
-                        $('#people_list').append('<a href="'+user.sender.id+'" class="media new-message" id="view-message">\
+                    }
+                });
+            }
+
+            fetchPeoples();
+
+            function fetchPeoples() {
+                $.ajax({
+                    type: "GET",
+                    url: "fetchPeoples",
+                    dataType: "json",
+                    success: function(response) {
+                        // $('tbody').html("");
+                        $.each(response.users, function(key, user) {
+                            var image;
+                            if (user.sender.image == " ") {
+                                image = '<img src="assets/images/users/user-1.jpg" alt="user" class="rounded-circle thumb-md">'
+                            } else {
+                                image = '<img src="storage/' + user.sender.image + '" height="50px" alt="user" class="rounded-circle thumb-md">'
+                            }
+                            $('#people_list').append('<a href="' + user.sender.id + '" class="media new-message" id="view-message">\
                             <div class="media-left">\
-                                '+image+'\
+                                ' + image + '\
                             </div>\
                             <div class="media-body">\
                                 <div>\
-                                    <h6>'+user.sender.name+'</h6>\
+                                    <h6>' + user.sender.name + '</h6>\
                                 </div>\
                             </div>\
                         </a>')
-                    });
-                }
-            });
-        }
-        
-        $(document).on("click", "#view-message", function(e) {
-            e.preventDefault();
-            user_id = $(this).attr('href');
-            fetchMessages();
-        })
+                        });
+                    }
+                });
+            }
 
-        $(document).on("submit", "#sendMessageForm", function (e) {
-            e.preventDefault();
-            let has_error = false;
-            if ($('#message_input').value == "") {
-                $("#warning_alert").html(
-                    "<strong>Error! Please enter a message</strong>"
-                );
-                $("#warning_alert").css("display", "block");
-                setTimeout(function () {
-                    $("#warning_alert").css("display", "none");
-                }, 5000);
-                has_error = true;
+            fetchTasks();
+
+            function fetchTasks() {
+                $.ajax({
+                    type: "GET",
+                    url: "fetchTasks",
+                    dataType: "json",
+                    success: function(response) {
+                        // $('tbody').html("");
+                        $.each(response.tasks, function(key, task) {
+                            console.log(task)
+                            var image = '<img src="assets/images/users/user-1.jpg" alt="user" class="rounded-circle thumb-md">'
+                            $('#task_list').append('<a href="' + task.id + '" class="media new-message" id="view-task-message">\
+                            <div class="media-body">\
+                                <div>\
+                                    <h6>' + task.title + '</h6>\
+                                </div>\
+                            </div>\
+                        </a>')
+                        });
+                    }
+                });
             }
-            if (has_error) {
-                return;
-            }
-            let formDate = new FormData($('#sendMessageForm')[0]);
-            $.ajax({
-                type: "post",
-                url: "send-message",
-                data: formDate,
-                contentType: false,
-                processData: false,
-                beforeSend: function() {
-                    $(document).find('span.error-text').text('');
-                },
-                success: function(response) {
-                    $('#sendMessageForm')[0].reset();
-                    fetchMessages();
-                },
-                error: function(error) {
-                    $('#warning_alert').html('<strong>Warning! </strong>' + error.message)
-                    $('#warning_alert').css('display', 'block')
+
+            $(document).on("click", "#view-message", function(e) {
+                e.preventDefault();
+                user_id = $(this).attr('href');
+                fetchMessages();
+            })
+
+            $(document).on("click", "#view-task-message", function(e) {
+                e.preventDefault();
+                task_id = $(this).attr('href');
+                fetchTaskMessages();
+            })
+
+            $(document).on("submit", "#sendMessageForm", function(e) {
+                e.preventDefault();
+                let has_error = false;
+                if ($('#message_input').value == "") {
+                    $("#warning_alert").html(
+                        "<strong>Error! Please enter a message</strong>"
+                    );
+                    $("#warning_alert").css("display", "block");
                     setTimeout(function() {
-                        $('#warning_alert').css('display', 'none')
-                    }, 5000)
+                        $("#warning_alert").css("display", "none");
+                    }, 5000);
+                    has_error = true;
                 }
+                if (has_error) {
+                    return;
+                }
+                let formDate = new FormData($('#sendMessageForm')[0]);
+                $.ajax({
+                    type: "post",
+                    url: "send-message",
+                    data: formDate,
+                    contentType: false,
+                    processData: false,
+                    beforeSend: function() {
+                        $(document).find('span.error-text').text('');
+                    },
+                    success: function(response) {
+                        $('#sendMessageForm')[0].reset();
+                        if (task === 1) {
+                            fetchTaskMessages();
+                        } else {
+                            fetchMessages();
+                        }
+                    },
+                    error: function(error) {
+                        $('#warning_alert').html('<strong>Warning! </strong>' + error.message)
+                        $('#warning_alert').css('display', 'block')
+                        setTimeout(function() {
+                            $('#warning_alert').css('display', 'none')
+                        }, 5000)
+                    }
+                });
             });
-        });
-    
-});
 
-</script>
+        });
+    </script>
 
     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
     <!-- socket.io cdn -->

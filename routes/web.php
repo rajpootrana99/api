@@ -39,6 +39,7 @@ Route::middleware(['auth', 'verified', 'user_admin'])->group(function () {
     Route::resource('message', MessageController::class);
     Route::get('/fetchPeoples', [MessageController::class, 'fetchPeoples'])->name('people.get');
     Route::get('/fetchMessages/{sender}', [MessageController::class, 'fetchMessages'])->name('message.get');
+    Route::get('/fetchTaskMessages/{task}', [MessageController::class, 'fetchTaskMessages']);
     Route::post('/send-message', [MessageController::class, 'sendMessage']);
     Route::resource('notification', NotificationController::class);
     Route::get('/fetchNotifications', [NotificationController::class, 'fetchNotifications'])->name('notification.get');
