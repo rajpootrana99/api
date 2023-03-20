@@ -45,7 +45,7 @@ class TaskController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'task_id' => ['required', 'integer'],
-            'description' => ['required', 'string', 'min:32'],
+            'description' => ['required', 'string'],
             'priority' => ['required', 'integer', Rule::in([0, 1, 2])],
             'status' => ['required', 'integer', Rule::in([0, 1, 2])],
             'progress' => ['required', 'integer', Rule::in([0, 1])],
