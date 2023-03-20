@@ -122,9 +122,9 @@
                         });
                         $('#task-section').append('<div class="accordion" id="accordionExample">\
                                         <div class="card border mb-1 shadow-none">\
-                                            <div class="card-header rounded-0" id="heading_' + task.id + '">\
+                                            <div class="card-header rounded-0" id="heading_' + task.id +'">\
                                                 <a href="" class="text-dark" data-toggle="collapse" data-target="#collapse_' + task.id + '" aria-expanded="true" aria-controls="collapse_' + task.id + '">\
-                                                <strong>Task ID # ' + task.id + ' - ' + task.title + '</strong>\
+                                                <strong>Task ID # ' + task.id + ' - ' + task.title + ' : '+task.site.site+'</strong>\
                                                 </a>\
                                             </div>\
                                             <div id="collapse_' + task.id + '" class="collapse" aria-labelledby="heading' + task.id + '" data-parent="#accordionExample">\
