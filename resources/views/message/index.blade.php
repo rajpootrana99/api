@@ -183,7 +183,7 @@
     <script>
         $(document).ready(function() {
 
-            var user_id;
+            var user_id = 0;
             var task_id;
             var task = 0;
 
@@ -193,9 +193,14 @@
                     url: 'fetchMessages/' + user_id,
                     success: function(response) {
                         task = 0;
+                        fetchTasks();
                         console.log(response)
                         $('#messages').children().remove().end();
-                        $('#sender-image').attr('src', 'storage/' + response.sender.image)
+                        if (response.sender.image) {
+                            image = '<img src="assets/images/users/user-1.jpg" alt="user" class="rounded-circle thumb-md">'
+                        } else {
+                            $('#sender-image').attr('src', 'storage/' + response.sender.image)
+                        }
                         $('#sender-name').text(response.sender.name);
                         $.each(response.messages, function(key, message) {
                             if (message.sender_id == 1) {
@@ -294,25 +299,32 @@
             fetchTasks();
 
             function fetchTasks() {
-                $.ajax({
-                    type: "GET",
-                    url: "fetchTasks",
-                    dataType: "json",
-                    success: function(response) {
-                        // $('tbody').html("");
-                        $.each(response.tasks, function(key, task) {
-                            console.log(task)
-                            var image = '<img src="assets/images/users/user-1.jpg" alt="user" class="rounded-circle thumb-md">'
-                            $('#task_list').append('<a href="' + task.id + '" class="media new-message" id="view-task-message">\
+                if (user_id === 0) {
+                    $('#task_list').children().remove().end();
+                    $('#task_list').append('<a href="' + task.id + '" class="media new-message" id="view-task-message">\
+                                    <h6>Select people</h6>\
+                        </a>')
+                } else {
+                    $.ajax({
+                        type: "GET",
+                        url: "fetchUserTasks/" + user_id,
+                        dataType: "json",
+                        success: function(response) {
+                            $('#task_list').children().remove().end();
+                            $.each(response.tasks, function(key, task) {
+                                console.log(task)
+                                var image = '<img src="assets/images/users/user-1.jpg" alt="user" class="rounded-circle thumb-md">'
+                                $('#task_list').append('<a href="' + task.id + '" class="media new-message" id="view-task-message">\
                             <div class="media-body">\
                                 <div>\
                                     <h6>' + task.title + '</h6>\
                                 </div>\
                             </div>\
                         </a>')
-                        });
-                    }
-                });
+                            });
+                        }
+                    });
+                }
             }
 
             $(document).on("click", "#view-message", function(e) {

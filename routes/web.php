@@ -35,6 +35,7 @@ Route::middleware(['auth', 'verified', 'user_admin'])->group(function () {
     Route::get('/fetchSites', [SiteController::class, 'fetchSites'])->name('site.get');
     Route::resource('task', TaskController::class);
     Route::get('/fetchTasks', [TaskController::class, 'fetchTasks'])->name('task.get');
+    Route::get('fetchUserTasks/{user}', [TaskController::class, 'fetchUserTasks']);
     Route::get('/fetchItemGalleries/{item}', [TaskController::class, 'fetchItemGalleries'])->name('itemGallery.get');
     Route::resource('message', MessageController::class);
     Route::get('/fetchPeoples', [MessageController::class, 'fetchPeoples'])->name('people.get');

@@ -23,6 +23,15 @@ class TaskController extends Controller
         ]);
     }
 
+    public function fetchUserTasks($user)
+    {
+        $tasks = Task::with('user', 'site', 'items', 'items.itemGalleries')->where('user_id', $user)->get();
+        return response()->json([
+            'status' => true,
+            'tasks' => $tasks,
+        ]);
+    }
+
     public function fetchItemGalleries($item)
     {
         $item = Item::with('itemGalleries')->where('id', $item)->first();
