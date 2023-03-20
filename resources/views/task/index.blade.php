@@ -167,7 +167,7 @@
                             }
                             if (item.item_galleries.length == 0) {
                                 file = 'No image or video file exists';
-                            } else if (getFileExtension(item.item_galleries[0].image) === 'mp4' || getFileExtension(item.item_galleries[0].image) === 'mkv') {
+                            } else if (getFileExtension(item.item_galleries[0].image) === 'mp4' || getFileExtension(item.item_galleries[0].image) === 'mkv' || getFileExtension(item.item_galleries[0].image) === 'mov') {
                                 file = '<video width="200px" height="100px" controls><source src="' + item.item_galleries[0].image + '" type="video/ogg"></video>'
                             } else if (getFileExtension(item.item_galleries[0].image) === 'png' || getFileExtension(item.item_galleries[0].image) === 'jpg' || getFileExtension(item.item_galleries[0].image) === 'jpeg') {
                                 file = '<img src="' + item.item_galleries[0].image + '" width="200px" height="100px" alt="" class="rounded float-left ml-3 mb-3">';
@@ -202,7 +202,7 @@
                     $('#viewGallery').modal('show');
                     $('#item_gallery_carousel').children().remove().end();
                     $.each(response.item.item_galleries, function(key, gallery) {
-                        if (getFileExtension(gallery.image) === 'mp4' || getFileExtension(gallery.image) === 'mkv') {
+                        if (getFileExtension(gallery.image) === 'mp4' || getFileExtension(gallery.image) === 'mkv' || getFileExtension(gallery.image) === 'mov') {
                             file = '<video class="d-block w-100" height="400px" controls><source src="' + gallery.image + '" type="video/ogg"></video>'
                         } else if (getFileExtension(gallery.image) === 'png' || getFileExtension(gallery.image) === 'jpg' || getFileExtension(gallery.image) === 'jpeg') {
                             file = '<img height="400px" src="' + gallery.image + '" class="d-block w-100" alt="">';
