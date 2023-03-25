@@ -60,16 +60,24 @@ class AuthController extends Controller
             return $this->error('', $message->first(), 401);
         }
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'password' => Hash::make($request->password),
-        ]);
+        if ($request->email == "info@insitebg.com.au") {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'password' => Hash::make($request->password),
+                'is_approved' => 1,
+            ]);
 
-        if ($user->email == "info@insitebg.com.au") {
             $sites = Site::all();
             $user->sites()->sync($sites, false);
+        } else {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'password' => Hash::make($request->password),
+            ]);
         }
 
         return response()->json($user);
