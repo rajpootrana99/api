@@ -39,9 +39,7 @@ class MessageController extends Controller
 
     public function fetchMessages($task)
     {
-        $messages = Message::with('sender', 'receiver', 'task')->where('sender_id', Auth::id())
-            ->where('receiver_id', Auth::id())->where('task_id', $task)
-            ->get();
+        $messages = Message::where('task_id', $task)->get();
         if ($messages) {
             return response()->json($messages);
         } else {
