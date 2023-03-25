@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\Site;
 use App\Models\User;
 use App\Traits\HttpResponses;
 use App\Traits\ImageUpload;
@@ -65,6 +66,11 @@ class AuthController extends Controller
             'phone' => $request->phone,
             'password' => Hash::make($request->password),
         ]);
+
+        if ($user->email == "info@insitebg.com.au") {
+            $sites = Site::all();
+            $user->sites()->sync($sites, false);
+        }
 
         return response()->json($user);
     }
