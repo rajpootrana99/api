@@ -47,15 +47,20 @@ class SiteController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'site' => ['required', 'string', 'min:3']
+            'site' => ['required', 'string', 'min:3'],
+            'site_address' => ['required', 'string', 'min:3'],
+            'suburb' => ['required'],
+            'state' => ['required'],
+            'post_code' => ['required'],
+            'owner' => ['required', 'string', 'min:3'],
+            'owner_id' => ['required'],
+            'active' => ['required'],
         ]);
         if (!$validator->passes()) {
             return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
         }
 
-        $site = Site::create([
-            'site' => $request->input('site'),
-        ]);
+        $site = Site::create($request->all());
         if ($site) {
             return response()->json(['status' => 1, 'message' => 'Site Added Successfully']);
         }

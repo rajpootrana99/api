@@ -16,6 +16,13 @@ return new class extends Migration
         Schema::create('sites', function (Blueprint $table) {
             $table->id();
             $table->string('site');
+            $table->string('site_address');
+            $table->string('suburb');
+            $table->string('state');
+            $table->string('post_code');
+            $table->string('owner');
+            $table->unsignedBigInteger('owner_id');
+            $table->integer('active')->default(0);
             $table->timestamps();
         });
     }

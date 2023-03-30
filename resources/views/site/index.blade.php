@@ -30,6 +30,13 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Site</th>
+                                    <th>Site Address</th>
+                                    <th>Suburb</th>
+                                    <th>State</th>
+                                    <th>Post Code</th>
+                                    <th>Owner</th>
+                                    <th>Owner ID</th>
+                                    <th>Active</th>
                                     <th width="3%">Modify</th>
                                     <th width="3%">Delete</th>
                                 </tr>
@@ -58,24 +65,89 @@
                 @csrf
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="site" class="my-1 col-sm-3 control-label">Site Name</label></div>
+                                <div class="row"><label for="site" class="col-sm-12 control-label">Site Name</label></div>
                                 <div class="col-sm-12">
                                     <input class="form-control" type="text" name="site" id="site">
                                 </div>
                                 <span class="text-danger error-text site_error"></span>
                             </div>
                         </div>
-                    </div><!--end row-->
-                </div><!--end modal-body-->
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <div class="row"><label for="site_address" class="col-sm-12 control-label">Site Address</label></div>
+                                <div class="col-sm-12">
+                                    <input class="form-control" type="text" name="site_address" id="site_address">
+                                </div>
+                                <span class="text-danger error-text site_address_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <div class="row"><label for="suburb" class="col-sm-12 control-label">Suburb</label></div>
+                                <div class="col-sm-12">
+                                    <input class="form-control" type="text" name="suburb" id="suburb">
+                                </div>
+                                <span class="text-danger error-text suburb_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <div class="row"><label for="state" class="col-sm-12 control-label">State</label></div>
+                                <div class="col-sm-12">
+                                    <input class="form-control" type="text" name="state" id="state">
+                                </div>
+                                <span class="text-danger error-text state_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <div class="row"><label for="post_code" class="col-sm-12 control-label">Post Code</label></div>
+                                <div class="col-sm-12">
+                                    <input class="form-control" type="text" name="post_code" id="post_code">
+                                </div>
+                                <span class="text-danger error-text post_code_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <div class="row"><label for="owner" class="col-sm-12 control-label">Owner</label></div>
+                                <div class="col-sm-12">
+                                    <input class="form-control" type="text" name="owner" id="owner">
+                                </div>
+                                <span class="text-danger error-text owner_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <div class="row"><label for="owner_id" class="col-sm-12 control-label">Owner ID</label></div>
+                                <div class="col-sm-12">
+                                    <input class="form-control" type="text" name="owner_id" id="owner_id">
+                                </div>
+                                <span class="text-danger error-text owner_id_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <div class="row"><label for="active" class="col-sm-12 control-label">Active</label></div>
+                                <select class="select2 mb-3 pl-1 form-control" name="active" id="active" style="width: 100%; height:30px;">
+                                    <option value="1">y</option>
+                                    <option value="0">n</option>
+                                </select>
+                                <span class="text-danger error-text active_error"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div><!--end row-->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary btn-sm">Save</button>
                 </div><!--end modal-footer-->
             </form>
-        </div><!--end modal-content-->
-    </div><!--end modal-dialog-->
+        </div>
+    </div><!--end modal-content-->
+</div><!--end modal-dialog-->
 </div>
 
 <div class="modal fade" id="editSite" tabindex="-1" role="dialog" aria-labelledby="editSiteLabel" aria-hidden="true">
@@ -161,6 +233,13 @@
                         $('tbody').append('<tr>\
                             <td>' + site.id + '</td>\
                             <td>' + site.site + '</td>\
+                            <td>' + site.site_address + '</td>\
+                            <td>' + site.suburb + '</td>\
+                            <td>' + site.state + '</td>\
+                            <td>' + site.post_code + '</td>\
+                            <td>' + site.owner + '</td>\
+                            <td>' + site.owner_id + '</td>\
+                            <td>' + site.active + '</td>\
                             <td><button value="' + site.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
                             <td><button value="' + site.id + '" style="border: none; background-color: #fff" class="delete_btn"><i class="fa fa-trash"></i></button></td>\
                     </tr>');
