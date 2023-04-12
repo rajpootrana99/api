@@ -42,4 +42,9 @@ class Site extends Model
     {
         return $this->hasMany(Task::class);
     }
+
+    public function contact()
+    {
+        return $this->hasMany(Contact::class);
+    }
 }
