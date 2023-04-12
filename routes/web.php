@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SiteUserController;
@@ -44,6 +45,8 @@ Route::middleware(['auth', 'verified', 'user_admin'])->group(function () {
     Route::post('/send-message', [MessageController::class, 'sendMessage']);
     Route::resource('notification', NotificationController::class);
     Route::get('/fetchNotifications', [NotificationController::class, 'fetchNotifications'])->name('notification.get');
+    Route::resource('contact', ContactController::class);
+    Route::get('/fetchContacts', [ContactController::class, 'fetchContacts'])->name('contact.get');
     Route::resource('site-user', SiteUserController::class);
     Route::get('/fetchSiteUsers', [SiteUserController::class, 'fetchSiteUsers'])->name('site-user.get');
 });

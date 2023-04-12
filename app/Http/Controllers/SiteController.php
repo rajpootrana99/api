@@ -62,7 +62,10 @@ class SiteController extends Controller
 
         $site = Site::create($request->all());
         $user = User::where('email', "info@insitebg.com.au")->first();
-        $user->sites()->sync($site, false);
+        if($user){
+            $user->sites()->sync($site, false);
+        }
+        
         if ($site) {
             return response()->json(['status' => 1, 'message' => 'Site Added Successfully']);
         }
