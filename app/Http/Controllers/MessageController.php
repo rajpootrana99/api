@@ -64,77 +64,84 @@ class MessageController extends Controller
 
     public function sendMessage(Request $request)
     {
-        if ($request->receiver_id == null) {
-            $task = Task::with('user')->find($request->task_id);
-        }
-        $response = '';
+        try {
+            if ($request->receiver_id == null) {
+                $task = Task::with('user')->find($request->task_id);
+            }
+            $response = '';
 
-        $SERVER_API_KEY = 'AAAAH13Wawo:APA91bE61OXDrCbPrhfsXw91djC-QKAfgqVBfFaL3ta9pexkMuTmOTfa_xgryZwN45KrFgM-G_VVN8zpbdAfWrIXEEKClwMY3eImdYGUzsx7hFo_HXUxTlDJ0GhXShOxW9y-D5SB4kFI';
+            $SERVER_API_KEY = 'AAAAH13Wawo:APA91bE61OXDrCbPrhfsXw91djC-QKAfgqVBfFaL3ta9pexkMuTmOTfa_xgryZwN45KrFgM-G_VVN8zpbdAfWrIXEEKClwMY3eImdYGUzsx7hFo_HXUxTlDJ0GhXShOxW9y-D5SB4kFI';
 
-        $token = Token::where('user_id', $task->user_id)->first();
+            $token = Token::where('user_id', $task->user_id)->first();
 
-        $token_1 = $token->token;
+            $token_1 = $token->token;
 
-        $data = [
+            $data = [
 
-            "registration_ids" => [
-                $token_1
-            ],
+                "registration_ids" => [
+                    $token_1
+                ],
 
-            "notification" => [
+                "notification" => [
 
-                "title" => "Notification",
+                    "title" => "Notification",
 
-                "body" => "You have recieved new message",
+                    "body" => "You have recieved new message",
 
-                "sound" => "default" // required for sound on ios
+                    "sound" => "default" // required for sound on ios
 
-            ],
+                ],
 
-        ];
+            ];
 
-        $dataString = json_encode($data);
+            $dataString = json_encode($data);
 
-        $headers = [
+            $headers = [
 
-            'Authorization: key=' . $SERVER_API_KEY,
+                'Authorization: key=' . $SERVER_API_KEY,
 
-            'Content-Type: application/json',
+                'Content-Type: application/json',
 
-        ];
+            ];
 
-        $ch = curl_init();
+            $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+            curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
 
-        curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POST, true);
 
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
 
-        $response = curl_exec($ch);
-        if ($response) {
-            $message = Message::create([
-                'sender_id' => Auth::id(),
-                'receiver_id' => $request->receiver_id ? $request->receiver_id : $task->user_id,
-                'task_id' => $request->task_id,
-                'message' => $request->message,
-            ]);
-            if ($message) {
+            $response = curl_exec($ch);
+            if ($response) {
+                $message = Message::create([
+                    'sender_id' => Auth::id(),
+                    'receiver_id' => $request->receiver_id ? $request->receiver_id : $task->user_id,
+                    'task_id' => $request->task_id,
+                    'message' => $request->message,
+                ]);
+                if ($message) {
+                    return response()->json([
+                        'status' => 1,
+                        'message' => 'Message send successfully',
+                    ]);
+                }
+            } else {
                 return response()->json([
-                    'status' => 1,
-                    'message' => 'Message send successfully',
+                    'status' => 0,
+                    'message' => 'Message not send',
                 ]);
             }
-        } else {
+        } catch (\Exception $e) {
             return response()->json([
-                'status' => 0,
-                'message' => 'Message not send',
+                'status' => false,
+                'message' => $e,
             ]);
         }
     }

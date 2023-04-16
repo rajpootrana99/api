@@ -374,7 +374,7 @@
                         }
                     },
                     error: function(error) {
-                        $('#warning_alert').html('<strong>Warning! </strong>' + error.message)
+                        $('#warning_alert').html('<strong>Warning! </strong>' + error)
                         $('#warning_alert').css('display', 'block')
                         setTimeout(function() {
                             $('#warning_alert').css('display', 'none')
