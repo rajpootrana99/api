@@ -40,6 +40,10 @@ class AuthController extends Controller
         if ($user->is_approved == 'Not Approved') {
             return $this->error('', 'User is not Approved', 401);
         }
+        Token::create([
+            'user_id' => $user->id,
+            'token' => $request->token,
+        ]);
         return response()->json([
             'user' => $user,
             'token' => $user->createToken('Api Token of ' . $user->name)->plainTextToken
