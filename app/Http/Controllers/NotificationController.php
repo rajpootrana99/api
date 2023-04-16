@@ -29,11 +29,11 @@ class NotificationController extends Controller
         $SERVER_API_KEY = 'AAAAFwVn-58:APA91bEkI_A6lAZMm1Jx1rBv8drv8pMRyCnWKzuVKc4LA8W0wzTgXNf0FCevcSkIegRwM2y4T0h68_jMnP66uOjZNY8B2DL5k03-POUfDXJzcYgnHwSFQB6cq2NEZXo1nqZTygd8GJbX';
 
         $tokens = Token::all();
-
         foreach ($tokens as $token) {
             $token_1 = $token->token;
 
             $data = [
+
                 "registration_ids" => [
                     $token_1
                 ],
@@ -75,17 +75,15 @@ class NotificationController extends Controller
             curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
 
             $response = curl_exec($ch);
-
-            if ($response) {
-                Notification::create([
-                    'title' => $request->input('title'),
-                    'body' => $request->input('body'),
-                ]);
-                return response()->json(['status' => 1, 'message' => 'Notification Send Successfully']);
-            } else {
-                return response()->json(['status' => 0, 'message' => 'Notification Not Send']);
-            }
         }
+
+        if ($response) {
+            Notification::create([
+                'title' => $request->input('title'),
+                'body' => $request->input('body'),
+            ]);
+        }
+        return response()->json(['status' => 1, 'message' => 'Notification Send Successfully',]);
     }
 
     public function destroy($notification)
