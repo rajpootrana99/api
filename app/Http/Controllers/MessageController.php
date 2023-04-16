@@ -65,9 +65,7 @@ class MessageController extends Controller
     public function sendMessage(Request $request)
     {
         try {
-            if ($request->receiver_id == null) {
-                $task = Task::with('user')->find($request->task_id);
-            }
+            $task = Task::with('user')->find($request->task_id);
             $response = '';
 
             $SERVER_API_KEY = 'AAAAH13Wawo:APA91bE61OXDrCbPrhfsXw91djC-QKAfgqVBfFaL3ta9pexkMuTmOTfa_xgryZwN45KrFgM-G_VVN8zpbdAfWrIXEEKClwMY3eImdYGUzsx7hFo_HXUxTlDJ0GhXShOxW9y-D5SB4kFI';
