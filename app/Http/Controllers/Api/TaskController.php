@@ -43,6 +43,7 @@ class TaskController extends Controller
 
     public function addItem(Request $request)
     {
+        dd($request->status[1] . " " . $request->status[2]);
         $validator = Validator::make($request->all(), [
             'task_id' => ['required', 'integer'],
             'description' => ['required', 'string'],
