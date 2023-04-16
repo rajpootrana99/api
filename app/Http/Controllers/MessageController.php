@@ -138,7 +138,7 @@ class MessageController extends Controller
                     'message' => 'Message not send',
                 ]);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
                 'status' => false,
                 'message' => $e,
