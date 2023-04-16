@@ -7,6 +7,7 @@ use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\Site;
+use App\Models\Token;
 use App\Models\User;
 use App\Traits\HttpResponses;
 use App\Traits\ImageUpload;
@@ -51,6 +52,7 @@ class AuthController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'max:255', 'unique:users', 'email'],
             'password' => ['required', 'min:8'],
+            'token' => ['required'],
             'phone' => ['required'],
         ]);
 
@@ -79,6 +81,10 @@ class AuthController extends Controller
                 'password' => Hash::make($request->password),
             ]);
         }
+        Token::create([
+            'user_id' => $user->id,
+            'token' => $request->token,
+        ]);
 
         return response()->json($user);
     }

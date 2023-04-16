@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Message;
 use App\Models\Task;
+use App\Models\Token;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -66,17 +67,70 @@ class MessageController extends Controller
         if ($request->receiver_id == null) {
             $task = Task::with('user')->find($request->task_id);
         }
-        $message = Message::create([
-            'sender_id' => Auth::id(),
-            'receiver_id' => $request->receiver_id ? $request->receiver_id : $task->user_id,
-            'task_id' => $request->task_id,
-            'message' => $request->message,
-        ]);
-        if ($message) {
-            return response()->json([
-                'status' => 1,
-                'message' => 'Message send successfully',
+        $response = '';
+
+        $SERVER_API_KEY = 'AAAAH13Wawo:APA91bE61OXDrCbPrhfsXw91djC-QKAfgqVBfFaL3ta9pexkMuTmOTfa_xgryZwN45KrFgM-G_VVN8zpbdAfWrIXEEKClwMY3eImdYGUzsx7hFo_HXUxTlDJ0GhXShOxW9y-D5SB4kFI';
+
+        $token = Token::where('user_id', $task->user_id)->first();
+
+        $token_1 = $token->token;
+
+        $data = [
+
+            "registration_ids" => [
+                $token_1
+            ],
+
+            "notification" => [
+
+                "title" => "Notification",
+
+                "body" => "You have recieved new message",
+
+                "sound" => "default" // required for sound on ios
+
+            ],
+
+        ];
+
+        $dataString = json_encode($data);
+
+        $headers = [
+
+            'Authorization: key=' . $SERVER_API_KEY,
+
+            'Content-Type: application/json',
+
+        ];
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+
+        curl_setopt($ch, CURLOPT_POST, true);
+
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+
+        $response = curl_exec($ch);
+        if ($response) {
+            $message = Message::create([
+                'sender_id' => Auth::id(),
+                'receiver_id' => $request->receiver_id ? $request->receiver_id : $task->user_id,
+                'task_id' => $request->task_id,
+                'message' => $request->message,
             ]);
+            if ($message) {
+                return response()->json([
+                    'status' => 1,
+                    'message' => 'Message send successfully',
+                ]);
+            }
         } else {
             return response()->json([
                 'status' => 0,
