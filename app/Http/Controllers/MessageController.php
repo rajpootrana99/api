@@ -68,7 +68,7 @@ class MessageController extends Controller
             $task = Task::with('user')->find($request->task_id);
             $response = '';
 
-            $SERVER_API_KEY = 'AIzaSyAoI_RgOQRZiZMgoKIaWyUJrVkffcZW9os';
+            $SERVER_API_KEY = 'AAAAFwVn-58:APA91bEkI_A6lAZMm1Jx1rBv8drv8pMRyCnWKzuVKc4LA8W0wzTgXNf0FCevcSkIegRwM2y4T0h68_jMnP66uOjZNY8B2DL5k03-POUfDXJzcYgnHwSFQB6cq2NEZXo1nqZTygd8GJbX';
 
             $token = Token::where('user_id', $task->user_id)->first();
 
