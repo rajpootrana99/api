@@ -29,6 +29,9 @@
                 <a href="{{ route('task.index')}}"><i data-feather="check-square" class="align-self-center menu-icon"></i><span>Task</span></a>
             </li>
             <li>
+                <a href="{{ route('entity.index')}}"><i data-feather="user" class="align-self-center menu-icon"></i><span>Entities</span></a>
+            </li>
+            <li>
                 <a href="{{ route('contact.index')}}"><i data-feather="phone" class="align-self-center menu-icon"></i><span>Contact</span></a>
             </li>
             <li>

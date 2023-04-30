@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\EntityController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SiteUserController;
@@ -22,16 +23,18 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/index', function () {
     return view('index');
-})->middleware(['auth', 'verified', 'user_admin'])->name('index');
+})->middleware(['auth', 'verified', 'role:Admin'])->name('index');
 
 Route::get('/unathorized', function () {
     return view('unathorized');
 })->name('unathorized');
 
-Route::middleware(['auth', 'verified', 'user_admin'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
     Route::resource('user', UserController::class);
     Route::get('/fetchUsers', [UserController::class, 'fetchUsers'])->name('user.get');
     Route::get('/approveUser/{user}', [UserController::class, 'approveUser'])->name('user.approve');
+    Route::resource('entity', EntityController::class);
+    Route::get('/fetchEntities', [EntityController::class, 'fetchEntities'])->name('entity.get');
     Route::resource('site', SiteController::class);
     Route::get('/fetchSites', [SiteController::class, 'fetchSites'])->name('site.get');
     Route::resource('task', TaskController::class);

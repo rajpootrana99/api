@@ -19,7 +19,7 @@ class UserController extends Controller
 
     public function fetchUsers()
     {
-        $users = User::where(['is_admin' => 0])->get();
+        $users = User::role('User')->get();
         return response()->json([
             'users' => $users,
         ]);

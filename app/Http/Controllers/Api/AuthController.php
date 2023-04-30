@@ -77,6 +77,7 @@ class AuthController extends Controller
 
             $sites = Site::all();
             $user->sites()->sync($sites, false);
+            $user->assignRole('User');
         } else {
             $user = User::create([
                 'name' => $request->name,
@@ -84,6 +85,7 @@ class AuthController extends Controller
                 'phone' => $request->phone,
                 'password' => Hash::make($request->password),
             ]);
+            $user->assignRole('User');
         }
         Token::create([
             'user_id' => $user->id,

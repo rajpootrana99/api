@@ -8,7 +8,7 @@
             <div class="page-title-box">
                 <div class="row">
                     <div class="col">
-                        <h4 class="page-title">Contacts</h4>
+                        <h4 class="page-title">Entities</h4>
                     </div><!--end col-->
                 </div><!--end row-->
             </div><!--end page-title-box-->
@@ -20,23 +20,34 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-title mt-4">
-                        <a href="" data-toggle="modal" data-target="#addContact" id="addContactButton" class="btn btn-primary" style="float:right;margin-left: 10px"><i class="fa fa-plus"></i> New Contact </a>
+                        <a href="" data-toggle="modal" data-target="#addEntity" id="addEntityButton" class="btn btn-primary" style="float:right;margin-left: 10px"><i class="fa fa-plus"></i> New Entity </a>
                     </div>
                 </div><!--end card-header-->
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered mb-0 table-centered">
+                        <table class="table table-bordered mb-0 table-sm">
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Entity</th>
+                                    <th>ABN</th>
                                     <th>Email</th>
+                                    <th>Address</th>
+                                    <th>Primary Phone</th>
                                     <th>Mobile</th>
-                                    <th>Site</th>
-                                    <th>Employer</th>
-                                    <th>Role</th>
-                                    <th>Emp ID</th>
+                                    <th>Fax</th>
+                                    <th>Director</th>
                                     <th>Active</th>
+                                    <th>Trade</th>
+                                    <th>Inc</th>
+                                    <th>Abbrev</th>
+                                    <th>Contract Signed</th>
+                                    <th>Payment Terms</th>
+                                    <th>PL Expirey</th>
+                                    <th>WC Expirey</th>
+                                    <th>Item Type</th>
+                                    <th>Path</th>
                                     <th width="3%">Modify</th>
                                     <th width="3%">Delete</th>
                                 </tr>
@@ -52,47 +63,48 @@
     </div> <!-- end row -->
 </div>
 <!-- Modal -->
-<div class="modal fade" id="addContact" tabindex="-1" role="dialog" aria-labelledby="addContactLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="addEntity" tabindex="-1" role="dialog" aria-labelledby="addEntityLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header bg-primary">
-                <h6 class="modal-title m-0 text-white" id="addContactLabel">Add Contact</h6>
+                <h6 class="modal-title m-0 text-white" id="addEntityLabel">Add Entity</h6>
                 <button type="button" class="close " data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true"><i class="la la-times text-white"></i></span>
                 </button>
             </div><!--end modal-header-->
-            <form method="post" id="addContactForm">
+            <form method="post" id="addEntityForm">
                 @csrf
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-lg-3">
                             <div class="form-group">
-                                <div class="row"><label for="site_id" class="col-sm-12 control-label">Select Site</label></div>
-                                <select class="select2 pl-1 form-control" name="site_id" id="site_id" style="width: 100%; height:30px;">
-
+                                <div class="row"><label for="type" class="col-sm-12 control-label">Select Type</label></div>
+                                <select class="select2 pl-1 form-control" name="type" id="type" style="width: 100%; height:30px;">
+                                    <option value="3">Client</option>
+                                    <option value="4">Suplier</option>
                                 </select>
-                                <span class="text-danger error-text site_id_error"></span>
+                                <span class="text-danger error-text type_error"></span>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-3">
                             <div class="form-group">
-                                <div class="row"><label for="fname" class="col-sm-12 control-label">First Name</label></div>
+                                <div class="row"><label for="entity" class="col-sm-12 control-label">Entity</label></div>
                                 <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="fname" id="fname">
+                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="entity" id="entity">
                                 </div>
-                                <span class="text-danger error-text fname_error"></span>
+                                <span class="text-danger error-text entity_error"></span>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-3">
                             <div class="form-group">
-                                <div class="row"><label for="lname" class="col-sm-12 control-label">Last Name</label></div>
+                                <div class="row"><label for="abn" class="col-sm-12 control-label">ABN</label></div>
                                 <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="lname" id="lname">
+                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="abn" id="abn">
                                 </div>
-                                <span class="text-danger error-text lname_error"></span>
+                                <span class="text-danger error-text abn_error"></span>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-3">
                             <div class="form-group">
                                 <div class="row"><label for="email" class="col-sm-12 control-label">Email</label></div>
                                 <div class="col-sm-12">
@@ -101,44 +113,71 @@
                                 <span class="text-danger error-text email_error"></span>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <div class="row"><label for="address" class="col-sm-12 control-label">Address</label></div>
+                                <div class="col-sm-12">
+                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="address" id="address">
+                                </div>
+                                <span class="text-danger error-text address_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <div class="row"><label for="primary_phone" class="col-sm-12 control-label">Primary Phone</label></div>
+                                <div class="col-sm-12">
+                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="primary_phone" id="primary_phone">
+                                </div>
+                                <span class="text-danger error-text primary_phone_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
                             <div class="form-group">
                                 <div class="row"><label for="phone" class="col-sm-12 control-label">Mobile</label></div>
                                 <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="number" name="phone" id="phone">
+                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="phone" id="phone">
                                 </div>
                                 <span class="text-danger error-text phone_error"></span>
                             </div>
                         </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <div class="row"><label for="fax" class="col-sm-12 control-label">Fax</label></div>
+                                <div class="col-sm-12">
+                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="fax" id="fax">
+                                </div>
+                                <span class="text-danger error-text fax_error"></span>
+                            </div>
+                        </div>
 
-                        <div class="col-lg-6">
+                        <div class="col-lg-3">
                             <div class="form-group">
-                                <div class="row"><label for="employer" class="col-sm-12 control-label">Employer</label></div>
+                                <div class="row"><label for="director" class="col-sm-12 control-label">Director</label></div>
                                 <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="employer" id="employer">
+                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="director" id="director">
                                 </div>
-                                <span class="text-danger error-text employer_error"></span>
+                                <span class="text-danger error-text director_error"></span>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-3">
                             <div class="form-group">
-                                <div class="row"><label for="role" class="col-sm-12 control-label">Role</label></div>
+                                <div class="row"><label for="trade" class="col-sm-12 control-label">Trade</label></div>
                                 <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="role" id="role">
+                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="trade" id="trade">
                                 </div>
-                                <span class="text-danger error-text role_error"></span>
+                                <span class="text-danger error-text trade_error"></span>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-3">
                             <div class="form-group">
-                                <div class="row"><label for="emp_id" class="col-sm-12 control-label">Emp ID</label></div>
+                                <div class="row"><label for="inc" class="col-sm-12 control-label">Inc</label></div>
                                 <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="number" name="emp_id" id="emp_id">
+                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="inc" id="inc">
                                 </div>
-                                <span class="text-danger error-text emp_id_error"></span>
+                                <span class="text-danger error-text inc_error"></span>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-3">
                             <div class="form-group">
                                 <div class="row"><label for="active" class="col-sm-12 control-label">Active</label></div>
                                 <select class="select2 pl-1 form-control" name="active" id="active" style="width: 100%; height:30px;">
@@ -146,6 +185,69 @@
                                     <option value="0">n</option>
                                 </select>
                                 <span class="text-danger error-text active_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <div class="row"><label for="abbrev" class="col-sm-12 control-label">Abbrev</label></div>
+                                <div class="col-sm-12">
+                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="abbrev" id="abbrev">
+                                </div>
+                                <span class="text-danger error-text abbrev_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <div class="row"><label for="contract_signed" class="col-sm-12 control-label">Contract Signed</label></div>
+                                <div class="col-sm-12">
+                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="contract_signed" id="contract_signed">
+                                </div>
+                                <span class="text-danger error-text contract_signed_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <div class="row"><label for="payment_terms" class="col-sm-12 control-label">Payment Terms</label></div>
+                                <div class="col-sm-12">
+                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="payment_terms" id="payment_terms">
+                                </div>
+                                <span class="text-danger error-text payment_terms_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <div class="row"><label for="pl_expirey" class="col-sm-12 control-label">PL Expirey</label></div>
+                                <div class="col-sm-12">
+                                    <input class="form-control" style="width: 100%; height:30px;" type="date" name="pl_expirey" id="pl_expirey">
+                                </div>
+                                <span class="text-danger error-text pl_expirey_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <div class="row"><label for="wc_expirey" class="col-sm-12 control-label">WC Expirey</label></div>
+                                <div class="col-sm-12">
+                                    <input class="form-control" style="width: 100%; height:30px;" type="date" name="wc_expirey" id="wc_expirey">
+                                </div>
+                                <span class="text-danger error-text wc_expirey_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <div class="row"><label for="item_type" class="col-sm-12 control-label">Item Type</label></div>
+                                <div class="col-sm-12">
+                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="item_type" id="item_type">
+                                </div>
+                                <span class="text-danger error-text item_type_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <div class="row"><label for="path" class="col-sm-12 control-label">Path</label></div>
+                                <div class="col-sm-12">
+                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="path" id="path">
+                                </div>
+                                <span class="text-danger error-text path_error"></span>
                             </div>
                         </div>
                     </div>
@@ -213,11 +315,11 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="edit_phone" class="col-sm-12 control-label">Mobile</label></div>
+                                <div class="row"><label for="edit_mobile" class="col-sm-12 control-label">Mobile</label></div>
                                 <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="number" name="phone" id="edit_phone">
+                                    <input class="form-control" style="width: 100%; height:30px;" type="number" name="mobile" id="edit_mobile">
                                 </div>
-                                <span class="text-danger error-text phone_update_error"></span>
+                                <span class="text-danger error-text mobile_update_error"></span>
                             </div>
                         </div>
 
@@ -306,28 +408,40 @@
             }
         });
 
-        fetchContacts();
+        fetchEntities();
 
-        function fetchContacts() {
+        function fetchEntities() {
             $.ajax({
                 type: "GET",
-                url: "fetchContacts",
+                url: "fetchEntities",
                 dataType: "json",
                 success: function(response) {
+                    console.log(response);
                     $('tbody').html("");
-                    $.each(response.contacts, function(key, contact) {
+                    $.each(response.entities, function(key, entity) {
                         $('tbody').append('<tr>\
-                            <td>' + contact.id + '</td>\
-                            <td>' + contact.user.name + '</td>\
-                            <td>' + contact.user.email + '</td>\
-                            <td>' + contact.user.phone + '</td>\
-                            <td>' + contact.site.site + '</td>\
-                            <td>' + contact.employer + '</td>\
-                            <td>' + contact.role + '</td>\
-                            <td>' + contact.emp_id + '</td>\
-                            <td>' + contact.active + '</td>\
-                            <td><button value="' + contact.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
-                            <td><button value="' + contact.id + '" style="border: none; background-color: #fff" class="delete_btn"><i class="fa fa-trash"></i></button></td>\
+                            <td>' + entity.id + '</td>\
+                            <td>' + entity.user.roles[0] + '</td>\
+                            <td>' + entity.entity + '</td>\
+                            <td>' + entity.abn + '</td>\
+                            <td>' + entity.user.email + '</td>\
+                            <td>' + entity.user.address + '</td>\
+                            <td>' + entity.primary_phone + '</td>\
+                            <td>' + entity.user.phone + '</td>\
+                            <td>' + entity.fax + '</td>\
+                            <td>' + entity.director + '</td>\
+                            <td>' + entity.active + '</td>\
+                            <td>' + entity.trade + '</td>\
+                            <td>' + entity.inc + '</td>\
+                            <td>' + entity.abbrev + '</td>\
+                            <td>' + entity.contract_signed + '</td>\
+                            <td>' + entity.payment_terms + '</td>\
+                            <td>' + entity.pl_expirey + '</td>\
+                            <td>' + entity.wc_expirey + '</td>\
+                            <td>' + entity.item_type + '</td>\
+                            <td>' + entity.path + '</td>\
+                            <td><button value="' + entity.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
+                            <td><button value="' + entity.id + '" style="border: none; background-color: #fff" class="delete_btn"><i class="fa fa-trash"></i></button></td>\
                     </tr>');
                     });
                 }
@@ -364,7 +478,7 @@
             });
         }
 
-        $(document).on('click', '#addContactButton', function(e) {
+        $(document).on('click', '#addEntityButton', function(e) {
             e.preventDefault();
             fetchSites();
             $(document).find('span.error-text').text('');
@@ -389,7 +503,7 @@
                     if (response.status == false) {
                         $('#deleteContact').modal('hide');
                     } else {
-                        fetchContacts();
+                        fetchEntities();
                         $('#deleteContact').modal('hide');
                     }
                 }
@@ -408,25 +522,15 @@
                     if (response.status == false) {
                         $('#editContact').modal('hide');
                     } else {
-                        var edit_site_id = $('#edit_site_id');
-                        var active = 1;
-                        if (response.contact.active == 'n') {
-                            active = 0;
-                        }
-                        $('#edit_site_id').children().remove().end();
-                        $.each(response.sites, function(site) {
-                            edit_site_id.append($("<option />").val(response.sites[site].id).text(response.sites[site].site));
-                        });
-                        var name = response.contact.user.name;
-                        name = name.split(" ");
+                        fetchEditSites();
                         $('#contact_id').val(response.contact.id);
                         $('.edit_site_id').val(response.contact.site_id).change();
-                        $('.edit_active').val(active).change();
+                        $('.edit_active').val(response.contact.active).change();
                         $('#editContactLabel').text('Contact ID ' + response.contact.id);
-                        $('#edit_fname').val(name[0]);
-                        $('#edit_lname').val(name[1]);
-                        $('#edit_email').val(response.contact.user.email);
-                        $('#edit_phone').val(response.contact.user.phone);
+                        $('#edit_fname').val(response.contact.fname);
+                        $('#edit_lname').val(response.contact.lname);
+                        $('#edit_email').val(response.contact.email);
+                        $('#edit_mobile').val(response.contact.mobile);
                         $('#edit_employer').val(response.contact.employer);
                         $('#edit_role').val(response.contact.role);
                         $('#edit_emp_id').val(response.contact.emp_id);
@@ -463,7 +567,7 @@
                     } else {
                         $('#editContactForm')[0].reset();
                         $('#editContact').modal('hide');
-                        fetchContacts();
+                        fetchEntities();
                     }
                 },
                 error: function(error) {
@@ -473,12 +577,12 @@
             });
         })
 
-        $(document).on('submit', '#addContactForm', function(e) {
+        $(document).on('submit', '#addEntityForm', function(e) {
             e.preventDefault();
-            let formDate = new FormData($('#addContactForm')[0]);
+            let formDate = new FormData($('#addEntityForm')[0]);
             $.ajax({
                 type: "post",
-                url: "contact",
+                url: "entity",
                 data: formDate,
                 contentType: false,
                 processData: false,
@@ -487,18 +591,18 @@
                 },
                 success: function(response) {
                     if (response.status == 0) {
-                        $('#addContact').modal('show')
+                        $('#addEntity').modal('show')
                         $.each(response.error, function(prefix, val) {
                             $('span.' + prefix + '_error').text(val[0]);
                         });
                     } else {
-                        $('#addContactForm')[0].reset();
-                        $('#addContact').modal('hide');
-                        fetchContacts();
+                        $('#addEntityForm')[0].reset();
+                        $('#addEntity').modal('hide');
+                        fetchEntities();
                     }
                 },
                 error: function(error) {
-                    $('#addContact').modal('show')
+                    $('#addEntity').modal('show')
                 }
             });
         });

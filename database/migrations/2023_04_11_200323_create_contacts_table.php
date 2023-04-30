@@ -17,10 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('emp_id')->nullable();
             $table->unsignedBigInteger('site_id');
-            $table->string('fname');
-            $table->string('lname');
-            $table->string('email');
-            $table->integer('mobile');
+            $table->unsignedBigInteger('user_id');
             $table->string('employer');
             $table->string('role');
             $table->integer('active')->nullable()->default(1);
