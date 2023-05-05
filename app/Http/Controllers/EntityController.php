@@ -56,16 +56,6 @@ class EntityController extends Controller
         $validator = Validator::make($request->all(), [
             'type' => ['required', 'integer'],
             'entity' => ['required', 'string', 'min:3'],
-            'email' => ['required', 'email', 'min:3'],
-            'phone' => ['required'],
-            'address' => ['required'],
-            'trade' => ['required'],
-            'abbrev' => ['required'],
-            'contract_signed' => ['required'],
-            'payment_terms' => ['required'],
-            'item_type' => ['required'],
-            'path' => ['required'],
-            'active' => ['required', 'integer'],
         ]);
         if (!$validator->passes()) {
             return response()->json([
