@@ -92,9 +92,20 @@ class EntityController extends Controller
      * @param  \App\Models\Entity  $entity
      * @return \Illuminate\Http\Response
      */
-    public function edit(Entity $entity)
+    public function edit($entity)
     {
-        //
+        $entity = Entity::with('user.roles')->find($entity);
+        if ($entity) {
+            return response()->json([
+                'status' => true,
+                'entity' => $entity,
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'No entity available against this id',
+            ]);
+        }
     }
 
     /**
@@ -104,9 +115,30 @@ class EntityController extends Controller
      * @param  \App\Models\Entity  $entity
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Entity $entity)
+    public function update(Request $request, $entity)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'type' => ['required', 'integer'],
+            'entity' => ['required', 'string', 'min:3'],
+        ]);
+        if (!$validator->passes()) {
+            return response()->json([
+                'status' => 0,
+                'error' => $validator->errors()->toArray()
+            ]);
+        }
+
+        $entity = Entity::find($entity);
+        $user = User::find($entity->user_id);
+        $user->update($request->all());
+        $user->syncRoles($request->type);
+        $entity = $entity->update($request->all());
+        if ($entity) {
+            return response()->json([
+                'status' => 1,
+                'message' => 'Entity Updated Successfully'
+            ]);
+        }
     }
 
     /**
@@ -115,8 +147,22 @@ class EntityController extends Controller
      * @param  \App\Models\Entity  $entity
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Entity $entity)
+    public function destroy($entity)
     {
-        //
+        $entity = Entity::find($entity);
+        if ($entity) {
+            $user = User::find($entity->user_id);
+            $entity->delete();
+            $user->delete();
+            return response()->json([
+                'status' => true,
+                'message' => 'Entity deleted successfully',
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'No entity available against this id',
+            ]);
+        }
     }
 }

@@ -22,7 +22,7 @@ class SiteUserController extends Controller
 
     public function fetchSiteUsers()
     {
-        $user_sites = User::with('sites')->where(['is_admin' => 0])->get();
+        $user_sites = User::with('sites')->get();
         return response()->json([
             'status' => true,
             'user_sites' => $user_sites,
