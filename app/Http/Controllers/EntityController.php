@@ -121,6 +121,7 @@ class EntityController extends Controller
             'type' => ['required', 'integer'],
             'entity' => ['required', 'string', 'min:3'],
         ]);
+        
         if (!$validator->passes()) {
             return response()->json([
                 'status' => 0,
