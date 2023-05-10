@@ -25,6 +25,14 @@ class UserController extends Controller
         ]);
     }
 
+    public function fetchSuppliers()
+    {
+        $users = User::role('Supplier')->get();
+        return response()->json([
+            'users' => $users,
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

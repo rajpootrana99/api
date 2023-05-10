@@ -47,4 +47,9 @@ class Site extends Model
     {
         return $this->hasMany(Contact::class);
     }
+
+    public function job()
+    {
+        return $this->hasMany(Job::class);
+    }
 }

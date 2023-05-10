@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\EntityController;
+use App\Http\Controllers\JobController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SiteUserController;
@@ -50,6 +51,8 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
     Route::get('/fetchNotifications', [NotificationController::class, 'fetchNotifications'])->name('notification.get');
     Route::resource('contact', ContactController::class);
     Route::get('/fetchContacts', [ContactController::class, 'fetchContacts'])->name('contact.get');
+    Route::resource('job', JobController::class);
+    Route::get('/fetchJobs', [JobController::class, 'fetchJobs'])->name('job.get');
     Route::resource('site-user', SiteUserController::class);
     Route::get('/fetchSiteUsers', [SiteUserController::class, 'fetchSiteUsers'])->name('site-user.get');
 });
