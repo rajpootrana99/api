@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Job;
 use App\Models\Site;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -19,8 +20,9 @@ class JobController extends Controller
         return view('job.index');
     }
 
-    public function fetchJobs(){
-        $jobs = Job::all();
+    public function fetchJobs()
+    {
+        $jobs = Job::with('site', 'user')->get();
         return response()->json([
             'jobs' => $jobs,
         ]);
@@ -83,13 +85,15 @@ class JobController extends Controller
      */
     public function edit($job)
     {
-        $job = Job::with('user','site')->find($job);
+        $job = Job::with('user', 'site')->find($job);
         $sites = Site::all();
+        $users = User::role('Supplier')->get();
         if ($job) {
             return response()->json([
                 'status' => true,
                 'job' => $job,
                 'sites' => $sites,
+                'users' => $users,
             ]);
         } else {
             return response()->json([

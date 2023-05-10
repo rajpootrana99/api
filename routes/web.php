@@ -33,6 +33,7 @@ Route::get('/unathorized', function () {
 Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
     Route::resource('user', UserController::class);
     Route::get('/fetchUsers', [UserController::class, 'fetchUsers'])->name('user.get');
+    Route::get('/fetchSuppliers', [UserController::class, 'fetchSuppliers'])->name('supplier.get');
     Route::get('/approveUser/{user}', [UserController::class, 'approveUser'])->name('user.approve');
     Route::resource('entity', EntityController::class);
     Route::get('/fetchEntities', [EntityController::class, 'fetchEntities'])->name('entity.get');
