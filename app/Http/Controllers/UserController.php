@@ -33,6 +33,14 @@ class UserController extends Controller
         ]);
     }
 
+    public function fetchClients()
+    {
+        $users = User::role('Client')->get();
+        return response()->json([
+            'users' => $users,
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

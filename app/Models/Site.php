@@ -48,8 +48,13 @@ class Site extends Model
         return $this->hasMany(Contact::class);
     }
 
-    public function job()
+    public function jobs()
     {
         return $this->hasMany(Job::class);
+    }
+
+    public function enquiries()
+    {
+        return $this->hasMany(Enquiry::class);
     }
 }

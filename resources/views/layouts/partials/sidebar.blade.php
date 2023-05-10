@@ -35,6 +35,9 @@
                 <a href="{{ route('job.index')}}"><i data-feather="user" class="align-self-center menu-icon"></i><span>Jobs</span></a>
             </li>
             <li>
+                <a href="{{ route('enquiry.index')}}"><i data-feather="user" class="align-self-center menu-icon"></i><span>Enquiries</span></a>
+            </li>
+            <li>
                 <a href="{{ route('contact.index')}}"><i data-feather="phone" class="align-self-center menu-icon"></i><span>Contact</span></a>
             </li>
             <li>

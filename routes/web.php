@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\EnquiryController;
 use App\Http\Controllers\EntityController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\SiteController;
@@ -34,6 +35,7 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
     Route::resource('user', UserController::class);
     Route::get('/fetchUsers', [UserController::class, 'fetchUsers'])->name('user.get');
     Route::get('/fetchSuppliers', [UserController::class, 'fetchSuppliers'])->name('supplier.get');
+    Route::get('/fetchClients', [UserController::class, 'fetchClients'])->name('client.get');
     Route::get('/approveUser/{user}', [UserController::class, 'approveUser'])->name('user.approve');
     Route::resource('entity', EntityController::class);
     Route::get('/fetchEntities', [EntityController::class, 'fetchEntities'])->name('entity.get');
@@ -54,6 +56,8 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
     Route::get('/fetchContacts', [ContactController::class, 'fetchContacts'])->name('contact.get');
     Route::resource('job', JobController::class);
     Route::get('/fetchJobs', [JobController::class, 'fetchJobs'])->name('job.get');
+    Route::resource('enquiry', EnquiryController::class);
+    Route::get('/fetchEnquiries', [EnquiryController::class, 'fetchEnquiries'])->name('enquiry.get');
     Route::resource('site-user', SiteUserController::class);
     Route::get('/fetchSiteUsers', [SiteUserController::class, 'fetchSiteUsers'])->name('site-user.get');
 });

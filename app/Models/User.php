@@ -95,8 +95,13 @@ class User extends Authenticatable
         return $this->hasOne(Contact::class);
     }
 
-    public function job()
+    public function jobs()
     {
         return $this->hasMany(Job::class);
+    }
+
+    public function enquiries()
+    {
+        return $this->hasMany(Enquiry::class);
     }
 }
