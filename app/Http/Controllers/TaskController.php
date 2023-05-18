@@ -57,6 +57,11 @@ class TaskController extends Controller
         }
     }
 
+    public function create()
+    {
+        return view('task.create');
+    }
+
     public function destroy($task)
     {
         $task = Task::find($task);

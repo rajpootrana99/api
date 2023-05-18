@@ -18,6 +18,29 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
+                <div class="card-header">
+                    <div class="card-title row" style="position:absolute; top:10px; right: 10px;">
+                        <a href="{{route('task.create')}}" class="btn btn-primary" style="float:right;margin-left: 10px"><i class="fa fa-plus"></i> New Task </a>
+                    </div>
+                    <div class="row mt-5">
+                        <div class="col-sm-6">
+                            <a href="" data-toggle="modal" data-target="#addEnquiry" id="addEnquiryButton" class="btn btn-primary" style="float:left;margin-left: 10px">Orders </a>
+                            <a href="" data-toggle="modal" data-target="#addEnquiry" id="addEnquiryButton" class="btn btn-primary" style="float:left;margin-left: 10px">Enquiries </a>
+                            <div class="custom-control custom-checkbox" style="display:flex; padding:8px;float:left;margin-left: 30px">
+                                <input type="checkbox" class="custom-control-input" id="customCheck02">
+                                <label class="custom-control-label" for="customCheck02">Hide Archived Items</label>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <div class="row">
+                                <label for="example-search-input" class="col-sm-2 col-form-label text-right">Search</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" type="search" placeholder="Search by Task Title or Store Name" id="example-search-input">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!--end card-header-->
                 <div class="card-body" id="task-section">
 
                 </div><!--end card-body-->
@@ -122,9 +145,9 @@
                         });
                         $('#task-section').append('<div class="accordion" id="accordionExample">\
                                         <div class="card border mb-1 shadow-none">\
-                                            <div class="card-header rounded-0" id="heading_' + task.id +'">\
+                                            <div class="card-header rounded-0" id="heading_' + task.id + '">\
                                                 <a href="" class="text-dark" data-toggle="collapse" data-target="#collapse_' + task.id + '" aria-expanded="true" aria-controls="collapse_' + task.id + '">\
-                                                <strong>Task ID # ' + task.id + ' - ' + task.title + ' : '+task.site.site+'</strong>\
+                                                <strong>Task ID # ' + task.id + ' - ' + task.title + ' : ' + task.site.site + '</strong>\
                                                 </a>\
                                             </div>\
                                             <div id="collapse_' + task.id + '" class="collapse" aria-labelledby="heading' + task.id + '" data-parent="#accordionExample">\
