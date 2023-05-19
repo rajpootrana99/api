@@ -38,10 +38,16 @@
                                     <span class="text-danger error-text user_id_error"></span>
                                 </div>
                             </div>
-                            <div class="col-lg-12">
+                            <div class="col-lg-6">
                                 <div class="form-group">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" placeholder="Enter Title" name="description" id="description">
-                                    <span class="text-danger error-text description_error"></span>
+                                    <input class="form-control" style="width: 100%; height:30px;" type="text" placeholder="Enter Title" name="title" id="title">
+                                    <span class="text-danger error-text title_error"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <input class="form-control" style="width: 100%; height:30px;" type="text"  name="requested_completion" id="requested_completion" onfocus="(this.type='date')" onblur="(this.type='text')" placeholder="Requested Completion Date">
+                                    <span class="text-danger error-text requested_completion_error"></span>
                                 </div>
                             </div>
                             <div class="col-lg-12">
@@ -92,10 +98,10 @@
         function itemsDetailDynamicField(number) {
             html = '<tr>';
             html += '<td>' + number + '</td>';
-            html += '<td><input type="text" style="height: 30px" name="items[][description]" id="description_' + number + '" class="form-control" /></td>';
-            html += '<td><select class="select2 form-control" name="items[][priority]" id="priority_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Priority"><option value="0">Low</option><option value="1">Medium</option><option value="2">High</option><option value="3">Urgent</option></select></td>';
-            html += '<td><select class="select2 form-control" name="items[][status]" id="status_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Status"><option value="0">Pending</option><option value="1">Quoting</option><option value="2">Awaiting Approval</option><option value="3">Scheduled</option><option value="4">Complete</option><option value="5">Invoiced</option><option value="6">Cancelled</option></select></td>';
-            html += '<td><select class="select2 form-control" name="items[][progress]" id="progress_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Progress"><option value="0">Quote</option><option value="1">Order</option></select></td>';
+            html += '<td><input type="text" style="height: 30px" name="items[${itemCount}][description]" id="description_' + number + '" class="form-control" /></td>';
+            html += '<td><select class="select2 form-control" name="items[${itemCount}][priority]" id="priority_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Priority"><option value="0">Low</option><option value="1">Medium</option><option value="2">High</option><option value="3">Urgent</option></select></td>';
+            html += '<td><select class="select2 form-control" name="items[${itemCount}][status]" id="status_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Status"><option value="0">Pending</option><option value="1">Quoting</option><option value="2">Awaiting Approval</option><option value="3">Scheduled</option><option value="4">Complete</option><option value="5">Invoiced</option><option value="6">Cancelled</option></select></td>';
+            html += '<td><select class="select2 form-control" name="items[${itemCount}][progress]" id="progress_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Progress"><option value="0">Quote</option><option value="1">Order</option></select></td>';
             html += '<td><div class="custom-file"><input type="file" multiple class="custom-file-input" style="width: 100%; height:30px;" name="items[][image]" id="images_' + number + '"><label class="custom-file-label" for="image">Choose file</label></div></td>';
             if (number > 1) {
                 html += '<td><button style="border: none; background-color: #fff" name="addItems" id="addItems"><i class="fa fa-plus-circle"></i></button></td>';

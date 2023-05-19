@@ -85,8 +85,29 @@ class TaskController extends Controller
             'site_id' => ['required'],
             'title' => ['required'],
         ]);
-        if (!$validator->passes()) {
-            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+
+        $task = Task::create($request->all());
+
+        foreach ($request->input('items') as $itemData) {
+            dd($request->items);
+            $item = Item::create([
+                'task_id' => $task->id,
+                'description' => $itemData['description'],
+                'priority' => $itemData['priority'],
+                'status'=> $itemData['status'],
+                'progress' => $itemData['progress'],
+            ]);
+
+            if (isset($itemData['images'])) {
+                foreach ($itemData['images'] as $image) {
+                    $imagePath = $image->store('item_images', 'public');
+                    $item->galleries()->create([
+                        'image' => $imagePath,
+                    ]);
+                }
+            }
         }
+        return redirect()->route('task.index');
+
     }
 }
