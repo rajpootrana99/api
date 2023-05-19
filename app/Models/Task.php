@@ -13,6 +13,7 @@ class Task extends Model
         'site_id',
         'user_id',
         'title',
+        'requested_completion',
     ];
 
     public function user()

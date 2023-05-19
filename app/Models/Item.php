@@ -25,9 +25,10 @@ class Item extends Model
     public function priorityOptions()
     {
         return [
+            3 => 'Urgent',
             2 => 'High',
-            1 => 'Low',
-            0 => 'None',
+            1 => 'Medium',
+            0 => 'Low',
         ];
     }
 
@@ -39,9 +40,13 @@ class Item extends Model
     public function statusOptions()
     {
         return [
-            2 => 'Overdue',
-            1 => 'Completed',
-            0 => 'Ongoing',
+            3 => 'Cancelled',
+            2 => 'Invoiced',
+            1 => 'Complete',
+            0 => 'Scheduled',
+            2 => 'Awaiting Approval',
+            1 => 'Quoting',
+            0 => 'Pending',
         ];
     }
 
@@ -53,7 +58,7 @@ class Item extends Model
     public function progressOptions()
     {
         return [
-            1 => 'Proceed',
+            1 => 'Order',
             0 => 'Quote',
         ];
     }

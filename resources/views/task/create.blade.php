@@ -18,7 +18,7 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
-                <form method="post" id="addTaskForm">
+                <form method="post" action="{{route('task.store')}}" enctype="multipart/form-data">
                     <div class="card-body">
                         @csrf
                         <div class="row">
@@ -86,23 +86,17 @@
 <script>
     $(document).ready(function() {
 
-        const priorities = [
-            "Low",
-            "Medium",
-            "High",
-            "Urgent",
-        ];
         var itemsCount = 1;
         itemsDetailDynamicField(itemsCount);
 
         function itemsDetailDynamicField(number) {
             html = '<tr>';
             html += '<td>' + number + '</td>';
-            html += '<td><input type="text" style="height: 30px" disabled name="description[]" id="description_' + number + '" class="form-control" /></td>';
-            html += '<td><select class="select2 form-control" name="priority[]" id="priority_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Priority"></select></td>';
-            html += '<td><select class="select2 form-control" name="status[]" id="status_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Sr. Code"></select></td>';
-            html += '<td><select class="select2 form-control" name="progress[]" id="progress_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Sr. Code"></select></td>';
-            html += '<td><div class="custom-file"><input type="file" multiple style="height: 30px" name="images[]" id="images_' + number + '" class="custom-file-input" /></div></td>';
+            html += '<td><input type="text" style="height: 30px" name="items[][description]" id="description_' + number + '" class="form-control" /></td>';
+            html += '<td><select class="select2 form-control" name="items[][priority]" id="priority_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Priority"><option value="0">Low</option><option value="1">Medium</option><option value="2">High</option><option value="3">Urgent</option></select></td>';
+            html += '<td><select class="select2 form-control" name="items[][status]" id="status_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Status"><option value="0">Pending</option><option value="1">Quoting</option><option value="2">Awaiting Approval</option><option value="3">Scheduled</option><option value="4">Complete</option><option value="5">Invoiced</option><option value="6">Cancelled</option></select></td>';
+            html += '<td><select class="select2 form-control" name="items[][progress]" id="progress_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Progress"><option value="0">Quote</option><option value="1">Order</option></select></td>';
+            html += '<td><div class="custom-file"><input type="file" multiple class="custom-file-input" style="width: 100%; height:30px;" name="items[][image]" id="images_' + number + '"><label class="custom-file-label" for="image">Choose file</label></div></td>';
             if (number > 1) {
                 html += '<td><button style="border: none; background-color: #fff" name="addItems" id="addItems"><i class="fa fa-plus-circle"></i></button></td>';
                 html += '<td><button style="border: none; background-color: #fff" name="removeItems" id="removeItems"><i class="fa fa-minus-circle"></i></button></td></tr>';
@@ -110,7 +104,6 @@
             } else {
                 html += '<td><button style="border: none; background-color: #fff" name="addItems" id="addItems"><i class="fa fa-plus-circle"></i></button></td>';
                 html += '<td></td></tr>';
-                fetchPriorities();
                 $('#itemsDetailTableBody').html(html);
 
             }
@@ -126,16 +119,6 @@
             itemsCount--;
             $(this).closest("tr").remove();
         });
-
-        function fetchPriorities()
-        {
-            var priority = $('#priority_'+itemsCount+'');
-            $('#priority_'+itemsCount+'').children().remove().end()
-            $.each(priorities, function (priorityVal) {
-                console.log(priorities[priorityVal])
-                priority.append($("<option />").val(priorityVal).text(priorities[priorityVal]));
-            });
-        }
 
         $.ajaxSetup({
             headers: {
