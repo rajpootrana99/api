@@ -24,8 +24,8 @@
                     </div>
                     <div class="row mt-5">
                         <div class="col-sm-6">
-                            <a href="" data-toggle="modal" data-target="#addEnquiry" id="addEnquiryButton" class="btn btn-primary" style="float:left;margin-left: 10px">Orders </a>
-                            <a href="" data-toggle="modal" data-target="#addEnquiry" id="addEnquiryButton" class="btn btn-primary" style="float:left;margin-left: 10px">Enquiries </a>
+                            <a href="" class="btn btn-primary" style="float:left;margin-left: 10px">Orders </a>
+                            <a href="{{route('enquiry.index')}}" class="btn btn-primary" style="float:left;margin-left: 10px">Enquiries </a>
                             <div class="custom-control custom-checkbox" style="display:flex; padding:8px;float:left;margin-left: 30px">
                                 <input type="checkbox" class="custom-control-input" id="customCheck02">
                                 <label class="custom-control-label" for="customCheck02">Hide Archived Items</label>
@@ -150,6 +150,7 @@
                                     <a href="" class="text-dark" data-toggle="collapse" data-target="#collapse_' + task.id + '" aria-expanded="true" aria-controls="collapse_' + task.id + '">\
                                     <strong>Task ID # ' + task.id + ' - ' + task.title + ' : ' + task.site.site + '</strong>\
                                     </a>\
+                                    <a href="task/'+task.id+'/edit" style="border: none; background-color: #fff; float:right;" class="edit_btn"><i class="fa fa-edit"></i></a>\
                                 </div>\
                                 <div id="collapse_' + task.id + '" class="collapse" aria-labelledby="heading' + task.id + '" data-parent="#accordionExample">\
                                     <div class="card-body">\

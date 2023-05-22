@@ -19,8 +19,40 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title mt-4">
+                    <div class="card-title row" style="position:absolute; top:10px; right: 10px;">
                         <a href="" data-toggle="modal" data-target="#addEnquiry" id="addEnquiryButton" class="btn btn-primary" style="float:right;margin-left: 10px"><i class="fa fa-plus"></i> New Enquiry </a>
+                    </div>
+                    <div class="row mt-5">
+                        <div class="col-sm-3">
+                            <a href="" class="btn btn-primary" style="float:left;margin-left: 10px">Jobs </a>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <div class="row">
+                                    <label for="example-search-input" class="col-sm-4 col-form-label text-right">Views</label>
+                                    <div class="col-sm-8">
+                                        <select class="select2 pl-1 form-control" name="status" id="status" style="width: 100%; height:30px !important;">
+                                            <option value="" disabled>Select View</option>
+                                            <option value="0">Pending</option>
+                                            <option selected value="1">In Progress</option>
+                                            <option value="2">Draft</option>
+                                            <option value="3">Submitted</option>
+                                            <option value="4">Won</option>
+                                            <option value="5">Lost</option>
+                                            <option value="6">Cancelled</option>
+                                        </select>
+                                    </div>      
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <div class="row">
+                                <label for="example-search-input" class="col-sm-2 col-form-label text-right">Search</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" type="search" placeholder="Search by desc site or client" id="example-search-input">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div><!--end card-header-->
                 <div class="card-body">
@@ -87,17 +119,23 @@
                         </div>
                         <div class="col-lg-12">
                             <div class="form-group">
-                                <input class="form-control" style="width: 100%; height:30px;" type="text" placeholder="Enter Description" name="description" id="description">
-                                <span class="text-danger error-text description_error"></span>
+                                <select class="select2 pl-1 form-control" name="task_id" id="task_id" style="width: 100%; height:30px;">
+
+                                </select>
+                                <span class="text-danger error-text task_id_error"></span>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <select class="select2 pl-1 form-control" name="status" id="status" style="width: 100%; height:30px;">
                                     <option value="" disabled selected>Select Status</option>
-                                    <option value="0">In Progress</option>
-                                    <option value="1">Review</option>
-                                    <option value="2">Completed</option>
+                                    <option value="0">Pending</option>
+                                    <option value="1">In Progress</option>
+                                    <option value="2">Draft</option>
+                                    <option value="0">Submitted</option>
+                                    <option value="1">Won</option>
+                                    <option value="2">Lost</option>
+                                    <option value="2">Cancelled</option>
                                 </select>
                                 <span class="text-danger error-text status_error"></span>
                             </div>
@@ -106,11 +144,33 @@
                             <div class="form-group">
                                 <select class="select2 pl-1 form-control" name="priority" id="priority" style="width: 100%; height:30px;">
                                     <option value="" disabled selected>Select Priority</option>
+                                    <option value="0">Low</option>
+                                    <option value="1">Medium</option>
+                                    <option value="2">High</option>
+                                    <option value="3">Urgent</option>
+                                </select>
+                                <span class="text-danger error-text priority_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <select class="select2 pl-1 form-control" name="type" id="type" style="width: 100%; height:30px;">
+                                    <option value="" disabled selected>Select Type</option>
                                     <option value="0">None</option>
                                     <option value="1">Low</option>
                                     <option value="2">High</option>
                                 </select>
-                                <span class="text-danger error-text priority_error"></span>
+                                <span class="text-danger error-text type_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                            <select class="select2 pl-1 form-control" name="quote_type" id="quote_type" style="width: 100%; height:30px;">
+                                    <option value="" disabled selected>Select Quote Type</option>
+                                    <option value="0">Fixed Do</option>
+                                    <option value="1">Charge</option>
+                                </select>
+                                <span class="text-danger error-text quote_type_error"></span>
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -133,28 +193,17 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="type" id="type" placeholder="Enter Type">
-                                <span class="text-danger error-text type_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
                                 <input class="form-control" style="width: 100%; height:30px;" type="text" name="requested_by" id="requested_by" placeholder="Enter Requested By">
                                 <span class="text-danger error-text requested_by_error"></span>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="requested_completion" id="requested_completion" placeholder="Enter Requested Completion">
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="requested_completion" id="requested_completion" onfocus="(this.type='date')" onblur="(this.type='text')" placeholder="Enter Requested Completion">
                                 <span class="text-danger error-text requested_completion_error"></span>
                             </div>
                         </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="quote_type" id="quote_type" placeholder="Enter Quote Type">
-                                <span class="text-danger error-text quote_type_error"></span>
-                            </div>
-                        </div>
+                        
                     </div>
                 </div><!--end row-->
                 <div class="modal-footer">
@@ -363,6 +412,22 @@
             });
         }
 
+        function fetchTasks() {
+            $.ajax({
+                type: "GET",
+                url: "fetchTasks",
+                dataType: "json",
+                success: function(response) {
+                    var task_id = $('#task_id');
+                    $('#task_id').children().remove().end();
+                    task_id.append($("<option />").val(0).text('Select Task'));
+                    $.each(response.tasks, function(task) {
+                        task_id.append($("<option />").val(response.tasks[task].id).text(response.tasks[task].title));
+                    });
+                }
+            });
+        }
+
         function fetchClients() {
             $.ajax({
                 type: "GET",
@@ -503,6 +568,7 @@
             e.preventDefault();
             fetchSites();
             fetchClients();
+            fetchTasks();
             $(document).find('span.error-text').text('');
         });
 

@@ -109,6 +109,10 @@ class TaskController extends Controller
             }
         }
         return redirect()->route('task.index');
+    }
 
+    public function edit($task){
+        $task = Task::with('items', 'items.itemGalleries', 'site', 'user')->find($task);
+        return view('task.edit', ['task' => $task]);
     }
 }

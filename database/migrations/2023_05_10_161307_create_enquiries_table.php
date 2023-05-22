@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable()->default();
             $table->unsignedBigInteger('site_id')->nullable()->default();
+            $table->unsignedBigInteger('task_id')->nullable()->default();
             $table->string('description')->nullable()->default('');
             $table->unsignedBigInteger('priority')->nullable()->default(0);
             $table->string('eid')->nullable()->default('');
@@ -40,7 +41,7 @@ return new class extends Migration
             $table->string('forecast_margin')->nullable()->default('');
             $table->float('forecast_profit')->nullable()->default();
             $table->string('month')->nullable()->default('');
-            $table->string('quote_type')->nullable()->default('');
+            $table->integer('quote_type')->nullable()->default(0);
 
             $table->timestamps();
         });
