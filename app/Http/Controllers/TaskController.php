@@ -93,7 +93,6 @@ class TaskController extends Controller
                 'task_id' => $task->id,
                 'description' => $itemData['description'],
                 'priority' => $itemData['priority'],
-                'status'=> $itemData['status'],
                 'progress' => $itemData['progress'],
             ]);
             if ($itemData['image']) {

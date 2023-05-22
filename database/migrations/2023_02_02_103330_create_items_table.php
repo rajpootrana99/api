@@ -18,7 +18,6 @@ return new class extends Migration
             $table->unsignedBigInteger('task_id');
             $table->string('description')->nullable();
             $table->integer('priority')->nullable()->default(0);
-            $table->integer('status')->nullable()->default(0);
             $table->integer('progress')->nullable()->default(0);
             $table->timestamps();
         });

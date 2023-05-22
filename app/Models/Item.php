@@ -13,7 +13,6 @@ class Item extends Model
         'user_id',
         'description',
         'priority',
-        'status',
         'progress'
     ];
 
@@ -29,24 +28,6 @@ class Item extends Model
             2 => 'High',
             1 => 'Medium',
             0 => 'Low',
-        ];
-    }
-
-    public function getStatusAttribute($attribute)
-    {
-        return $this->statusOptions()[$attribute] ?? 0;
-    }
-
-    public function statusOptions()
-    {
-        return [
-            3 => 'Cancelled',
-            2 => 'Invoiced',
-            1 => 'Complete',
-            0 => 'Scheduled',
-            2 => 'Awaiting Approval',
-            1 => 'Quoting',
-            0 => 'Pending',
         ];
     }
 

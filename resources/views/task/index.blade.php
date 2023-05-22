@@ -138,38 +138,39 @@
                     $.each(response.tasks, function(key, task) {
                         var options = new Array();
                         let i = 0;
+                        var client;
                         task.items.forEach(function(p) {
                             // shuffle(tags);
                             options[i] = '<span class="badge badge-info">Item # ' + p.id + '</span>';
                             i = i + 1;
                         });
                         $('#task-section').append('<div class="accordion" id="accordionExample">\
-                                        <div class="card border mb-1 shadow-none">\
-                                            <div class="card-header rounded-0" id="heading_' + task.id + '">\
-                                                <a href="" class="text-dark" data-toggle="collapse" data-target="#collapse_' + task.id + '" aria-expanded="true" aria-controls="collapse_' + task.id + '">\
-                                                <strong>Task ID # ' + task.id + ' - ' + task.title + ' : ' + task.site.site + '</strong>\
-                                                </a>\
-                                            </div>\
-                                            <div id="collapse_' + task.id + '" class="collapse" aria-labelledby="heading' + task.id + '" data-parent="#accordionExample">\
-                                                <div class="card-body">\
-                                                <div class="table-responsive">\
-                                                    <table class="table mb-0">\
-                                                        <thead class="thead-light">\
-                                                            <tr>\
-                                                                <th class="border-top-0">Item ID</th>\
-                                                                <th class="border-top-0">ITem Descrition</th>\
-                                                                <th class="border-top-0">User Name</th>\
-                                                                <th class="border-top-0">Gallery</th>\
-                                                                <th class="border-top-0">Priority</th>\
-                                                                <th class="border-top-0">Status</th>\
-                                                                <th class="border-top-0">Progress</th>\
-                                                            </tr>\
-                                                        </thead>\
-                                                    <tbody id="item-body-' + task.id + '"> </tbody>\
-                                                </div>\
-                                            </div>\
-                                        </div>\
-                                    </div>');
+                            <div class="card border mb-1 shadow-none">\
+                                <div class="card-header rounded-0" id="heading_' + task.id + '">\
+                                    <a href="" class="text-dark" data-toggle="collapse" data-target="#collapse_' + task.id + '" aria-expanded="true" aria-controls="collapse_' + task.id + '">\
+                                    <strong>Task ID # ' + task.id + ' - ' + task.title + ' : ' + task.site.site + '</strong>\
+                                    </a>\
+                                </div>\
+                                <div id="collapse_' + task.id + '" class="collapse" aria-labelledby="heading' + task.id + '" data-parent="#accordionExample">\
+                                    <div class="card-body">\
+                                    <div class="table-responsive">\
+                                        <table class="table mb-0">\
+                                            <thead class="thead-light">\
+                                                <tr>\
+                                                    <th class="border-top-0">Item ID</th>\
+                                                    <th class="border-top-0">ITem Descrition</th>\
+                                                    <th class="border-top-0">User Name</th>\
+                                                    <th class="border-top-0">Gallery</th>\
+                                                    <th class="border-top-0">Priority</th>\
+                                                    <th class="border-top-0">Status</th>\
+                                                    <th class="border-top-0">Progress</th>\
+                                                </tr>\
+                                            </thead>\
+                                        <tbody id="item-body-' + task.id + '"> </tbody>\
+                                    </div>\
+                                </div>\
+                            </div>\
+                        </div>');
                         $.each(task.items, function(key, item) {
                             var priority = '';
                             var status = '';
@@ -181,12 +182,12 @@
                             } else {
                                 priority = '<span class="badge badge-secondary">' + item.priority + '</span>';
                             }
-                            if (item.status === "Completed") {
-                                status = '<span class="badge badge-success">' + item.status + '</span>';
-                            } else if (item.status === "Overdue") {
-                                status = '<span class="badge badge-danger">' + item.status + '</span>';
+                            if (task.status === "Completed") {
+                                status = '<span class="badge badge-success">' + task.status + '</span>';
+                            } else if (task.status === "Overdue") {
+                                status = '<span class="badge badge-danger">' + task.status + '</span>';
                             } else {
-                                status = '<span class="badge badge-secondary">' + item.status + '</span>';
+                                status = '<span class="badge badge-secondary">' + task.status + '</span>';
                             }
                             if (item.item_galleries.length == 0) {
                                 file = 'No image or video file exists';
@@ -197,10 +198,16 @@
                             } else {
                                 file = 'No image or video file exists';
                             }
+                            if(task.user == null)[
+                                client = "No Client"
+                            ]
+                            else{
+                                client = task.user.name;
+                            }
                             $('#item-body-' + task.id).append('<tr>\
                                 <td>' + item.id + '</td>\
                                 <td>' + item.description + '</td>\
-                                <td>Hello</td>\
+                                <td>'+client+'</td>\
                                 <td><button value="' + item.id + '" style="border: none; background-color: none" class="view_galery">' + file + '</button></td>\
                                 <td>' + priority + '</td>\
                                 <td>' + status + '</td>\

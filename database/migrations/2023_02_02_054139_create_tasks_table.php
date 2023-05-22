@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('site_id');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->string('title');
+            $table->integer('status')->nullable()->default(0);
             $table->date('requested_completion')->nullable();
             $table->timestamps();
         });

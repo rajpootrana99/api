@@ -13,8 +13,27 @@ class Task extends Model
         'site_id',
         'user_id',
         'title',
+        'status',
         'requested_completion',
     ];
+
+    public function getStatusAttribute($attribute)
+    {
+        return $this->statusOptions()[$attribute] ?? 0;
+    }
+
+    public function statusOptions()
+    {
+        return [
+            3 => 'Cancelled',
+            2 => 'Invoiced',
+            1 => 'Complete',
+            0 => 'Scheduled',
+            2 => 'Awaiting Approval',
+            1 => 'Quoting',
+            0 => 'Pending',
+        ];
+    }
 
     public function user()
     {

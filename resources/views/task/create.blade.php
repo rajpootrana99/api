@@ -50,6 +50,21 @@
                                     <span class="text-danger error-text requested_completion_error"></span>
                                 </div>
                             </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <select class="select2 pl-1 form-control" name="status" id="status" style="width: 100%; height:30px !important;">
+                                        <option value="" selected disabled>Select Status</option>
+                                        <option value="0">Pending</option>
+                                        <option value="1">Quoting</option>
+                                        <option value="2">Awaiting Approval</option>
+                                        <option value="3">Scheduled</option>
+                                        <option value="4">Complete</option>
+                                        <option value="5">Invoiced</option>
+                                        <option value="6">Cancelled</option>
+                                    </select>
+                                    <span class="text-danger error-text status_error"></span>
+                                </div>
+                            </div>
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header">
@@ -63,7 +78,7 @@
                                                         <th width="3%">#</th>
                                                         <th width="30%">Description</th>
                                                         <th width="10%">Priority</th>
-                                                        <th width="20%">Status</th>
+                                                        <!-- <th width="20%">Status</th> -->
                                                         <th width="20%">Progress</th>
                                                         <th width="20%">Gallery</th>
                                                         <th width="3%"><i class="fa fa-plus-circle"></i></th>
@@ -100,7 +115,7 @@
             html += '<td>' + number + '</td>';
             html += '<td><input type="text" style="height: 30px" name="items[' + number + '][description]" id="description_' + number + '" class="form-control" /></td>';
             html += '<td><select class="select2 form-control" name="items[' + number + '][priority]" id="priority_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Priority"><option value="0">Low</option><option value="1">Medium</option><option value="2">High</option><option value="3">Urgent</option></select></td>';
-            html += '<td><select class="select2 form-control" name="items[' + number + '][status]" id="status_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Status"><option value="0">Pending</option><option value="1">Quoting</option><option value="2">Awaiting Approval</option><option value="3">Scheduled</option><option value="4">Complete</option><option value="5">Invoiced</option><option value="6">Cancelled</option></select></td>';
+            // html += '<td><select class="select2 form-control" name="items[' + number + '][status]" id="status_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Status"><option value="0">Pending</option><option value="1">Quoting</option><option value="2">Awaiting Approval</option><option value="3">Scheduled</option><option value="4">Complete</option><option value="5">Invoiced</option><option value="6">Cancelled</option></select></td>';
             html += '<td><select class="select2 form-control" name="items[' + number + '][progress]" id="progress_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Progress"><option value="0">Quote</option><option value="1">Order</option></select></td>';
             html += '<td><div class="custom-file"><input type="file" multiple class="custom-file-input" style="width: 100%; height:30px;" name="items[' + number + '][image][]" id="images_' + number + '"><label class="custom-file-label" for="image">Choose file</label></div></td>';
             if (number > 1) {
