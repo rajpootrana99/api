@@ -200,7 +200,7 @@
                             $('#item-body-' + task.id).append('<tr>\
                                 <td>' + item.id + '</td>\
                                 <td>' + item.description + '</td>\
-                                <td>' + task.user.name + '</td>\
+                                <td>Hello</td>\
                                 <td><button value="' + item.id + '" style="border: none; background-color: none" class="view_galery">' + file + '</button></td>\
                                 <td>' + priority + '</td>\
                                 <td>' + status + '</td>\
