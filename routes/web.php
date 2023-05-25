@@ -10,6 +10,7 @@ use App\Http\Controllers\SiteUserController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\QuoteController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -58,6 +59,8 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
     Route::get('/fetchJobs', [JobController::class, 'fetchJobs'])->name('job.get');
     Route::resource('enquiry', EnquiryController::class);
     Route::get('/fetchEnquiries', [EnquiryController::class, 'fetchEnquiries'])->name('enquiry.get');
+    Route::resource('quote', QuoteController::class);
+    Route::get('/fetchQuotes', [QuoteController::class, 'fetchQuotes'])->name('quote.get');
     Route::resource('site-user', SiteUserController::class);
     Route::get('/fetchSiteUsers', [SiteUserController::class, 'fetchSiteUsers'])->name('site-user.get');
 });

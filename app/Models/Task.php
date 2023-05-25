@@ -54,4 +54,8 @@ class Task extends Model
     {
         return $this->hasMany(Message::class);
     }
+
+    public function quote(){
+        return $this->hasOne(Quote::class);
+    }
 }
