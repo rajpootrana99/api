@@ -150,7 +150,18 @@
                                     <a href="" class="text-dark" data-toggle="collapse" data-target="#collapse_' + task.id + '" aria-expanded="true" aria-controls="collapse_' + task.id + '">\
                                     <strong>Task ID # ' + task.id + ' - ' + task.title + ' : ' + task.site.site + '</strong>\
                                     </a>\
-                                    <a href="task/'+task.id+'/edit" style="border: none; background-color: #fff; float:right;" class="edit_btn"><i class="fa fa-edit"></i></a>\
+                                    <div class="dropdown d-inline-block" style="float:right;">\
+                                        <a class="dropdown-toggle arrow-none" id="dLabel11" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">\
+                                            <i class="las la-ellipsis-v font-20 text-muted"></i>\
+                                        </a>\
+                                        <div style="z-index: 1 !important;" class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel11">\
+                                            <a class="dropdown-item" href="#">Edit</a>\
+                                            <a class="dropdown-item" href="#">Tender</a>\
+                                            <a class="dropdown-item" href="/quote/'+task.id+'">Quote</a>\
+                                            <a class="dropdown-item" href="#">Chat</a>\
+                                            <a class="dropdown-item" href="#">Order</a>\
+                                        </div>\
+                                    </div>\
                                 </div>\
                                 <div id="collapse_' + task.id + '" class="collapse" aria-labelledby="heading' + task.id + '" data-parent="#accordionExample">\
                                     <div class="card-body">\

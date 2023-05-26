@@ -73,9 +73,9 @@ class QuoteController extends Controller
      * @param  \App\Models\Quote  $quote
      * @return \Illuminate\Http\Response
      */
-    public function show(Quote $quote)
+    public function show($quote)
     {
-        //
+        return view('quote.create', ['task' => Task::find($quote)]);
     }
 
     /**
