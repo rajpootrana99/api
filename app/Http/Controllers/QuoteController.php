@@ -66,7 +66,7 @@ class QuoteController extends Controller
             ]);
         }
 
-        return view('enquiry');
+        return view('enquiry.index');
     }
 
     /**
