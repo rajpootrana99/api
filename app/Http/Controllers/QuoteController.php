@@ -19,7 +19,8 @@ class QuoteController extends Controller
         return view('quote.index');
     }
 
-    public function fetchQuotes(){
+    public function fetchQuotes()
+    {
         $quotes = Quote::with('task')->get();
         return response()->json([
             'status' => true,
@@ -45,26 +46,27 @@ class QuoteController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        Validator::make($request->all(), [
             'task_id' => ['required'],
-            'qty' => ['required'],
-            'rate' => ['required'],
-            'margin' => ['required'],
-            'gst' => ['required'],
         ]);
-        if (!$validator->passes()) {
-            return response()->json([
-                'status' => 0,
-                'error' => $validator->errors()->toArray()
+        foreach ($request->quotes as $quoteData) {
+            $quote = Quote::create([
+                'task_id' => $request->task_id,
+                'description' => $quoteData['description'],
+                'cost_code' => $quoteData['cost_code'],
+                'unit' => $quoteData['unit'],
+                'qty' => $quoteData['qty'],
+                'rate' => $quoteData['rate'],
+                'amount' => $quoteData['amount'],
+                'margin' => $quoteData['margin'],
+                'subtotal' => $quoteData['subtotal'],
+                'gst' => 10,
+                'amount_inc_gst' => $quoteData['amount_inc_gst'],
+                'quote_complete' => $quoteData['quote_complete'] ?? ' ',
             ]);
         }
-        $quote = Quote::create($request->all());
-        if ($quote) {
-            return response()->json([
-                'status' => 1,
-                'message' => 'Quote Added Successfully'
-            ]);
-        }
+
+        return view('enquiry');
     }
 
     /**

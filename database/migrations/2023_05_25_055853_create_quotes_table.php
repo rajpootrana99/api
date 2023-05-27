@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('qid')->nullable()->default(0);
             $table->unsignedBigInteger('line')->nullable()->default(0);
             $table->unsignedBigInteger('uid')->nullable()->default(0);
-            $table->string('cost_code')->nullable()->default('');
+            $table->integer('cost_code')->nullable()->default(0);
             $table->string('description')->nullable()->default('');
             $table->string('unit')->nullable()->default('');
             $table->unsignedBigInteger('qty')->nullable()->default(1);
