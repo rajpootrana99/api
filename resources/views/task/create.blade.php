@@ -46,7 +46,7 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text"  name="requested_completion" id="requested_completion" onfocus="(this.type='date')" onblur="(this.type='text')" placeholder="Requested Completion Date">
+                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="requested_completion" id="requested_completion" onfocus="(this.type='date')" onblur="(this.type='text')" placeholder="Requested Completion Date">
                                     <span class="text-danger error-text requested_completion_error"></span>
                                 </div>
                             </div>
@@ -55,12 +55,7 @@
                                     <select class="select2 pl-1 form-control" name="status" id="status" style="width: 100%; height:30px !important;">
                                         <option value="" selected disabled>Select Status</option>
                                         <option value="0">Pending</option>
-                                        <option value="1">Quoting</option>
-                                        <option value="2">Awaiting Approval</option>
-                                        <option value="3">Scheduled</option>
-                                        <option value="4">Complete</option>
-                                        <option value="5">Invoiced</option>
-                                        <option value="6">Cancelled</option>
+                                        <option value="1">Approved</option>
                                     </select>
                                     <span class="text-danger error-text status_error"></span>
                                 </div>

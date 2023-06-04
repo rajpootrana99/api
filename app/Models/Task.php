@@ -25,12 +25,7 @@ class Task extends Model
     public function statusOptions()
     {
         return [
-            6 => 'Cancelled',
-            5 => 'Invoiced',
-            4 => 'Complete',
-            3 => 'Scheduled',
-            2 => 'Awaiting Approval',
-            1 => 'Quoting',
+            1 => 'Approved',
             0 => 'Pending',
         ];
     }
@@ -55,7 +50,8 @@ class Task extends Model
         return $this->hasMany(Message::class);
     }
 
-    public function quote(){
+    public function quote()
+    {
         return $this->hasOne(Quote::class);
     }
 }

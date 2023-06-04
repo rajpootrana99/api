@@ -20,7 +20,18 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-title mt-4">
-                        <a href="" data-toggle="modal" data-target="#addSite" id="addSiteButton" class="btn btn-primary" style="float:right;margin-left: 10px"><i class="fa fa-plus"></i> New Site </a>
+                        <a data-toggle="modal" data-target="#addSite" id="addSiteButton" class="btn btn-primary" style="float:right;margin-left: 10px"><i class="fa fa-plus"></i> New Site </a>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-7"></div>
+                        <div class="form-group col-sm-5">
+                            <div class="row">
+                                <label for="example-search-input" class="col-sm-3 col-form-label text-right">Search</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" type="search" placeholder="Search by Task Title or Store Name" id="example-search-input">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div><!--end card-header-->
                 <div class="card-body">
@@ -35,10 +46,7 @@
                                     <th>State</th>
                                     <th>Post Code</th>
                                     <th>Owner</th>
-                                    <th>Owner ID</th>
-                                    <th>Active</th>
                                     <th width="3%">Modify</th>
-                                    <th width="3%">Delete</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -238,10 +246,7 @@
                             <td>' + site.state + '</td>\
                             <td>' + site.post_code + '</td>\
                             <td>' + site.owner + '</td>\
-                            <td>' + site.owner_id + '</td>\
-                            <td>' + site.active + '</td>\
                             <td><button value="' + site.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
-                            <td><button value="' + site.id + '" style="border: none; background-color: #fff" class="delete_btn"><i class="fa fa-trash"></i></button></td>\
                     </tr>');
                     });
                 }

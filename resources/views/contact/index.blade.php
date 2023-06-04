@@ -22,6 +22,12 @@
                     <div class="card-title mt-4">
                         <a href="" data-toggle="modal" data-target="#addContact" id="addContactButton" class="btn btn-primary" style="float:right;margin-left: 10px"><i class="fa fa-plus"></i> New Contact </a>
                     </div>
+                    <div class="row">
+                        <div class="custom-control custom-checkbox col-sm-3" style="display:flex; padding:8px;float:left;margin-left: 30px">
+                            <input type="checkbox" class="custom-control-input" id="customCheck02">
+                            <label class="custom-control-label" for="customCheck02">Display Active Only</label>
+                        </div>
+                    </div>
                 </div><!--end card-header-->
                 <div class="card-body">
                     <div class="table-responsive">
@@ -35,10 +41,7 @@
                                     <th>Site</th>
                                     <th>Employer</th>
                                     <th>Role</th>
-                                    <th>Emp ID</th>
-                                    <th>Active</th>
                                     <th width="3%">Modify</th>
-                                    <th width="3%">Delete</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -324,10 +327,7 @@
                             <td>' + contact.site.site + '</td>\
                             <td>' + contact.employer + '</td>\
                             <td>' + contact.role + '</td>\
-                            <td>' + contact.emp_id + '</td>\
-                            <td>' + contact.active + '</td>\
                             <td><button value="' + contact.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
-                            <td><button value="' + contact.id + '" style="border: none; background-color: #fff" class="delete_btn"><i class="fa fa-trash"></i></button></td>\
                     </tr>');
                     });
                 }

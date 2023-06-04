@@ -24,9 +24,6 @@
                     </div>
                     <div class="row mt-5">
                         <div class="col-sm-3">
-                            <a href="" class="btn btn-primary" style="float:left;margin-left: 10px">Jobs </a>
-                        </div>
-                        <div class="col-sm-3">
                             <div class="form-group">
                                 <div class="row">
                                     <label for="example-search-input" class="col-sm-4 col-form-label text-right">Views</label>
@@ -41,11 +38,12 @@
                                             <option value="5">Lost</option>
                                             <option value="6">Cancelled</option>
                                         </select>
-                                    </div>      
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group col-sm-6">
+                        <div class="col-sm-5"></div>
+                        <div class="form-group col-sm-4">
                             <div class="row">
                                 <label for="example-search-input" class="col-sm-2 col-form-label text-right">Search</label>
                                 <div class="col-sm-10">
@@ -66,7 +64,6 @@
                                     <th>Description</th>
                                     <th>Clients</th>
                                     <th>Status</th>
-                                    <th>Completed Date</th>
                                     <th>Quoted Price Ex GST</th>
                                     <th>Profit</th>
                                     <th>Type</th>
@@ -74,7 +71,6 @@
                                     <th>Requested Completion</th>
                                     <th>Quote Type</th>
                                     <th width="3%">Modify</th>
-                                    <th width="3%">Delete</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -165,7 +161,7 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                            <select class="select2 pl-1 form-control" name="quote_type" id="quote_type" style="width: 100%; height:30px;">
+                                <select class="select2 pl-1 form-control" name="quote_type" id="quote_type" style="width: 100%; height:30px;">
                                     <option value="" disabled selected>Select Quote Type</option>
                                     <option value="0">Fixed Do</option>
                                     <option value="1">Charge</option>
@@ -203,7 +199,7 @@
                                 <span class="text-danger error-text requested_completion_error"></span>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div><!--end row-->
                 <div class="modal-footer">
@@ -381,7 +377,6 @@
                             <td>' + enquiry.description + '</td>\
                             <td>' + enquiry.user.name + '</td>\
                             <td>' + enquiry.status + '</td>\
-                            <td>' + enquiry.completed_date + '</td>\
                             <td>' + enquiry.quoted_price_ex_gst + '</td>\
                             <td>' + enquiry.profit + '</td>\
                             <td>' + enquiry.type + '</td>\
@@ -389,7 +384,6 @@
                             <td>' + enquiry.requested_completion + '</td>\
                             <td>' + enquiry.quote_type + '</td>\
                             <td><button value="' + enquiry.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
-                            <td><button value="' + enquiry.id + '" style="border: none; background-color: #fff" class="delete_btn"><i class="fa fa-trash"></i></button></td>\
                     </tr>');
                     });
                 }

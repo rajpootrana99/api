@@ -65,12 +65,12 @@
                     <div class="col-8">
                         <div class="chat-box-left">
                             <div class="chat-header">
-                                <h4 class="text-center">User</h4>
+                                <h4 class="text-center">Task</h4>
                             </div><!--end chat-search-->
                             <hr>
                             <div data-simplebar>
                                 <div class="tab-content chat-list" id="pills-tabContent">
-                                    <div class="tab-pane fade show active" id="people_list">
+                                    <div class="tab-pane fade show active" id="task_list">
 
                                     </div><!--end general chat-->
                                 </div><!--end tab-content-->
@@ -127,13 +127,13 @@
                     <div class="col-3">
                         <div class="chat-box-left">
                             <div class="chat-header">
-                                <h4 class="text-center">Task</h4>
+                                <h4 class="text-center">User</h4>
                             </div><!--end chat-search-->
                             <hr>
 
                             <div data-simplebar>
                                 <div class="tab-content chat-list" id="pills-tabContent">
-                                    <div class="tab-pane fade show active" id="task_list">
+                                    <div class="tab-pane fade show active" id="people_list">
 
                                     </div><!--end general chat-->
                                 </div><!--end tab-content-->

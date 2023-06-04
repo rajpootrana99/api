@@ -23,15 +23,30 @@
                         <a href="{{route('task.create')}}" class="btn btn-primary" style="float:right;margin-left: 10px"><i class="fa fa-plus"></i> New Task </a>
                     </div>
                     <div class="row mt-5">
-                        <div class="col-sm-6">
-                            <a href="" class="btn btn-primary" style="float:left;margin-left: 10px">Orders </a>
-                            <a href="{{route('enquiry.index')}}" class="btn btn-primary" style="float:left;margin-left: 10px">Enquiries </a>
-                            <div class="custom-control custom-checkbox" style="display:flex; padding:8px;float:left;margin-left: 30px">
-                                <input type="checkbox" class="custom-control-input" id="customCheck02">
-                                <label class="custom-control-label" for="customCheck02">Hide Archived Items</label>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <div class="row">
+                                    <label for="example-search-input" class="col-sm-2 col-form-label text-right">Views</label>
+                                    <div class="col-sm-10">
+                                        <select class="select2 pl-1 form-control" name="status" id="status" style="width: 100%; height:30px !important;">
+                                            <option value="" disabled>Select View</option>
+                                            <option value="0">Pending</option>
+                                            <option selected value="1">In Progress</option>
+                                            <option value="2">Draft</option>
+                                            <option value="3">Submitted</option>
+                                            <option value="4">Won</option>
+                                            <option value="5">Lost</option>
+                                            <option value="6">Cancelled</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group col-sm-6">
+                        <div class="custom-control custom-checkbox col-sm-3" style="display:flex; padding:8px;float:left;margin-left: 30px">
+                            <input type="checkbox" class="custom-control-input" id="customCheck02">
+                            <label class="custom-control-label" for="customCheck02">Hide Archived Items</label>
+                        </div>
+                        <div class="form-group col-sm-4">
                             <div class="row">
                                 <label for="example-search-input" class="col-sm-2 col-form-label text-right">Search</label>
                                 <div class="col-sm-9">
@@ -157,7 +172,7 @@
                                         <div style="z-index: 1 !important;" class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel11">\
                                             <a class="dropdown-item" href="#">Edit</a>\
                                             <a class="dropdown-item" href="#">Tender</a>\
-                                            <a class="dropdown-item" href="/quote/'+task.id+'">Quote</a>\
+                                            <a class="dropdown-item" href="/quote/' + task.id + '">Quote</a>\
                                             <a class="dropdown-item" href="#">Chat</a>\
                                             <a class="dropdown-item" href="#">Order</a>\
                                         </div>\
@@ -210,16 +225,16 @@
                             } else {
                                 file = 'No image or video file exists';
                             }
-                            if(task.user == null)[
+                            if (task.user == null)[
                                 client = "No Client"
                             ]
-                            else{
+                            else {
                                 client = task.user.name;
                             }
                             $('#item-body-' + task.id).append('<tr>\
                                 <td>' + item.id + '</td>\
                                 <td>' + item.description + '</td>\
-                                <td>'+client+'</td>\
+                                <td>' + client + '</td>\
                                 <td><button value="' + item.id + '" style="border: none; background-color: none" class="view_galery">' + file + '</button></td>\
                                 <td>' + priority + '</td>\
                                 <td>' + status + '</td>\
