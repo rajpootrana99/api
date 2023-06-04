@@ -28,7 +28,7 @@
                             <div class="row">
                                 <label for="example-search-input" class="col-sm-3 col-form-label text-right">Search</label>
                                 <div class="col-sm-9">
-                                    <input class="form-control" type="search" placeholder="Search by Task Title or Store Name" id="example-search-input">
+                                    <input class="form-control" type="search" placeholder="Search by Site Name" id="example-search-input">
                                 </div>
                             </div>
                         </div>
