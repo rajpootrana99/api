@@ -73,75 +73,50 @@
                 @csrf
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-lg-6">
+                        <div class="col-lg-12">
                             <div class="form-group">
-                                <div class="row"><label for="site" class="col-sm-12 control-label">Site Name</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" type="text" name="site" id="site">
-                                </div>
+                                    <input class="form-control" type="text" name="site" id="site" placeholder="Enter Site Name" style="width: 100%; height:30px;">
                                 <span class="text-danger error-text site_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <select class="select2 pl-1 form-control user_id" name="user_id[]" multiple="multiple" id="user_id" style="width: 100%; height:30px;">
+
+                                </select>
+                                <span class="text-danger error-text user_id_error"></span>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="site_address" class="col-sm-12 control-label">Site Address</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" type="text" name="site_address" id="site_address">
-                                </div>
+                                    <input class="form-control" type="text" name="site_address" id="site_address" placeholder="Enter Site Address" style="width: 100%; height:30px;">
                                 <span class="text-danger error-text site_address_error"></span>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="suburb" class="col-sm-12 control-label">Suburb</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" type="text" name="suburb" id="suburb">
-                                </div>
+                                    <input class="form-control" type="text" name="suburb" id="suburb" placeholder="Enter Suburb" style="width: 100%; height:30px;">
                                 <span class="text-danger error-text suburb_error"></span>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="state" class="col-sm-12 control-label">State</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" type="text" name="state" id="state">
-                                </div>
+                                    <input class="form-control" type="text" name="state" id="state" placeholder="Enter State" style="width: 100%; height:30px;">
                                 <span class="text-danger error-text state_error"></span>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="post_code" class="col-sm-12 control-label">Post Code</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" type="text" name="post_code" id="post_code">
-                                </div>
+                                    <input class="form-control" type="text" name="post_code" id="post_code" placeholder="Enter Post Code" style="width: 100%; height:30px;">
                                 <span class="text-danger error-text post_code_error"></span>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-12">
                             <div class="form-group">
-                                <div class="row"><label for="owner" class="col-sm-12 control-label">Owner</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" type="text" name="owner" id="owner">
-                                </div>
-                                <span class="text-danger error-text owner_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <div class="row"><label for="owner_id" class="col-sm-12 control-label">Owner ID</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" type="text" name="owner_id" id="owner_id">
-                                </div>
-                                <span class="text-danger error-text owner_id_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <div class="row"><label for="active" class="col-sm-12 control-label">Active</label></div>
                                 <select class="select2 mb-3 pl-1 form-control" name="active" id="active" style="width: 100%; height:30px;">
-                                    <option value="1">y</option>
-                                    <option value="0">n</option>
+                                    <option>Select Active Status</option>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
                                 </select>
                                 <span class="text-danger error-text active_error"></span>
                             </div>
@@ -175,13 +150,53 @@
                         <input type="hidden" id="site_id" name="site_id">
                         <div class="col-lg-12">
                             <div class="form-group">
-                                <div class="row"><label for="edit_site" class="col-form-label text-right">Site</label></div>
-                                <input class="form-control" style="height: 30px;" type="text" name="site" id="edit_site">
+                                    <input class="form-control" type="text" name="site" id="edit_site" placeholder="Enter Site Name" style="width: 100%; height:30px;">
                                 <span class="text-danger error-text site_update_error"></span>
                             </div>
                         </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <select class="select2 pl-1 form-control edit_user_id" name="user_id[]" id="edit_user_id" style="width: 100%; height:30px;" multiple="multiple" >
 
-                    </div><!--end row-->
+                                </select>
+                                <span class="text-danger error-text user_id_update_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                    <input class="form-control" type="text" name="site_address" id="edit_site_address" placeholder="Enter Site Address" style="width: 100%; height:30px;">
+                                <span class="text-danger error-text site_address_update_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                    <input class="form-control" type="text" name="suburb" id="edit_suburb" placeholder="Enter Suburb" style="width: 100%; height:30px;">
+                                <span class="text-danger error-text suburb_update_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                    <input class="form-control" type="text" name="state" id="edit_state" placeholder="Enter State" style="width: 100%; height:30px;">
+                                <span class="text-danger error-text state_update_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                    <input class="form-control" type="text" name="post_code" id="edit_post_code" placeholder="Enter Post Code" style="width: 100%; height:30px;">
+                                <span class="text-danger error-text post_code_update_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <select class="select2 mb-3 pl-1 form-control edit_active" name="active" id="edit_active" style="width: 100%; height:30px;">
+                                    <option>Select Active Status</option>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+                                <span class="text-danger error-text active_update_error"></span>
+                            </div>
+                        </div>
+                    </div>
                 </div><!--end modal-body-->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
@@ -238,6 +253,14 @@
                 success: function(response) {
                     $('tbody').html("");
                     $.each(response.sites, function(key, site) {
+                        var owner = '';
+                        if(site.users){
+                            $.each(site.users, function(key, user) {
+                                owner += " | " + user.name + " | "; 
+                                console.log(owner);
+                            });
+                        }
+                        
                         $('tbody').append('<tr>\
                             <td>' + site.id + '</td>\
                             <td>' + site.site + '</td>\
@@ -245,7 +268,7 @@
                             <td>' + site.suburb + '</td>\
                             <td>' + site.state + '</td>\
                             <td>' + site.post_code + '</td>\
-                            <td>' + site.owner + '</td>\
+                            <td>' + owner + '</td>\
                             <td><button value="' + site.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
                     </tr>');
                     });
@@ -253,8 +276,24 @@
             });
         }
 
+        function fetchClients() {
+            $.ajax({
+                type: "GET",
+                url: "/fetchClients",
+                dataType: "json",
+                success: function(response) {
+                    var user_id = $('#user_id');
+                    $('#user_id').children().remove().end();
+                    $.each(response.users, function(user) {
+                        user_id.append($("<option />").val(response.users[user].id).text(response.users[user].name));
+                    });
+                }
+            });
+        }
+
         $(document).on('click', '#addSiteButton', function(e) {
             e.preventDefault();
+            fetchClients();
             $(document).find('span.error-text').text('');
         });
 
@@ -297,8 +336,28 @@
                         $('#editSite').modal('hide');
                     } else {
                         $('#editSiteLabel').text('Site ID ' + response.site.id);
+                        var active = 1;
+                        if (response.site.active == 'No') {
+                            active = 0;
+                        }
+                        var user_id = $('#edit_user_id');
+                        $('#edit_user_id').children().remove().end();
+                        user_id.append($("<option />").val(0).text('Select Client'));
+                        $.each(response.users, function(user) {
+                            user_id.append($("<option />").val(response.users[user].id).text(response.users[user].name));
+                        });
                         $('#site_id').val(response.site.id);
+                        $('.edit_active').val(active).change();
                         $('#edit_site').val(response.site.site);
+                        $('#edit_site_address').val(response.site.site_address);
+                        $('#edit_suburb').val(response.site.suburb);
+                        $('#edit_state').val(response.site.state);
+                        $('#edit_post_code').val(response.site.post_code);
+                        var users = new Array();
+                        $.each(response.site.users, function(key, user) {
+                            users[key] = user.id;
+                        });
+                        $('#edit_user_id').val(users)
                     }
                 }
             });

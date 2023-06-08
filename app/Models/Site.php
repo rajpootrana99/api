@@ -15,8 +15,6 @@ class Site extends Model
         'suburb',
         'state',
         'post_code',
-        'owner',
-        'owner_id',
         'active',
     ];
 
@@ -28,8 +26,8 @@ class Site extends Model
     public function activeOptions()
     {
         return [
-            1 => 'y',
-            0 => 'n',
+            1 => 'Yes',
+            0 => 'No',
         ];
     }
 

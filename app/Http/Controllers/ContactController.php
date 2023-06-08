@@ -76,9 +76,8 @@ class ContactController extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
         ]);
-        $user->assignRole('Contact');
+        $user->assignRole('Client');
         $contact = Contact::create([
-            'emp_id' => $request->emp_id,
             'site_id' => $request->site_id,
             'user_id' => $user->id,
             'employer' => $request->employer,

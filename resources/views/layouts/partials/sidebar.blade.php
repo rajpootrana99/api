@@ -47,8 +47,8 @@
                 <a href="javascript: void(0);"> <i data-feather="settings" class="align-self-center menu-icon"></i><span>Settings</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                 <ul class="nav-second-level" aria-expanded="false">
                     <li class="nav-item"><a class="nav-link" href="{{ route('user.index')}}"><i class="ti-control-record"></i>User</a></li>
-                    <li class="nav-item"><a class="nav-link" href="sales-{{ route('site-user.index')}}"><i class="ti-control-record"></i>Site User</a></li>
-                    <li class="nav-item"><a class="nav-link" href="sales-{{ route('notification.index')}}"><i class="ti-control-record"></i>Notifications</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('site-user.index')}}"><i class="ti-control-record"></i>Site User</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('notification.index')}}"><i class="ti-control-record"></i>Notifications</a></li>
                 </ul>
             </li>
             <!-- <li>

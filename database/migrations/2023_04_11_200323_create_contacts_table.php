@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('contacts', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('emp_id')->nullable();
             $table->unsignedBigInteger('site_id');
             $table->unsignedBigInteger('user_id');
             $table->string('employer');

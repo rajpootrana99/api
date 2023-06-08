@@ -85,7 +85,7 @@ class AuthController extends Controller
                 'phone' => $request->phone,
                 'password' => Hash::make($request->password),
             ]);
-            $user->assignRole('User');
+            $user->assignRole('Client');
         }
         Token::create([
             'user_id' => $user->id,

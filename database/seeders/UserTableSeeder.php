@@ -26,8 +26,6 @@ class UserTableSeeder extends Seeder
         ]);
 
         Role::create(['name' => 'Admin']);
-        Role::create(['name' => 'User']);
-        Role::create(['name' => 'Contact']);
         Role::create(['name' => 'Client']);
         Role::create(['name' => 'Supplier']);
 

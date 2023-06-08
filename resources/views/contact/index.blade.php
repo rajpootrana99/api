@@ -70,7 +70,6 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="form-group">
-                                <div class="row"><label for="site_id" class="col-sm-12 control-label">Select Site</label></div>
                                 <select class="select2 pl-1 form-control" name="site_id" id="site_id" style="width: 100%; height:30px;">
 
                                 </select>
@@ -79,74 +78,47 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="fname" class="col-sm-12 control-label">First Name</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="fname" id="fname">
-                                </div>
+                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="fname" id="fname" placeholder="Enter First Name">
                                 <span class="text-danger error-text fname_error"></span>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="lname" class="col-sm-12 control-label">Last Name</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="lname" id="lname">
-                                </div>
+                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="lname" id="lname" placeholder="Enter Last Name">
                                 <span class="text-danger error-text lname_error"></span>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="email" class="col-sm-12 control-label">Email</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="email" name="email" id="email">
-                                </div>
+                                    <input class="form-control" style="width: 100%; height:30px;" type="email" name="email" id="email" placeholder="Enter Email">
                                 <span class="text-danger error-text email_error"></span>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="phone" class="col-sm-12 control-label">Mobile</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="number" name="phone" id="phone">
-                                </div>
+                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="phone" id="phone" placeholder="Enter Mobile">
                                 <span class="text-danger error-text phone_error"></span>
                             </div>
                         </div>
 
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="employer" class="col-sm-12 control-label">Employer</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="employer" id="employer">
-                                </div>
+                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="employer" id="employer" placeholder="Enter Employer">
                                 <span class="text-danger error-text employer_error"></span>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="role" class="col-sm-12 control-label">Role</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="role" id="role">
-                                </div>
+                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="role" id="role" placeholder="Enter Role">
                                 <span class="text-danger error-text role_error"></span>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-12">
                             <div class="form-group">
-                                <div class="row"><label for="emp_id" class="col-sm-12 control-label">Emp ID</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="number" name="emp_id" id="emp_id">
-                                </div>
-                                <span class="text-danger error-text emp_id_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <div class="row"><label for="active" class="col-sm-12 control-label">Active</label></div>
                                 <select class="select2 pl-1 form-control" name="active" id="active" style="width: 100%; height:30px;">
-                                    <option value="1">y</option>
-                                    <option value="0">n</option>
+                                    <option>Select Active Status</option>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
                                 </select>
                                 <span class="text-danger error-text active_error"></span>
                             </div>
@@ -180,7 +152,6 @@
                         <input type="hidden" id="contact_id" name="contact_id">
                         <div class="col-lg-12">
                             <div class="form-group">
-                                <div class="row"><label for="edit_site_id" class="col-sm-12 control-label">Select Site</label></div>
                                 <select class="select2 pl-1 form-control edit_site_id" name="site_id" id="edit_site_id" style="width: 100%; height:30px;">
 
                                 </select>
@@ -189,74 +160,47 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="edit_fname" class="col-sm-12 control-label">First Name</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="fname" id="edit_fname">
-                                </div>
+                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="fname" id="edit_fname" placeholder="Enter First Name">
                                 <span class="text-danger error-text fname_update_error"></span>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="edit_lname" class="col-sm-12 control-label">Last Name</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="lname" id="edit_lname">
-                                </div>
+                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="lname" id="edit_lname" placeholder="Enter Last Name">
                                 <span class="text-danger error-text lname_update_error"></span>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="edit_email" class="col-sm-12 control-label">Email</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="email" name="email" id="edit_email">
-                                </div>
+                                    <input class="form-control" style="width: 100%; height:30px;" type="email" name="email" id="edit_email" placeholder="Enter Email">
                                 <span class="text-danger error-text email_update_error"></span>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="edit_phone" class="col-sm-12 control-label">Mobile</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="number" name="phone" id="edit_phone">
-                                </div>
+                                    <input class="form-control" style="width: 100%; height:30px;" type="number" name="phone" id="edit_phone" placeholder="Enter Mobile">
                                 <span class="text-danger error-text phone_update_error"></span>
                             </div>
                         </div>
 
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="edit_employer" class="col-sm-12 control-label">Employer</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="employer" id="edit_employer">
-                                </div>
+                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="employer" id="edit_employer" placeholder="Enter Employer">
                                 <span class="text-danger error-text employer_update_error"></span>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="edit_role" class="col-sm-12 control-label">Role</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="role" id="edit_role">
-                                </div>
+                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="role" id="edit_role" placeholder="Enter Role">
                                 <span class="text-danger error-text role_update_error"></span>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-12">
                             <div class="form-group">
-                                <div class="row"><label for="edit_emp_id" class="col-sm-12 control-label">Emp ID</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="number" name="emp_id" id="edit_emp_id">
-                                </div>
-                                <span class="text-danger error-text emp_id_update_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <div class="row"><label for="edit_active" class="col-sm-12 control-label">Active</label></div>
                                 <select class="select2 pl-1 form-control edit_active" name="active" id="edit_active" style="width: 100%; height:30px;">
-                                    <option value="1">y</option>
-                                    <option value="0">n</option>
+                                    <option>Select Active Status</option>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
                                 </select>
                                 <span class="text-danger error-text active_update_error"></span>
                             </div>
@@ -342,6 +286,7 @@
                 success: function(response) {
                     var site_id = $('#site_id');
                     $('#site_id').children().remove().end();
+                    site_id.append($("<option />").val(0).text('Select Site'));
                     $.each(response.sites, function(site) {
                         site_id.append($("<option />").val(response.sites[site].id).text(response.sites[site].site));
                     });
@@ -410,7 +355,7 @@
                     } else {
                         var edit_site_id = $('#edit_site_id');
                         var active = 1;
-                        if (response.contact.active == 'n') {
+                        if (response.contact.active == 'No') {
                             active = 0;
                         }
                         $('#edit_site_id').children().remove().end();
@@ -430,7 +375,6 @@
                         $('#edit_employer').val(response.contact.employer);
                         $('#edit_role').val(response.contact.role);
                         $('#edit_emp_id').val(response.contact.emp_id);
-
                     }
                 }
             });

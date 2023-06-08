@@ -56,6 +56,7 @@
                                         <option value="" selected disabled>Select Status</option>
                                         <option value="0">Pending</option>
                                         <option value="1">Approved</option>
+                                        <option value="2">Cancelled</option>
                                     </select>
                                     <span class="text-danger error-text status_error"></span>
                                 </div>

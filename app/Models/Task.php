@@ -25,6 +25,7 @@ class Task extends Model
     public function statusOptions()
     {
         return [
+            2 => 'Cancelled',
             1 => 'Approved',
             0 => 'Pending',
         ];

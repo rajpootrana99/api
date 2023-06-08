@@ -21,7 +21,7 @@ class SiteController extends Controller
 
     public function fetchSites()
     {
-        $sites = Site::all();
+        $sites = Site::with('users')->get();
         return response()->json([
             'status' => true,
             'sites' => $sites,
@@ -52,8 +52,6 @@ class SiteController extends Controller
             'suburb' => ['required'],
             'state' => ['required'],
             'post_code' => ['required'],
-            'owner' => ['required', 'string', 'min:3'],
-            'owner_id' => ['required', 'integer'],
             'active' => ['required'],
         ]);
         if (!$validator->passes()) {
@@ -61,6 +59,12 @@ class SiteController extends Controller
         }
 
         $site = Site::create($request->all());
+        if($request->user_id){    
+            $users = User::find($request->user_id);
+            for ($count = 0; $count < count($users); $count++) {
+                $users[$count]->sites()->sync($site->id, false);
+            }
+        }
         $user = User::where('email', "info@insitebg.com.au")->first();
         if($user){
             $user->sites()->sync($site, false);
@@ -89,11 +93,13 @@ class SiteController extends Controller
      */
     public function edit($site)
     {
-        $site = Site::where('id', $site)->first();
+        $users = User::role('Client')->get();
+        $site = Site::with('users')->where('id', $site)->first();
         if ($site) {
             return response()->json([
                 'status' => 200,
                 'site' => $site,
+                'users' => $users,
             ]);
         } else {
             return response()->json([
@@ -113,7 +119,12 @@ class SiteController extends Controller
     public function update(Request $request, $site)
     {
         $validator = Validator::make($request->all(), [
-            'site' => ['required', 'string', 'min:3']
+            'site' => ['required', 'string', 'min:3'],
+            'site_address' => ['required', 'string', 'min:3'],
+            'suburb' => ['required'],
+            'state' => ['required'],
+            'post_code' => ['required'],
+            'active' => ['required'],
         ]);
         if (!$validator->passes()) {
             return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
@@ -121,8 +132,11 @@ class SiteController extends Controller
 
         $site = Site::find($site);
         $site->update($request->all());
-        // $site->users()->detach();
-        // $site->users()->attach($request->user_id);
+        $site->users()->detach();
+        $users = User::find($request->user_id);
+        for ($count = 0; $count < count($users); $count++) {
+            $users[$count]->sites()->sync($site->id, false);
+        }
         if ($site) {
             return response()->json(['status' => 1, 'message' => 'Site Updated Successfully']);
         }

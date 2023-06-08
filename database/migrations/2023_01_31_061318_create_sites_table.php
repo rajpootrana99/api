@@ -20,8 +20,6 @@ return new class extends Migration
             $table->string('suburb');
             $table->string('state');
             $table->string('post_code');
-            $table->string('owner');
-            $table->unsignedBigInteger('owner_id');
             $table->integer('active')->default(0);
             $table->timestamps();
         });
