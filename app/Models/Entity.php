@@ -9,7 +9,10 @@ class Entity extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'user_id',
+        'email',
+        'type',
+        'address',
+        'mobile',
         'abn',
         'entity',
         'primary_phone',
@@ -35,13 +38,21 @@ class Entity extends Model
     public function activeOptions()
     {
         return [
-            1 => 'y',
-            0 => 'n',
+            1 => 'Yes',
+            0 => 'No',
         ];
     }
 
-    public function user()
+    public function getTypeAttribute($attribute)
     {
-        return $this->belongsTo(User::class);
+        return $this->typeOptions()[$attribute] ?? 0;
+    }
+
+    public function typeOptions()
+    {
+        return [
+            1 => 'Supplier',
+            0 => 'Client',
+        ];
     }
 }

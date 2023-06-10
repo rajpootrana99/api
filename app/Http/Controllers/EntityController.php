@@ -22,7 +22,7 @@ class EntityController extends Controller
 
     public function fetchEntities()
     {
-        $entities = Entity::with('user.roles')->get();
+        $entities = Entity::all();
         if (count($entities) > 0) {
             return response()->json([
                 'status' => true,
@@ -63,9 +63,6 @@ class EntityController extends Controller
                 'error' => $validator->errors()->toArray()
             ]);
         }
-        $user = User::create($request->all());
-        $user->assignRole($request->type);
-        $request->request->add(['user_id' => $user->id]);
         $entity = Entity::create($request->all());
         if ($entity) {
             return response()->json([
@@ -94,7 +91,7 @@ class EntityController extends Controller
      */
     public function edit($entity)
     {
-        $entity = Entity::with('user.roles')->find($entity);
+        $entity = Entity::find($entity);
         if ($entity) {
             return response()->json([
                 'status' => true,
@@ -121,7 +118,7 @@ class EntityController extends Controller
             'type' => ['required', 'integer'],
             'entity' => ['required', 'string', 'min:3'],
         ]);
-        
+
         if (!$validator->passes()) {
             return response()->json([
                 'status' => 0,
@@ -130,9 +127,6 @@ class EntityController extends Controller
         }
 
         $entity = Entity::find($entity);
-        $user = User::find($entity->user_id);
-        $user->update($request->all());
-        $user->syncRoles($request->type);
         $entity = $entity->update($request->all());
         if ($entity) {
             return response()->json([
@@ -152,9 +146,7 @@ class EntityController extends Controller
     {
         $entity = Entity::find($entity);
         if ($entity) {
-            $user = User::find($entity->user_id);
             $entity->delete();
-            $user->delete();
             return response()->json([
                 'status' => true,
                 'message' => 'Entity deleted successfully',

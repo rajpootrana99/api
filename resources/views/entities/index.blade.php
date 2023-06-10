@@ -38,15 +38,9 @@
                                     <th>Mobile</th>
                                     <th>Fax</th>
                                     <th>Director</th>
-                                    <th>Active</th>
                                     <th>Trade</th>
                                     <th>Abbrev</th>
-                                    <th>Contract Signed</th>
-                                    <th>Payment Terms</th>
-                                    <th>PL Expirey</th>
-                                    <th>WC Expirey</th>
                                     <th width="3%">Modify</th>
-                                    <th width="3%">Delete</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -61,205 +55,152 @@
 </div>
 
 <div class="modal fade" id="addEntity" tabindex="-1" role="dialog" aria-labelledby="addEntityLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h6 class="modal-title m-0" id="addEntityTitle">Add Entity</h6>
+            <div class="modal-header bg-primary">
+                <h6 class="modal-title m-0 text-white" id="addEntityLabel">Add Site</h6>
                 <button type="button" class="close " data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true"><i class="la la-times"></i></span>
+                    <span aria-hidden="true"><i class="la la-times text-white"></i></span>
                 </button>
-            </div>
-            <div class="modal-body">
-                <form method="post" id="addEntityForm">
-                    @csrf
+            </div><!--end modal-header-->
+            <form method="post" id="addEntityForm">
+                @csrf
+                <div class="modal-body">
                     <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="type" class="col-sm-12 control-label">Select Type</label></div>
                                 <select class="select2 pl-1 form-control" name="type" id="type" style="width: 100%; height:30px;">
-                                    <option value="4">Client</option>
-                                    <option value="5">Suplier</option>
+                                    <option value="0">Client</option>
+                                    <option value="1">Suplier</option>
                                 </select>
                                 <span class="text-danger error-text type_error"></span>
                             </div>
                         </div>
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="entity" class="col-sm-12 control-label">Entity</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="entity" id="entity">
-                                </div>
-                                <span class="text-danger error-text entity_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <div class="row"><label for="abn" class="col-sm-12 control-label">ABN</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="abn" id="abn">
-                                </div>
-                                <span class="text-danger error-text abn_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <div class="row"><label for="email" class="col-sm-12 control-label">Email</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="email" name="email" id="email">
-                                </div>
-                                <span class="text-danger error-text email_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <div class="row"><label for="address" class="col-sm-12 control-label">Address</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="address" id="address">
-                                </div>
-                                <span class="text-danger error-text address_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <div class="row"><label for="primary_phone" class="col-sm-12 control-label">Primary Phone</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="primary_phone" id="primary_phone">
-                                </div>
-                                <span class="text-danger error-text primary_phone_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <div class="row"><label for="phone" class="col-sm-12 control-label">Mobile</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="phone" id="phone">
-                                </div>
-                                <span class="text-danger error-text phone_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <div class="row"><label for="fax" class="col-sm-12 control-label">Fax</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="fax" id="fax">
-                                </div>
-                                <span class="text-danger error-text fax_error"></span>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <div class="row"><label for="director" class="col-sm-12 control-label">Director</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="director" id="director">
-                                </div>
-                                <span class="text-danger error-text director_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <div class="row"><label for="trade" class="col-sm-12 control-label">Trade</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="trade" id="trade">
-                                </div>
-                                <span class="text-danger error-text trade_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <div class="row"><label for="inc" class="col-sm-12 control-label">Inc</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="inc" id="inc">
-                                </div>
-                                <span class="text-danger error-text inc_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <div class="row"><label for="active" class="col-sm-12 control-label">Active</label></div>
                                 <select class="select2 pl-1 form-control" name="active" id="active" style="width: 100%; height:30px;">
-                                    <option value="1">y</option>
-                                    <option value="0">n</option>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
                                 </select>
                                 <span class="text-danger error-text active_error"></span>
                             </div>
                         </div>
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="abbrev" class="col-sm-12 control-label">Abbrev</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="abbrev" id="abbrev">
-                                </div>
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="entity" id="entity" placeholder="Enter Entity">
+                                <span class="text-danger error-text entity_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <input class="form-control" style="width: 100%; height:30px;" type="email" name="email" id="email" placeholder="Enter Email">
+                                <span class="text-danger error-text email_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="address" id="address" placeholder="Enter Address">
+                                <span class="text-danger error-text address_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="primary_phone" id="primary_phone" placeholder="Enter Primary Phone">
+                                <span class="text-danger error-text primary_phone_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="mobile" id="mobile" placeholder="Enter Mobile">
+                                <span class="text-danger error-text mobile_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="fax" id="fax" placeholder="Enter Fax">
+                                <span class="text-danger error-text fax_error"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="director" id="director" placeholder="Enter Director">
+                                <span class="text-danger error-text director_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="trade" id="trade" placeholder="Enter Trade">
+                                <span class="text-danger error-text trade_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="abn" id="abn" placeholder="Enter ABN">
+                                <span class="text-danger error-text abn_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="inc" id="inc" placeholder="Enter Inc">
+                                <span class="text-danger error-text inc_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="abbrev" id="abbrev" placeholder="Enter Abbrev">
                                 <span class="text-danger error-text abbrev_error"></span>
                             </div>
                         </div>
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="contract_signed" class="col-sm-12 control-label">Contract Signed</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="contract_signed" id="contract_signed">
-                                </div>
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="contract_signed" id="contract_signed" placeholder="Enter Contract Signed">
                                 <span class="text-danger error-text contract_signed_error"></span>
                             </div>
                         </div>
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="payment_terms" class="col-sm-12 control-label">Payment Terms</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="payment_terms" id="payment_terms">
-                                </div>
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="payment_terms" id="payment_terms" placeholder="Enter Payment Terms">
                                 <span class="text-danger error-text payment_terms_error"></span>
                             </div>
                         </div>
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="pl_expirey" class="col-sm-12 control-label">PL Expirey</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="date" name="pl_expirey" id="pl_expirey">
-                                </div>
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" name="pl_expirey" id="pl_expirey" placeholder="Enter PL Expiry">
                                 <span class="text-danger error-text pl_expirey_error"></span>
                             </div>
                         </div>
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="wc_expirey" class="col-sm-12 control-label">WC Expirey</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="date" name="wc_expirey" id="wc_expirey">
-                                </div>
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" name="wc_expirey" id="wc_expirey" placeholder="Enter WC Expiry">
                                 <span class="text-danger error-text wc_expirey_error"></span>
                             </div>
                         </div>
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="item_type" class="col-sm-12 control-label">Item Type</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="item_type" id="item_type">
-                                </div>
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="item_type" id="item_type" placeholder="Enter Item Type">
                                 <span class="text-danger error-text item_type_error"></span>
                             </div>
                         </div>
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="path" class="col-sm-12 control-label">Path</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="path" id="path">
-                                </div>
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="path" id="path" placeholder="Enter Path">
                                 <span class="text-danger error-text path_error"></span>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary btn-sm">Save</button>
-                    </div>
-                </form>
-            </div>
+                </div><!--end row-->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                </div><!--end modal-footer-->
+            </form>
         </div>
-    </div>
+    </div><!--end modal-content-->
 </div>
 
 <div class="modal fade" id="editEntity" tabindex="-1" role="dialog" aria-labelledby="editEntityLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header bg-primary">
                 <h6 class="modal-title m-0 text-white" id="editEntityLabel"></h6>
@@ -267,193 +208,142 @@
                     <span aria-hidden="true"><i class="la la-times text-white"></i></span>
                 </button>
             </div><!--end modal-header-->
-            <div class="modal-body">
-                <form method="post" id="editEntityForm">
-                    @csrf
-                    @method('PATCH')
-                    <input type="hidden" name="entity_id" id="entity_id">
+            <form method="post" id="editEntityForm">
+                @csrf
+                @method('PATCH')
+                <div class="modal-body">
                     <div class="row">
-                        <div class="col-lg-12">
+                        @csrf
+                        @method('PATCH')
+                        <input type="hidden" name="entity_id" id="entity_id">
+                        <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="edit_type" class="col-sm-12 control-label">Select Type</label></div>
                                 <select class="select2 pl-1 form-control edit_type" name="type" id="edit_type" style="width: 100%; height:30px;">
-                                    <option value="4">Client</option>
-                                    <option value="5">Suplier</option>
+                                    <option value="0">Client</option>
+                                    <option value="1">Suplier</option>
                                 </select>
                                 <span class="text-danger error-text type_update_error"></span>
                             </div>
                         </div>
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="edit_entity" class="col-sm-12 control-label">Entity</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="entity" id="edit_entity">
-                                </div>
-                                <span class="text-danger error-text entity_update_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <div class="row"><label for="edit_abn" class="col-sm-12 control-label">ABN</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="abn" id="edit_abn">
-                                </div>
-                                <span class="text-danger error-text abn_update_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <div class="row"><label for="edit_email" class="col-sm-12 control-label">Email</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="email" name="email" id="edit_email">
-                                </div>
-                                <span class="text-danger error-text email_update_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <div class="row"><label for="edit_address" class="col-sm-12 control-label">Address</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="address" id="edit_address">
-                                </div>
-                                <span class="text-danger error-text address_update_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <div class="row"><label for="edit_primary_phone" class="col-sm-12 control-label">Primary Phone</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="primary_phone" id="edit_primary_phone">
-                                </div>
-                                <span class="text-danger error-text primary_phone_update_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <div class="row"><label for="edit_phone" class="col-sm-12 control-label">Mobile</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="phone" id="edit_phone">
-                                </div>
-                                <span class="text-danger error-text phone_update_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <div class="row"><label for="edit_fax" class="col-sm-12 control-label">Fax</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="fax" id="edit_fax">
-                                </div>
-                                <span class="text-danger error-text fax_update_error"></span>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <div class="row"><label for="edit_director" class="col-sm-12 control-label">Director</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="director" id="edit_director">
-                                </div>
-                                <span class="text-danger error-text director_update_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <div class="row"><label for="edit_trade" class="col-sm-12 control-label">Trade</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="trade" id="edit_trade">
-                                </div>
-                                <span class="text-danger error-text trade_update_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <div class="row"><label for="edit_inc" class="col-sm-12 control-label">Inc</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="inc" id="edit_inc">
-                                </div>
-                                <span class="text-danger error-text inc_update_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <div class="row"><label for="edit_active" class="col-sm-12 control-label">Active</label></div>
                                 <select class="select2 pl-1 form-control edit_active" name="active" id="edit_active" style="width: 100%; height:30px;">
-                                    <option value="1">y</option>
-                                    <option value="0">n</option>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
                                 </select>
                                 <span class="text-danger error-text active_update_error"></span>
                             </div>
                         </div>
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="edit_abbrev" class="col-sm-12 control-label">Abbrev</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="abbrev" id="edit_abbrev">
-                                </div>
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="entity" id="edit_entity" placeholder="Enter Entity">
+                                <span class="text-danger error-text entity_update_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <input class="form-control" style="width: 100%; height:30px;" type="email" name="email" id="edit_email" placeholder="Enter Email">
+                                <span class="text-danger error-text email_update_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="address" id="edit_address" placeholder="Enter Address">
+                                <span class="text-danger error-text address_update_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="primary_phone" id="edit_primary_phone" placeholder="Enter Primary Phone">
+                                <span class="text-danger error-text primary_phone_update_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="mobile" id="edit_mobile" placeholder="Enter Mobile">
+                                <span class="text-danger error-text mobile_update_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="fax" id="edit_fax" placeholder="Enter Fax">
+                                <span class="text-danger error-text fax_update_error"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="director" id="edit_director" placeholder="Enter Director">
+                                <span class="text-danger error-text director_update_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="trade" id="edit_trade" placeholder="Enter Trade">
+                                <span class="text-danger error-text trade_update_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="abn" id="edit_abn" placeholder="Enter ABN">
+                                <span class="text-danger error-text abn_update_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="inc" id="edit_inc" placeholder="Enter Inc">
+                                <span class="text-danger error-text inc_update_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="abbrev" id="edit_abbrev" placeholder="Enter Abbrev">
                                 <span class="text-danger error-text abbrev_update_error"></span>
                             </div>
                         </div>
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="edit_contract_signed" class="col-sm-12 control-label">Contract Signed</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="contract_signed" id="edit_contract_signed">
-                                </div>
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="contract_signed" id="edit_contract_signed" placeholder="Enter Contract Signed">
                                 <span class="text-danger error-text contract_signed_update_error"></span>
                             </div>
                         </div>
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="edit_payment_terms" class="col-sm-12 control-label">Payment Terms</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="payment_terms" id="edit_payment_terms">
-                                </div>
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="payment_terms" id="edit_payment_terms" placeholder="Enter Payment Terms">
                                 <span class="text-danger error-text payment_terms_update_error"></span>
                             </div>
                         </div>
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="edit_pl_expirey" class="col-sm-12 control-label">PL Expirey</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="date" name="pl_expirey" id="edit_pl_expirey">
-                                </div>
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" name="pl_expirey" id="edit_pl_expirey" placeholder="Enter PL Expiry">
                                 <span class="text-danger error-text pl_expirey_update_error"></span>
                             </div>
                         </div>
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="edit_wc_expirey" class="col-sm-12 control-label">WC Expirey</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="date" name="wc_expirey" id="edit_wc_expirey">
-                                </div>
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" name="wc_expirey" id="edit_wc_expirey" placeholder="Enter WC Expiry">
                                 <span class="text-danger error-text wc_expirey_update_error"></span>
                             </div>
                         </div>
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="edit_item_type" class="col-sm-12 control-label">Item Type</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="item_type" id="edit_item_type">
-                                </div>
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="item_type" id="edit_item_type" placeholder="Enter Item Type">
                                 <span class="text-danger error-text item_type_update_error"></span>
                             </div>
                         </div>
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
                             <div class="form-group">
-                                <div class="row"><label for="edit_path" class="col-sm-12 control-label">Path</label></div>
-                                <div class="col-sm-12">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="path" id="edit_path">
-                                </div>
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="path" id="edit_path" placeholder="Enter Path">
                                 <span class="text-danger error-text path_update_error"></span>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary btn-sm">Save</button>
-                    </div>
-                </form>
-            </div>
+                </div><!--end modal-body-->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                </div><!--end modal-footer-->
+            </form>
         </div><!--end modal-content-->
     </div><!--end modal-dialog-->
 </div>
@@ -504,30 +394,20 @@
                 success: function(response) {
                     $('tbody').html("");
                     $.each(response.entities, function(key, entity) {
-                        var user_role;
-                        $.each(entity.user.roles, function(key, role) {
-                            user_role = role.name;
-                        });
                         $('tbody').append('<tr>\
                             <td>' + entity.id + '</td>\
-                            <td>' + user_role + '</td>\
+                            <td>' + entity.type + '</td>\
                             <td>' + entity.entity + '</td>\
                             <td>' + entity.abn + '</td>\
-                            <td>' + entity.user.email + '</td>\
-                            <td>' + entity.user.address + '</td>\
+                            <td>' + entity.email + '</td>\
+                            <td>' + entity.address + '</td>\
                             <td>' + entity.primary_phone + '</td>\
-                            <td>' + entity.user.phone + '</td>\
+                            <td>' + entity.mobile + '</td>\
                             <td>' + entity.fax + '</td>\
                             <td>' + entity.director + '</td>\
-                            <td>' + entity.active + '</td>\
                             <td>' + entity.trade + '</td>\
                             <td>' + entity.abbrev + '</td>\
-                            <td>' + entity.contract_signed + '</td>\
-                            <td>' + entity.payment_terms + '</td>\
-                            <td>' + entity.pl_expirey + '</td>\
-                            <td>' + entity.wc_expirey + '</td>\
                             <td><button value="' + entity.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
-                            <td><button value="' + entity.id + '" style="border: none; background-color: #fff" class="delete_btn"><i class="fa fa-trash"></i></button></td>\
                     </tr>');
                     });
                 }
@@ -579,23 +459,23 @@
                         $('#editEntity').modal('hide');
                     } else {
                         var active = 1;
-                        if (response.entity.active == 'n') {
+                        if (response.entity.active == 'No') {
                             active = 0;
                         }
-                        var user_role;
-                        $.each(response.entity.user.roles, function(key, role) {
-                            user_role = role.id;
-                        });
-                        $('.edit_type').val(user_role).change();
+                        var type = 1;
+                        if (response.entity.type == 'Client') {
+                            type = 0;
+                        }
+                        $('.edit_type').val(type).change();
                         $('.edit_active').val(active).change();
                         $('#entity_id').val(response.entity.id);
                         $('#edit_abn').val(response.entity.abn);
                         $('#edit_entity').val(response.entity.entity);
                         $('#editEntityLabel').text('Entity ID ' + response.entity.id);
-                        $('#edit_email').val(response.entity.user.email);
-                        $('#edit_address').val(response.entity.user.address);
+                        $('#edit_email').val(response.entity.email);
+                        $('#edit_address').val(response.entity.address);
                         $('#edit_primary_phone').val(response.entity.primary_phone);
-                        $('#edit_phone').val(response.entity.user.phone);
+                        $('#edit_mobile').val(response.entity.mobile);
                         $('#edit_fax').val(response.entity.fax);
                         $('#edit_director').val(response.entity.director);
                         $('#edit_trade').val(response.entity.trade);

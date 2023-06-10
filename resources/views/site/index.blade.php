@@ -75,7 +75,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="form-group">
-                                    <input class="form-control" type="text" name="site" id="site" placeholder="Enter Site Name" style="width: 100%; height:30px;">
+                                <input class="form-control" type="text" name="site" id="site" placeholder="Enter Site Name" style="width: 100%; height:30px;">
                                 <span class="text-danger error-text site_error"></span>
                             </div>
                         </div>
@@ -89,25 +89,25 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                    <input class="form-control" type="text" name="site_address" id="site_address" placeholder="Enter Site Address" style="width: 100%; height:30px;">
+                                <input class="form-control" type="text" name="site_address" id="site_address" placeholder="Enter Site Address" style="width: 100%; height:30px;">
                                 <span class="text-danger error-text site_address_error"></span>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                    <input class="form-control" type="text" name="suburb" id="suburb" placeholder="Enter Suburb" style="width: 100%; height:30px;">
+                                <input class="form-control" type="text" name="suburb" id="suburb" placeholder="Enter Suburb" style="width: 100%; height:30px;">
                                 <span class="text-danger error-text suburb_error"></span>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                    <input class="form-control" type="text" name="state" id="state" placeholder="Enter State" style="width: 100%; height:30px;">
+                                <input class="form-control" type="text" name="state" id="state" placeholder="Enter State" style="width: 100%; height:30px;">
                                 <span class="text-danger error-text state_error"></span>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                    <input class="form-control" type="text" name="post_code" id="post_code" placeholder="Enter Post Code" style="width: 100%; height:30px;">
+                                <input class="form-control" type="text" name="post_code" id="post_code" placeholder="Enter Post Code" style="width: 100%; height:30px;">
                                 <span class="text-danger error-text post_code_error"></span>
                             </div>
                         </div>
@@ -130,7 +130,6 @@
             </form>
         </div>
     </div><!--end modal-content-->
-</div><!--end modal-dialog-->
 </div>
 
 <div class="modal fade" id="editSite" tabindex="-1" role="dialog" aria-labelledby="editSiteLabel" aria-hidden="true">
@@ -150,13 +149,13 @@
                         <input type="hidden" id="site_id" name="site_id">
                         <div class="col-lg-12">
                             <div class="form-group">
-                                    <input class="form-control" type="text" name="site" id="edit_site" placeholder="Enter Site Name" style="width: 100%; height:30px;">
+                                <input class="form-control" type="text" name="site" id="edit_site" placeholder="Enter Site Name" style="width: 100%; height:30px;">
                                 <span class="text-danger error-text site_update_error"></span>
                             </div>
                         </div>
                         <div class="col-lg-12">
                             <div class="form-group">
-                                <select class="select2 pl-1 form-control edit_user_id" name="user_id[]" id="edit_user_id" style="width: 100%; height:30px;" multiple="multiple" >
+                                <select class="select2 pl-1 form-control edit_user_id" name="user_id[]" id="edit_user_id" style="width: 100%; height:30px;" multiple="multiple">
 
                                 </select>
                                 <span class="text-danger error-text user_id_update_error"></span>
@@ -164,25 +163,25 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                    <input class="form-control" type="text" name="site_address" id="edit_site_address" placeholder="Enter Site Address" style="width: 100%; height:30px;">
+                                <input class="form-control" type="text" name="site_address" id="edit_site_address" placeholder="Enter Site Address" style="width: 100%; height:30px;">
                                 <span class="text-danger error-text site_address_update_error"></span>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                    <input class="form-control" type="text" name="suburb" id="edit_suburb" placeholder="Enter Suburb" style="width: 100%; height:30px;">
+                                <input class="form-control" type="text" name="suburb" id="edit_suburb" placeholder="Enter Suburb" style="width: 100%; height:30px;">
                                 <span class="text-danger error-text suburb_update_error"></span>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                    <input class="form-control" type="text" name="state" id="edit_state" placeholder="Enter State" style="width: 100%; height:30px;">
+                                <input class="form-control" type="text" name="state" id="edit_state" placeholder="Enter State" style="width: 100%; height:30px;">
                                 <span class="text-danger error-text state_update_error"></span>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                    <input class="form-control" type="text" name="post_code" id="edit_post_code" placeholder="Enter Post Code" style="width: 100%; height:30px;">
+                                <input class="form-control" type="text" name="post_code" id="edit_post_code" placeholder="Enter Post Code" style="width: 100%; height:30px;">
                                 <span class="text-danger error-text post_code_update_error"></span>
                             </div>
                         </div>
@@ -254,13 +253,13 @@
                     $('tbody').html("");
                     $.each(response.sites, function(key, site) {
                         var owner = '';
-                        if(site.users){
+                        if (site.users) {
                             $.each(site.users, function(key, user) {
-                                owner += " | " + user.name + " | "; 
+                                owner += " | " + user.name + " | ";
                                 console.log(owner);
                             });
                         }
-                        
+
                         $('tbody').append('<tr>\
                             <td>' + site.id + '</td>\
                             <td>' + site.site + '</td>\

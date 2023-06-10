@@ -15,7 +15,10 @@ return new class extends Migration
     {
         Schema::create('entities', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
+            $table->string('email')->nullable();
+            $table->string('mobile')->nullable();
+            $table->string('address')->nullable();
+            $table->integer('type')->nullable();
             $table->bigInteger('abn')->nullable();
             $table->string('entity')->nullable();
             $table->string('primary_phone')->nullable();
