@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Contact;
 use App\Http\Controllers\Controller;
+use App\Models\Entity;
 use App\Models\Site;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -23,7 +24,7 @@ class ContactController extends Controller
 
     public function fetchContacts()
     {
-        $contacts = Contact::with('site', 'user')->get();
+        $contacts = Contact::with('site', 'user', 'entity')->get();
         if (count($contacts) > 0) {
             return response()->json([
                 'status' => true,
@@ -61,7 +62,7 @@ class ContactController extends Controller
             'lname' => ['required', 'string', 'min:3'],
             'email' => ['required', 'email', 'min:3'],
             'phone' => ['required'],
-            'employer' => ['required', 'string', 'min:3'],
+            'entity_id' => ['required'],
             'role' => ['required', 'string', 'min:3'],
             'active' => ['required', 'integer'],
         ]);
@@ -80,7 +81,7 @@ class ContactController extends Controller
         $contact = Contact::create([
             'site_id' => $request->site_id,
             'user_id' => $user->id,
-            'employer' => $request->employer,
+            'entity_id' => $request->entity_id,
             'role' => $request->role,
             'active' => $request->active,
         ]);
@@ -113,11 +114,13 @@ class ContactController extends Controller
     {
         $contact = Contact::with('user')->find($contact);
         $sites = Site::all();
+        $entities = Entity::all();
         if ($contact) {
             return response()->json([
                 'status' => true,
                 'contact' => $contact,
                 'sites' => $sites,
+                'entities' => $entities,
             ]);
         } else {
             return response()->json([
@@ -142,7 +145,7 @@ class ContactController extends Controller
             'lname' => ['required', 'string', 'min:3'],
             'email' => ['required', 'email', 'min:3'],
             'phone' => ['required'],
-            'employer' => ['required', 'string', 'min:3'],
+            'entity_id' => ['required'],
             'role' => ['required', 'string', 'min:3'],
             'active' => ['required', 'integer'],
         ]);

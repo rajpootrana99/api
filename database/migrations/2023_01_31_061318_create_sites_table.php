@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('sites', function (Blueprint $table) {
             $table->id();
             $table->string('site');
+            $table->unsignedBigInteger('entity_id')->nullable();
             $table->string('site_address');
             $table->string('suburb');
             $table->string('state');

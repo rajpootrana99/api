@@ -70,6 +70,7 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <select class="select2 pl-1 form-control" name="type" id="type" style="width: 100%; height:30px;">
+                                    <option value="" disabled selected>Select Type</option>
                                     <option value="0">Client</option>
                                     <option value="1">Suplier</option>
                                 </select>
@@ -79,6 +80,7 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <select class="select2 pl-1 form-control" name="active" id="active" style="width: 100%; height:30px;">
+                                    <option value="" disabled selected>Select Active</option>
                                     <option value="1">Yes</option>
                                     <option value="0">No</option>
                                 </select>

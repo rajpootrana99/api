@@ -81,10 +81,10 @@
                         </div>
                         <div class="col-lg-12">
                             <div class="form-group">
-                                <select class="select2 pl-1 form-control user_id" name="user_id[]" multiple="multiple" id="user_id" style="width: 100%; height:30px;">
+                                <select class="select2 pl-1 form-control" name="entity_id" id="entity_id" style="width: 100%; height:30px !important;">
 
                                 </select>
-                                <span class="text-danger error-text user_id_error"></span>
+                                <span class="text-danger error-text entity_id_error"></span>
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -114,7 +114,7 @@
                         <div class="col-lg-12">
                             <div class="form-group">
                                 <select class="select2 mb-3 pl-1 form-control" name="active" id="active" style="width: 100%; height:30px;">
-                                    <option>Select Active Status</option>
+                                    <option disabled selected>Select Active</option>
                                     <option value="1">Yes</option>
                                     <option value="0">No</option>
                                 </select>
@@ -155,10 +155,10 @@
                         </div>
                         <div class="col-lg-12">
                             <div class="form-group">
-                                <select class="select2 pl-1 form-control edit_user_id" name="user_id[]" id="edit_user_id" style="width: 100%; height:30px;" multiple="multiple">
+                                <select class="select2 pl-1 form-control edit_entity_id" name="entity_id" id="edit_entity_id" style="width: 100%; height:30px;">
 
                                 </select>
-                                <span class="text-danger error-text user_id_update_error"></span>
+                                <span class="text-danger error-text entity_id_update_error"></span>
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -188,7 +188,7 @@
                         <div class="col-lg-12">
                             <div class="form-group">
                                 <select class="select2 mb-3 pl-1 form-control edit_active" name="active" id="edit_active" style="width: 100%; height:30px;">
-                                    <option>Select Active Status</option>
+                                    <option disabled selected>Select Active</option>
                                     <option value="1">Yes</option>
                                     <option value="0">No</option>
                                 </select>
@@ -252,14 +252,6 @@
                 success: function(response) {
                     $('tbody').html("");
                     $.each(response.sites, function(key, site) {
-                        var owner = '';
-                        if (site.users) {
-                            $.each(site.users, function(key, user) {
-                                owner += " | " + user.name + " | ";
-                                console.log(owner);
-                            });
-                        }
-
                         $('tbody').append('<tr>\
                             <td>' + site.id + '</td>\
                             <td>' + site.site + '</td>\
@@ -267,7 +259,7 @@
                             <td>' + site.suburb + '</td>\
                             <td>' + site.state + '</td>\
                             <td>' + site.post_code + '</td>\
-                            <td>' + owner + '</td>\
+                            <td>' + site.entity.entity + '</td>\
                             <td><button value="' + site.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
                     </tr>');
                     });
@@ -275,16 +267,17 @@
             });
         }
 
-        function fetchClients() {
+        function fetchEntities() {
             $.ajax({
                 type: "GET",
-                url: "/fetchClients",
+                url: "/fetchEntities",
                 dataType: "json",
                 success: function(response) {
-                    var user_id = $('#user_id');
-                    $('#user_id').children().remove().end();
-                    $.each(response.users, function(user) {
-                        user_id.append($("<option />").val(response.users[user].id).text(response.users[user].name));
+                    var entity_id = $('#entity_id');
+                    $('#entity_id').children().remove().end();
+                    entity_id.append($("<option />").text('Select Entity'));
+                    $.each(response.entities, function(entity) {
+                        entity_id.append($("<option />").val(response.entities[entity].id).text(response.entities[entity].entity));
                     });
                 }
             });
@@ -292,7 +285,7 @@
 
         $(document).on('click', '#addSiteButton', function(e) {
             e.preventDefault();
-            fetchClients();
+            fetchEntities();
             $(document).find('span.error-text').text('');
         });
 
@@ -339,11 +332,11 @@
                         if (response.site.active == 'No') {
                             active = 0;
                         }
-                        var user_id = $('#edit_user_id');
-                        $('#edit_user_id').children().remove().end();
-                        user_id.append($("<option />").val(0).text('Select Client'));
-                        $.each(response.users, function(user) {
-                            user_id.append($("<option />").val(response.users[user].id).text(response.users[user].name));
+                        var entity_id = $('#edit_entity_id');
+                        $('#edit_entity_id').children().remove().end();
+                        entity_id.append($("<option />").val(0).text('Select Client'));
+                        $.each(response.entities, function(entity) {
+                            entity_id.append($("<option />").val(response.entities[entity].id).text(response.entities[entity].entity));
                         });
                         $('#site_id').val(response.site.id);
                         $('.edit_active').val(active).change();
@@ -352,11 +345,7 @@
                         $('#edit_suburb').val(response.site.suburb);
                         $('#edit_state').val(response.site.state);
                         $('#edit_post_code').val(response.site.post_code);
-                        var users = new Array();
-                        $.each(response.site.users, function(key, user) {
-                            users[key] = user.id;
-                        });
-                        $('#edit_user_id').val(users)
+                        $('#edit_entity_id').val(response.site.entity_id);
                     }
                 }
             });

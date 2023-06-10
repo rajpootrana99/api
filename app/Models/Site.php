@@ -11,6 +11,7 @@ class Site extends Model
 
     protected $fillable = [
         'site',
+        'entity_id',
         'site_address',
         'suburb',
         'state',
@@ -41,9 +42,9 @@ class Site extends Model
         return $this->hasMany(Task::class);
     }
 
-    public function contact()
+    public function entity()
     {
-        return $this->hasMany(Contact::class);
+        return $this->belongsTo(Entity::class);
     }
 
     public function jobs()

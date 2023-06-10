@@ -78,49 +78,50 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="fname" id="fname" placeholder="Enter First Name">
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="fname" id="fname" placeholder="Enter First Name">
                                 <span class="text-danger error-text fname_error"></span>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="lname" id="lname" placeholder="Enter Last Name">
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="lname" id="lname" placeholder="Enter Last Name">
                                 <span class="text-danger error-text lname_error"></span>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="email" name="email" id="email" placeholder="Enter Email">
+                                <input class="form-control" style="width: 100%; height:30px;" type="email" name="email" id="email" placeholder="Enter Email">
                                 <span class="text-danger error-text email_error"></span>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="phone" id="phone" placeholder="Enter Mobile">
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="phone" id="phone" placeholder="Enter Mobile">
                                 <span class="text-danger error-text phone_error"></span>
                             </div>
                         </div>
-
                         <div class="col-lg-6">
-                            <div class="form-group">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="employer" id="employer" placeholder="Enter Employer">
-                                <span class="text-danger error-text employer_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="role" id="role" placeholder="Enter Role">
-                                <span class="text-danger error-text role_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
                             <div class="form-group">
                                 <select class="select2 pl-1 form-control" name="active" id="active" style="width: 100%; height:30px;">
-                                    <option>Select Active Status</option>
+                                    <option disabled selected>Select Active</option>
                                     <option value="1">Yes</option>
                                     <option value="0">No</option>
                                 </select>
                                 <span class="text-danger error-text active_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <select class="select2 pl-1 form-control" name="entity_id" id="entity_id" style="width: 100%; height:30px;">
+
+                                </select>
+                                <span class="text-danger error-text entity_id_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="role" id="role" placeholder="Enter Role">
+                                <span class="text-danger error-text role_error"></span>
                             </div>
                         </div>
                     </div>
@@ -160,49 +161,50 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="fname" id="edit_fname" placeholder="Enter First Name">
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="fname" id="edit_fname" placeholder="Enter First Name">
                                 <span class="text-danger error-text fname_update_error"></span>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="lname" id="edit_lname" placeholder="Enter Last Name">
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="lname" id="edit_lname" placeholder="Enter Last Name">
                                 <span class="text-danger error-text lname_update_error"></span>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="email" name="email" id="edit_email" placeholder="Enter Email">
+                                <input class="form-control" style="width: 100%; height:30px;" type="email" name="email" id="edit_email" placeholder="Enter Email">
                                 <span class="text-danger error-text email_update_error"></span>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="number" name="phone" id="edit_phone" placeholder="Enter Mobile">
+                                <input class="form-control" style="width: 100%; height:30px;" type="number" name="phone" id="edit_phone" placeholder="Enter Mobile">
                                 <span class="text-danger error-text phone_update_error"></span>
                             </div>
                         </div>
-
                         <div class="col-lg-6">
-                            <div class="form-group">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="employer" id="edit_employer" placeholder="Enter Employer">
-                                <span class="text-danger error-text employer_update_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                    <input class="form-control" style="width: 100%; height:30px;" type="text" name="role" id="edit_role" placeholder="Enter Role">
-                                <span class="text-danger error-text role_update_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
                             <div class="form-group">
                                 <select class="select2 pl-1 form-control edit_active" name="active" id="edit_active" style="width: 100%; height:30px;">
-                                    <option>Select Active Status</option>
+                                    <option disabled selected>Select Active Status</option>
                                     <option value="1">Yes</option>
                                     <option value="0">No</option>
                                 </select>
                                 <span class="text-danger error-text active_update_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <select class="select2 pl-1 form-control edit_entity_id" name="entity_id" id="edit_entity_id" style="width: 100%; height:30px;">
+
+                                </select>
+                                <span class="text-danger error-text entity_id_update_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="role" id="edit_role" placeholder="Enter Role">
+                                <span class="text-danger error-text role_update_error"></span>
                             </div>
                         </div>
 
@@ -269,7 +271,7 @@
                             <td>' + contact.user.email + '</td>\
                             <td>' + contact.user.phone + '</td>\
                             <td>' + contact.site.site + '</td>\
-                            <td>' + contact.employer + '</td>\
+                            <td>' + contact.entity.entity + '</td>\
                             <td>' + contact.role + '</td>\
                             <td><button value="' + contact.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
                     </tr>');
@@ -294,6 +296,23 @@
             });
         }
 
+        function fetchEntities() {
+            $.ajax({
+                type: "GET",
+                url: "fetchEntities",
+                dataType: "json",
+                success: function(response) {
+                    console.log(response);
+                    var entity_id = $('#entity_id');
+                    $('#entity_id').children().remove().end();
+                    entity_id.append($("<option />").text('Select Entity'));
+                    $.each(response.entities, function(key) {
+                        entity_id.append($("<option />").val(response.entities[key].id).text(response.entities[key].entity));
+                    });
+                }
+            });
+        }
+
         function fetchEditSites() {
             $.ajax({
                 type: "GET",
@@ -312,6 +331,7 @@
         $(document).on('click', '#addContactButton', function(e) {
             e.preventDefault();
             fetchSites();
+            fetchEntities();
             $(document).find('span.error-text').text('');
         });
 
@@ -354,6 +374,7 @@
                         $('#editContact').modal('hide');
                     } else {
                         var edit_site_id = $('#edit_site_id');
+                        var edit_entity_id = $('#edit_entity_id');
                         var active = 1;
                         if (response.contact.active == 'No') {
                             active = 0;
@@ -361,6 +382,10 @@
                         $('#edit_site_id').children().remove().end();
                         $.each(response.sites, function(site) {
                             edit_site_id.append($("<option />").val(response.sites[site].id).text(response.sites[site].site));
+                        });
+                        $('#edit_entity_id').children().remove().end();
+                        $.each(response.entities, function(entity) {
+                            edit_entity_id.append($("<option />").val(response.entities[entity].id).text(response.entities[entity].entity));
                         });
                         var name = response.contact.user.name;
                         name = name.split(" ");
@@ -372,9 +397,8 @@
                         $('#edit_lname').val(name[1]);
                         $('#edit_email').val(response.contact.user.email);
                         $('#edit_phone').val(response.contact.user.phone);
-                        $('#edit_employer').val(response.contact.employer);
+                        $('#edit_entity_id').val(response.contact.entity_id).change();
                         $('#edit_role').val(response.contact.role);
-                        $('#edit_emp_id').val(response.contact.emp_id);
                     }
                 }
             });
@@ -384,7 +408,6 @@
             e.preventDefault();
             var contact_id = $('#contact_id').val();
             let EditFormData = new FormData($('#editContactForm')[0]);
-
             $.ajax({
                 type: "post",
                 headers: {

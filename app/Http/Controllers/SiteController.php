@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Entity;
 use App\Models\Site;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -21,7 +22,7 @@ class SiteController extends Controller
 
     public function fetchSites()
     {
-        $sites = Site::with('users')->get();
+        $sites = Site::with('users', 'entity')->get();
         return response()->json([
             'status' => true,
             'sites' => $sites,
@@ -49,6 +50,7 @@ class SiteController extends Controller
         $validator = Validator::make($request->all(), [
             'site' => ['required', 'string', 'min:3'],
             'site_address' => ['required', 'string', 'min:3'],
+            'entity_id' => ['required'],
             'suburb' => ['required'],
             'state' => ['required'],
             'post_code' => ['required'],
@@ -59,17 +61,11 @@ class SiteController extends Controller
         }
 
         $site = Site::create($request->all());
-        if($request->user_id){    
-            $users = User::find($request->user_id);
-            for ($count = 0; $count < count($users); $count++) {
-                $users[$count]->sites()->sync($site->id, false);
-            }
-        }
         $user = User::where('email', "info@insitebg.com.au")->first();
-        if($user){
+        if ($user) {
             $user->sites()->sync($site, false);
         }
-        
+
         if ($site) {
             return response()->json(['status' => 1, 'message' => 'Site Added Successfully']);
         }
@@ -93,13 +89,13 @@ class SiteController extends Controller
      */
     public function edit($site)
     {
-        $users = User::role('Client')->get();
+        $entities = Entity::all();
         $site = Site::with('users')->where('id', $site)->first();
         if ($site) {
             return response()->json([
                 'status' => 200,
                 'site' => $site,
-                'users' => $users,
+                'entities' => $entities,
             ]);
         } else {
             return response()->json([
@@ -132,11 +128,6 @@ class SiteController extends Controller
 
         $site = Site::find($site);
         $site->update($request->all());
-        $site->users()->detach();
-        $users = User::find($request->user_id);
-        for ($count = 0; $count < count($users); $count++) {
-            $users[$count]->sites()->sync($site->id, false);
-        }
         if ($site) {
             return response()->json(['status' => 1, 'message' => 'Site Updated Successfully']);
         }

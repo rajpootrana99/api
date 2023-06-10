@@ -55,4 +55,14 @@ class Entity extends Model
             0 => 'Client',
         ];
     }
+
+    public function contacts()
+    {
+        return $this->hasMany(Contact::class);
+    }
+
+    public function sites()
+    {
+        return $this->hasMany(Site::class);
+    }
 }

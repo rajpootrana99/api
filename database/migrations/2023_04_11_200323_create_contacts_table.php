@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('site_id');
             $table->unsignedBigInteger('user_id');
-            $table->string('employer');
+            $table->unsignedBigInteger('entity_id');
             $table->string('role');
             $table->integer('active')->nullable()->default(1);
             $table->timestamps();

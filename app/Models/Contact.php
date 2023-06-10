@@ -10,7 +10,7 @@ class Contact extends Model
     protected $fillable = [
         'site_id',
         'user_id',
-        'employer',
+        'entity_id',
         'role',
         'active'
     ];
@@ -38,5 +38,10 @@ class Contact extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function entity()
+    {
+        return $this->belongsTo(Entity::class);
     }
 }
