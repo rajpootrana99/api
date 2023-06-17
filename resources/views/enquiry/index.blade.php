@@ -76,6 +76,14 @@
                             <tbody>
 
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="6"><strong>Total</strong></td>
+                                    <td id="total_quoted_price_ex_gst"></td>
+                                    <td id="total_profit"></td>
+                                    <td colspan="5"></td>
+                                </tr>
+                            </tfoot>
                         </table><!--end /table-->
                     </div><!--end /tableresponsive-->
                 </div><!--end card-body-->
@@ -97,22 +105,6 @@
                 @csrf
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <select class="select2 pl-1 form-control" name="site_id" id="site_id" style="width: 100%; height:30px;">
-
-                                </select>
-                                <span class="text-danger error-text site_id_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <select class="select2 pl-1 form-control" name="user_id" id="user_id" style="width: 100%; height:30px;">
-
-                                </select>
-                                <span class="text-danger error-text user_id_error"></span>
-                            </div>
-                        </div>
                         <div class="col-lg-12">
                             <div class="form-group">
                                 <select class="select2 pl-1 form-control" name="task_id" id="task_id" style="width: 100%; height:30px;">
@@ -163,43 +155,13 @@
                             <div class="form-group">
                                 <select class="select2 pl-1 form-control" name="quote_type" id="quote_type" style="width: 100%; height:30px;">
                                     <option value="" disabled selected>Select Quote Type</option>
-                                    <option value="0">Fixed Do</option>
-                                    <option value="1">Charge</option>
+                                    <option value="0">Fixed</option>
+                                    <option value="1">Do</option>
+                                    <option value="2">Charge</option>
                                 </select>
                                 <span class="text-danger error-text quote_type_error"></span>
                             </div>
                         </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="completed_date" id="completed_date" onfocus="(this.type='date')" onblur="(this.type='text')" placeholder="Completed Date">
-                                <span class="text-danger error-text completed_date_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="quoted_price_ex_gst" id="quoted_price_ex_gst" placeholder="Enter Quoted Price Ex GST">
-                                <span class="text-danger error-text quoted_price_ex_gst_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="profit" id="profit" placeholder="Enter Profit">
-                                <span class="text-danger error-text profit_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="requested_by" id="requested_by" placeholder="Enter Requested By">
-                                <span class="text-danger error-text requested_by_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="requested_completion" id="requested_completion" onfocus="(this.type='date')" onblur="(this.type='text')" placeholder="Enter Requested Completion">
-                                <span class="text-danger error-text requested_completion_error"></span>
-                            </div>
-                        </div>
-
                     </div>
                 </div><!--end row-->
                 <div class="modal-footer">
@@ -368,48 +330,50 @@
                 url: "fetchEnquiries",
                 dataType: "json",
                 success: function(response) {
+                    var total_quoted_price_ex_gst = 0;
+                    var total_profit = 0;
                     $('tbody').html("");
                     $.each(response.enquiries, function(key, enquiry) {
+                        console.log(enquiry)
+                        var quoted_price_ex_gst = 0;
+                        var profit = 0;
+                        $.each(enquiry.task.quotes, function(key, quote) {
+                            quoted_price_ex_gst += quote.subtotal;
+                            profit += quote.subtotal - quote.amount;
+                        })
+                        total_quoted_price_ex_gst += quoted_price_ex_gst;
+                        total_profit += profit;
+                        var name = ' ';
+                        if (enquiry.task.user_id != null) {
+                            name = enquiry.task.user.name;
+                        }
                         $('tbody').append('<tr>\
                             <td>' + enquiry.id + '</td>\
                             <td>' + enquiry.priority + '</td>\
-                            <td>' + enquiry.site.site + '</td>\
-                            <td>' + enquiry.description + '</td>\
-                            <td>' + enquiry.user.name + '</td>\
+                            <td>' + enquiry.task.site.site + '</td>\
+                            <td>' + enquiry.task.title + '</td>\
+                            <td>' + enquiry.task.entity.entity + '</td>\
                             <td>' + enquiry.status + '</td>\
-                            <td>' + enquiry.quoted_price_ex_gst + '</td>\
-                            <td>' + enquiry.profit + '</td>\
+                            <td>' + quoted_price_ex_gst + '</td>\
+                            <td>' + profit + '</td>\
                             <td>' + enquiry.type + '</td>\
-                            <td>' + enquiry.requested_by + '</td>\
-                            <td>' + enquiry.requested_completion + '</td>\
+                            <td>' + name + '</td>\
+                            <td>' + enquiry.task.requested_completion + '</td>\
                             <td>' + enquiry.quote_type + '</td>\
                             <td><button value="' + enquiry.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
                     </tr>');
                     });
+
+                    $('#total_quoted_price_ex_gst').html(total_quoted_price_ex_gst);
+                    $('#total_profit').html(total_profit);
                 }
             });
         }
 
-        function fetchSites() {
+        function fetchQuoteTasks() {
             $.ajax({
                 type: "GET",
-                url: "fetchSites",
-                dataType: "json",
-                success: function(response) {
-                    var site_id = $('#site_id');
-                    $('#site_id').children().remove().end();
-                    site_id.append($("<option />").val(0).text('Select Site'));
-                    $.each(response.sites, function(site) {
-                        site_id.append($("<option />").val(response.sites[site].id).text(response.sites[site].site));
-                    });
-                }
-            });
-        }
-
-        function fetchTasks() {
-            $.ajax({
-                type: "GET",
-                url: "fetchTasks",
+                url: "fetchQuoteTasks",
                 dataType: "json",
                 success: function(response) {
                     var task_id = $('#task_id');
@@ -560,9 +524,7 @@
 
         $(document).on('click', '#addEnquiryButton', function(e) {
             e.preventDefault();
-            fetchSites();
-            fetchClients();
-            fetchTasks();
+            fetchQuoteTasks();
             $(document).find('span.error-text').text('');
         });
 

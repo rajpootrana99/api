@@ -13,6 +13,9 @@ class Task extends Model
         'site_id',
         'entity_id',
         'user_id',
+        'is_enquiry',
+        'is_job',
+        'is_quote',
         'title',
         'status',
         'requested_completion',
@@ -57,8 +60,8 @@ class Task extends Model
         return $this->hasMany(Message::class);
     }
 
-    public function quote()
+    public function quotes()
     {
-        return $this->hasOne(Quote::class);
+        return $this->hasMany(Quote::class);
     }
 }

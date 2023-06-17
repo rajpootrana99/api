@@ -12,32 +12,11 @@ class Enquiry extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
-        'site_id',
-        'description',
-        'priority',
-        'eid',
-        'item',
-        'uid',
+        'task_id',
         'status',
-        'completed_date',
-        'days_in_progress',
-        'quoted_price_ex_gst',
-        'est_cost_price',
-        'profit',
         'type',
-        'proj_no',
-        'requested_by',
-        'requested_date',
-        'requested_completion',
-        'forecast_start_on_site',
-        'project_duration',
-        'forecast_completion',
-        'forecast_value',
-        'forecast_margin',
-        'forecast_profit',
-        'month',
         'quote_type',
+        'priority',
     ];
 
     public function getStatusAttribute($attribute)
@@ -81,8 +60,9 @@ class Enquiry extends Model
     public function quoteTypeOptions()
     {
         return [
-            1 => 'Charge',
-            0 => 'Fixed Do',
+            2 => 'Charge',
+            1 => 'Do',
+            0 => 'Fixed',
         ];
     }
 
@@ -100,13 +80,8 @@ class Enquiry extends Model
         ];
     }
 
-    public function user()
+    public function task()
     {
-        return $this->belongsTo(User::class);
-    }
-
-    public function site()
-    {
-        return $this->belongsTo(Site::class);
+        return $this->belongsTo(Task::class);
     }
 }

@@ -25,6 +25,22 @@ class TaskController extends Controller
         ]);
     }
 
+    public function fetchQuoteTasks()
+    {
+        $tasks = Task::where(['is_quote' => 1])->get();
+        if (count($tasks) > 0) {
+            return response()->json([
+                'status' => true,
+                'tasks' => $tasks,
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'No Quoted Task Found',
+            ]);
+        }
+    }
+
     public function fetchUserTasks($user)
     {
         $tasks = Task::with('user', 'site', 'items', 'items.itemGalleries')->where('user_id', $user)->get();

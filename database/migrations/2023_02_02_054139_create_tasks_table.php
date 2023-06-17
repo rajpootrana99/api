@@ -20,6 +20,9 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id')->nullable();
             $table->string('title');
             $table->integer('status')->nullable()->default(0);
+            $table->integer('is_enquiry')->default(0)->nullable();
+            $table->integer('is_job')->default(0)->nullable();
+            $table->integer('is_quote')->default(0)->nullable();
             $table->date('requested_completion')->nullable();
             $table->timestamps();
         });

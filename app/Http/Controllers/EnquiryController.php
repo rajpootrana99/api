@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Enquiry;
 use App\Models\Site;
+use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -22,7 +23,7 @@ class EnquiryController extends Controller
 
     public function fetchEnquiries()
     {
-        $enquiries = Enquiry::with('site', 'user')->get();
+        $enquiries = Enquiry::with('task.quotes', 'task.site', 'task.user', 'task.entity')->get();
         return response()->json([
             'enquiries' => $enquiries,
         ]);
@@ -47,8 +48,7 @@ class EnquiryController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'site_id' => ['required', 'integer'],
-            'description' => ['required', 'string', 'min:3'],
+            'task_id' => ['required', 'integer'],
         ]);
         if (!$validator->passes()) {
             return response()->json([
@@ -56,7 +56,11 @@ class EnquiryController extends Controller
                 'error' => $validator->errors()->toArray()
             ]);
         }
-
+        $task = Task::find($request->task_id);
+        $task->update([
+            'status' => 1,
+            'is_enquiry' => 1,
+        ]);
         $enauiry = Enquiry::create($request->all());
         if ($enauiry) {
             return response()->json([

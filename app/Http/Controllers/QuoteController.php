@@ -49,6 +49,10 @@ class QuoteController extends Controller
         Validator::make($request->all(), [
             'task_id' => ['required'],
         ]);
+        $task = Task::find($request->task_id);
+        $task->update([
+            'is_quote' => 1,
+        ]);
         foreach ($request->quotes as $quoteData) {
             $quote = Quote::create([
                 'task_id' => $request->task_id,
