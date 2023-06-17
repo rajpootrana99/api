@@ -11,6 +11,7 @@ class Task extends Model
 
     protected $fillable = [
         'site_id',
+        'entity_id',
         'user_id',
         'title',
         'status',
@@ -34,6 +35,11 @@ class Task extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function entity()
+    {
+        return $this->belongsTo(Entity::class);
     }
 
     public function site()

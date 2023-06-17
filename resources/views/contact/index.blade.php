@@ -38,7 +38,6 @@
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>Mobile</th>
-                                    <th>Site</th>
                                     <th>Employer</th>
                                     <th>Role</th>
                                     <th width="3%">Modify</th>
@@ -68,14 +67,6 @@
                 @csrf
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <select class="select2 pl-1 form-control" name="site_id" id="site_id" style="width: 100%; height:30px;">
-
-                                </select>
-                                <span class="text-danger error-text site_id_error"></span>
-                            </div>
-                        </div>
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <input class="form-control" style="width: 100%; height:30px;" type="text" name="fname" id="fname" placeholder="Enter First Name">
@@ -151,14 +142,6 @@
                 <div class="modal-body">
                     <div class="row">
                         <input type="hidden" id="contact_id" name="contact_id">
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <select class="select2 pl-1 form-control edit_site_id" name="site_id" id="edit_site_id" style="width: 100%; height:30px;">
-
-                                </select>
-                                <span class="text-danger error-text site_id_update_error"></span>
-                            </div>
-                        </div>
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <input class="form-control" style="width: 100%; height:30px;" type="text" name="fname" id="edit_fname" placeholder="Enter First Name">
@@ -270,27 +253,10 @@
                             <td>' + contact.user.name + '</td>\
                             <td>' + contact.user.email + '</td>\
                             <td>' + contact.user.phone + '</td>\
-                            <td>' + contact.site.site + '</td>\
                             <td>' + contact.entity.entity + '</td>\
                             <td>' + contact.role + '</td>\
                             <td><button value="' + contact.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
                     </tr>');
-                    });
-                }
-            });
-        }
-
-        function fetchSites() {
-            $.ajax({
-                type: "GET",
-                url: "fetchSites",
-                dataType: "json",
-                success: function(response) {
-                    var site_id = $('#site_id');
-                    $('#site_id').children().remove().end();
-                    site_id.append($("<option />").val(0).text('Select Site'));
-                    $.each(response.sites, function(site) {
-                        site_id.append($("<option />").val(response.sites[site].id).text(response.sites[site].site));
                     });
                 }
             });
@@ -313,24 +279,8 @@
             });
         }
 
-        function fetchEditSites() {
-            $.ajax({
-                type: "GET",
-                url: "fetchSites",
-                dataType: "json",
-                success: function(response) {
-                    var edit_site_id = $('#edit_site_id');
-                    $('#edit_site_id').children().remove().end();
-                    $.each(response.sites, function(site) {
-                        edit_site_id.append($("<option />").val(response.sites[site].id).text(response.sites[site].site));
-                    });
-                }
-            });
-        }
-
         $(document).on('click', '#addContactButton', function(e) {
             e.preventDefault();
-            fetchSites();
             fetchEntities();
             $(document).find('span.error-text').text('');
         });
@@ -373,16 +323,12 @@
                     if (response.status == false) {
                         $('#editContact').modal('hide');
                     } else {
-                        var edit_site_id = $('#edit_site_id');
                         var edit_entity_id = $('#edit_entity_id');
                         var active = 1;
                         if (response.contact.active == 'No') {
                             active = 0;
                         }
-                        $('#edit_site_id').children().remove().end();
-                        $.each(response.sites, function(site) {
-                            edit_site_id.append($("<option />").val(response.sites[site].id).text(response.sites[site].site));
-                        });
+
                         $('#edit_entity_id').children().remove().end();
                         $.each(response.entities, function(entity) {
                             edit_entity_id.append($("<option />").val(response.entities[entity].id).text(response.entities[entity].entity));
@@ -390,7 +336,6 @@
                         var name = response.contact.user.name;
                         name = name.split(" ");
                         $('#contact_id').val(response.contact.id);
-                        $('.edit_site_id').val(response.contact.site_id).change();
                         $('.edit_active').val(active).change();
                         $('#editContactLabel').text('Contact ID ' + response.contact.id);
                         $('#edit_fname').val(name[0]);

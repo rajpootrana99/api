@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Contact extends Model
 {
     protected $fillable = [
-        'site_id',
         'user_id',
         'entity_id',
         'role',
@@ -28,11 +27,6 @@ class Contact extends Model
             1 => 'Yes',
             0 => 'No',
         ];
-    }
-
-    public function site()
-    {
-        return $this->belongsTo(Site::class);
     }
 
     public function user()

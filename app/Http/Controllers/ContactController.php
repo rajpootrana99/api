@@ -24,7 +24,7 @@ class ContactController extends Controller
 
     public function fetchContacts()
     {
-        $contacts = Contact::with('site', 'user', 'entity')->get();
+        $contacts = Contact::with('user', 'entity')->get();
         if (count($contacts) > 0) {
             return response()->json([
                 'status' => true,
@@ -57,7 +57,6 @@ class ContactController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'site_id' => ['required', 'integer'],
             'fname' => ['required', 'string', 'min:3'],
             'lname' => ['required', 'string', 'min:3'],
             'email' => ['required', 'email', 'min:3'],
@@ -79,7 +78,6 @@ class ContactController extends Controller
         ]);
         $user->assignRole('Client');
         $contact = Contact::create([
-            'site_id' => $request->site_id,
             'user_id' => $user->id,
             'entity_id' => $request->entity_id,
             'role' => $request->role,
@@ -140,7 +138,6 @@ class ContactController extends Controller
     public function update(Request $request, $contact)
     {
         $validator = Validator::make($request->all(), [
-            'site_id' => ['required', 'integer'],
             'fname' => ['required', 'string', 'min:3'],
             'lname' => ['required', 'string', 'min:3'],
             'email' => ['required', 'email', 'min:3'],
