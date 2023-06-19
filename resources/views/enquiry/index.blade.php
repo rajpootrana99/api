@@ -19,9 +19,6 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title row" style="position:absolute; top:10px; right: 10px;">
-                        <a href="" data-toggle="modal" data-target="#addEnquiry" id="addEnquiryButton" class="btn btn-primary" style="float:right;margin-left: 10px"><i class="fa fa-plus"></i> New Enquiry </a>
-                    </div>
                     <div class="row mt-5">
                         <div class="col-sm-3">
                             <div class="form-group">
@@ -59,7 +56,6 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Priority</th>
                                     <th>Site</th>
                                     <th>Description</th>
                                     <th>Clients</th>
@@ -70,7 +66,7 @@
                                     <th>Requested By</th>
                                     <th>Requested Completion</th>
                                     <th>Quote Type</th>
-                                    <th width="3%">Modify</th>
+                                    <th width="3%">Quote</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -78,7 +74,7 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="6"><strong>Total</strong></td>
+                                    <td colspan="5"><strong>Total</strong></td>
                                     <td id="total_quoted_price_ex_gst"></td>
                                     <td id="total_profit"></td>
                                     <td colspan="5"></td>
@@ -337,30 +333,29 @@
                         console.log(enquiry)
                         var quoted_price_ex_gst = 0;
                         var profit = 0;
-                        $.each(enquiry.task.quotes, function(key, quote) {
+                        $.each(enquiry.quotes, function(key, quote) {
                             quoted_price_ex_gst += quote.subtotal;
                             profit += quote.subtotal - quote.amount;
                         })
                         total_quoted_price_ex_gst += quoted_price_ex_gst;
                         total_profit += profit;
                         var name = ' ';
-                        if (enquiry.task.user_id != null) {
+                        if (enquiry.user_id != null) {
                             name = enquiry.task.user.name;
                         }
                         $('tbody').append('<tr>\
                             <td>' + enquiry.id + '</td>\
-                            <td>' + enquiry.priority + '</td>\
-                            <td>' + enquiry.task.site.site + '</td>\
-                            <td>' + enquiry.task.title + '</td>\
-                            <td>' + enquiry.task.entity.entity + '</td>\
+                            <td>' + enquiry.site.site + '</td>\
+                            <td>' + enquiry.title + '</td>\
+                            <td>' + enquiry.entity.entity + '</td>\
                             <td>' + enquiry.status + '</td>\
                             <td>' + quoted_price_ex_gst + '</td>\
                             <td>' + profit + '</td>\
                             <td>' + enquiry.type + '</td>\
                             <td>' + name + '</td>\
-                            <td>' + enquiry.task.requested_completion + '</td>\
+                            <td>' + enquiry.requested_completion + '</td>\
                             <td>' + enquiry.quote_type + '</td>\
-                            <td><button value="' + enquiry.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
+                            <td><a href="/quote/' + enquiry.id + '" style="border: none; background-color: #fff" class=""><i class="fa fa-edit"></i></a></td>\
                     </tr>');
                     });
 

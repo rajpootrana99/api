@@ -23,7 +23,7 @@ class EnquiryController extends Controller
 
     public function fetchEnquiries()
     {
-        $enquiries = Enquiry::with('task.quotes', 'task.site', 'task.user', 'task.entity')->get();
+        $enquiries = Task::with('quotes', 'site', 'user', 'entity')->where(['is_enquiry' => 1])->get();
         return response()->json([
             'enquiries' => $enquiries,
         ]);
@@ -47,27 +47,27 @@ class EnquiryController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'task_id' => ['required', 'integer'],
-        ]);
-        if (!$validator->passes()) {
-            return response()->json([
-                'status' => 0,
-                'error' => $validator->errors()->toArray()
-            ]);
-        }
-        $task = Task::find($request->task_id);
-        $task->update([
-            'status' => 1,
-            'is_enquiry' => 1,
-        ]);
-        $enauiry = Enquiry::create($request->all());
-        if ($enauiry) {
-            return response()->json([
-                'status' => 1,
-                'message' => 'Enquiry Added Successfully'
-            ]);
-        }
+        // $validator = Validator::make($request->all(), [
+        //     'task_id' => ['required', 'integer'],
+        // ]);
+        // if (!$validator->passes()) {
+        //     return response()->json([
+        //         'status' => 0,
+        //         'error' => $validator->errors()->toArray()
+        //     ]);
+        // }
+        // $task = Task::find($request->task_id);
+        // $task->update([
+        //     'status' => 1,
+        //     'is_enquiry' => 1,
+        // ]);
+        // $enauiry = Enquiry::create($request->all());
+        // if ($enauiry) {
+        //     return response()->json([
+        //         'status' => 1,
+        //         'message' => 'Enquiry Added Successfully'
+        //     ]);
+        // }
     }
 
     /**
@@ -76,7 +76,7 @@ class EnquiryController extends Controller
      * @param  \App\Models\Enquiry  $enquiry
      * @return \Illuminate\Http\Response
      */
-    public function show(Enquiry $enquiry)
+    public function show($enquiry)
     {
         //
     }
@@ -87,24 +87,27 @@ class EnquiryController extends Controller
      * @param  \App\Models\Enquiry  $enquiry
      * @return \Illuminate\Http\Response
      */
-    public function edit($enquiry)
+    public function edit($task)
     {
-        $enquiry = Enquiry::with('user', 'site')->find($enquiry);
-        $sites = Site::all();
-        $users = User::role('Client')->get();
-        if ($enquiry) {
-            return response()->json([
-                'status' => true,
-                'enquiry' => $enquiry,
-                'sites' => $sites,
-                'users' => $users,
-            ]);
-        } else {
-            return response()->json([
-                'status' => false,
-                'message' => 'No Enquiry available against this id',
-            ]);
-        }
+        $task = Task::find($task);
+        $task->update([
+            'status' => 1,
+            'is_enquiry' => 1,
+        ]);
+        return redirect()->route('enquiry.index');
+        // $enquiry = Enquiry::with('user', 'site')->find($enquiry);
+        // $sites = Site::all();
+        // $users = User::role('Client')->get();
+        // if ($enquiry) {
+        //     return response()->json([
+        //         'status' => true,
+        //         'enquiry' => $enquiry,
+        //         'sites' => $sites,
+        //         'users' => $users,
+        //     ]);
+        // } else {
+            
+        // }
     }
 
     /**
@@ -116,25 +119,25 @@ class EnquiryController extends Controller
      */
     public function update(Request $request, $enquiry)
     {
-        $validator = Validator::make($request->all(), [
-            'site_id' => ['required', 'integer'],
-            'description' => ['required', 'string', 'min:3'],
-        ]);
-        if (!$validator->passes()) {
-            return response()->json([
-                'status' => 0,
-                'error' => $validator->errors()->toArray()
-            ]);
-        }
+        // $validator = Validator::make($request->all(), [
+        //     'site_id' => ['required', 'integer'],
+        //     'description' => ['required', 'string', 'min:3'],
+        // ]);
+        // if (!$validator->passes()) {
+        //     return response()->json([
+        //         'status' => 0,
+        //         'error' => $validator->errors()->toArray()
+        //     ]);
+        // }
 
-        $enquiry = Enquiry::find($enquiry);
-        $enquiry = $enquiry->update($request->all());
-        if ($enquiry) {
-            return response()->json([
-                'status' => 1,
-                'message' => 'Enquiry Updated Successfully'
-            ]);
-        }
+        // $enquiry = Enquiry::find($enquiry);
+        // $enquiry = $enquiry->update($request->all());
+        // if ($enquiry) {
+        //     return response()->json([
+        //         'status' => 1,
+        //         'message' => 'Enquiry Updated Successfully'
+        //     ]);
+        // }
     }
 
     /**
@@ -145,18 +148,18 @@ class EnquiryController extends Controller
      */
     public function destroy($enquiry)
     {
-        $enquiry = Enquiry::find($enquiry);
-        if ($enquiry) {
-            $enquiry->delete();
-            return response()->json([
-                'status' => true,
-                'message' => 'Enquiry deleted successfully',
-            ]);
-        } else {
-            return response()->json([
-                'status' => false,
-                'message' => 'No enquiry available against this id',
-            ]);
-        }
+        // $enquiry = Enquiry::find($enquiry);
+        // if ($enquiry) {
+        //     $enquiry->delete();
+        //     return response()->json([
+        //         'status' => true,
+        //         'message' => 'Enquiry deleted successfully',
+        //     ]);
+        // } else {
+        //     return response()->json([
+        //         'status' => false,
+        //         'message' => 'No enquiry available against this id',
+        //     ]);
+        // }
     }
 }
