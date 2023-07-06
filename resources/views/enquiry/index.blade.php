@@ -62,7 +62,6 @@
                                     <th>Status</th>
                                     <th>Quoted Price Ex GST</th>
                                     <th>Profit</th>
-                                    <th>Type</th>
                                     <th>Requested By</th>
                                     <th>Requested Completion</th>
                                     <th>Quote Type</th>
@@ -310,6 +309,11 @@
 </div>
 
 <script>
+    let USDollar = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    });
+
     $(document).ready(function() {
 
         $.ajaxSetup({
@@ -330,7 +334,7 @@
                     var total_profit = 0;
                     $('tbody').html("");
                     $.each(response.enquiries, function(key, enquiry) {
-                        console.log(enquiry)
+                        
                         var quoted_price_ex_gst = 0;
                         var profit = 0;
                         $.each(enquiry.quotes, function(key, quote) {
@@ -349,9 +353,8 @@
                             <td>' + enquiry.title + '</td>\
                             <td>' + enquiry.entity.entity + '</td>\
                             <td>' + enquiry.status + '</td>\
-                            <td>' + quoted_price_ex_gst + '</td>\
-                            <td>' + profit + '</td>\
-                            <td>' + enquiry.type + '</td>\
+                            <td>' + USDollar.format(quoted_price_ex_gst) + '</td>\
+                            <td>' + USDollar.format(profit) + '</td>\
                             <td>' + name + '</td>\
                             <td>' + enquiry.requested_completion + '</td>\
                             <td>' + enquiry.quote_type + '</td>\
@@ -359,8 +362,8 @@
                     </tr>');
                     });
 
-                    $('#total_quoted_price_ex_gst').html(total_quoted_price_ex_gst);
-                    $('#total_profit').html(total_profit);
+                    $('#total_quoted_price_ex_gst').html(USDollar.format(total_quoted_price_ex_gst));
+                    $('#total_profit').html(USDollar.format(total_profit));
                 }
             });
         }

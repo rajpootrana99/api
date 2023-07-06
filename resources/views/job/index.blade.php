@@ -94,6 +94,11 @@
 <script>
     $(document).ready(function() {
 
+        let USDollar = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        });
+
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -134,8 +139,8 @@
                             <td>' + job.entity.entity + '</td>\
                             <td>' + job.requested_completion + '</td>\
                             <td>20</td>\
-                            <td>' + quoted_price_ex_gst + '</td>\
-                            <td>' + profit + '</td>\
+                            <td>' + USDollar.format(quoted_price_ex_gst) + '</td>\
+                            <td>' + USDollar.format(profit) + '</td>\
                             <td></td>\
                             <td></td>\
                             <td></td>\
@@ -143,8 +148,8 @@
                     </tr>');
                     });
 
-                    $('#total_quoted_price_ex_gst').html(total_quoted_price_ex_gst);
-                    $('#total_profit').html(total_profit);
+                    $('#total_quoted_price_ex_gst').html(USDollar.format(total_quoted_price_ex_gst));
+                    $('#total_profit').html(USDollar.format(total_profit));
                 }
             });
         }

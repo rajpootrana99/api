@@ -79,6 +79,11 @@
 
 <script>
 
+    let USDollar = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+    });
+
     $(document).ready(function() {
 
         $.ajaxSetup({
@@ -114,18 +119,18 @@
                             <td>' + quote.description + '</td>\
                             <td>' + quote.unit + '</td>\
                             <td>' + quote.qty + '</td>\
-                            <td>' + quote.rate + '</td>\
-                            <td>' + quote.amount + '</td>\
+                            <td>' +USDollar.format(quote.rate) + '</td>\
+                            <td>' +USDollar.format(quote.amount) + '</td>\
                             <td></td>\
-                            <td>' + quote.subtotal + '</td>\
+                            <td>' +USDollar.format(quote.subtotal)  + '</td>\
                             <td></td>\
                             <td></td>\
                             <td><button value="' + quote.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
                         </tr>');
                         $('#total_qty').html(total_qty);
-                        $('#total_rate').html(total_rate);
-                        $('#total_budget').html(total_budget);
-                        $('#total_balance').html(total_balance);
+                        $('#total_rate').html(USDollar.format(total_rate));
+                        $('#total_budget').html(USDollar.format(total_budget));
+                        $('#total_balance').html(USDollar.format(total_balance));
                     });
                 }
             });
