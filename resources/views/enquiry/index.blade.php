@@ -355,7 +355,7 @@
                             <td>' + name + '</td>\
                             <td>' + enquiry.requested_completion + '</td>\
                             <td>' + enquiry.quote_type + '</td>\
-                            <td><a href="/quote/' + enquiry.id + '" style="border: none; background-color: #fff" class=""><i class="fa fa-edit"></i></a></td>\
+                            <td><a href="/quote/' + enquiry.id + '/edit/" style="border: none; background-color: #fff" class=""><i class="fa fa-edit"></i></a></td>\
                     </tr>');
                     });
 

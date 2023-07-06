@@ -61,7 +61,7 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
     Route::resource('enquiry', EnquiryController::class);
     Route::get('/fetchEnquiries', [EnquiryController::class, 'fetchEnquiries'])->name('enquiry.get');
     Route::resource('quote', QuoteController::class);
-    Route::get('/fetchQuotes', [QuoteController::class, 'fetchQuotes'])->name('quote.get');
+    Route::get('/fetchQuotes/{task}', [QuoteController::class, 'fetchQuotes'])->name('quote.get');
     Route::resource('site-user', SiteUserController::class);
     Route::get('/fetchSiteUsers', [SiteUserController::class, 'fetchSiteUsers'])->name('site-user.get');
 });

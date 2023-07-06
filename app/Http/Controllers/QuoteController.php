@@ -19,9 +19,9 @@ class QuoteController extends Controller
         return view('quote.index');
     }
 
-    public function fetchQuotes()
+    public function fetchQuotes($task)
     {
-        $quotes = Quote::with('task')->get();
+        $quotes = Quote::with('task')->where(['task_id' => $task])->get();
         return response()->json([
             'status' => true,
             'quotes' => $quotes,
@@ -35,7 +35,7 @@ class QuoteController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -81,7 +81,8 @@ class QuoteController extends Controller
      */
     public function show($quote)
     {
-        return view('quote.create', ['task' => Task::find($quote)]);
+        $task = Task::with('site')->find($quote);
+        return view('quote.show', ['task' => $task]);
     }
 
     /**
@@ -92,20 +93,7 @@ class QuoteController extends Controller
      */
     public function edit($quote)
     {
-        $tasks = Task::all();
-        $quote = Quote::with('task')->find($quote);
-        if ($quote) {
-            return response()->json([
-                'status' => true,
-                'quote' => $quote,
-                'tasks' => $tasks,
-            ]);
-        } else {
-            return response()->json([
-                'status' => false,
-                'message' => 'No quote available against this id',
-            ]);
-        }
+        return view('quote.create', ['task' => Task::find($quote)]);
     }
 
     /**
