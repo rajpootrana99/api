@@ -78,11 +78,28 @@
     var itemsCount = 1;
     itemsDetailDynamicField(itemsCount);
 
+    fetchEstimates();
+
+    function fetchEstimates() {
+        $.ajax({
+            type: "GET",
+            url: "/fetchEstimates",
+            dataType: "json",
+            success: function(response) {
+                var estimate_id = $('#estimate_id_'+itemsCount);
+                estimate_id.children().remove().end();
+                $.each(response.estimates, function(estimate) {
+                    estimate_id.append($("<option />").val(response.estimates[estimate].id).text(response.estimates[estimate].cost_code+'_'+response.estimates[estimate].item));
+                });
+            }
+        });
+    }
+
     function itemsDetailDynamicField(number) {
         html = '<tr>';
         html += '<td>' + number + '</td>';
         html += '<td><input type="text" style="height: 30px" name="quotes[' + number + '][description]" id="description_' + number + '" class="form-control" /></td>';
-        html += '<td><select class="select2 form-control" name="quotes[' + number + '][cost_code]" id="cost_code_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Cost Code"><option value="0">Painter</option><option value="1">Ceilling</option><option value="2">Window</option><option value="3">Furniture</option></select></td>';
+        html += '<td><select class="select2 form-control" name="quotes[' + number + '][estimate_id]" id="estimate_id_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Cost Code"></select></td>';
         html += '<td><input type="text" style="height: 30px" name="quotes[' + number + '][unit]" id="unit_' + number + '" class="form-control" /></td>';
         html += '<td><input type="number" style="height: 30px" name="quotes[' + number + '][qty]" id="qty_' + number + '" class="form-control" onchange="calculateCost()" /></td>';
         html += '<td><input type="text" style="height: 30px" name="quotes[' + number + '][rate]" id="rate_' + number + '" class="form-control" onchange="calculateCost()" /></td>';
@@ -107,6 +124,7 @@
         e.preventDefault();
         itemsCount++;
         itemsDetailDynamicField(itemsCount);
+        fetchEstimates();
     });
     $(document).on('click', '#removeItems', function(e) {
         e.preventDefault();
@@ -133,40 +151,6 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-        fetchSites();
-        fetchClients();
-
-        function fetchSites() {
-            $.ajax({
-                type: "GET",
-                url: "/fetchSites",
-                dataType: "json",
-                success: function(response) {
-                    var site_id = $('#site_id');
-                    $('#site_id').children().remove().end();
-                    site_id.append($("<option />").val(0).text('Select Site'));
-                    $.each(response.sites, function(site) {
-                        site_id.append($("<option />").val(response.sites[site].id).text(response.sites[site].site));
-                    });
-                }
-            });
-        }
-
-        function fetchClients() {
-            $.ajax({
-                type: "GET",
-                url: "/fetchClients",
-                dataType: "json",
-                success: function(response) {
-                    var user_id = $('#user_id');
-                    $('#user_id').children().remove().end();
-                    user_id.append($("<option />").val(0).text('Select Client'));
-                    $.each(response.users, function(user) {
-                        user_id.append($("<option />").val(response.users[user].id).text(response.users[user].name));
-                    });
-                }
-            });
-        }
 
         $(document).on('click', '.delete_btn', function(e) {
             e.preventDefault();

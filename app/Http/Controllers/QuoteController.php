@@ -57,7 +57,7 @@ class QuoteController extends Controller
             $quote = Quote::create([
                 'task_id' => $request->task_id,
                 'description' => $quoteData['description'],
-                'cost_code' => $quoteData['cost_code'],
+                'estimate_id' => $quoteData['estimate_id'],
                 'unit' => $quoteData['unit'],
                 'qty' => $quoteData['qty'],
                 'rate' => $quoteData['rate'],

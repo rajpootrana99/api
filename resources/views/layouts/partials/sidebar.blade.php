@@ -51,6 +51,7 @@
                 <ul class="nav-second-level" aria-expanded="false">
                     <li class="nav-item"><a class="nav-link" href="{{ route('user.index')}}"><i class="ti-control-record"></i>User</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('site-user.index')}}"><i class="ti-control-record"></i>Site User</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('estimate.index')}}"><i class="ti-control-record"></i>Estimates</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('notification.index')}}"><i class="ti-control-record"></i>Notifications</a></li>
                 </ul>
             </li>
