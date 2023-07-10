@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Estimate;
 use App\Models\Quote;
 use App\Models\Task;
 use Illuminate\Http\Request;
@@ -21,10 +22,12 @@ class QuoteController extends Controller
 
     public function fetchQuotes($task)
     {
-        $quotes = Quote::with('task')->where(['task_id' => $task])->get();
+        $estimates = Estimate::select('header','major_code')->distinct()->get();
+        $quotes = Quote::with('task', 'estimate')->where(['task_id' => $task])->get();
         return response()->json([
             'status' => true,
             'quotes' => $quotes,
+            'estimates' => $estimates,
         ]);
     }
 
