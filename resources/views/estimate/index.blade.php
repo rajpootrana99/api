@@ -330,9 +330,11 @@
             e.preventDefault();
             $.each(headers, function(key, header) {
                 if ($('#header_id').val() == header.id) {
-                    const code = header.code + 1
+                    // prev_code = header.sub_header[header.sub_header.length - 1].code
+                    const code = header.sub_headers[header.sub_headers.length - 1].code + 1
                     console.log(code)
                     const cost_code = '5-' + code.toString().padStart(4, '0');
+                    console.log(cost_code);
                     $('#code').val(code)
                     $('#cost_code').val(cost_code)
 

@@ -21,7 +21,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-title row">
-                    <h3>{{$task->site->site}} - {{$task->title}}</h3>
+                        <h3>{{$task->site->site}} - {{$task->title}}</h3>
                     </div>
                     <div class="row" style="position:absolute; top:10px; right: 20px;">
                         <a href="" data-toggle="modal" data-target="#addQuote" id="addQuoteButton" class="btn btn-primary" style="float:right;margin-left: 10px"><i class="fa fa-plus"></i> New Order </a>
@@ -77,7 +77,6 @@
 
 
 <script>
-
     let USDollar = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'USD',
@@ -92,12 +91,12 @@
         });
 
         fetchQuotes();
-        
+
         function fetchQuotes() {
             var quote_id = $('#task_id_for_quote').val();
             $.ajax({
                 type: "GET",
-                url: '/fetchQuotes/'+quote_id,
+                url: '/fetchQuotes/' + quote_id,
                 dataType: "json",
                 success: function(response) {
                     $('tbody').html("");
@@ -106,43 +105,52 @@
                     var total_budget = 0;
                     var total_balance = 0;
                     var total_value_ordered = 0;
-                    var i=0;
-                    function budgetItems(estimateData){
-                        total_qty += response.quotes[i].qty;
-                        total_rate += response.quotes[i].rate;
-                        total_budget += response.quotes[i].amount;
-                        total_balance += response.quotes[i].subtotal;
-                        $('tbody').append('<tr>\
-                            <td>' + response.quotes[i].id + '</td>\
-                            <td>' + response.quotes[i].estimate.label + '</td>\
-                            <td>' + response.quotes[i].description + '</td>\
-                            <td>' + response.quotes[i].unit + '</td>\
-                            <td>' + response.quotes[i].qty + '</td>\
-                            <td>' +USDollar.format(response.quotes[i].rate) + '</td>\
-                            <td>' +USDollar.format(response.quotes[i].amount) + '</td>\
+                    var i = 0;
+                    $.each(response.headers, function(key, header) {
+                        $('tbody').append('<tr style="background:#F96D22; color: #fff">\
                             <td></td>\
-                            <td>' +USDollar.format(response.quotes[i].subtotal)  + '</td>\
-                            <td></td>\
-                            <td></td>\
-                            <td><button value="' + response.quotes[i].id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
-                        </tr>'); 
-                        i++;
-                        if(i<response.quotes.length){
-                            if(estimateData.major_code === response.quotes[i].estimate.major_code){
-                                budgetItems(estimateData);
-                            }
-                        }
-                    }
-                    $.each(response.estimates, function(key, estimate) {
-                        $('tbody').append('<tr style="background:#000; color: #fff">\
-                            <td></td>\
-                            <td colspan="11"><strong>'+estimate.major_code+'___'+estimate.header+'</strong></td>\
+                            <td colspan="11"><strong>' + header.major_code + '___' + header.header + '</strong></td>\
                         </tr>');
-                        if(i<response.quotes.length){
-                            if(estimate.major_code === response.quotes[i].estimate.major_code){
-                                budgetItems(estimate);
-                            }
-                        }
+                        $.each(header.sub_headers, function(key, subHeader) {
+                            var sub_header_total_budget = 0;
+                            var sub_header_total_balance = 0;
+                            $.each(response.quotes, function(key, quote) {
+                                if (subHeader.cost_code === quote.estimate.sub_header.cost_code) {
+                                    sub_header_total_budget += quote.amount;
+                                    sub_header_total_balance += quote.subtotal;
+                                }
+                            });
+                            $('tbody').append('<tr style="background:#c7c7c7; color: #000">\
+                                <td></td>\
+                                <td colspan="5"><strong>' + subHeader.cost_code + '___' + subHeader.sub_header + '</strong></td>\
+                                <td><strong>' + USDollar.format(sub_header_total_budget) + '</strong></td>\
+                                <td></td>\
+                                <td><strong>' + USDollar.format(sub_header_total_balance) + '</strong></td>\
+                                <td colspan="3"></td>\
+                            </tr>');
+                            $.each(response.quotes, function(key, quote) {
+                                if (subHeader.cost_code === quote.estimate.sub_header.cost_code) {
+                                    total_qty += quote.qty;
+                                    total_rate += quote.rate;
+                                    total_budget += quote.amount;
+                                    total_balance += quote.subtotal;
+                                    $('tbody').append('<tr>\
+                                        <td>' + quote.id + '</td>\
+                                        <td>' + quote.estimate.sub_header.cost_code + '___' + quote.estimate.item + '</td>\
+                                        <td>' + quote.description + '</td>\
+                                        <td>' + quote.unit + '</td>\
+                                        <td>' + quote.qty + '</td>\
+                                        <td>' + USDollar.format(quote.rate) + '</td>\
+                                        <td>' + USDollar.format(quote.amount) + '</td>\
+                                        <td></td>\
+                                        <td>' + USDollar.format(quote.subtotal) + '</td>\
+                                        <td></td>\
+                                        <td></td>\
+                                        <td><button value="' + quote.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
+                                    </tr>');
+                                }
+                            });
+                        })
                     })
                     $('#total_qty').html(total_qty);
                     $('#total_rate').html(USDollar.format(total_rate));

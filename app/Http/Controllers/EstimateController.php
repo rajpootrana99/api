@@ -31,7 +31,7 @@ class EstimateController extends Controller
 
     public function fetchHeaders()
     {
-        $headers = Header::orderBy('id', 'desc')->get();
+        $headers = Header::with('subHeaders')->orderBy('id', 'desc')->get();
         return response()->json([
             'status' => true,
             'headers' => $headers,

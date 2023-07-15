@@ -23,8 +23,8 @@ class QuoteController extends Controller
 
     public function fetchQuotes($task)
     {
-        $headers = Header::with('subHeaders.estimates')->get();
-        $quotes = Quote::with('task', 'estimate')->where(['task_id' => $task])->get();
+        $headers = Header::with('subHeaders.estimates')->orderBy('id', 'desc')->get();
+        $quotes = Quote::with('task', 'estimate.subHeader.header')->where(['task_id' => $task])->get();
         return response()->json([
             'status' => true,
             'quotes' => $quotes,

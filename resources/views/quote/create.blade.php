@@ -86,10 +86,10 @@
             url: "/fetchEstimates",
             dataType: "json",
             success: function(response) {
-                var estimate_id = $('#estimate_id_'+itemsCount);
+                var estimate_id = $('#estimate_id_' + itemsCount);
                 estimate_id.children().remove().end();
                 $.each(response.estimates, function(estimate) {
-                    estimate_id.append($("<option />").val(response.estimates[estimate].id).text(response.estimates[estimate].cost_code+'_'+response.estimates[estimate].item));
+                    estimate_id.append($("<option />").val(response.estimates[estimate].id).text(response.estimates[estimate].sub_header.cost_code + '___' + response.estimates[estimate].item));
                 });
             }
         });
