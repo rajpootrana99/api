@@ -13,8 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('budgets', function (Blueprint $table) {
+        Schema::create('estimates', function (Blueprint $table) {
             $table->id();
+            $table->string('major_code');
+            $table->string('cost_code');
+            $table->string('header');
+            $table->string('sub_header');
+            $table->string('item');
+            $table->string('label');
             $table->timestamps();
         });
     }
@@ -26,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('budgets');
+        Schema::dropIfExists('estimates');
     }
 };

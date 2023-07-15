@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Estimate;
 use App\Models\Quote;
 use App\Models\Task;
 use Illuminate\Http\Request;
@@ -19,12 +20,14 @@ class QuoteController extends Controller
         return view('quote.index');
     }
 
-    public function fetchQuotes()
+    public function fetchQuotes($task)
     {
-        $quotes = Quote::with('task')->get();
+        $estimates = Estimate::select('header','major_code')->distinct()->get();
+        $quotes = Quote::with('task', 'estimate')->where(['task_id' => $task])->get();
         return response()->json([
             'status' => true,
             'quotes' => $quotes,
+            'estimates' => $estimates,
         ]);
     }
 
@@ -35,7 +38,7 @@ class QuoteController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -57,7 +60,7 @@ class QuoteController extends Controller
             $quote = Quote::create([
                 'task_id' => $request->task_id,
                 'description' => $quoteData['description'],
-                'cost_code' => $quoteData['cost_code'],
+                'estimate_id' => $quoteData['estimate_id'],
                 'unit' => $quoteData['unit'],
                 'qty' => $quoteData['qty'],
                 'rate' => $quoteData['rate'],
@@ -81,7 +84,8 @@ class QuoteController extends Controller
      */
     public function show($quote)
     {
-        return view('quote.create', ['task' => Task::find($quote)]);
+        $task = Task::with('site')->find($quote);
+        return view('quote.show', ['task' => $task]);
     }
 
     /**
@@ -92,20 +96,7 @@ class QuoteController extends Controller
      */
     public function edit($quote)
     {
-        $tasks = Task::all();
-        $quote = Quote::with('task')->find($quote);
-        if ($quote) {
-            return response()->json([
-                'status' => true,
-                'quote' => $quote,
-                'tasks' => $tasks,
-            ]);
-        } else {
-            return response()->json([
-                'status' => false,
-                'message' => 'No quote available against this id',
-            ]);
-        }
+        return view('quote.create', ['task' => Task::find($quote)]);
     }
 
     /**

@@ -18,17 +18,6 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="card-title row" style="position:absolute; top:10px; right: 10px;">
-                        <a href="" data-toggle="modal" data-target="#addQuote" id="addQuoteButton" class="btn btn-primary" style="float:right;margin-left: 10px"><i class="fa fa-plus"></i> New Order </a>
-                    </div>
-                    <div class="row mt-5">
-                        <div class="col-sm-6">
-                            <a href="" class="btn btn-primary" style="float:left;margin-left: 10px">Orders by Job</a>
-                            <a href="{{route('enquiry.index')}}" class="btn btn-primary" style="float:left;margin-left: 10px">Orders By </a>
-                        </div>
-                    </div>
-                </div><!--end card-header-->
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-bordered mb-0 table-centered">
@@ -36,14 +25,6 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Header</th>
-                                    <th>Cost Code</th>
-                                    <th>Descritpion</th>
-                                    <th>Unit</th>
-                                    <th>Qty</th>
-                                    <th>Rate</th>
-                                    <th>Budget</th>
-                                    <th>Value Ordered</th>
-                                    <th>Balance</th>
                                     <th width="3%">Modify</th>
                                 </tr>
                             </thead>
@@ -61,31 +42,6 @@
 
 
 <script>
-    function calculateCost() {
-        var rate = $('#rate').val();
-        var qty = $('#qty').val();
-        var margin = $('#margin').val();
-        var gst = $('#gst').val();
-        var amount = parseFloat(rate) * parseFloat(qty);
-        var subtotal = parseFloat(amount) + ((amount / 100) * margin);
-        var amount_inc_gst = parseFloat(subtotal) + parseFloat(gst);
-        $('#amount').val(amount);
-        $('#subtotal').val(subtotal);
-        $('#amount_inc_gst').val(amount_inc_gst);
-    }
-
-    function editCalculateCost() {
-        var rate = $('#edit_rate').val();
-        var qty = $('#edit_qty').val();
-        var margin = $('#edit_margin').val();
-        var gst = $('#edit_gst').val();
-        var amount = parseFloat(rate) * parseFloat(qty);
-        var subtotal = parseFloat(amount) + ((amount / 100) * margin);
-        var amount_inc_gst = parseFloat(subtotal) + parseFloat(gst);
-        $('#edit_amount').val(amount);
-        $('#edit_subtotal').val(subtotal);
-        $('#edit_amount_inc_gst').val(amount_inc_gst);
-    }
 
     $(document).ready(function() {
 
@@ -95,36 +51,7 @@
             }
         });
 
-        fetchQuotes();
-
-        function fetchQuotes() {
-            $.ajax({
-                type: "GET",
-                url: "fetchQuotes",
-                dataType: "json",
-                success: function(response) {
-                    $('tbody').html("");
-                    $.each(response.quotes, function(key, quote) {
-                        $('tbody').append('<tr>\
-                            <td>' + quote.id + '</td>\
-                            <td>' + quote.task.title + '</td>\
-                            <td>' + quote.cost_code + '</td>\
-                            <td>' + quote.description + '</td>\
-                            <td>' + quote.unit + '</td>\
-                            <td>' + quote.qty + '</td>\
-                            <td>' + quote.rate + '</td>\
-                            <td>' + quote.amount + '</td>\
-                            <td>' + quote.margin + '</td>\
-                            <td>' + quote.subtotal + '</td>\
-                            <td>' + quote.gst + '</td>\
-                            <td>' + quote.amount_inc_gst + '</td>\
-                            <td><button value="' + quote.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
-                            <td><button value="' + quote.id + '" style="border: none; background-color: #fff" class="delete_btn"><i class="fa fa-trash"></i></button></td>\
-                    </tr>');
-                    });
-                }
-            });
-        }
+        fetchTasks();
 
         function fetchTasks() {
             $.ajax({
@@ -132,41 +59,17 @@
                 url: "fetchTasks",
                 dataType: "json",
                 success: function(response) {
-                    var task_id = $('#task_id');
-                    $('#task_id').children().remove().end();
-                    task_id.append($("<option />").val(0).text('Select Task'));
-                    $.each(response.tasks, function(task) {
-                        task_id.append($("<option />").val(response.tasks[task].id).text(response.tasks[task].title));
+                    $('tbody').html("");
+                    $.each(response.tasks, function(key, task) {
+                        $('tbody').append('<tr>\
+                            <td>' + task.id + '</td>\
+                            <td><a href="/quote/'+task.id+'">' + task.site.site+'-'+task.title + '</a></td>\
+                            <td><button value="' + task.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
+                    </tr>');
                     });
                 }
             });
         }
-
-        $(document).on('click', '.delete_btn', function(e) {
-            e.preventDefault();
-            var quote_id = $(this).val();
-            $('#deleteEnquiry').modal('show');
-            $('#quote_id').val(quote_id);
-        });
-
-        $(document).on('submit', '#deleteEnquiryForm', function(e) {
-            e.preventDefault();
-            var quote_id = $('#quote_id').val();
-
-            $.ajax({
-                type: 'delete',
-                url: 'enquiry/' + quote_id,
-                dataType: 'json',
-                success: function(response) {
-                    if (response.status == false) {
-                        $('#deleteEnquiry').modal('hide');
-                    } else {
-                        fetchQuotes();
-                        $('#deleteEnquiry').modal('hide');
-                    }
-                }
-            });
-        });
 
         $(document).on('click', '.edit_btn', function(e) {
             e.preventDefault();
@@ -243,41 +146,6 @@
             });
         })
 
-        $(document).on('click', '#addQuoteButton', function(e) {
-            e.preventDefault();
-            fetchTasks();
-            $(document).find('span.error-text').text('');
-        });
-
-        $(document).on('submit', '#addQuoteForm', function(e) {
-            e.preventDefault();
-            let formDate = new FormData($('#addQuoteForm')[0]);
-            $.ajax({
-                type: "post",
-                url: "quote",
-                data: formDate,
-                contentType: false,
-                processData: false,
-                beforeSend: function() {
-                    $(document).find('span.error-text').text('');
-                },
-                success: function(response) {
-                    if (response.status == 0) {
-                        $('#addQuote').modal('show')
-                        $.each(response.error, function(prefix, val) {
-                            $('span.' + prefix + '_error').text(val[0]);
-                        });
-                    } else {
-                        $('#addQuoteForm')[0].reset();
-                        $('#addQuote').modal('hide');
-                        fetchQuotes();
-                    }
-                },
-                error: function(error) {
-                    $('#addQuote').modal('show')
-                }
-            });
-        });
     });
 </script>
 @endsection

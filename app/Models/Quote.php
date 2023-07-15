@@ -15,7 +15,7 @@ class Quote extends Model
         'qid',
         'line',
         'uid',
-        'cost_code',
+        'estimate_id',
         'description',
         'unit',
         'qty',
@@ -42,23 +42,12 @@ class Quote extends Model
         'capture_savings',
     ];
 
-    public function getCostCodeAttribute($attribute)
-    {
-        return $this->costCodeOptions()[$attribute] ?? 0;
-    }
-
-    public function costCodeOptions()
-    {
-        return [
-            3 => 'Furniture',
-            2 => 'Window',
-            1 => 'Ceilling',
-            0 => 'Painter',
-        ];
-    }
-
     public function task()
     {
         return $this->belongsTo(Task::class);
+    }
+
+    public function estimate(){
+        return $this->belongsTo(Estimate::class);
     }
 }

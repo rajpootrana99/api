@@ -3,6 +3,7 @@
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\EnquiryController;
 use App\Http\Controllers\EntityController;
+use App\Http\Controllers\EstimateController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\UserController;
@@ -61,9 +62,11 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
     Route::resource('enquiry', EnquiryController::class);
     Route::get('/fetchEnquiries', [EnquiryController::class, 'fetchEnquiries'])->name('enquiry.get');
     Route::resource('quote', QuoteController::class);
-    Route::get('/fetchQuotes', [QuoteController::class, 'fetchQuotes'])->name('quote.get');
+    Route::get('/fetchQuotes/{task}', [QuoteController::class, 'fetchQuotes'])->name('quote.get');
     Route::resource('site-user', SiteUserController::class);
     Route::get('/fetchSiteUsers', [SiteUserController::class, 'fetchSiteUsers'])->name('site-user.get');
+    Route::resource('estimate', EstimateController::class);
+    Route::get('/fetchEstimates', [EstimateController::class, 'fetchEstimates'])->name('estimate.get');
 });
 
 require __DIR__ . '/auth.php';

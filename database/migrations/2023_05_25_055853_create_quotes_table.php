@@ -16,11 +16,11 @@ return new class extends Migration
         Schema::create('quotes', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('task_id');
+            $table->unsignedBigInteger('estimate_id');
             $table->unsignedBigInteger('eid')->nullable()->default(0);
             $table->unsignedBigInteger('qid')->nullable()->default(0);
             $table->unsignedBigInteger('line')->nullable()->default(0);
             $table->unsignedBigInteger('uid')->nullable()->default(0);
-            $table->integer('cost_code')->nullable()->default(0);
             $table->string('description')->nullable()->default('');
             $table->string('unit')->nullable()->default('');
             $table->unsignedBigInteger('qty')->nullable()->default(1);
