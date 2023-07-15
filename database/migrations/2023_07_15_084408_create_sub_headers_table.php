@@ -13,10 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('estimates', function (Blueprint $table) {
+        Schema::create('sub_headers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('sub_header_id');
-            $table->string('item');
+            $table->unsignedBigInteger('header_id');
+            $table->string('cost_code');
+            $table->unsignedBigInteger('code');
+            $table->string('sub_header');
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('estimates');
+        Schema::dropIfExists('sub_headers');
     }
 };

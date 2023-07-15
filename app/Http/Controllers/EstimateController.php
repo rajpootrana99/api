@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Estimate;
+use App\Models\Header;
+use App\Models\SubHeader;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -18,11 +20,30 @@ class EstimateController extends Controller
         return view('estimate.index');
     }
 
-    public function fetchEstimates(){
-        $estimates = Estimate::all();
+    public function fetchEstimates()
+    {
+        $estimates = Estimate::with('subHeader.header')->get();
         return response()->json([
             'status' => true,
             'estimates' => $estimates,
+        ]);
+    }
+
+    public function fetchHeaders()
+    {
+        $headers = Header::orderBy('id', 'desc')->get();
+        return response()->json([
+            'status' => true,
+            'headers' => $headers,
+        ]);
+    }
+
+    public function fetchSubHeaders($header)
+    {
+        $subHeaders = SubHeader::where(['header_id' => $header])->get();
+        return response()->json([
+            'status' => true,
+            'subHeaders' => $subHeaders,
         ]);
     }
 
@@ -45,12 +66,8 @@ class EstimateController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'header' => ['required'],
-            'major_code' => ['required'],
-            'cost_code' => ['required'],
-            'sub_header' => ['required'],
+            'sub_header_id' => ['required'],
             'item' => ['required'],
-            'label' => ['required'],
         ]);
         if (!$validator->passes()) {
             return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
@@ -132,5 +149,25 @@ class EstimateController extends Controller
     public function destroy(Estimate $estimate)
     {
         //
+    }
+
+    public function addSubHeader(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'header_id' => ['required'],
+            'sub_header' => ['required'],
+        ]);
+
+        if (!$validator->passes()) {
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
+
+        $subHeader = SubHeader::create($request->all());
+        if ($subHeader) {
+            return response()->json([
+                'status' => 1,
+                'message' => 'Sub Header Added Successfully'
+            ]);
+        }
     }
 }

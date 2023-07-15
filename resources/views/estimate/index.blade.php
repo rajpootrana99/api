@@ -62,50 +62,24 @@
                 @csrf
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <input class="form-control" type="text" name="major_code" id="major_code" placeholder="Enter Major Code" style="width: 100%; height:30px;">
-                                <span class="text-danger error-text major_code_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <input class="form-control" type="text" name="cost_code" id="cost_code" placeholder="Enter Cost Code" style="width: 100%; height:30px;">
-                                <span class="text-danger error-text cost_code_error"></span>
-                            </div>
-                        </div>
                         <div class="col-lg-12">
                             <div class="form-group">
                                 <select class="select2 pl-1 form-control" name="header" id="header" style="width: 100%; height:30px !important;">
-                                    <option value="0">PRELIMINARIES</option>
-                                    <option value="1">DEMOLITION</option>
-                                    <option value="2">SITEWORKS</option>
-                                    <option value="3">CONCRETE</option>
-                                    <option value="4">STRUCTURAL STEELWORK</option>
-                                    <option value="5">METALWORK</option>
-                                    <option value="6">BRICKWORK</option>
-                                    <option value="7">CARPENTRY</option>
-                                    <option value="8">JOINERY</option>
-                                    <option value="9">ROOF COVER</option>
-                                    <option value="10">HYDRAULIC SERVICES</option>
-                                    <option value="11">ELECTRICAL SERVICES</option>
-                                    <option value="12">MECHANICAL SERVICES</option>
-                                    <option value="13">PLASTERING</option>
-                                    <option value="14">CEILINGS</option>
-                                    <option value="15">FLOOR FINISHES</option>
-                                    <option value="16">GLAZING</option>
-                                    <option value="17">PARTITIONING</option>
-                                    <option value="18">PAINTING</option>
-                                    <option value="19">FURNITURE</option>
+
                                 </select>
                                 <span class="text-danger error-text header_error"></span>
                             </div>
                         </div>
-                        <div class="col-lg-12">
+                        <div class="col-lg-10">
                             <div class="form-group">
-                                <input class="form-control" type="text" name="sub_header" id="sub_header" placeholder="Enter Sub Header" style="width: 100%; height:30px;">
-                                <span class="text-danger error-text sub_header_error"></span>
+                                <select class="select2 pl-1 form-control" name="sub_header_id" id="sub_header_id" style="width: 100%; height:30px !important;">
+
+                                </select>
+                                <span class="text-danger error-text sub_header_id_error"></span>
                             </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <a data-toggle="modal" data-target="#addSubHeader" id="addSubHeaderButton" class="btn btn-secondary" style="margin-left: 10px"><i class="fa fa-plus"></i></a>
                         </div>
                         <div class="col-lg-12">
                             <div class="form-group">
@@ -113,10 +87,44 @@
                                 <span class="text-danger error-text item_error"></span>
                             </div>
                         </div>
+                    </div>
+                </div><!--end row-->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                </div><!--end modal-footer-->
+            </form>
+        </div>
+    </div><!--end modal-content-->
+</div>
+
+<div class="modal fade" id="addSubHeader" tabindex="-1" role="dialog" aria-labelledby="addSubHeaderLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h6 class="modal-title m-0 text-white" id="addSubHeaderLabel">Add SubHeader</h6>
+                <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="la la-times text-white"></i></span>
+                </button>
+            </div><!--end modal-header-->
+            <form method="post" id="addSubHeaderForm">
+                @csrf
+                <div class="modal-body">
+                    <div class="row">
                         <div class="col-lg-12">
                             <div class="form-group">
-                                <input class="form-control" type="text" name="label" id="label" placeholder="Enter Label" style="width: 100%; height:30px;">
-                                <span class="text-danger error-text label_error"></span>
+                                <select class="select2 pl-1 form-control" name="header_id" id="header_id" style="width: 100%; height:30px !important;">
+
+                                </select>
+                                <span class="text-danger error-text header_id_error"></span>
+                            </div>
+                        </div>
+                        <input type="hidden" name="cost_code" id="cost_code">
+                        <input type="hidden" name="code" id="code">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <input class="form-control" type="text" name="sub_header" id="sub_header" placeholder="Enter Sub Header" style="width: 100%; height:30px;">
+                                <span class="text-danger error-text sub_header_error"></span>
                             </div>
                         </div>
                     </div>
@@ -259,14 +267,15 @@
                 success: function(response) {
                     $('tbody').html("");
                     $.each(response.estimates, function(key, estimate) {
+                        console.log(estimate);
                         $('tbody').append('<tr>\
                             <td>' + estimate.id + '</td>\
-                            <td>' + estimate.major_code + '</td>\
-                            <td>' + estimate.cost_code + '</td>\
-                            <td>' + estimate.header + '</td>\
-                            <td>' + estimate.sub_header + '</td>\
+                            <td>' + estimate.sub_header.header.major_code + '</td>\
+                            <td>' + estimate.sub_header.cost_code + '</td>\
+                            <td>' + estimate.sub_header.header.header + '</td>\
+                            <td>' + estimate.sub_header.sub_header + '</td>\
                             <td>' + estimate.item + '</td>\
-                            <td>' + estimate.label + '</td>\
+                            <td>' + estimate.sub_header.cost_code + '___' + estimate.item + '</td>\
                             <td><button value="' + estimate.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
                     </tr>');
                     });
@@ -274,9 +283,67 @@
             });
         }
 
+        var headers;
+
+        function fetchHeaders() {
+            $.ajax({
+                type: "GET",
+                url: "/fetchHeaders",
+                dataType: "json",
+                success: function(response) {
+                    headers = response.headers;
+                    var header_id = $('#header_id');
+                    var header_estimate = $('#header');
+                    $('#header_id').children().remove().end();
+                    $('#header').children().remove().end();
+                    header_id.append($("<option />").text('Select Header'));
+                    header_estimate.append($("<option />").text('Select Header'));
+                    $.each(response.headers, function(header) {
+                        header_estimate.append($("<option />").val(response.headers[header].id).text(response.headers[header].header));
+                        header_id.append($("<option />").val(response.headers[header].id).text(response.headers[header].header));
+                    });
+                }
+            });
+        }
+
+        function fetchSubHeaders() {
+            const header_id = $('#header').val();
+            $.ajax({
+                type: "GET",
+                url: "/fetchSubHeaders/" + header_id,
+                dataType: "json",
+                success: function(response) {
+                    var sub_header_id = $('#sub_header_id');
+                    $('#sub_header_id').children().remove().end();
+                    sub_header_id.append($("<option />").text('Select Sub Header'));
+                    $.each(response.subHeaders, function(subHeader) {
+                        sub_header_id.append($("<option />").val(response.subHeaders[subHeader].id).text(response.subHeaders[subHeader].sub_header));
+                    });
+                }
+            });
+        }
+
+        $(document).on('change', '#header', function(e) {
+            fetchSubHeaders();
+        });
+        $(document).on('change', '#header_id', function(e) {
+            e.preventDefault();
+            $.each(headers, function(key, header) {
+                if ($('#header_id').val() == header.id) {
+                    const code = header.code + 1
+                    console.log(code)
+                    const cost_code = '5-' + code.toString().padStart(4, '0');
+                    $('#code').val(code)
+                    $('#cost_code').val(cost_code)
+
+                }
+            });
+        });
+
         $(document).on('click', '#addEstimateButton', function(e) {
             e.preventDefault();
             $('#addEstimate').modal('show');
+            fetchHeaders();
             $(document).find('span.error-text').text('');
         });
 
@@ -306,6 +373,48 @@
                 },
                 error: function(error) {
                     $('#addEstimate').modal('show')
+                }
+            });
+        });
+
+        $(document).on('click', '#addSubHeaderButton', function(e) {
+            e.preventDefault();
+            $('#addEstimate').modal('hide');
+            $('#addSubHeader').modal('show');
+            $('#addSubHeaderForm')[0].reset();
+            fetchHeaders();
+            $(document).find('span.error-text').text('');
+        });
+
+        $(document).on('submit', '#addSubHeaderForm', function(e) {
+            e.preventDefault();
+            let formDate = new FormData($('#addSubHeaderForm')[0]);
+            $.ajax({
+                type: "post",
+                url: "/addSubHeader",
+                data: formDate,
+                contentType: false,
+                processData: false,
+                beforeSend: function() {
+                    $(document).find('span.error-text').text('');
+                },
+                success: function(response) {
+                    console.log(response)
+                    if (response.status == 0) {
+                        $('#addSubHeader').modal('show')
+                        $.each(response.error, function(prefix, val) {
+                            $('span.' + prefix + '_error').text(val[0]);
+                        });
+                    } else {
+                        $('#addSubHeaderForm')[0].reset();
+                        $('#addSubHeader').modal('hide');
+                        $('#addEstimate').modal('show');
+                        fetchEstimates();
+                    }
+                },
+                error: function(error) {
+                    console.log(error)
+                    $('#addSubHeader').modal('show')
                 }
             });
         });

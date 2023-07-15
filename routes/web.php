@@ -67,6 +67,9 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
     Route::get('/fetchSiteUsers', [SiteUserController::class, 'fetchSiteUsers'])->name('site-user.get');
     Route::resource('estimate', EstimateController::class);
     Route::get('/fetchEstimates', [EstimateController::class, 'fetchEstimates'])->name('estimate.get');
+    Route::post('addSubHeader', [EstimateController::class, 'addSubHeader'])->name('subheader.post');
+    Route::get('/fetchHeaders', [EstimateController::class, 'fetchHeaders'])->name('header.get');
+    Route::get('/fetchSubHeaders/{header}', [EstimateController::class, 'fetchSubHeaders'])->name('subheader.get');
 });
 
 require __DIR__ . '/auth.php';

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Estimate;
+use App\Models\Header;
 use App\Models\Quote;
 use App\Models\Task;
 use Illuminate\Http\Request;
@@ -22,12 +23,12 @@ class QuoteController extends Controller
 
     public function fetchQuotes($task)
     {
-        $estimates = Estimate::select('header','major_code')->distinct()->get();
+        $headers = Header::with('subHeaders.estimates')->get();
         $quotes = Quote::with('task', 'estimate')->where(['task_id' => $task])->get();
         return response()->json([
             'status' => true,
             'quotes' => $quotes,
-            'estimates' => $estimates,
+            'headers' => $headers,
         ]);
     }
 
@@ -38,7 +39,6 @@ class QuoteController extends Controller
      */
     public function create()
     {
-        
     }
 
     /**
