@@ -19,7 +19,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="table-responsive">
+                    <div class="table-responsive mb-0 fixed-solution">
                         <table class="table table-bordered mb-0 table-centered">
                             <thead>
                                 <tr>

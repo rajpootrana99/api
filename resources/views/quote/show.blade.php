@@ -34,11 +34,11 @@
                     </div>
                 </div><!--end card-header-->
                 <div class="card-body">
-                    <div class="table-responsive">
+                    <div class="table-responsive mb-0 fixed-solution">
                         <table class="table table-bordered mb-0 table-centered">
                             <thead>
                                 <tr>
-                                    <th>#</th>
+                                    <th></th>
                                     <th>Cost Code</th>
                                     <th>Descritpion</th>
                                     <th>Unit</th>
@@ -135,7 +135,7 @@
                                     total_budget += quote.amount;
                                     total_balance += quote.subtotal;
                                     $('tbody').append('<tr>\
-                                        <td>' + quote.id + '</td>\
+                                        <td><input type="checkbox" /></td>\
                                         <td>' + quote.estimate.sub_header.cost_code + '___' + quote.estimate.item + '</td>\
                                         <td>' + quote.description + '</td>\
                                         <td>' + quote.unit + '</td>\

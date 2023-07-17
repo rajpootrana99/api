@@ -179,7 +179,7 @@
                                 </div>\
                                 <div id="collapse_' + task.id + '" class="collapse" aria-labelledby="heading' + task.id + '" data-parent="#accordionExample">\
                                     <div class="card-body">\
-                                    <div class="table-responsive">\
+                                    <div class="table-responsive mb-0 fixed-solution">\
                                         <table class="table mb-0">\
                                             <thead class="thead-light">\
                                                 <tr>\
