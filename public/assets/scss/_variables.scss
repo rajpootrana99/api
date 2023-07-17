@@ -36,11 +36,11 @@ $menu-label-color:                #687598;
 $hr-leftbar:                      #c2cbe2;
 $bg-leftbar:                      #ffffff;
 $leftbar-icon-color:              #a6aed4;
-$leftbar-icon-hover-color:        #2f6bf9;
+$leftbar-icon-hover-color:        #E8723D;
 $menu-item-color:                 #68728c;
-$menu-item-hover-color:           #2f6bf9;
+$menu-item-hover-color:           #E8723D;
 $menu-sub-item-color:             #68728c;
-$menu-sub-item-hover-color:       #2f6bf9;
+$menu-sub-item-hover-color:       #E8723D;
 
 $menu-item-active-color:          #303e67;
 $menu-item-active-bg-color:    linear-gradient(14deg, $primary 0%, rgba($primary, .6));
@@ -154,8 +154,8 @@ $leftbar-dark-box-shadow:       0 8px 8px 0 rgba(31, 30, 47, 0.06);
   $menu-line-color:               #c8cbd4;
   $mobile-menu-item-color:        #7081b9;
   $topnav-menu-item-color:        #68728c;
-  $topnav-menu-item-active-color: #2f6bf9;
-  $topnav-menu-item-hover-color:  #2f6bf9;
+  $topnav-menu-item-active-color: #E8723D;
+  $topnav-menu-item-hover-color:  #E8723D;
   $topnav-menu-item-hover-bg:     #fdfeff;
   $topnav-menu-icon-color:        #307df3;
   $topnav-menu-item-dark-color:   #a7b1c1;
@@ -209,7 +209,7 @@ $grays: map-merge(
   $grays
 );
 
-$blue:    #1761fd;
+$blue:    #F96D22;
 $indigo:  #6610f2;
 $purple:  #6d81f5;
 $pink:    #fd3c97;

@@ -11,6 +11,7 @@ use App\Http\Controllers\SiteUserController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\QuoteController;
 use Illuminate\Support\Facades\Route;
 
@@ -70,6 +71,8 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
     Route::post('addSubHeader', [EstimateController::class, 'addSubHeader'])->name('subheader.post');
     Route::get('/fetchHeaders', [EstimateController::class, 'fetchHeaders'])->name('header.get');
     Route::get('/fetchSubHeaders/{header}', [EstimateController::class, 'fetchSubHeaders'])->name('subheader.get');
+    Route::resource('purchaseOrder', PurchaseOrderController::class);
+
 });
 
 require __DIR__ . '/auth.php';
