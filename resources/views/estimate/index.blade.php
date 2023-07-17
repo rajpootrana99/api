@@ -350,6 +350,8 @@
         $(document).on('click', '#addEstimateButton', function(e) {
             e.preventDefault();
             $('#addEstimate').modal('show');
+            $('#sub_header_id').children().remove().end();
+            $('#header').children().remove().end();
             fetchHeaders();
             $(document).find('span.error-text').text('');
         });

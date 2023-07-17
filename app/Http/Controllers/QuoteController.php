@@ -96,7 +96,7 @@ class QuoteController extends Controller
      */
     public function edit($quote)
     {
-        return view('quote.create', ['task' => Task::find($quote)]);
+        return view('quote.create', ['task' => Task::with('quotes.estimate.subHeader.header')->find($quote)]);
     }
 
     /**

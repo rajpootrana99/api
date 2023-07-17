@@ -76,8 +76,11 @@
 
 <script>
     var itemsCount = 1;
+    var quotes = <?php echo $task->quotes ?>;
+    if(quotes.length > 0){
+        itemsDynamicField(itemsCount);
+    }
     itemsDetailDynamicField(itemsCount);
-
     fetchEstimates();
 
     function fetchEstimates() {
@@ -88,11 +91,30 @@
             success: function(response) {
                 var estimate_id = $('#estimate_id_' + itemsCount);
                 estimate_id.children().remove().end();
+                estimate_id.append($("<option />").text('Select Cost Code'));
                 $.each(response.estimates, function(estimate) {
                     estimate_id.append($("<option />").val(response.estimates[estimate].id).text(response.estimates[estimate].sub_header.cost_code + '___' + response.estimates[estimate].item));
                 });
             }
         });
+    }
+
+    function itemsDynamicField(number) {
+        $.each(quotes, function(key, quote){
+            html = '<tr>';
+            html += '<td>' + number + '<input type="hidden" value="'+quote.id+'" /></td>';
+            html += '<td><input type="text" style="height: 30px" class="form-control" readonly value="'+quote.description+'" /></td>';
+            html += '<td><input type="text" style="height: 30px" class="form-control" readonly value="'+quote.estimate.sub_header.cost_code+'___'+quote.estimate.item+'" /></td>';
+            html += '<td><input type="text" style="height: 30px" class="form-control" readonly value="'+quote.unit+'" /></td>';
+            html += '<td><input type="number" style="height: 30px" class="form-control" readonly value="'+quote.qty+'" /></td>';
+            html += '<td><input type="text" style="height: 30px" class="form-control" readonly value="'+quote.rate+'" /></td>';
+            html += '<td><input type="text" style="height: 30px" class="form-control" readonly value="'+quote.amount+'" /></td>';
+            html += '<td><input type="number" style="height: 30px" class="form-control" readonly value="'+quote.margin+'" /></td>';
+            html += '<td><input type="text" style="height: 30px" class="form-control" readonly value="'+quote.subtotal+'" /></td>';
+            html += '<td><input type="text" style="height: 30px" class="form-control" readonly value="'+quote.amount_inc_gst+'" /></td>';
+            html += '<td><input type="text" style="height: 30px" class="form-control" readonly value="'+quote.quote_complete+'" /></td>';
+            $('#itemsDetailTableBody').append(html);
+        })
     }
 
     function itemsDetailDynamicField(number) {
@@ -115,8 +137,7 @@
         } else {
             html += '<td><button style="border: none; background-color: #fff" name="addItems" id="addItems"><i class="fa fa-plus-circle"></i></button></td>';
             html += '<td></td></tr>';
-            $('#itemsDetailTableBody').html(html);
-
+            $('#itemsDetailTableBody').append(html);
         }
     }
 
