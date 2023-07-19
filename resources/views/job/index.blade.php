@@ -68,7 +68,7 @@
                                     <th>%</th>
                                     <th>Invoiced</th>
                                     <th>Remaining Invoice Amount</th>
-                                    <th width="3%">Modify</th>
+                                    <th width="3%"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -144,8 +144,18 @@
                             <td></td>\
                             <td></td>\
                             <td></td>\
-                            <td><a href="/quote/' + job.id + '" style="border: none; background-color: #fff" class=""><i class="fa fa-edit"></i></a></td>\
-                    </tr>');
+                            <td><div class="dropdown d-inline-block" style="float:right;">\
+                                <a class="dropdown-toggle arrow-none" id="dLabel11" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">\
+                                    <i class="las la-ellipsis-v font-20 text-muted"></i>\
+                                </a>\
+                                <div style="z-index: 1 !important;" class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel11">\
+                                    <a class="dropdown-item" href="#">Edit</a>\
+                                    <a class="dropdown-item" href="#">Budget</a>\
+                                    <a class="dropdown-item" href="#">Chat</a>\
+                                    <a class="dropdown-item" href="#">Invoice</a>\
+                                </div>\
+                            </div>\</td>\
+                        </tr>');
                     });
 
                     $('#total_quoted_price_ex_gst').html(USDollar.format(total_quoted_price_ex_gst));

@@ -28,11 +28,8 @@
                         <table class="table table-bordered mb-0 table-centered">
                             <thead>
                                 <tr>
-                                    <th>#</th>
                                     <th>Major Code</th>
-                                    <th>Cost Code</th>
-                                    <th>Header</th>
-                                    <th>Sub Header</th>
+                                    <th>Code</th>
                                     <th>Item</th>
                                     <th>Label</th>
                                     <th width="3%">Modify</th>
@@ -266,19 +263,31 @@
                 dataType: "json",
                 success: function(response) {
                     $('tbody').html("");
-                    $.each(response.estimates, function(key, estimate) {
-                        console.log(estimate);
-                        $('tbody').append('<tr>\
-                            <td>' + estimate.id + '</td>\
-                            <td>' + estimate.sub_header.header.major_code + '</td>\
-                            <td>' + estimate.sub_header.cost_code + '</td>\
-                            <td>' + estimate.sub_header.header.header + '</td>\
-                            <td>' + estimate.sub_header.sub_header + '</td>\
-                            <td>' + estimate.item + '</td>\
-                            <td>' + estimate.sub_header.cost_code + '___' + estimate.item + '</td>\
-                            <td><button value="' + estimate.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
-                    </tr>');
-                    });
+                    $.each(response.headers, function(key, header) {
+                        $('tbody').append('<tr style="background:#F96D22; color: #fff; font-size: 16px;">\
+                            <td><strong>'+header.major_code+'</strong></td>\
+                            <td><strong>'+header.major_code+'</strong></td>\
+                            <td><strong>'+header.header+'</strong></td>\
+                            <td colspan="2"><strong>' + header.major_code + '___' + header.header + '</strong></td>\
+                        </tr>');
+                        $.each(header.sub_headers, function(key, subHeader) {
+                            $('tbody').append('<tr style="background:#c7c7c7; color: #000">\
+                                <td><strong>'+header.major_code+'</strong></td>\
+                                <td><strong>'+subHeader.cost_code+'</strong></td>\
+                                <td><strong>'+subHeader.sub_header+'</strong></td>\
+                                <td colspan="2"><strong>' + subHeader.cost_code + '___' + subHeader.sub_header + '</strong></td>\
+                            </tr>');
+                            $.each(subHeader.estimates, function(key, estimate) {
+                                    $('tbody').append('<tr>\
+                                    <td>'+header.major_code+'</td>\
+                                    <td>'+subHeader.cost_code+'</td>\
+                                    <td>'+estimate.item+'</td>\
+                                    <td>' + subHeader.cost_code + '___' + estimate.item + '</td>\
+                                    <td><button value="' + estimate.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
+                                </tr>');
+                            });
+                        })
+                    })
                 }
             });
         }

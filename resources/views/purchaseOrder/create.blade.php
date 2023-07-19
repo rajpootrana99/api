@@ -31,7 +31,7 @@
                                                 <select class="select2 pl-1 form-control" name="supplier_id" id="supplier_id" style="width: 100%; height:30px !important;">
                                                     <option value="" selected disabled>Select Supplier</option>
                                                 </select>
-                                                <span class="text-danger error-text status_error"></span>
+                                                <span class="text-danger error-text supplier_id_error"></span>
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -51,18 +51,20 @@
                                     </div>
 
                                     <div class="col-lg-6">
+                                    <div class="form-group row">
+                                            <label for="job_id" class="col-sm-6 col-form-label text-right">Job<strong>*</strong></label>
+                                            <div class="col-sm-6">
+                                                <select class="select2 pl-1 form-control" name="job_id" id="job_id" style="width: 100%; height:30px !important;">
+                                                    <option value="" selected disabled>Select Job</option>
+                                                </select>
+                                                <span class="text-danger error-text job_id_error"></span>
+                                            </div>      
+                                        </div>
                                         <div class="form-group row">
                                             <label for="po_number" class="col-sm-6 col-form-label text-right">Purchase Order Number<strong>*</strong></label>
                                             <div class="col-sm-6">
                                                 <input class="form-control" style="width: 100%; height:30px;" type="number" name="po_number" id="po_number">
                                                 <span class="text-danger error-text po_number_error"></span>
-                                            </div>      
-                                        </div> 
-                                        <div class="form-group row">
-                                            <label for="si_number" class="col-sm-6 col-form-label text-right">Supplier Invoice Number</label>
-                                            <div class="col-sm-6">
-                                                <input class="form-control" style="width: 100%; height:30px;" type="number" name="si_number" id="si_number">
-                                                <span class="text-danger error-text si_number_error"></span>
                                             </div>      
                                         </div>
                                         <div class="form-group row">
@@ -102,12 +104,9 @@
                                             <tr>
                                                 <th width="10%">Item</th>
                                                 <th width="10%">Description</th>
-                                                <th width="10%">Account</th>
                                                 <th width="10%">No of Units</th>
                                                 <th width="10%">Unit Price</th>
-                                                <th width="10%">Discount(%)</th>
                                                 <th width="10%">Amount($)</th>
-                                                <th width="10%">Job</th>
                                                 <th width="10%">Tax Code</th>
                                                 <th width="3%"><i class="fa fa-plus-circle"></i></th>
                                                 <th width="3%"><i class="fa fa-minus-circle"></i></th>
@@ -192,13 +191,10 @@
             html = '<tr>';
             html += '<td><select class="select2 form-control" name="items[' + number + '][priority]" id="priority_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Item"><option value="0">Select Item</option></select></td>';
             html += '<td><input type="text" style="height: 30px" name="items[' + number + '][description]" id="description_' + number + '" class="form-control" /></td>';
-            html += '<td><select class="select2 form-control" name="items[' + number + '][priority]" id="priority_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Account"><option value="0">Account</option></select></td>';
             html += '<td><input type="text" style="height: 30px" name="items[' + number + '][description]" id="description_' + number + '" class="form-control" /></td>';
             html += '<td><input type="text" style="height: 30px" name="items[' + number + '][description]" id="description_' + number + '" class="form-control" /></td>';
             html += '<td><input type="text" style="height: 30px" name="items[' + number + '][description]" id="description_' + number + '" class="form-control" /></td>';
-            html += '<td><input type="text" style="height: 30px" name="items[' + number + '][description]" id="description_' + number + '" class="form-control" /></td>';
-            html += '<td><select class="select2 form-control" name="items[' + number + '][status]" id="status_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Job"><option value="6">Select Job</option></select></td>';
-            html += '<td><select class="select2 form-control" name="items[' + number + '][progress]" id="progress_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Tax Code"><option value="0">Select Tax Code</option></select></td>';
+            html += '<td><select class="select2 form-control" name="items[' + number + '][progress]" id="progress_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Tax Code"><option value="0">GST 10%</option></select></td>';
             if (number > 1) {
                 html += '<td><button style="border: none; background-color: #fff" name="addItems" id="addItems"><i class="fa fa-plus-circle"></i></button></td>';
                 html += '<td><button style="border: none; background-color: #fff" name="removeItems" id="removeItems"><i class="fa fa-minus-circle"></i></button></td></tr>';

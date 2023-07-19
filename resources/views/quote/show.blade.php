@@ -24,7 +24,7 @@
                         <h3>{{$task->site->site}} - {{$task->title}}</h3>
                     </div>
                     <div class="row" style="position:absolute; top:10px; right: 20px;">
-                        <a href="" data-toggle="modal" data-target="#addQuote" id="addQuoteButton" class="btn btn-primary" style="float:right;margin-left: 10px"><i class="fa fa-plus"></i> New Order </a>
+                        <a href="{{ route('purchaseOrder.create') }}" class="btn btn-primary" style="float:right;margin-left: 10px"><i class="fa fa-plus"></i> New Order </a>
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
@@ -151,7 +151,7 @@
                                 }
                             });
                         })
-                    })
+                    });
                     $('#total_qty').html(total_qty);
                     $('#total_rate').html(USDollar.format(total_rate));
                     $('#total_budget').html(USDollar.format(total_budget));

@@ -65,7 +65,7 @@
                                     <th>Requested By</th>
                                     <th>Requested Completion</th>
                                     <th>Quote Type</th>
-                                    <th width="3%">Quote</th>
+                                    <th width="3%"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -358,8 +358,18 @@
                             <td>' + name + '</td>\
                             <td>' + enquiry.requested_completion + '</td>\
                             <td>' + enquiry.quote_type + '</td>\
-                            <td><a href="/quote/' + enquiry.id + '/edit/" style="border: none; background-color: #fff" class=""><i class="fa fa-edit"></i></a></td>\
-                    </tr>');
+                            <td><div class="dropdown d-inline-block" style="float:right;">\
+                                <a class="dropdown-toggle arrow-none" id="dLabel11" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">\
+                                    <i class="las la-ellipsis-v font-20 text-muted"></i>\
+                                </a>\
+                                <div style="z-index: 1 !important;" class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel11">\
+                                    <a class="dropdown-item" href="#">Edit</a>\
+                                    <a class="dropdown-item" href="#">Convert to Job</a>\
+                                    <a class="dropdown-item" href="/quote/' + enquiry.id + '/edit/">Quote</a>\
+                                    <a class="dropdown-item" href="#">Chat</a>\
+                                </div>\
+                            </div>\</td>\
+                        </tr>');
                     });
 
                     $('#total_quoted_price_ex_gst').html(USDollar.format(total_quoted_price_ex_gst));
