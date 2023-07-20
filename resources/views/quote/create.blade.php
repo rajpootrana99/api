@@ -66,7 +66,8 @@
                         </div>
                     </div><!--end card-body-->
                     <div class="card-footer">
-                        <button type="submit" style="float:right" class="btn btn-primary mb-3">Create</button>
+                        <button type="submit" style="float:right" class="btn btn-primary mb-3" id="create_btn">Create</button>
+                        <a href="{{ route('enquiry.index') }}" style="float:right" class="btn btn-primary mb-3" id="back_btn">Back</a>
                     </div>
                 </form>
             </div><!--end card-->
@@ -79,9 +80,15 @@
     var quotes = <?php echo $task->quotes ?>;
     if(quotes.length > 0){
         itemsDynamicField(itemsCount);
+        $("#back_btn").show();
+        $("#create_btn").hide();
     }
-    itemsDetailDynamicField(itemsCount);
-    fetchEstimates();
+    else{
+        itemsDetailDynamicField(itemsCount);
+        fetchEstimates();
+        $("#back_btn").hide();
+        $("#create_btn").show();
+    }
 
     function fetchEstimates() {
         $.ajax({
@@ -102,7 +109,7 @@
     function itemsDynamicField(number) {
         $.each(quotes, function(key, quote){
             html = '<tr>';
-            html += '<td>' + number + '<input type="hidden" value="'+quote.id+'" /></td>';
+            html += '<td></td>';
             html += '<td><input type="text" style="height: 30px" class="form-control" readonly value="'+quote.description+'" /></td>';
             html += '<td><input type="text" style="height: 30px" class="form-control" readonly value="'+quote.estimate.sub_header.cost_code+'___'+quote.estimate.item+'" /></td>';
             html += '<td><input type="text" style="height: 30px" class="form-control" readonly value="'+quote.unit+'" /></td>';
@@ -113,6 +120,8 @@
             html += '<td><input type="text" style="height: 30px" class="form-control" readonly value="'+quote.subtotal+'" /></td>';
             html += '<td><input type="text" style="height: 30px" class="form-control" readonly value="'+quote.amount_inc_gst+'" /></td>';
             html += '<td><input type="text" style="height: 30px" class="form-control" readonly value="'+quote.quote_complete+'" /></td>';
+            html += '<td></td>';
+            html += '<td></td>';
             $('#itemsDetailTableBody').append(html);
         })
     }

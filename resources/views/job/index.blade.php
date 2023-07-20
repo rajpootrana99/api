@@ -28,12 +28,9 @@
                                         <select class="select2 pl-1 form-control" name="status" id="status" style="width: 100%; height:30px !important;">
                                             <option value="" disabled>Select View</option>
                                             <option value="0">Pending</option>
-                                            <option selected value="1">In Progress</option>
-                                            <option value="2">Draft</option>
-                                            <option value="3">Submitted</option>
-                                            <option value="4">Won</option>
-                                            <option value="5">Lost</option>
-                                            <option value="6">Cancelled</option>
+                                            <option value="7">Scheduled</option>
+                                            <option value="8">In Progress</option>
+                                            <option value="9">Complete</option>
                                         </select>
                                     </div>
                                 </div>

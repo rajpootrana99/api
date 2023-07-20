@@ -28,15 +28,11 @@
                                 <div class="row">
                                     <label for="example-search-input" class="col-sm-2 col-form-label text-right">Views</label>
                                     <div class="col-sm-10">
-                                        <select class="select2 pl-1 form-control" name="status" id="status" style="width: 100%; height:30px !important;">
+                                        <select class="select2 pl-1 form-control" id="view_status" style="width: 100%; height:30px !important;">
                                             <option value="" disabled>Select View</option>
-                                            <option value="0">Pending</option>
-                                            <option selected value="1">In Progress</option>
-                                            <option value="2">Draft</option>
-                                            <option value="3">Submitted</option>
-                                            <option value="4">Won</option>
-                                            <option value="5">Lost</option>
-                                            <option value="6">Cancelled</option>
+                                            <option selected value="0">Pending</option>
+                                            <option value="1">Approved</option>
+                                            <option value="2">Cancelled</option>
                                         </select>
                                     </div>
                                 </div>
@@ -129,6 +125,8 @@
 
 <script>
     $(document).ready(function() {
+        var tags = ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'dark'];
+        var tasks;
 
         $.ajaxSetup({
             headers: {
@@ -142,105 +140,131 @@
             return filename.split('.').pop();
         }
 
+        function showTasks(tasks){
+            $('#task-section').html("");                
+            $.each(tasks, function(key, task) {
+                var options = new Array();
+                let i = 0;
+                var client;
+                task.items.forEach(function(p) {
+                    // shuffle(tags);
+                    options[i] = '<span class="badge badge-info">Item # ' + p.id + '</span>';
+                    i = i + 1;
+                });
+                console.log($('#view_status').val)
+                if($('#view_status').val() == 0){
+                    if(task.status == 'Pending'){     
+                        viewTasks(task);
+                    }
+                }
+                if($('#view_status').val() == 1){
+                    if(task.status == 'Approved'){
+                        viewTasks(task);
+                    }
+                }
+                if($('#view_status').val() == 2){
+                    if(task.status == 'Cancelled'){
+                        viewTasks(task);
+                    }
+                }
+                function viewTasks(task){
+                    $('#task-section').append('<div class="accordion" id="accordionExample">\
+                        <div class="card border mb-1 shadow-none">\
+                            <div class="card-header rounded-0" id="heading_' + task.id + '">\
+                                <a href="" class="text-dark" data-toggle="collapse" data-target="#collapse_' + task.id + '" aria-expanded="true" aria-controls="collapse_' + task.id + '">\
+                                <strong>Task ID # ' + task.id + ' - ' + task.title + ' : ' + task.site.site + '</strong>\
+                                </a>\
+                                <div class="dropdown d-inline-block" style="float:right;">\
+                                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">\
+                                        <i class="las la-ellipsis-v font-20 text-muted"></i>\
+                                    </a>\
+                                    <div style="z-index: 1 !important;" class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel11">\
+                                        <a class="dropdown-item" href="#">Edit</a>\
+                                        <a class="dropdown-item" href="/enquiry/'+task.id+'/edit">Convert to Enquiry</a>\
+                                        <a class="dropdown-item" href="/job/'+task.id+'/edit">Convert to Job</a>\
+                                        <a class="dropdown-item" href="#">Chat</a>\
+                                    </div>\
+                                </div>\
+                            </div>\
+                            <div id="collapse_' + task.id + '" class="collapse" aria-labelledby="heading' + task.id + '" data-parent="#accordionExample">\
+                                <div class="card-body">\
+                                <div class="table-responsive mb-0 fixed-solution">\
+                                    <table class="table mb-0">\
+                                        <thead class="thead-light">\
+                                            <tr>\
+                                                <th class="border-top-0">Item ID</th>\
+                                                <th class="border-top-0">ITem Descrition</th>\
+                                                <th class="border-top-0">User Name</th>\
+                                                <th class="border-top-0">Gallery</th>\
+                                                <th class="border-top-0">Priority</th>\
+                                                <th class="border-top-0">Status</th>\
+                                                <th class="border-top-0">Progress</th>\
+                                            </tr>\
+                                        </thead>\
+                                    <tbody id="item-body-' + task.id + '"> </tbody>\
+                                </div>\
+                            </div>\
+                        </div>\
+                    </div>');
+                    $.each(task.items, function(key, item) {
+                        var priority = '';
+                        var status = '';
+                        var file;
+                        if (item.priority === "High") {
+                            priority = '<span class="badge badge-warning">' + item.priority + '</span>';
+                        } else if (item.priority === "Low") {
+                            priority = '<span class="badge badge-primary">' + item.priority + '</span>';
+                        } else {
+                            priority = '<span class="badge badge-secondary">' + item.priority + '</span>';
+                        }
+                        if (task.status === "Completed") {
+                            status = '<span class="badge badge-success">' + task.status + '</span>';
+                        } else if (task.status === "Overdue") {
+                            status = '<span class="badge badge-danger">' + task.status + '</span>';
+                        } else {
+                            status = '<span class="badge badge-secondary">' + task.status + '</span>';
+                        }
+                        if (item.item_galleries.length == 0) {
+                            file = 'No image or video file exists';
+                        } else if (getFileExtension(item.item_galleries[0].image) === 'mp4' || getFileExtension(item.item_galleries[0].image) === 'mkv' || getFileExtension(item.item_galleries[0].image) === 'mov') {
+                            file = '<video width="200px" height="100px" controls><source src="' + item.item_galleries[0].image + '" type="video/ogg"></video>'
+                        } else if (getFileExtension(item.item_galleries[0].image) === 'png' || getFileExtension(item.item_galleries[0].image) === 'jpg' || getFileExtension(item.item_galleries[0].image) === 'jpeg') {
+                            file = '<img src="' + item.item_galleries[0].image + '" width="200px" height="100px" alt="" class="rounded float-left ml-3 mb-3">';
+                        } else {
+                            file = 'No image or video file exists';
+                        }
+                        if (task.user == null)[
+                            client = "No Client"
+                        ]
+                        else {
+                            client = task.user.name;
+                        }
+                        $('#item-body-' + task.id).append('<tr>\
+                            <td>' + item.id + '</td>\
+                            <td>' + item.description + '</td>\
+                            <td>' + client + '</td>\
+                            <td><button value="' + item.id + '" style="border: none; background-color: none" class="view_galery">' + file + '</button></td>\
+                            <td>' + priority + '</td>\
+                            <td>' + status + '</td>\
+                            <td>' + item.progress + '</td>\
+                        </tr>')
+                    });
+                }
+            });
+        }
+
+        $(document).on('change', '#view_status', function(e) {
+            showTasks(tasks);
+        });
+
         function fetchTasks() {
             $.ajax({
                 type: "GET",
                 url: "fetchTasks",
                 dataType: "json",
                 success: function(response) {
-                    var tags = ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'dark'];
-                    $('tbody').html("");
-                    $.each(response.tasks, function(key, task) {
-                        var options = new Array();
-                        let i = 0;
-                        var client;
-                        task.items.forEach(function(p) {
-                            // shuffle(tags);
-                            options[i] = '<span class="badge badge-info">Item # ' + p.id + '</span>';
-                            i = i + 1;
-                        });
-                        $('#task-section').append('<div class="accordion" id="accordionExample">\
-                            <div class="card border mb-1 shadow-none">\
-                                <div class="card-header rounded-0" id="heading_' + task.id + '">\
-                                    <a href="" class="text-dark" data-toggle="collapse" data-target="#collapse_' + task.id + '" aria-expanded="true" aria-controls="collapse_' + task.id + '">\
-                                    <strong>Task ID # ' + task.id + ' - ' + task.title + ' : ' + task.site.site + '</strong>\
-                                    </a>\
-                                    <div class="dropdown d-inline-block" style="float:right;">\
-                                        <a class="dropdown-toggle arrow-none" id="dLabel11" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">\
-                                            <i class="las la-ellipsis-v font-20 text-muted"></i>\
-                                        </a>\
-                                        <div style="z-index: 1 !important;" class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel11">\
-                                            <a class="dropdown-item" href="#">Edit</a>\
-                                            <a class="dropdown-item" href="/enquiry/'+task.id+'/edit">Convert to Enquiry</a>\
-                                            <a class="dropdown-item" href="/job/'+task.id+'/edit">Convert to Job</a>\
-                                            <a class="dropdown-item" href="#">Chat</a>\
-                                        </div>\
-                                    </div>\
-                                </div>\
-                                <div id="collapse_' + task.id + '" class="collapse" aria-labelledby="heading' + task.id + '" data-parent="#accordionExample">\
-                                    <div class="card-body">\
-                                    <div class="table-responsive mb-0 fixed-solution">\
-                                        <table class="table mb-0">\
-                                            <thead class="thead-light">\
-                                                <tr>\
-                                                    <th class="border-top-0">Item ID</th>\
-                                                    <th class="border-top-0">ITem Descrition</th>\
-                                                    <th class="border-top-0">User Name</th>\
-                                                    <th class="border-top-0">Gallery</th>\
-                                                    <th class="border-top-0">Priority</th>\
-                                                    <th class="border-top-0">Status</th>\
-                                                    <th class="border-top-0">Progress</th>\
-                                                </tr>\
-                                            </thead>\
-                                        <tbody id="item-body-' + task.id + '"> </tbody>\
-                                    </div>\
-                                </div>\
-                            </div>\
-                        </div>');
-                        $.each(task.items, function(key, item) {
-                            var priority = '';
-                            var status = '';
-                            var file;
-                            if (item.priority === "High") {
-                                priority = '<span class="badge badge-warning">' + item.priority + '</span>';
-                            } else if (item.priority === "Low") {
-                                priority = '<span class="badge badge-primary">' + item.priority + '</span>';
-                            } else {
-                                priority = '<span class="badge badge-secondary">' + item.priority + '</span>';
-                            }
-                            if (task.status === "Completed") {
-                                status = '<span class="badge badge-success">' + task.status + '</span>';
-                            } else if (task.status === "Overdue") {
-                                status = '<span class="badge badge-danger">' + task.status + '</span>';
-                            } else {
-                                status = '<span class="badge badge-secondary">' + task.status + '</span>';
-                            }
-                            if (item.item_galleries.length == 0) {
-                                file = 'No image or video file exists';
-                            } else if (getFileExtension(item.item_galleries[0].image) === 'mp4' || getFileExtension(item.item_galleries[0].image) === 'mkv' || getFileExtension(item.item_galleries[0].image) === 'mov') {
-                                file = '<video width="200px" height="100px" controls><source src="' + item.item_galleries[0].image + '" type="video/ogg"></video>'
-                            } else if (getFileExtension(item.item_galleries[0].image) === 'png' || getFileExtension(item.item_galleries[0].image) === 'jpg' || getFileExtension(item.item_galleries[0].image) === 'jpeg') {
-                                file = '<img src="' + item.item_galleries[0].image + '" width="200px" height="100px" alt="" class="rounded float-left ml-3 mb-3">';
-                            } else {
-                                file = 'No image or video file exists';
-                            }
-                            if (task.user == null)[
-                                client = "No Client"
-                            ]
-                            else {
-                                client = task.user.name;
-                            }
-                            $('#item-body-' + task.id).append('<tr>\
-                                <td>' + item.id + '</td>\
-                                <td>' + item.description + '</td>\
-                                <td>' + client + '</td>\
-                                <td><button value="' + item.id + '" style="border: none; background-color: none" class="view_galery">' + file + '</button></td>\
-                                <td>' + priority + '</td>\
-                                <td>' + status + '</td>\
-                                <td>' + item.progress + '</td>\
-                            </tr>')
-                        });
-                    });
+                    tasks = response.tasks;
+                    showTasks(tasks);
                 }
             });
         }

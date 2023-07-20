@@ -29,6 +29,13 @@ class Task extends Model
     public function statusOptions()
     {
         return [
+            9 => 'Complete',
+            8 => 'In Progress',
+            7 => 'Scheduled',
+            6 => 'Lost',
+            5 => 'Won',
+            4 => 'Submitted',
+            3 => 'Quoting',
             2 => 'Cancelled',
             1 => 'Approved',
             0 => 'Pending',
