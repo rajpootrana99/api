@@ -31,6 +31,13 @@
                             <a href="" class="btn btn-primary" style="float:left;margin-left: 10px">Orders by Job</a>
                             <a href="{{route('enquiry.index')}}" class="btn btn-primary" style="float:left;margin-left: 10px">Orders By </a>
                         </div>
+                        <div class="col-sm-6">
+                            <div class="custom-control custom-switch switch-primary">
+                                <label style="padding-right: 40px; padding-top: 2px;">Simple View</label>
+                                <input type="checkbox" class="custom-control-input" id="view" checked="">
+                                <label class="custom-control-label" for="view">Detailed View</label>
+                            </div>
+                        </div>
                     </div>
                 </div><!--end card-header-->
                 <div class="card-body">
@@ -73,7 +80,6 @@
         </div> <!-- end col -->
     </div> <!-- end row -->
 </div>
-<!-- Modal -->
 
 
 <script>
@@ -160,46 +166,84 @@
             });
         }
 
-        function fetchTasks() {
+        function fetchSimpleQuotes() {
+            var quote_id = $('#task_id_for_quote').val();
             $.ajax({
                 type: "GET",
-                url: "fetchTasks",
+                url: '/fetchQuotes/' + quote_id,
                 dataType: "json",
                 success: function(response) {
-                    var task_id = $('#task_id');
-                    $('#task_id').children().remove().end();
-                    task_id.append($("<option />").val(0).text('Select Task'));
-                    $.each(response.tasks, function(task) {
-                        task_id.append($("<option />").val(response.tasks[task].id).text(response.tasks[task].title));
+                    $('tbody').html("");
+                    var total_qty = 0;
+                    var total_rate = 0;
+                    var total_budget = 0;
+                    var total_balance = 0;
+                    var total_value_ordered = 0;
+                    var i = 0;
+                    $.each(response.quotes, function(key, quote) {
+                        $.each(response.headers, function(key, header) {
+                            if(quote.estimate.sub_header.header.id == header.id){
+                                $('tbody').append('<tr style="background:#F96D22; color: #fff">\
+                                    <td></td>\
+                                    <td colspan="11"><strong>' + header.major_code + '___' + header.header + '</strong></td>\
+                                </tr>');
+                            }
+                            $.each(header.sub_headers, function(key, subHeader) {
+                                var sub_header_total_budget = 0;
+                                var sub_header_total_balance = 0;
+                                $.each(response.quotes, function(key, quote) {
+                                    if (subHeader.cost_code === quote.estimate.sub_header.cost_code) {
+                                        sub_header_total_budget += quote.amount;
+                                        sub_header_total_balance += quote.subtotal;
+                                    }
+                                });
+                                if(quote.estimate.sub_header.id == subHeader.id){
+                                    $('tbody').append('<tr style="background:#c7c7c7; color: #000">\
+                                        <td></td>\
+                                        <td colspan="5"><strong>' + subHeader.cost_code + '___' + subHeader.sub_header + '</strong></td>\
+                                        <td><strong>' + USDollar.format(sub_header_total_budget) + '</strong></td>\
+                                        <td></td>\
+                                        <td><strong>' + USDollar.format(sub_header_total_balance) + '</strong></td>\
+                                        <td colspan="3"></td>\
+                                    </tr>');
+                                }
+                            })
+                        })
+                        total_qty += quote.qty;
+                        total_rate += quote.rate;
+                        total_budget += quote.amount;
+                        total_balance += quote.subtotal;
+                        $('tbody').append('<tr>\
+                            <td><input type="checkbox" /></td>\
+                            <td>' + quote.estimate.sub_header.cost_code + '___' + quote.estimate.item + '</td>\
+                            <td>' + quote.description + '</td>\
+                            <td>' + quote.unit + '</td>\
+                            <td>' + quote.qty + '</td>\
+                            <td>' + USDollar.format(quote.rate) + '</td>\
+                            <td>' + USDollar.format(quote.amount) + '</td>\
+                            <td></td>\
+                            <td>' + USDollar.format(quote.subtotal) + '</td>\
+                            <td></td>\
+                            <td></td>\
+                            <td><button value="' + quote.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
+                        </tr>');
                     });
+                    $('#total_qty').html(total_qty);
+                    $('#total_rate').html(USDollar.format(total_rate));
+                    $('#total_budget').html(USDollar.format(total_budget));
+                    $('#total_balance').html(USDollar.format(total_balance));
                 }
             });
         }
 
-        $(document).on('click', '.delete_btn', function(e) {
+        $(document).on('change', '#view', function(e) {
             e.preventDefault();
-            var quote_id = $(this).val();
-            $('#deleteEnquiry').modal('show');
-            $('#quote_id').val(quote_id);
-        });
-
-        $(document).on('submit', '#deleteEnquiryForm', function(e) {
-            e.preventDefault();
-            var quote_id = $('#quote_id').val();
-
-            $.ajax({
-                type: 'delete',
-                url: 'enquiry/' + quote_id,
-                dataType: 'json',
-                success: function(response) {
-                    if (response.status == false) {
-                        $('#deleteEnquiry').modal('hide');
-                    } else {
-                        fetchQuotes();
-                        $('#deleteEnquiry').modal('hide');
-                    }
-                }
-            });
+            if($('#view').is(":checked")){
+                fetchQuotes();
+            }
+            else{
+                fetchSimpleQuotes();
+            }
         });
 
         $(document).on('click', '.edit_btn', function(e) {
@@ -273,42 +317,6 @@
                 error: function(error) {
                     console.log(error)
                     $('#editQuote').modal('show');
-                }
-            });
-        })
-
-        $(document).on('click', '#addQuoteButton', function(e) {
-            e.preventDefault();
-            fetchTasks();
-            $(document).find('span.error-text').text('');
-        });
-
-        $(document).on('submit', '#addQuoteForm', function(e) {
-            e.preventDefault();
-            let formDate = new FormData($('#addQuoteForm')[0]);
-            $.ajax({
-                type: "post",
-                url: "quote",
-                data: formDate,
-                contentType: false,
-                processData: false,
-                beforeSend: function() {
-                    $(document).find('span.error-text').text('');
-                },
-                success: function(response) {
-                    if (response.status == 0) {
-                        $('#addQuote').modal('show')
-                        $.each(response.error, function(prefix, val) {
-                            $('span.' + prefix + '_error').text(val[0]);
-                        });
-                    } else {
-                        $('#addQuoteForm')[0].reset();
-                        $('#addQuote').modal('hide');
-                        fetchQuotes();
-                    }
-                },
-                error: function(error) {
-                    $('#addQuote').modal('show')
                 }
             });
         });
