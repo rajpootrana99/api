@@ -259,7 +259,7 @@
         function fetchEstimates() {
             $.ajax({
                 type: "GET",
-                url: "fetchEstimates",
+                url: "fetchHeaders",
                 dataType: "json",
                 success: function(response) {
                     $('tbody').html("");

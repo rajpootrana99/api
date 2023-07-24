@@ -363,7 +363,7 @@
                                 </a>\
                                 <div style="z-index: 1 !important;" class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel11">\
                                     <a class="dropdown-item" href="#">Edit</a>\
-                                    <a class="dropdown-item" href="#">Convert to Job</a>\
+                                    <a class="dropdown-item" href="/job/'+enquiry.id+'/edit">Convert to Job</a>\
                                     <a class="dropdown-item" href="/quote/' + enquiry.id + '/edit/">Quote</a>\
                                     <a class="dropdown-item" href="#">Chat</a>\
                                 </div>\

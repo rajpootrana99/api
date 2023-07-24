@@ -71,4 +71,8 @@ class Task extends Model
     {
         return $this->hasMany(Quote::class);
     }
+
+    public function purchaseOrders(){
+        return $this->hasMany(PurchaseOrder::class);
+    }
 }

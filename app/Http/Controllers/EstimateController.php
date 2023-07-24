@@ -22,16 +22,16 @@ class EstimateController extends Controller
 
     public function fetchEstimates()
     {
-        $headers = Header::with('subHeaders.estimates')->orderBy('id', 'desc')->get();
+        $estimates = Estimate::with('subHeader.header')->orderBy('id', 'asc')->get();
         return response()->json([
             'status' => true,
-            'headers' => $headers,
+            'estimates' => $estimates,
         ]);
     }
 
     public function fetchHeaders()
     {
-        $headers = Header::with('subHeaders')->orderBy('id', 'desc')->get();
+        $headers = Header::with('subHeaders.estimates')->orderBy('id', 'desc')->get();
         return response()->json([
             'status' => true,
             'headers' => $headers,

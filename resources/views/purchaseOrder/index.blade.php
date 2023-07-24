@@ -39,7 +39,7 @@
                         </div>
                         <div class="col-sm-3">
                             <div class="form-group">
-                                <label for="issued_to">Issued from</label>
+                                <label for="issued_to">Issued to</label>
                                 <input type="date" class="form-control" id="issued_to">
                             </div>
                         </div>

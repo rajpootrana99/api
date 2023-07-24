@@ -13,15 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('purchase_orders', function (Blueprint $table) {
+        Schema::create('purchase_items', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('entity_id');
-            $table->unsignedBigInteger('task_id');
-            $table->string('issue_date');
-            $table->string('promised_date');
-            $table->integer('amount_are');
-            $table->unsignedDouble('amount_paid');
-            $table->integer('status');
+            $table->unsignedBigInteger('purchase_order_id');
+            $table->unsignedBigInteger('quote_id');
+            $table->string('description');
+            $table->unsignedDouble('no_of_units');
+            $table->unsignedDouble('unit_price');
+            $table->unsignedDouble('amount');
+            $table->unsignedDouble('tax');
             $table->timestamps();
         });
     }
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('purchase_orders');
+        Schema::dropIfExists('purchase_items');
     }
 };
