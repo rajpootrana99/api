@@ -51,7 +51,4 @@ class Quote extends Model
         return $this->belongsTo(Estimate::class);
     }
 
-    public function purchaseItem(){
-        return $this->hasOne(PurchaseItem::class);
-    }
 }

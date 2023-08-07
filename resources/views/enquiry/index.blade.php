@@ -43,7 +43,7 @@
                             <div class="row">
                                 <label for="example-search-input" class="col-sm-2 col-form-label text-right">Search</label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" type="search" placeholder="Search by desc site or client" id="example-search-input">
+                                    <input class="form-control" type="search" placeholder="Search by desc site or client" style="height: 30px" id="example-search-input">
                                 </div>
                             </div>
                         </div>

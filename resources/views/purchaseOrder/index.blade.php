@@ -34,19 +34,19 @@
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label for="issued_from">Issued from</label>
-                                <input type="date" class="form-control" id="issued_from">
+                                <input type="date" class="form-control" style="height: 30px" id="issued_from">
                             </div>
                         </div>
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label for="issued_to">Issued to</label>
-                                <input type="date" class="form-control" id="issued_to">
+                                <input type="date" class="form-control" style="height: 30px" id="issued_to">
                             </div>
                         </div>
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label for="search_text">Search</label>
-                                <input type="search" class="form-control" id="search_text">
+                                <input type="search" class="form-control" style="height: 30px" id="search_text">
                             </div>
                         </div>
                     </div>
@@ -59,18 +59,26 @@
                         <table class="table table-bordered mb-0 table-centered">
                             <thead>
                                 <tr>
-                                    <th>Issue Date</th>
+                                    <th>Date</th>
                                     <th>PO Number</th>
                                     <th>Supplier</th>
-                                    <th>Supplier Invoice No</th>
                                     <th>Amount($)</th>
-                                    <th>Balance Due($)</th>
-                                    <th>Promised Date</th>
+                                    <th>Sent</th>
+                                    <th>Site Start</th>
+                                    <th>Job No</th>
+                                    <th>Site Name</th>
                                 </tr>
                             </thead>
                             <tbody>
 
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3"><strong>Total</strong></td>
+                                    <td id="total_amount"></td>
+                                    <td colspan="4"></td>
+                                </tr>
+                            </tfoot>
                         </table><!--end /table-->
                     </div><!--end /tableresponsive-->
                 </div><!--end card-body-->

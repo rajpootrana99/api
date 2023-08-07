@@ -11,9 +11,9 @@ class PurchaseItem extends Model
 
     protected $fillable = [
         'purchase_order_id',
-        'quote_id',
+        'estimate_id',
         'description',
-        'no_of_units',
+        'qty',
         'unit_price',
         'amount',
         'tax',
@@ -23,7 +23,7 @@ class PurchaseItem extends Model
         return $this->belongsTo(PurchaseOrder::class);
     }
 
-    public function quote(){
-        return $this->belongsTo(Quote::class);
+    public function estimate(){
+        return $this->belongsTo(Estimate::class);
     }
 }

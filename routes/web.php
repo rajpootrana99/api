@@ -42,6 +42,7 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
     Route::get('/approveUser/{user}', [UserController::class, 'approveUser'])->name('user.approve');
     Route::resource('entity', EntityController::class);
     Route::get('/fetchEntities', [EntityController::class, 'fetchEntities'])->name('entity.get');
+    Route::get('/fetchSupplierEntities', [EntityController::class, 'fetchSupplierEntities'])->name('supplierEntity.get');
     Route::resource('site', SiteController::class);
     Route::get('/fetchSites', [SiteController::class, 'fetchSites'])->name('site.get');
     Route::resource('task', TaskController::class);

@@ -34,7 +34,7 @@
                         <div class="col-sm-6">
                             <div class="custom-control custom-switch switch-primary">
                                 <label style="padding-right: 40px; padding-top: 2px;">Simple View</label>
-                                <input type="checkbox" class="custom-control-input" id="view" checked="">
+                                <input type="checkbox" class="custom-control-input" id="view">
                                 <label class="custom-control-label" for="view">Detailed View</label>
                             </div>
                         </div>
@@ -96,7 +96,7 @@
             }
         });
 
-        fetchQuotes();
+        fetchSimpleQuotes();
 
         function fetchQuotes() {
             var quote_id = $('#task_id_for_quote').val();

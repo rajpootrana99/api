@@ -39,14 +39,14 @@
                             </div>
                         </div>
                         <div class="custom-control custom-checkbox col-sm-3" style="display:flex; padding:8px;float:left;margin-left: 30px">
-                            <input type="checkbox" class="custom-control-input" id="customCheck02">
+                            <input type="checkbox" class="custom-control-input" id="customCheck02" >
                             <label class="custom-control-label" for="customCheck02">Hide Archived Items</label>
                         </div>
                         <div class="form-group col-sm-4">
                             <div class="row">
                                 <label for="example-search-input" class="col-sm-2 col-form-label text-right">Search</label>
                                 <div class="col-sm-9">
-                                    <input class="form-control" type="search" placeholder="Search by Task Title or Store Name" id="example-search-input">
+                                    <input class="form-control" type="search" placeholder="Search by Task Title or Store Name" id="example-search-input" style="height: 30px">
                                 </div>
                             </div>
                         </div>

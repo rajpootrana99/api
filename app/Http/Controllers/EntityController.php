@@ -20,6 +20,20 @@ class EntityController extends Controller
         return view('entities.index');
     }
 
+    public function fetchSupplierEntities(){
+        $entities = Entity::where(['type' => 1])->get();
+        if (count($entities) > 0) {
+            return response()->json([
+                'status' => true,
+                'entities' => $entities,
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'No Suppliers are available yet',
+            ]);
+        }
+    }
     public function fetchEntities()
     {
         $entities = Entity::all();

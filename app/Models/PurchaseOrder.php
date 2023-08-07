@@ -12,10 +12,11 @@ class PurchaseOrder extends Model
     protected $fillable = [
         'entity_id',
         'task_id',
-        'issue_date',
-        'promised_date',
+        'date',
+        'site_start',
         'amount_are',
-        'amount_paid',
+        'note',
+        'site_address',
         'status',
     ];
 

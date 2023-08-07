@@ -100,7 +100,6 @@
                 estimate_id.children().remove().end();
                 estimate_id.append($("<option />").text('Select Cost Code'));
                 $.each(response.estimates, function(key, estimate) {
-                    console.log(header);
                     estimate_id.append($("<option />").val(estimate.id).text(estimate.sub_header.cost_code + '___' + estimate.item));
                 });
             }

@@ -41,7 +41,7 @@
                             <div class="row">
                                 <label for="example-search-input" class="col-sm-2 col-form-label text-right">Search</label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" type="search" placeholder="Search by desc site or client" id="example-search-input">
+                                    <input class="form-control" type="search" placeholder="Search by desc site or client" style="height: 30px" id="example-search-input">
                                 </div>
                             </div>
                         </div>
@@ -145,7 +145,7 @@
                                 <a class="dropdown-toggle arrow-none" id="dLabel11" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">\
                                     <i class="las la-ellipsis-v font-20 text-muted"></i>\
                                 </a>\
-                                <div style="z-index: 1 !important;" class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel11">\
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel11">\
                                     <a class="dropdown-item" href="#">Edit</a>\
                                     <a class="dropdown-item" href="/quote/'+job.id+'">Budget</a>\
                                     <a class="dropdown-item" href="#">Chat</a>\

@@ -23,4 +23,8 @@ class Estimate extends Model
     {
         return $this->belongsTo(SubHeader::class);
     }
+
+    public function purchaseItem(){
+        return $this->hasMany(PurchaseItem::class);
+    }
 }

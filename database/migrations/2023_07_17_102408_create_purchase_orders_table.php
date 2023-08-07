@@ -17,11 +17,12 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('entity_id');
             $table->unsignedBigInteger('task_id');
-            $table->string('issue_date');
-            $table->string('promised_date');
+            $table->string('date');
+            $table->string('site_start');
             $table->integer('amount_are');
-            $table->unsignedDouble('amount_paid');
-            $table->integer('status');
+            $table->string('site_address');
+            $table->string('note');
+            $table->string('status');
             $table->timestamps();
         });
     }
