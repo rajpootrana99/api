@@ -78,9 +78,10 @@ class PurchaseOrderController extends Controller
      * @param  \App\Models\PurchaseOrder  $purchaseOrder
      * @return \Illuminate\Http\Response
      */
-    public function show(PurchaseOrder $purchaseOrder)
+    public function show($purchaseOrder)
     {
-        //
+        $purchaseOrder = PurchaseOrder::with('entity', 'task.site', 'purchaseItems.estimate.subHeader.header', 'task.entity')->find($purchaseOrder);
+        return view('purchaseOrder.invoice', ['purchaseOrder' => $purchaseOrder]);
     }
 
     /**

@@ -2,7 +2,7 @@
 <div class="left-sidenav">
     <!-- LOGO -->
     <div class="brand">
-        <a href="index.html" class="logo">
+        <a href="{{ route('index') }}" class="logo">
             <span>
                 <h4>Maintenance App</h4>
             </span>

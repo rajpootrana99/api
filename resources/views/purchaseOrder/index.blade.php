@@ -67,7 +67,7 @@
                                     <th>Site Start</th>
                                     <th>Job No</th>
                                     <th>Site Name</th>
-                                    <th>Invoice</th>
+                                    <th><i class="las la-ellipsis-v font-20 text-muted"></i></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -121,7 +121,15 @@
                             <td>' + purchaseOrder.site_start + '</td>\
                             <td>' + purchaseOrder.task_id + '</td>\
                             <td>' + purchaseOrder.task.site.site + '</td>\
-                            <td><button value="' + purchaseOrder.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-eye"></i></button></td>\
+                            <td><div class="dropdown d-inline-block" style="float:right;">\
+                                <a class="dropdown-toggle arrow-none" id="dLabel11" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">\
+                                    <i class="las la-ellipsis-v font-20 text-muted"></i>\
+                                </a>\
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel11">\
+                                    <a class="dropdown-item" href="#">Edit</a>\
+                                    <a class="dropdown-item" href="purchaseOrder/'+purchaseOrder.id+'">Invoice</a>\
+                                </div>\
+                            </div>\</td>\
                     </tr>');
                     });
                 }
