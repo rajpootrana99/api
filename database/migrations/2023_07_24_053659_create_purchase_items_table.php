@@ -15,13 +15,13 @@ return new class extends Migration
     {
         Schema::create('purchase_items', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('purchase_order_id');
-            $table->unsignedBigInteger('estimate_id');
-            $table->string('description');
-            $table->unsignedDouble('qty');
-            $table->unsignedDouble('unit_price');
-            $table->unsignedDouble('amount');
-            $table->unsignedDouble('tax');
+            $table->unsignedBigInteger('purchase_order_id')->nullable();
+            $table->unsignedBigInteger('estimate_id')->nullable();
+            $table->string('description')->nullable();
+            $table->unsignedDouble('qty')->nullable();
+            $table->unsignedDouble('unit_price')->nullable();
+            $table->unsignedDouble('amount')->nullable();
+            $table->unsignedDouble('tax')->nullable()->default(10);
             $table->timestamps();
         });
     }

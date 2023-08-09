@@ -63,14 +63,14 @@
                                         <div class="form-group row">
                                             <label for="po_number" class="col-sm-6 col-form-label text-right">Purchase Order Number<strong>*</strong></label>
                                             <div class="col-sm-6">
-                                                <input class="form-control" style="width: 100%; height:30px;" type="number" readonly id="po_number">
+                                                <input class="form-control" style="width: 100%; height:30px;" type="number" readonly value="{{ $purchaseNo }}">
                                                 <span class="text-danger error-text po_number_error"></span>
                                             </div>      
                                         </div>
                                         <div class="form-group row">
                                             <label for="date" class="col-sm-6 col-form-label text-right">Date<strong>*</strong></label>
                                             <div class="col-sm-6">
-                                                <input class="form-control" type="date" value="2023-06-19" style="width: 100%; height:30px;" name="date" id="date">
+                                                <input class="form-control" type="date" style="width: 100%; height:30px;" name="date" id="date">
                                                 <span class="text-danger error-text date_error"></span>
                                             </div>
                                         </div>
@@ -85,11 +85,11 @@
                                         <label for="promised_date" class="col-sm-6 col-form-label text-right">Amounts Are</label>
                                             <div class="col-sm-6">
                                                 <div class="custom-control custom-radio">
-                                                    <input type="radio" id="customRadio3" name="amount_are" class="custom-control-input" checked>
+                                                    <input type="radio" id="customRadio3" name="amount_are" value="0" class="custom-control-input" checked>
                                                     <label class="custom-control-label" for="customRadio3">Tax Inclusive</label>
                                                 </div>
                                                 <div class="custom-control custom-radio">
-                                                    <input type="radio" id="customRadio4" name="amount_are" class="custom-control-input">
+                                                    <input type="radio" id="customRadio4" name="amount_are" class="custom-control-input" value="1">
                                                     <label class="custom-control-label" for="customRadio4">Tax Exclusive</label>
                                                 </div>
                                             </div>
@@ -133,19 +133,19 @@
                                         <div class="form-group row">
                                             <label for="subtotal" class="col-sm-6 col-form-label text-right"><strong>Subtotal</strong></label>
                                             <div class="col-sm-6">
-                                                <input class="form-control" style="width: 100%; height:30px;" type="text" readonly name="subtotal" id="subtotal">
+                                                <input class="form-control" style="width: 100%; height:30px;" type="text" readonly name="sub_total" id="sub_total">
                                             </div>      
                                         </div>
                                         <div class="form-group row">
                                             <label for="tax" class="col-sm-6 col-form-label text-right"><strong>Tax</strong></label>
                                             <div class="col-sm-6">
-                                                <input class="form-control" type="text" readonly style="width: 100%; height:30px;" id="tax">
+                                                <input class="form-control" type="text" readonly style="width: 100%; height:30px;" id="tax" name="tax">
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label for="total" class="col-sm-6 col-form-label text-right"><strong>Total</strong></label>
                                             <div class="col-sm-6">
-                                                <input class="form-control" type="text" readonly style="width: 100%; height:30px;" id="total">
+                                                <input class="form-control" type="text" readonly style="width: 100%; height:30px;" id="total" name="total">
                                             </div>
                                         </div>                                                                                
                                     </div>
@@ -164,6 +164,9 @@
 </div>
 
 <script>
+    var tax = 0;
+    var subtotal = 0;
+    var total = 0;
     var itemsCount = 1;
     itemsDetailDynamicField(itemsCount);
 
@@ -188,9 +191,9 @@
         html = '<tr>';
         html += '<td><select class="select2 form-control" name="items[' + number + '][estimate_id]" id="estimate_id_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Cost Code"><option value="0">Select Cost Code</option></select></td>';
         html += '<td><input type="text" style="height: 30px" name="items[' + number + '][description]" id="description_' + number + '" class="form-control" /></td>';
-        html += '<td><input type="text" style="height: 30px" name="items[' + number + '][qty]" id="qty_' + number + '" class="form-control" /></td>';
-        html += '<td><input type="text" style="height: 30px" name="items[' + number + '][unit_price]" id="unit_price_' + number + '" class="form-control" /></td>';
-        html += '<td><input type="text" style="height: 30px" name="items[' + number + '][amount]" id="amount_' + number + '" class="form-control" /></td>';
+        html += '<td><input type="text" style="height: 30px" name="items[' + number + '][qty]" id="qty_' + number + '" onchange="calculateCost()" class="form-control" /></td>';
+        html += '<td><input type="text" style="height: 30px" name="items[' + number + '][unit_price]" id="unit_price_' + number + '" onchange="calculateCost()" class="form-control" /></td>';
+        html += '<td><input type="text" style="height: 30px" name="items[' + number + '][amount]" id="amount_' + number + '" readonly class="form-control" /></td>';
         html += '<td><select class="select2 form-control" name="items[' + number + '][tax]" id="tax_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Tax Code"><option value="10">GST 10%</option></select></td>';
         if (number > 1) {
             html += '<td><button style="border: none; background-color: #fff" name="addItems" id="addItems"><i class="fa fa-plus-circle"></i></button></td>';
@@ -254,6 +257,22 @@
                 });
             }
         });
+    }
+
+    function calculateCost() {
+        var qty = $('#qty_' + itemsCount).val();
+        var unit_price = $('#unit_price_' + itemsCount).val();
+        var amount = parseFloat(unit_price) * parseFloat(qty);
+        subtotal = (subtotal ? subtotal : 0) + (amount ? amount : 0);
+        var item_tax = (parseFloat(amount) / 100) * 10;
+        tax = (tax ? tax : 0) + (item_tax ? item_tax : 0);
+        total = subtotal + tax;
+        console.log('Sub total = '+subtotal)
+        console.log('Amount = '+amount)
+        $('#amount_' + itemsCount).val(amount);
+        $('#sub_total').val(subtotal);
+        $('#tax').val(tax);
+        $('#total').val(total);
     }
 
     $(document).ready(function() {

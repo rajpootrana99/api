@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PurchaseItem;
 use App\Models\PurchaseOrder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class PurchaseOrderController extends Controller
 {
@@ -17,6 +19,14 @@ class PurchaseOrderController extends Controller
         return view('purchaseOrder.index');
     }
 
+    public function fetchPurchaseOrders(){
+        $purchaseOrders = PurchaseOrder::with('entity', 'task.site', 'purchaseItems')->get();
+        return response()->json([
+            'status' => true,
+            'purchaseOrders' => $purchaseOrders
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -24,7 +34,14 @@ class PurchaseOrderController extends Controller
      */
     public function create()
     {
-        return view('purchaseOrder.create');
+        $purchaseOrder = PurchaseOrder::latest()->first();
+        if($purchaseOrder){
+            $purchaseNo = $purchaseOrder->id + 1;
+        }
+        else{
+            $purchaseNo = 1;
+        }
+        return view('purchaseOrder.create', ['purchaseNo' => $purchaseNo]);
     }
 
     /**
@@ -35,7 +52,24 @@ class PurchaseOrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'entity_id' => ['required'],
+            'task_id' => ['required'],
+        ]);
+        $purchaseOrder = PurchaseOrder::create($request->all());
+
+        foreach ($request->items as $itemData) {
+            $item = PurchaseItem::create([
+                'purchase_order_id' => $purchaseOrder->id,
+                'estimate_id' => $itemData['estimate_id'],
+                'description' => $itemData['description'],
+                'qty' => $itemData['qty'],
+                'unit_price' => $itemData['unit_price'],
+                'amount' => $itemData['amount'],
+                'tax' => $itemData['tax'],
+            ]);
+        }
+        return redirect()->route('purchaseOrder.index');
     }
 
     /**

@@ -17,6 +17,9 @@ class PurchaseOrder extends Model
         'amount_are',
         'note',
         'site_address',
+        'sub_total',
+        'tax',
+        'total',
         'status',
     ];
 
@@ -36,7 +39,7 @@ class PurchaseOrder extends Model
         ];
     }
 
-    public function entitiy(){
+    public function entity(){
         return $this->belongsTo(Entity::class);
     }
 

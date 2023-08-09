@@ -15,14 +15,17 @@ return new class extends Migration
     {
         Schema::create('purchase_orders', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('entity_id');
-            $table->unsignedBigInteger('task_id');
-            $table->string('date');
-            $table->string('site_start');
-            $table->integer('amount_are');
-            $table->string('site_address');
-            $table->string('note');
-            $table->string('status');
+            $table->unsignedBigInteger('entity_id')->nullable();
+            $table->unsignedBigInteger('task_id')->nullable();
+            $table->string('date')->nullable();
+            $table->string('site_start')->nullable();
+            $table->integer('amount_are')->nullable();
+            $table->string('site_address')->nullable();
+            $table->string('note')->nullable();
+            $table->string('sub_total')->nullable();
+            $table->string('tax')->nullable();
+            $table->string('total')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }

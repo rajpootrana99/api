@@ -73,7 +73,7 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
     Route::get('/fetchHeaders', [EstimateController::class, 'fetchHeaders'])->name('header.get');
     Route::get('/fetchSubHeaders/{header}', [EstimateController::class, 'fetchSubHeaders'])->name('subheader.get');
     Route::resource('purchaseOrder', PurchaseOrderController::class);
-
+    Route::get('/fetchPurchaseOrders', [PurchaseOrderController::class, 'fetchPurchaseOrders'])->name('purchaseOrder.get');
 });
 
 require __DIR__ . '/auth.php';

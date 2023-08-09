@@ -67,6 +67,7 @@
                                     <th>Site Start</th>
                                     <th>Job No</th>
                                     <th>Site Name</th>
+                                    <th>Invoice</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -76,7 +77,7 @@
                                 <tr>
                                     <td colspan="3"><strong>Total</strong></td>
                                     <td id="total_amount"></td>
-                                    <td colspan="4"></td>
+                                    <td colspan="5"></td>
                                 </tr>
                             </tfoot>
                         </table><!--end /table-->
@@ -100,6 +101,32 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+        fetchPurchaseOrders();
+
+        function fetchPurchaseOrders() {
+            $.ajax({
+                type: "GET",
+                url: "fetchPurchaseOrders",
+                dataType: "json",
+                success: function(response) {
+                    $('tbody').html("");
+                    $.each(response.purchaseOrders, function(key, purchaseOrder) {
+                        $('tbody').append('<tr>\
+                            <td>' + purchaseOrder.date + '</td>\
+                            <td>' + purchaseOrder.id + '</td>\
+                            <td>' + purchaseOrder.entity.entity + '</td>\
+                            <td>' + purchaseOrder.total + '</td>\
+                            <td>' + purchaseOrder.date + '</td>\
+                            <td>' + purchaseOrder.site_start + '</td>\
+                            <td>' + purchaseOrder.task_id + '</td>\
+                            <td>' + purchaseOrder.task.site.site + '</td>\
+                            <td><button value="' + purchaseOrder.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-eye"></i></button></td>\
+                    </tr>');
+                    });
+                }
+            });
+        }
 
         function fetchQuoteTasks() {
             $.ajax({
