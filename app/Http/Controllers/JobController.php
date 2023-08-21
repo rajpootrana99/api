@@ -73,9 +73,10 @@ class JobController extends Controller
      * @param  \App\Models\Job  $job
      * @return \Illuminate\Http\Response
      */
-    public function show(Job $job)
+    public function show($job)
     {
-        //
+        $job = Task::with('entity', 'site', 'quotes.estimate.subHeader.header', 'entity')->find($job);
+        return view('job.invoice', ['job' => $job]);
     }
 
     /**
