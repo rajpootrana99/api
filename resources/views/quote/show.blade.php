@@ -123,10 +123,10 @@
                             $.each(response.quotes, function(key, quote) {
                                 if (subHeader.cost_code === quote.estimate.sub_header.cost_code) {
                                     sub_header_total_budget += quote.amount;
-                                    sub_header_total_balance += quote.subtotal;
+                                    sub_header_total_balance += quote.order_total_amount;
                                 }
                             });
-                            $('tbody').append('<tr style="background:#c7c7c7; color: #000">\
+                            $('tbody').append('<tr style="background:#fa9c69; color: #000">\
                                 <td></td>\
                                 <td colspan="5"><strong>' + subHeader.cost_code + '___' + subHeader.sub_header + '</strong></td>\
                                 <td><strong>' + USDollar.format(sub_header_total_budget) + '</strong></td>\
@@ -139,7 +139,7 @@
                                     total_qty += quote.qty;
                                     total_rate += quote.rate;
                                     total_budget += quote.amount;
-                                    total_balance += quote.subtotal;
+                                    total_balance += quote.order_total_amount;
                                     $('tbody').append('<tr>\
                                         <td><input type="checkbox" /></td>\
                                         <td>' + quote.estimate.sub_header.cost_code + '___' + quote.estimate.item + '</td>\
@@ -149,7 +149,7 @@
                                         <td>' + USDollar.format(quote.rate) + '</td>\
                                         <td>' + USDollar.format(quote.amount) + '</td>\
                                         <td></td>\
-                                        <td>' + USDollar.format(quote.subtotal) + '</td>\
+                                        <td>' + USDollar.format(quote.order_total_amount) + '</td>\
                                         <td></td>\
                                         <td></td>\
                                         <td><button value="' + quote.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
@@ -180,53 +180,61 @@
                     var total_balance = 0;
                     var total_value_ordered = 0;
                     var i = 0;
-                    $.each(response.quotes, function(key, quote) {
-                        $.each(response.headers, function(key, header) {
-                            if(quote.estimate.sub_header.header.id == header.id){
-                                $('tbody').append('<tr style="background:#F96D22; color: #fff">\
-                                    <td></td>\
-                                    <td colspan="11"><strong>' + header.major_code + '___' + header.header + '</strong></td>\
-                                </tr>');
-                            }
-                            $.each(header.sub_headers, function(key, subHeader) {
-                                var sub_header_total_budget = 0;
-                                var sub_header_total_balance = 0;
-                                $.each(response.quotes, function(key, quote) {
-                                    if (subHeader.cost_code === quote.estimate.sub_header.cost_code) {
-                                        sub_header_total_budget += quote.amount;
-                                        sub_header_total_balance += quote.subtotal;
+                    $.each(response.headers, function(key, header) {
+                        var flag = 0;
+                        
+                        $.each(header.sub_headers, function(key, subHeader) {
+                            var subheaderflag = 0;
+                            var sub_header_total_budget = 0;
+                            var sub_header_total_balance = 0;
+                            $.each(response.quotes, function(key, quote) {
+                                if (subHeader.cost_code === quote.estimate.sub_header.cost_code) {
+                                    sub_header_total_budget += quote.amount;
+                                    sub_header_total_balance += quote.order_total_amount;
+                                }
+                            });
+                            
+                            $.each(response.quotes, function(key, quote) {
+                                if (subHeader.cost_code === quote.estimate.sub_header.cost_code) {
+                                    if(flag == 0){
+                                        flag = 1;
+                                        $('tbody').append('<tr style="background:#F96D22; color: #fff">\
+                                            <td></td>\
+                                            <td colspan="11"><strong>' + header.major_code + '___' + header.header + '</strong></td>\
+                                        </tr>');
                                     }
-                                });
-                                if(quote.estimate.sub_header.id == subHeader.id){
-                                    $('tbody').append('<tr style="background:#c7c7c7; color: #000">\
+                                    if(subheaderflag == 0){
+                                        subheaderflag = 1;
+                                        $('tbody').append('<tr style="background:#fa9c69; color: #000">\
+                                            <td></td>\
+                                            <td colspan="5"><strong>' + subHeader.cost_code + '___' + subHeader.sub_header + '</strong></td>\
+                                            <td><strong>' + USDollar.format(sub_header_total_budget) + '</strong></td>\
+                                            <td></td>\
+                                            <td><strong>' + USDollar.format(sub_header_total_balance) + '</strong></td>\
+                                            <td colspan="3"></td>\
+                                        </tr>');
+                                    }
+                                    total_qty += quote.qty;
+                                    total_rate += quote.rate;
+                                    total_budget += quote.amount;
+                                    total_balance += quote.order_total_amount;
+                                    $('tbody').append('<tr>\
+                                        <td><input type="checkbox" /></td>\
+                                        <td>' + quote.estimate.sub_header.cost_code + '___' + quote.estimate.item + '</td>\
+                                        <td>' + quote.description + '</td>\
+                                        <td>' + quote.unit + '</td>\
+                                        <td>' + quote.qty + '</td>\
+                                        <td>' + USDollar.format(quote.rate) + '</td>\
+                                        <td>' + USDollar.format(quote.amount) + '</td>\
                                         <td></td>\
-                                        <td colspan="5"><strong>' + subHeader.cost_code + '___' + subHeader.sub_header + '</strong></td>\
-                                        <td><strong>' + USDollar.format(sub_header_total_budget) + '</strong></td>\
+                                        <td>' + USDollar.format(quote.order_total_amount) + '</td>\
                                         <td></td>\
-                                        <td><strong>' + USDollar.format(sub_header_total_balance) + '</strong></td>\
-                                        <td colspan="3"></td>\
+                                        <td></td>\
+                                        <td><button value="' + quote.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
                                     </tr>');
                                 }
-                            })
+                            });
                         })
-                        total_qty += quote.qty;
-                        total_rate += quote.rate;
-                        total_budget += quote.amount;
-                        total_balance += quote.subtotal;
-                        $('tbody').append('<tr>\
-                            <td><input type="checkbox" /></td>\
-                            <td>' + quote.estimate.sub_header.cost_code + '___' + quote.estimate.item + '</td>\
-                            <td>' + quote.description + '</td>\
-                            <td>' + quote.unit + '</td>\
-                            <td>' + quote.qty + '</td>\
-                            <td>' + USDollar.format(quote.rate) + '</td>\
-                            <td>' + USDollar.format(quote.amount) + '</td>\
-                            <td></td>\
-                            <td>' + USDollar.format(quote.subtotal) + '</td>\
-                            <td></td>\
-                            <td></td>\
-                            <td><button value="' + quote.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
-                        </tr>');
                     });
                     $('#total_qty').html(total_qty);
                     $('#total_rate').html(USDollar.format(total_rate));

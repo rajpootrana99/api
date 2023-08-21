@@ -34,6 +34,8 @@ class Quote extends Model
         'quote_type',
         'job_label',
         'write_orders',
+        'order_unit_price',
+        'order_total_amount',
         'eid_code',
         'vo',
         'total_extras',

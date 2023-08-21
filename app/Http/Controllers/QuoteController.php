@@ -65,6 +65,7 @@ class QuoteController extends Controller
                 'qty' => $quoteData['qty'],
                 'rate' => $quoteData['rate'],
                 'amount' => $quoteData['amount'],
+                'order_total_amount' => $quoteData['amount'],
                 'margin' => $quoteData['margin'],
                 'subtotal' => $quoteData['subtotal'],
                 'gst' => 10,

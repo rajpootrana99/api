@@ -31,6 +31,8 @@ return new class extends Migration
             $table->unsignedDouble('gst')->nullable()->default(0);
             $table->unsignedDouble('amount_inc_gst')->nullable()->default(0);
             $table->unsignedDouble('variation_total')->nullable()->default(0);
+            $table->unsignedDouble('order_unit_price')->nullable()->default(0);
+            $table->unsignedDouble('order_total_amount')->nullable()->default(0);
             $table->unsignedDouble('work_cost')->nullable()->default(0);
             $table->unsignedDouble('inc_as_margin')->nullable()->default(0);
             $table->unsignedDouble('total_float')->nullable()->default(0);

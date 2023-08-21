@@ -88,61 +88,61 @@
                         </div>
                         <div class="tab-pane p-3" id="business" role="tabpanel">
                             <form action="">
-                                <div class="form-group row" style="margin-bottom: 0px;">
+                                <div class="form-group row" style="margin-bottom: 0px !important;">
                                     <label for="example-text-input" class="col-sm-2 col-form-label text-right">Name:</label>
                                     <div class="col-sm-8">
                                         <input class="form-control" type="text" value="{{$entity->entity}}" id="example-text-input" style="width: 100%; height:30px;">
                                     </div>
                                 </div>
-                                <div class="form-group row" style="margin-bottom: 0px;">
+                                <div class="form-group row" style="margin-bottom: 0px !important;">
                                     <label for="example-text-input" class="col-sm-2 col-form-label text-right">ABN:</label>
                                     <div class="col-sm-8">
                                         <input class="form-control" type="text" value="{{$entity->abn}}" id="example-text-input" style="width: 100%; height:30px;">
                                     </div>
                                 </div>
-                                <div class="form-group row" style="margin-bottom: 0px;">
+                                <div class="form-group row" style="margin-bottom: 0px !important;">
                                     <label for="example-text-input" class="col-sm-2 col-form-label text-right">Registered Name:</label>
                                     <div class="col-sm-8">
                                         <input class="form-control" type="text" value="" id="example-text-input" style="width: 100%; height:30px;">
                                     </div>
                                 </div>
-                                <div class="form-group row" style="margin-bottom: 0px;">
+                                <div class="form-group row" style="margin-bottom: 0px !important;">
                                     <label for="example-text-input" class="col-sm-2 col-form-label text-right">Trading Type:</label>
                                     <div class="col-sm-8">
                                         <input class="form-control" type="text" value="{{$entity->entity}}" id="example-text-input" style="width: 100%; height:30px;">
                                     </div>
                                 </div> 
-                                <div class="form-group row" style="margin-bottom: 0px;">
+                                <div class="form-group row" style="margin-bottom: 0px !important;">
                                     <label for="example-text-input" class="col-sm-2 col-form-label text-right">Phone:</label>
                                     <div class="col-sm-8">
                                         <input class="form-control" type="text" value="{{$entity->mobile}}" id="example-text-input" style="width: 100%; height:30px;">
                                     </div>
                                 </div>
-                                <div class="form-group row" style="margin-bottom: 0px;">
+                                <div class="form-group row" style="margin-bottom: 0px !important;">
                                     <label for="example-text-input" class="col-sm-2 col-form-label text-right">Fax Number:</label>
                                     <div class="col-sm-8">
                                         <input class="form-control" type="text" value="{{$entity->fax}}" id="example-text-input" style="width: 100%; height:30px;">
                                     </div>
                                 </div>
-                                <div class="form-group row" style="margin-bottom: 0px;">
+                                <div class="form-group row" style="margin-bottom: 0px !important;">
                                     <label for="example-text-input" class="col-sm-2 col-form-label text-right">Postal Address Street:</label>
                                     <div class="col-sm-8">
                                         <input class="form-control" type="text" value="{{$entity->address}}" id="example-text-input" style="width: 100%; height:30px;">
                                     </div>
                                 </div>
-                                <div class="form-group row" style="margin-bottom: 0px;">
+                                <div class="form-group row" style="margin-bottom: 0px !important;">
                                     <label for="example-text-input" class="col-sm-2 col-form-label text-right">City:</label>
                                     <div class="col-sm-8">
                                         <input class="form-control" type="text" value="" id="example-text-input" style="width: 100%; height:30px;">
                                     </div>
                                 </div>
-                                <div class="form-group row" style="margin-bottom: 0px;">
+                                <div class="form-group row" style="margin-bottom: 0px !important;">
                                     <label for="example-text-input" class="col-sm-2 col-form-label text-right">Postal Code:</label>
                                     <div class="col-sm-8">
                                         <input class="form-control" type="text" value="" id="example-text-input" style="width: 100%; height:30px;">
                                     </div>
                                 </div>
-                                <div class="form-group row" style="margin-bottom: 0px;">
+                                <div class="form-group row" style="margin-bottom: 0px !important;">
                                     <label for="example-text-input" class="col-sm-2 col-form-label text-right">State/Province:</label>
                                     <div class="col-sm-8">
                                         <input class="form-control" type="text" value="" id="example-text-input" style="width: 100%; height:30px;">
