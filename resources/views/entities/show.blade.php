@@ -174,7 +174,7 @@
                                         @foreach($jobs as $job)
                                             <tr>
                                                 <td>{{$job->id}}</td>
-                                                <td>{{$job->site->address}}<br>{{$job->title}}</td>
+                                                <td>{{$job->site->site_address}}<br>{{$job->title}}</td>
                                                 <td class="row">@if($job->user){{$job->user->name}}@endif
                                                     <ul class="list-group list-group-horizontal-md col-6">
                                                         <li class="list-group-item">Swms: 0</li>
