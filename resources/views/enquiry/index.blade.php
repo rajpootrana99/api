@@ -41,8 +41,8 @@
                         <div class="col-sm-5"></div>
                         <div class="form-group col-sm-4">
                             <div class="row">
-                                <label for="example-search-input" class="col-sm-2 col-form-label text-right">Search</label>
-                                <div class="col-sm-10">
+                                <label for="example-search-input" class="col-sm-3 col-form-label text-right">Search</label>
+                                <div class="col-sm-9">
                                     <input class="form-control" type="search" placeholder="Search by desc site or client" style="height: 30px" id="example-search-input">
                                 </div>
                             </div>

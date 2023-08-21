@@ -20,7 +20,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-title mt-4">
-                        <a href="" data-toggle="modal" data-target="#addEntity" id="addEntityButton" class="btn btn-primary" style="float:right;margin-left: 10px"><i class="fa fa-plus"></i> New Entity </a>
+                        <h3>{{ $entity->entity }}</h3>
                     </div>
                 </div><!--end card-header-->
                 <div class="card-body">
@@ -50,47 +50,158 @@
 
                     <!-- Tab panes -->
                     <div class="tab-content">
-                        <div class="tab-pane p-3 active" id="home" role="tabpanel">
-                            <p class="mb-0 text-muted">
-                                Raw denim you probably haven't heard of them jean shorts Austin.
-                            </p>
+                        <div class="tab-pane p-3 active" id="personnel" role="tabpanel">
+                            <div class="table-responsive mb-0 fixed-solution">
+                                <table class="table table-bordered mb-0 table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Position</th>
+                                            <th>Phone</th>
+                                            <th>Email</th>
+                                            <th>PCBU / Admin</th>
+                                            <th>Contact</th>
+                                            <th>User Group</th>
+                                            <th>App Onboarding</th>
+                                            <th>Reset Password</th>
+                                            <th width="3%"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($contacts as $contact)
+                                            <tr>
+                                                <td>{{$contact->user->name}}</td>
+                                                <td>{{$contact->role}}</td>
+                                                <td>{{$contact->user->phone}}</td>
+                                                <td>{{$contact->user->email}}</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>Contractor</td>
+                                                <td><button class="btn btn-primary"><i class="fas fa-mobile-alt"></i> SMS App</button></td>
+                                                <td><button class="btn btn-primary"><i class="far fa-envelope"></i> Password</button></td>
+                                                <td></td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table><!--end /table-->
+                            </div><!--end /tableresponsive-->
                         </div>
-                        <div class="tab-pane p-3" id="profile" role="tabpanel">
-                            <p class="mb-0 text-muted">
-                                Food truck fixie locavore, accusamus mcsweeney's
-                                single-origin coffee squid.
-                            </p>
+                        <div class="tab-pane p-3" id="business" role="tabpanel">
+                            <form action="">
+                                <div class="form-group row" style="margin-bottom: 0px;">
+                                    <label for="example-text-input" class="col-sm-2 col-form-label text-right">Name:</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" type="text" value="{{$entity->entity}}" id="example-text-input" style="width: 100%; height:30px;">
+                                    </div>
+                                </div>
+                                <div class="form-group row" style="margin-bottom: 0px;">
+                                    <label for="example-text-input" class="col-sm-2 col-form-label text-right">ABN:</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" type="text" value="{{$entity->abn}}" id="example-text-input" style="width: 100%; height:30px;">
+                                    </div>
+                                </div>
+                                <div class="form-group row" style="margin-bottom: 0px;">
+                                    <label for="example-text-input" class="col-sm-2 col-form-label text-right">Registered Name:</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" type="text" value="" id="example-text-input" style="width: 100%; height:30px;">
+                                    </div>
+                                </div>
+                                <div class="form-group row" style="margin-bottom: 0px;">
+                                    <label for="example-text-input" class="col-sm-2 col-form-label text-right">Trading Type:</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" type="text" value="{{$entity->entity}}" id="example-text-input" style="width: 100%; height:30px;">
+                                    </div>
+                                </div> 
+                                <div class="form-group row" style="margin-bottom: 0px;">
+                                    <label for="example-text-input" class="col-sm-2 col-form-label text-right">Phone:</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" type="text" value="{{$entity->mobile}}" id="example-text-input" style="width: 100%; height:30px;">
+                                    </div>
+                                </div>
+                                <div class="form-group row" style="margin-bottom: 0px;">
+                                    <label for="example-text-input" class="col-sm-2 col-form-label text-right">Fax Number:</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" type="text" value="{{$entity->fax}}" id="example-text-input" style="width: 100%; height:30px;">
+                                    </div>
+                                </div>
+                                <div class="form-group row" style="margin-bottom: 0px;">
+                                    <label for="example-text-input" class="col-sm-2 col-form-label text-right">Postal Address Street:</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" type="text" value="{{$entity->address}}" id="example-text-input" style="width: 100%; height:30px;">
+                                    </div>
+                                </div>
+                                <div class="form-group row" style="margin-bottom: 0px;">
+                                    <label for="example-text-input" class="col-sm-2 col-form-label text-right">City:</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" type="text" value="" id="example-text-input" style="width: 100%; height:30px;">
+                                    </div>
+                                </div>
+                                <div class="form-group row" style="margin-bottom: 0px;">
+                                    <label for="example-text-input" class="col-sm-2 col-form-label text-right">Postal Code:</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" type="text" value="" id="example-text-input" style="width: 100%; height:30px;">
+                                    </div>
+                                </div>
+                                <div class="form-group row" style="margin-bottom: 0px;">
+                                    <label for="example-text-input" class="col-sm-2 col-form-label text-right">State/Province:</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" type="text" value="" id="example-text-input" style="width: 100%; height:30px;">
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-                        <div class="tab-pane p-3" id="settings" role="tabpanel">
+                        <div class="tab-pane p-3" id="tradrtypes" role="tabpanel">
                             <p class="text-muted mb-0">
-                                Trust fund seitan letterpress, keytar raw denim keffiyeh etsy.
+                                ?????????????????????????????????????????????
+                            </p>
+                        </div>
+                        <div class="tab-pane p-3" id="prequal" role="tabpanel">
+                            <p class="mb-0 text-muted">
+                                ?????????????????????????????????????????????
+                            </p>
+                        </div>
+                        <div class="tab-pane p-3" id="joblist" role="tabpanel">
+                        <div class="table-responsive mb-0 fixed-solution">
+                                <table class="table table-bordered mb-0 table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Site Location/Name</th>
+                                            <th>Primary Contact</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($jobs as $job)
+                                            <tr>
+                                                <td>{{$job->id}}</td>
+                                                <td>{{$job->site->address}}<br>{{$job->title}}</td>
+                                                <td class="row">@if($job->user){{$job->user->name}}@endif
+                                                    <ul class="list-group list-group-horizontal-md col-6">
+                                                        <li class="list-group-item">Swms: 0</li>
+                                                        <li class="list-group-item">Wkrs: 5</li>
+                                                        <li class="list-group-item">Ords: 0</li>
+                                                        <li class="list-group-item">PQual: 0</li>
+                                                    </ul>
+                                                    <span class="list-group-item col-3"><a href="#">CheckList</a>
+                                                    <a href="#" class="ml-4">Status</a></span>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table><!--end /table-->
+                            </div><!--end /tableresponsive-->
+                        </div>
+                        <div class="tab-pane p-3" id="checklists" role="tabpanel">
+                            <p class="text-muted mb-0">
+                                ?????????????????????????????????????????????
+                            </p>
+                        </div>
+                        <div class="tab-pane p-3" id="swms" role="tabpanel">
+                            <p class="text-muted mb-0">
+                                ?????????????????????????????????????????????
                             </p>
                         </div>
                     </div>
-                    <div class="table-responsive mb-0 fixed-solution">
-                        <table class="table table-bordered mb-0 table-sm">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Type</th>
-                                    <th>Entity</th>
-                                    <th>ABN</th>
-                                    <th>Email</th>
-                                    <th>Address</th>
-                                    <th>Primary Phone</th>
-                                    <th>Mobile</th>
-                                    <th>Fax</th>
-                                    <th>Director</th>
-                                    <th>Trade</th>
-                                    <th>Abbrev</th>
-                                    <th width="3%">Modify</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table><!--end /table-->
-                    </div><!--end /tableresponsive-->
                 </div><!--end card-body-->
             </div><!--end card-->
         </div> <!-- end col -->

@@ -399,7 +399,7 @@
                         $('tbody').append('<tr>\
                             <td>' + entity.id + '</td>\
                             <td>' + entity.type + '</td>\
-                            <td>' + entity.entity + '</td>\
+                            <td><a href="/entity/'+entity.id+'">' + entity.entity + '</a></td>\
                             <td>' + entity.abn + '</td>\
                             <td>' + entity.email + '</td>\
                             <td>' + entity.address + '</td>\

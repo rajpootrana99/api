@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Entity;
 use App\Http\Controllers\Controller;
+use App\Models\Contact;
+use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -92,9 +94,15 @@ class EntityController extends Controller
      * @param  \App\Models\Entity  $entity
      * @return \Illuminate\Http\Response
      */
-    public function show(Entity $entity)
+    public function show($entity)
     {
-        //
+        $jobs = Task::with('site', 'user')->where(['is_job' => 1, 'entity_id' => $entity])->get();
+        $contacts = Contact::with('user')->where(['entity_id' => $entity])->get();
+        $entity = Entity::find($entity);
+        return view('entities.show', [
+            'entity' => $entity,
+            'jobs' => $jobs,
+            'contacts' => $contacts,]);
     }
 
     /**
