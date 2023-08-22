@@ -41,16 +41,16 @@
                                                 <thead>
                                                     <tr>
                                                         <th width="3%">#</th>
-                                                        <th width="30%">Description</th>
+                                                        <th>Description</th>
                                                         <th width="20%">Cost Code</th>
-                                                        <th width="10%">Unit</th>
-                                                        <th width="10%">Qty</th>
-                                                        <th width="10%">Rate</th>
-                                                        <th width="10%">Amount</th>
-                                                        <th width="10%">Margin</th>
-                                                        <th width="10%">Subtotle</th>
-                                                        <th width="20%">Amount Inc-GST</th>
-                                                        <th width="20%">Completed Date</th>
+                                                        <th>Unit</th>
+                                                        <th>Qty</th>
+                                                        <th>Rate</th>
+                                                        <th>Amount</th>
+                                                        <th>Margin</th>
+                                                        <th>Subtotle</th>
+                                                        <th>Amount Inc-GST</th>
+                                                        <th>Completed Date</th>
                                                         <th width="3%"><i class="fa fa-plus-circle"></i></th>
                                                         <th width="3%"><i class="fa fa-minus-circle"></i></th>
                                                     </tr>
@@ -127,17 +127,17 @@
     }
 
     function itemsDetailDynamicField(number) {
-        html = '<tr>';
+        html = '<tr class="item">';
         html += '<td>' + number + '</td>';
         html += '<td><input type="text" style="height: 30px" name="quotes[' + number + '][description]" id="description_' + number + '" class="form-control" /></td>';
         html += '<td><select class="select2 form-control" name="quotes[' + number + '][estimate_id]" id="estimate_id_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Cost Code"></select></td>';
         html += '<td><input type="text" style="height: 30px" name="quotes[' + number + '][unit]" id="unit_' + number + '" class="form-control" /></td>';
-        html += '<td><input type="number" style="height: 30px" name="quotes[' + number + '][qty]" id="qty_' + number + '" class="form-control" onchange="calculateCost()" /></td>';
-        html += '<td><input type="text" style="height: 30px" name="quotes[' + number + '][rate]" id="rate_' + number + '" class="form-control" onchange="calculateCost()" /></td>';
-        html += '<td><input type="text" style="height: 30px" name="quotes[' + number + '][amount]" id="amount_' + number + '" class="form-control" readonly /></td>';
-        html += '<td><input type="number" style="height: 30px" name="quotes[' + number + '][margin]" id="margin_' + number + '" class="form-control" onchange="calculateCost()" /></td>';
-        html += '<td><input type="text" style="height: 30px" name="quotes[' + number + '][subtotal]" id="subtotal_' + number + '" class="form-control" readonly /></td>';
-        html += '<td><input type="text" style="height: 30px" name="quotes[' + number + '][amount_inc_gst]" id="amount_inc_gst_' + number + '" class="form-control" readonly /></td>';
+        html += '<td><input type="number" style="height: 30px" name="quotes[' + number + '][qty]" id="qty_' + number + '" class="form-control quantity" onchange="calculateCost()" /></td>';
+        html += '<td><input type="text" style="height: 30px" name="quotes[' + number + '][rate]" id="rate_' + number + '" class="form-control rate" onchange="calculateCost()" /></td>';
+        html += '<td><input type="text" style="height: 30px" name="quotes[' + number + '][amount]" id="amount_' + number + '" class="form-control amount" readonly /></td>';
+        html += '<td><input type="number" style="height: 30px" name="quotes[' + number + '][margin]" id="margin_' + number + '" class="form-control margin" onchange="calculateCost()" /></td>';
+        html += '<td><input type="text" style="height: 30px" name="quotes[' + number + '][subtotal]" id="subtotal_' + number + '" class="form-control subtotal" readonly /></td>';
+        html += '<td><input type="text" style="height: 30px" name="quotes[' + number + '][amount_inc_gst]" id="amount_inc_gst_' + number + '" class="form-control amountincgst" readonly /></td>';
         html += '<td><input type="text" style="height: 30px" name="quotes[' + number + '][quote_complete]" id="quote_complete_' + number + '" class="form-control" onfocus="(this.type=\'date\' )" onblur="(this.type=\'text\')" /></td>';
         if (number > 1) {
             html += '<td><button style="border: none; background-color: #fff" name="addItems" id="addItems"><i class="fa fa-plus-circle"></i></button></td>';
@@ -160,18 +160,21 @@
         e.preventDefault();
         itemsCount--;
         $(this).closest("tr").remove();
+        calculateCost();
     });
 
     function calculateCost() {
-        var rate = $('#rate_' + itemsCount).val();
-        var qty = $('#qty_' + itemsCount).val();
-        var margin = $('#margin_' + itemsCount).val();
-        var amount = parseFloat(rate) * parseFloat(qty);
-        var subtotal = parseFloat(amount) + ((amount / 100) * margin);
-        var amount_inc_gst = parseFloat(subtotal) + ((subtotal / 100) * 10);
-        $('#amount_' + itemsCount).val(amount);
-        $('#subtotal_' + itemsCount).val(subtotal);
-        $('#amount_inc_gst_' + itemsCount).val(amount_inc_gst);
+        document.querySelectorAll(".item").forEach((item) => {
+            const quantity = parseInt(item.querySelector(".quantity").value) ? parseInt(item.querySelector(".quantity").value) : 0;
+            const rate = parseFloat(item.querySelector(".rate").value) ? parseFloat(item.querySelector(".rate").value) : 0;
+            const margin = parseFloat(item.querySelector(".margin").value) ? parseFloat(item.querySelector(".margin").value) : 0;
+            const amount = rate*quantity;
+            const subtotal = amount + ((amount/100)*margin)
+            const amountIncGst = subtotal + ((subtotal/100)*10);
+            item.querySelector(".amount").value = amount.toFixed(2);
+            item.querySelector(".subtotal").value = subtotal.toFixed(2);
+            item.querySelector(".amountincgst").value = amountIncGst.toFixed(2);
+        });
     }
 
     $(document).ready(function() {

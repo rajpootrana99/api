@@ -164,9 +164,7 @@
 </div>
 
 <script>
-    var tax = 0;
-    var subtotal = 0;
-    var total = 0;
+    
     var itemsCount = 1;
     itemsDetailDynamicField(itemsCount);
 
@@ -188,12 +186,12 @@
     }
 
     function itemsDetailDynamicField(number) {
-        html = '<tr>';
+        html = '<tr class="item" >';
         html += '<td><select class="select2 form-control" name="items[' + number + '][estimate_id]" id="estimate_id_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Cost Code"><option value="0">Select Cost Code</option></select></td>';
         html += '<td><input type="text" style="height: 30px" name="items[' + number + '][description]" id="description_' + number + '" class="form-control" /></td>';
-        html += '<td><input type="text" style="height: 30px" name="items[' + number + '][qty]" id="qty_' + number + '" onchange="calculateCost()" class="form-control" /></td>';
-        html += '<td><input type="text" style="height: 30px" name="items[' + number + '][unit_price]" id="unit_price_' + number + '" onchange="calculateCost()" class="form-control" /></td>';
-        html += '<td><input type="text" style="height: 30px" name="items[' + number + '][amount]" id="amount_' + number + '" readonly class="form-control" /></td>';
+        html += '<td><input type="text" style="height: 30px" name="items[' + number + '][qty]" id="qty_' + number + '" onchange="calculateCost()" class="form-control qty" /></td>';
+        html += '<td><input type="text" style="height: 30px" name="items[' + number + '][unit_price]" id="unit_price_' + number + '" onchange="calculateCost()" class="form-control price" /></td>';
+        html += '<td><input type="text" style="height: 30px" name="items[' + number + '][amount]" id="amount_' + number + '" readonly class="form-control amount" /></td>';
         html += '<td><select class="select2 form-control" name="items[' + number + '][tax]" id="tax_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Tax Code"><option value="10">GST 10%</option></select></td>';
         if (number > 1) {
             html += '<td><button style="border: none; background-color: #fff" name="addItems" id="addItems"><i class="fa fa-plus-circle"></i></button></td>';
@@ -212,11 +210,14 @@
         itemsCount++;
         itemsDetailDynamicField(itemsCount);
         fetchEstimates();
+        // calculateCost();
+        
     });
     $(document).on('click', '#removeItems', function(e) {
         e.preventDefault();
         itemsCount--;
         $(this).closest("tr").remove();
+        calculateCost();
     });
 
     $.ajaxSetup({
@@ -260,16 +261,19 @@
     }
 
     function calculateCost() {
-        var qty = $('#qty_' + itemsCount).val();
-        var unit_price = $('#unit_price_' + itemsCount).val();
-        var amount = parseFloat(unit_price) * parseFloat(qty);
-        subtotal = (subtotal ? subtotal : 0) + (amount ? amount : 0);
-        var item_tax = (parseFloat(amount) / 100) * 10;
-        tax = (tax ? tax : 0) + (item_tax ? item_tax : 0);
-        total = subtotal + tax;
-        console.log('Sub total = '+subtotal)
-        console.log('Amount = '+amount)
-        $('#amount_' + itemsCount).val(amount);
+        let tax = 0;
+        let subtotal = 0;
+        let total = 0;
+        document.querySelectorAll(".item").forEach((item) => {
+            const quantity = parseInt(item.querySelector(".qty").value) ? parseInt(item.querySelector(".qty").value) : 0;
+            const price = parseFloat(item.querySelector(".price").value) ? parseFloat(item.querySelector(".price").value) : 0;
+            subtotal += quantity * price
+            const itemTax = ((quantity * price)/100)*10;
+            tax += itemTax;
+            total = subtotal+tax;
+            const amount = quantity * price;
+            item.querySelector(".amount").value = amount.toFixed(2);
+        });
         $('#sub_total').val(subtotal);
         $('#tax').val(tax);
         $('#total').val(total);
