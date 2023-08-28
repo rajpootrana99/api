@@ -13,6 +13,7 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\QuoteController;
+use App\Http\Controllers\TraderTypeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -45,6 +46,8 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
     Route::get('/fetchSupplierEntities', [EntityController::class, 'fetchSupplierEntities'])->name('supplierEntity.get');
     Route::resource('site', SiteController::class);
     Route::get('/fetchSites', [SiteController::class, 'fetchSites'])->name('site.get');
+    Route::resource('tradeType', TraderTypeController::class);
+    Route::get('/fetchTradeTypes', [TraderTypeController::class, 'fetchTradeTypes'])->name('tradeType.get');
     Route::resource('task', TaskController::class);
     Route::get('/fetchTasks', [TaskController::class, 'fetchTasks'])->name('task.get');
     Route::get('/fetchQuoteTasks', [TaskController::class, 'fetchQuoteTasks']);

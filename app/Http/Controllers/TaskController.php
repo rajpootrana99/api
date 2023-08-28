@@ -103,6 +103,9 @@ class TaskController extends Controller
             'site_id' => ['required'],
             'title' => ['required'],
         ]);
+        if (!$validator->passes()) {
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
         $task = Task::create($request->all());
 
         foreach ($request->items as $itemData) {
