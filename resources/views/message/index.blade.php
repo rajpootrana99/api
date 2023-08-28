@@ -299,33 +299,57 @@
             fetchTasks();
 
             function fetchTasks() {
-                if (user_id === 0) {
-                    $('#task_list').children().remove().end();
-                    $('#task_list').append('<a href="' + task.id + '" class="media new-message" id="view-task-message">\
-                                    <h6>Select people</h6>\
-                        </a>')
-                } else {
-                    $.ajax({
-                        type: "GET",
-                        url: "fetchUserTasks/" + user_id,
-                        dataType: "json",
-                        success: function(response) {
-                            $('#task_list').children().remove().end();
-                            $.each(response.tasks, function(key, task) {
-                                console.log(task)
-                                var image = '<img src="assets/images/users/user-1.jpg" alt="user" class="rounded-circle thumb-md">'
-                                $('#task_list').append('<a href="' + task.id + '" class="media new-message" id="view-task-message">\
-                            <div class="media-body">\
-                                <div>\
-                                    <h6>' + task.title + '</h6>\
-                                </div>\
+                $.ajax({
+                    type: "GET",
+                    url: "fetchTasks/",
+                    dataType: "json",
+                    success: function(response) {
+                        $('#task_list').children().remove().end();
+                        $.each(response.tasks, function(key, task) {
+                            console.log(task)
+                            var image = '<img src="assets/images/users/user-1.jpg" alt="user" class="rounded-circle thumb-md">'
+                            $('#task_list').append('<a href="' + task.id + '" class="media new-message" id="view-task-message">\
+                        <div class="media-body">\
+                            <div>\
+                                <h6>' + task.title + '</h6>\
                             </div>\
-                        </a>')
-                            });
-                        }
-                    });
-                }
+                        </div>\
+                    </a>')
+                        });
+                    }
+                });
             }
+
+            // fetchTasks();
+
+            // function fetchTasks() {
+            //     if (user_id === 0) {
+            //         $('#task_list').children().remove().end();
+            //         $('#task_list').append('<a href="' + task.id + '" class="media new-message" id="view-task-message">\
+            //                         <h6>Select people</h6>\
+            //             </a>')
+            //     } else {
+            //         $.ajax({
+            //             type: "GET",
+            //             url: "fetchUserTasks/" + user_id,
+            //             dataType: "json",
+            //             success: function(response) {
+            //                 $('#task_list').children().remove().end();
+            //                 $.each(response.tasks, function(key, task) {
+            //                     console.log(task)
+            //                     var image = '<img src="assets/images/users/user-1.jpg" alt="user" class="rounded-circle thumb-md">'
+            //                     $('#task_list').append('<a href="' + task.id + '" class="media new-message" id="view-task-message">\
+            //                 <div class="media-body">\
+            //                     <div>\
+            //                         <h6>' + task.title + '</h6>\
+            //                     </div>\
+            //                 </div>\
+            //             </a>')
+            //                 });
+            //             }
+            //         });
+            //     }
+            // }
 
             $(document).on("click", "#view-message", function(e) {
                 e.preventDefault();
