@@ -46,8 +46,4 @@ class PurchaseOrder extends Model
     public function task(){
         return $this->belongsTo(Task::class);
     }
-
-    public function purchaseItems(){
-        return $this->hasMany(PurchaseItem::class);
-    }
 }

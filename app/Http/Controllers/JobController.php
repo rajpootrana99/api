@@ -23,7 +23,7 @@ class JobController extends Controller
 
     public function fetchJobs()
     {
-        $jobs = Task::with('quotes', 'site', 'user', 'entity')->where(['is_job' => 1])->get();
+        $jobs = Task::with('quotes.estimate.subheader.header', 'site', 'user', 'entity')->where(['is_job' => 1])->get();
         return response()->json([
             'jobs' => $jobs,
         ]);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PurchaseItem;
 use App\Models\PurchaseOrder;
+use App\Models\Quote;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -20,7 +21,7 @@ class PurchaseOrderController extends Controller
     }
 
     public function fetchPurchaseOrders(){
-        $purchaseOrders = PurchaseOrder::with('entity', 'task.site', 'purchaseItems')->get();
+        $purchaseOrders = PurchaseOrder::with('entity', 'task.site')->get();
         return response()->json([
             'status' => true,
             'purchaseOrders' => $purchaseOrders
@@ -59,14 +60,12 @@ class PurchaseOrderController extends Controller
         $purchaseOrder = PurchaseOrder::create($request->all());
 
         foreach ($request->items as $itemData) {
-            $item = PurchaseItem::create([
-                'purchase_order_id' => $purchaseOrder->id,
-                'estimate_id' => $itemData['estimate_id'],
+            $quote = Quote::find($itemData['quote_id']);
+            $quote->update([
                 'description' => $itemData['description'],
                 'qty' => $itemData['qty'],
                 'unit_price' => $itemData['unit_price'],
                 'amount' => $itemData['amount'],
-                'tax' => $itemData['tax'],
             ]);
         }
         return redirect()->route('purchaseOrder.index');
