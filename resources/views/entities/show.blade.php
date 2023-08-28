@@ -151,9 +151,9 @@
                             </form>
                         </div>
                         <div class="tab-pane p-3" id="tradrtypes" role="tabpanel">
-                            <p class="text-muted mb-0">
-                                ?????????????????????????????????????????????
-                            </p>
+                            <div class="form-group row" id="tradeList">
+                                
+                            </div>
                         </div>
                         <div class="tab-pane p-3" id="prequal" role="tabpanel">
                             <p class="mb-0 text-muted">
@@ -540,35 +540,59 @@
             }
         });
 
-        fetchEntities();
+        fetchTradeTypes();
 
-        function fetchEntities() {
+        function fetchTradeTypes() {
             $.ajax({
                 type: "GET",
-                url: "fetchEntities",
+                url: "/fetchTradeTypes",
                 dataType: "json",
                 success: function(response) {
                     $('tbody').html("");
-                    $.each(response.entities, function(key, entity) {
-                        $('tbody').append('<tr>\
-                            <td>' + entity.id + '</td>\
-                            <td>' + entity.type + '</td>\
-                            <td>' + entity.entity + '</td>\
-                            <td>' + entity.abn + '</td>\
-                            <td>' + entity.email + '</td>\
-                            <td>' + entity.address + '</td>\
-                            <td>' + entity.primary_phone + '</td>\
-                            <td>' + entity.mobile + '</td>\
-                            <td>' + entity.fax + '</td>\
-                            <td>' + entity.director + '</td>\
-                            <td>' + entity.trade + '</td>\
-                            <td>' + entity.abbrev + '</td>\
-                            <td><button value="' + entity.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
-                    </tr>');
+                    $.each(response.tradeTypes, function(key, tradeType) {
+                        console.log(tradeType);
+                        $('#tradeList').append('<div class="col-md-12">\
+                            <div class="checkbox">\
+                                <div class="custom-control custom-checkbox">\
+                                    <input type="checkbox" class="custom-control-input" id="customCheck02" value="' + tradeType.id + '" data-parsley-multiple="groups" data-parsley-mincheck="2">\
+                                    <label class="custom-control-label" for="customCheck02">' + tradeType.name + '</label>\
+                                </div>\
+                            </div>\
+                        </div>');
                     });
                 }
             });
         }
+
+        // fetchEntities();
+
+        // function fetchEntities() {
+        //     $.ajax({
+        //         type: "GET",
+        //         url: "fetchEntities",
+        //         dataType: "json",
+        //         success: function(response) {
+        //             $('tbody').html("");
+        //             $.each(response.entities, function(key, entity) {
+        //                 $('tbody').append('<tr>\
+        //                     <td>' + entity.id + '</td>\
+        //                     <td>' + entity.type + '</td>\
+        //                     <td>' + entity.entity + '</td>\
+        //                     <td>' + entity.abn + '</td>\
+        //                     <td>' + entity.email + '</td>\
+        //                     <td>' + entity.address + '</td>\
+        //                     <td>' + entity.primary_phone + '</td>\
+        //                     <td>' + entity.mobile + '</td>\
+        //                     <td>' + entity.fax + '</td>\
+        //                     <td>' + entity.director + '</td>\
+        //                     <td>' + entity.trade + '</td>\
+        //                     <td>' + entity.abbrev + '</td>\
+        //                     <td><button value="' + entity.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
+        //             </tr>');
+        //             });
+        //         }
+        //     });
+        // }
 
 
         $(document).on('click', '#addEntityButton', function(e) {
