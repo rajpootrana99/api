@@ -548,7 +548,6 @@
                 url: "/fetchTradeTypes",
                 dataType: "json",
                 success: function(response) {
-                    $('tbody').html("");
                     $.each(response.tradeTypes, function(key, tradeType) {
                         console.log(tradeType);
                         $('#tradeList').append('<div class="col-md-12">\
