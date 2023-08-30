@@ -116,4 +116,17 @@ class PurchaseOrderController extends Controller
     {
         //
     }
+
+    public function add(Request $request)
+    {
+        $purchaseOrder = PurchaseOrder::latest()->first();
+        if($purchaseOrder){
+            $purchaseNo = $purchaseOrder->id + 1;
+        }
+        else{
+            $purchaseNo = 1;
+        }
+        $quotes = Quote::with('task')->whereIn('id', $request->quote_id )->get();
+        return view('purchaseOrder.add', ['quotes' => $quotes, 'purchaseNo' => $purchaseNo]);
+    }
 }

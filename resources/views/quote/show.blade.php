@@ -19,63 +19,67 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="card-title row">
-                        <h3>{{$task->site->site}} - {{$task->title}}</h3>
-                    </div>
-                    <div class="row" style="position:absolute; top:10px; right: 20px;">
-                        <a href="{{ route('purchaseOrder.create') }}" class="btn btn-primary" style="float:right;margin-left: 10px"><i class="fa fa-plus"></i> New Order </a>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <a href="" class="btn btn-primary" style="float:left;margin-left: 10px">Orders by Job</a>
-                            <a href="{{route('enquiry.index')}}" class="btn btn-primary" style="float:left;margin-left: 10px">Orders By </a>
+                <form action="{{ route('purchaseOrder.add') }}" method="post">
+                    @csrf
+                    <div class="card-header">
+                        <div class="card-title row">
+                            <h3>{{$task->site->site}} - {{$task->title}}</h3>
+                            <!-- href="{{ route('purchaseOrder.create') }}" -->
                         </div>
-                        <div class="col-sm-6">
-                            <div class="custom-control custom-switch switch-primary">
-                                <label style="padding-right: 40px; padding-top: 2px;">Simple View</label>
-                                <input type="checkbox" class="custom-control-input" id="view">
-                                <label class="custom-control-label" for="view">Detailed View</label>
+                        <div class="row" style="position:absolute; top:10px; right: 20px;">
+                            <button type="submit" class="btn btn-primary" style="float:right;margin-left: 10px"><i class="fa fa-plus"></i> New Order </button>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <a href="" class="btn btn-primary" style="float:left;margin-left: 10px">Orders by Job</a>
+                                <a href="{{route('enquiry.index')}}" class="btn btn-primary" style="float:left;margin-left: 10px">Orders By </a>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="custom-control custom-switch switch-primary">
+                                    <label style="padding-right: 40px; padding-top: 2px;">Simple View</label>
+                                    <input type="checkbox" class="custom-control-input" id="view">
+                                    <label class="custom-control-label" for="view">Detailed View</label>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div><!--end card-header-->
-                <div class="card-body">
-                    <div class="table-responsive mb-0 fixed-solution">
-                        <table class="table table-bordered mb-0 table-centered">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>Cost Code</th>
-                                    <th>Descritpion</th>
-                                    <th>Unit</th>
-                                    <th>Qty</th>
-                                    <th>Rate</th>
-                                    <th>Budget</th>
-                                    <th>Value Ordered</th>
-                                    <th>Balance</th>
-                                    <th>Capture Savings</th>
-                                    <th>Movement</th>
-                                    <th width="3%">Modify</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                    </div><!--end card-header-->
+                    <div class="card-body">
+                        <div class="table-responsive mb-0 fixed-solution">
+                            <table class="table table-bordered mb-0 table-centered">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Cost Code</th>
+                                        <th>Descritpion</th>
+                                        <th>Unit</th>
+                                        <th>Qty</th>
+                                        <th>Rate</th>
+                                        <th>Budget</th>
+                                        <th>Value Ordered</th>
+                                        <th>Balance</th>
+                                        <th>Capture Savings</th>
+                                        <th>Movement</th>
+                                        <th width="3%">Modify</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
 
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="4"><strong>Total</strong></td>
-                                    <td id="total_qty"></td>
-                                    <td id="total_rate"></td>
-                                    <td id="total_budget"></td>
-                                    <td id="total_value_ordered"></td>
-                                    <td id="total_balance"></td>
-                                    <td colspan="3"></td>
-                                </tr>
-                            </tfoot>
-                        </table><!--end /table-->
-                    </div><!--end /tableresponsive-->
-                </div><!--end card-body-->
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="4"><strong>Total</strong></td>
+                                        <td id="total_qty"></td>
+                                        <td id="total_rate"></td>
+                                        <td id="total_budget"></td>
+                                        <td id="total_value_ordered"></td>
+                                        <td id="total_balance"></td>
+                                        <td colspan="3"></td>
+                                    </tr>
+                                </tfoot>
+                            </table><!--end /table-->
+                        </div><!--end /tableresponsive-->
+                    </div><!--end card-body-->
+                </form>
             </div><!--end card-->
         </div> <!-- end col -->
     </div> <!-- end row -->
@@ -87,6 +91,8 @@
         style: 'currency',
         currency: 'USD',
     });
+
+    var i=1;
 
     $(document).ready(function() {
 
@@ -141,7 +147,7 @@
                                     total_budget += quote.amount;
                                     total_balance += quote.order_total_amount;
                                     $('tbody').append('<tr>\
-                                        <td><input type="checkbox" /></td>\
+                                        <td><input type="checkbox" name="quote_id[]" value="'+quote.id+'"/></td>\
                                         <td>' + quote.estimate.sub_header.cost_code + '___' + quote.estimate.item + '</td>\
                                         <td>' + quote.description + '</td>\
                                         <td>' + quote.unit + '</td>\
@@ -219,7 +225,7 @@
                                     total_budget += quote.amount;
                                     total_balance += quote.order_total_amount;
                                     $('tbody').append('<tr>\
-                                        <td><input type="checkbox" /></td>\
+                                        <td><input type="checkbox" name="quote_id[]" value="'+quote.id+'"/></td>\
                                         <td>' + quote.estimate.sub_header.cost_code + '___' + quote.estimate.item + '</td>\
                                         <td>' + quote.description + '</td>\
                                         <td>' + quote.unit + '</td>\
