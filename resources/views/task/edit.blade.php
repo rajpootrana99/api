@@ -152,8 +152,6 @@
             }
         });
         fetchSites();
-        fetchClients();
-
         function fetchSites() {
             $.ajax({
                 type: "GET",
@@ -165,22 +163,6 @@
                     site_id.append($("<option />").val(0).text('Select Site'));
                     $.each(response.sites, function(site) {
                         site_id.append($("<option />").val(response.sites[site].id).text(response.sites[site].site));
-                    });
-                }
-            });
-        }
-
-        function fetchClients() {
-            $.ajax({
-                type: "GET",
-                url: "/fetchClients",
-                dataType: "json",
-                success: function(response) {
-                    var user_id = $('#user_id');
-                    $('#user_id').children().remove().end();
-                    user_id.append($("<option />").val(0).text('Select Client'));
-                    $.each(response.users, function(user) {
-                        user_id.append($("<option />").val(response.users[user].id).text(response.users[user].name));
                     });
                 }
             });
@@ -309,7 +291,6 @@
         $(document).on('click', '#addEnquiryButton', function(e) {
             e.preventDefault();
             fetchSites();
-            fetchClients();
             $(document).find('span.error-text').text('');
         });
 

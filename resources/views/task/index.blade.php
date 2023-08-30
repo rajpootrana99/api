@@ -193,7 +193,7 @@
                                         <thead class="thead-light">\
                                             <tr>\
                                                 <th class="border-top-0">Item ID</th>\
-                                                <th class="border-top-0">ITem Descrition</th>\
+                                                <th class="border-top-0">Item Descrition</th>\
                                                 <th class="border-top-0">User Name</th>\
                                                 <th class="border-top-0">Gallery</th>\
                                                 <th class="border-top-0">Priority</th>\
@@ -233,11 +233,11 @@
                         } else {
                             file = 'No image or video file exists';
                         }
-                        if (task.user == null)[
+                        if (task.contact_id == null)[
                             client = "No Client"
                         ]
                         else {
-                            client = task.user.name;
+                            client = task.contact.user.name;
                         }
                         $('#item-body-' + task.id).append('<tr>\
                             <td>' + item.id + '</td>\

@@ -136,64 +136,6 @@
             });
         }
 
-        function fetchQuoteTasks() {
-            $.ajax({
-                type: "GET",
-                url: "fetchQuoteTasks",
-                dataType: "json",
-                success: function(response) {
-                    var task_id = $('#task_id');
-                    $('#task_id').children().remove().end();
-                    task_id.append($("<option />").val(0).text('Select Task'));
-                    $.each(response.tasks, function(task) {
-                        task_id.append($("<option />").val(response.tasks[task].id).text(response.tasks[task].title));
-                    });
-                }
-            });
-        }
-
-        function fetchClients() {
-            $.ajax({
-                type: "GET",
-                url: "fetchClients",
-                dataType: "json",
-                success: function(response) {
-                    var user_id = $('#user_id');
-                    $('#user_id').children().remove().end();
-                    user_id.append($("<option />").val(0).text('Select Client'));
-                    $.each(response.users, function(user) {
-                        user_id.append($("<option />").val(response.users[user].id).text(response.users[user].name));
-                    });
-                }
-            });
-        }
-
-        $(document).on('click', '.delete_btn', function(e) {
-            e.preventDefault();
-            var enquiry_id = $(this).val();
-            $('#deleteEnquiry').modal('show');
-            $('#enquiry_id').val(enquiry_id);
-        });
-
-        $(document).on('submit', '#deleteEnquiryForm', function(e) {
-            e.preventDefault();
-            var enquiry_id = $('#enquiry_id').val();
-
-            $.ajax({
-                type: 'delete',
-                url: 'enquiry/' + enquiry_id,
-                dataType: 'json',
-                success: function(response) {
-                    if (response.status == false) {
-                        $('#deleteEnquiry').modal('hide');
-                    } else {
-                        fetchEnquiries();
-                        $('#deleteEnquiry').modal('hide');
-                    }
-                }
-            });
-        });
-
         $(document).on('click', '.edit_btn', function(e) {
             e.preventDefault();
             var enquiry_id = $(this).val();
@@ -287,42 +229,6 @@
                 }
             });
         })
-
-        $(document).on('click', '#addEnquiryButton', function(e) {
-            e.preventDefault();
-            fetchQuoteTasks();
-            $(document).find('span.error-text').text('');
-        });
-
-        $(document).on('submit', '#addEnquiryForm', function(e) {
-            e.preventDefault();
-            let formDate = new FormData($('#addEnquiryForm')[0]);
-            $.ajax({
-                type: "post",
-                url: "enquiry",
-                data: formDate,
-                contentType: false,
-                processData: false,
-                beforeSend: function() {
-                    $(document).find('span.error-text').text('');
-                },
-                success: function(response) {
-                    if (response.status == 0) {
-                        $('#addEnquiry').modal('show')
-                        $.each(response.error, function(prefix, val) {
-                            $('span.' + prefix + '_error').text(val[0]);
-                        });
-                    } else {
-                        $('#addEnquiryForm')[0].reset();
-                        $('#addEnquiry').modal('hide');
-                        fetchEnquiries();
-                    }
-                },
-                error: function(error) {
-                    $('#addEnquiry').modal('show')
-                }
-            });
-        });
     });
 </script>
 @endsection

@@ -8,6 +8,7 @@ use App\Models\Entity;
 use App\Models\Site;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class ContactController extends Controller
@@ -75,8 +76,9 @@ class ContactController extends Controller
             'name' => $request->fname . ' ' . $request->lname,
             'email' => $request->email,
             'phone' => $request->phone,
+            'password' => Hash::make('password')
         ]);
-        $user->assignRole('Client');
+        $user->assignRole('Contact');
         $contact = Contact::create([
             'user_id' => $user->id,
             'entity_id' => $request->entity_id,

@@ -38,19 +38,17 @@ Route::get('/unathorized', function () {
 Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
     Route::resource('user', UserController::class);
     Route::get('/fetchUsers', [UserController::class, 'fetchUsers'])->name('user.get');
-    Route::get('/fetchSuppliers', [UserController::class, 'fetchSuppliers'])->name('supplier.get');
-    Route::get('/fetchClients', [UserController::class, 'fetchClients'])->name('client.get');
     Route::get('/approveUser/{user}', [UserController::class, 'approveUser'])->name('user.approve');
     Route::resource('entity', EntityController::class);
     Route::get('/fetchEntities', [EntityController::class, 'fetchEntities'])->name('entity.get');
     Route::get('/fetchSupplierEntities', [EntityController::class, 'fetchSupplierEntities'])->name('supplierEntity.get');
+    Route::get('/fetchClientEntities', [EntityController::class, 'fetchClientEntities'])->name('clientEntity.get');
     Route::resource('site', SiteController::class);
     Route::get('/fetchSites', [SiteController::class, 'fetchSites'])->name('site.get');
     Route::resource('tradeType', TraderTypeController::class);
     Route::get('/fetchTradeTypes', [TraderTypeController::class, 'fetchTradeTypes'])->name('tradeType.get');
     Route::resource('task', TaskController::class);
     Route::get('/fetchTasks', [TaskController::class, 'fetchTasks'])->name('task.get');
-    Route::get('/fetchQuoteTasks', [TaskController::class, 'fetchQuoteTasks']);
     Route::get('fetchUserTasks/{user}', [TaskController::class, 'fetchUserTasks']);
     Route::get('/fetchItemGalleries/{item}', [TaskController::class, 'fetchItemGalleries'])->name('itemGallery.get');
     Route::resource('message', MessageController::class);

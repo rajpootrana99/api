@@ -22,8 +22,24 @@ class EntityController extends Controller
         return view('entities.index');
     }
 
+    public function fetchEntities()
+    {
+        $entities = Entity::with('contacts.user')->get();
+        if (count($entities) > 0) {
+            return response()->json([
+                'status' => true,
+                'entities' => $entities,
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'No Entities are available yet',
+            ]);
+        }
+    }
+
     public function fetchSupplierEntities(){
-        $entities = Entity::where(['type' => 1])->get();
+        $entities = Entity::with('contacts.user')->where(['type' => 1])->get();
         if (count($entities) > 0) {
             return response()->json([
                 'status' => true,
@@ -36,9 +52,9 @@ class EntityController extends Controller
             ]);
         }
     }
-    public function fetchEntities()
-    {
-        $entities = Entity::all();
+
+    public function fetchClientEntities(){
+        $entities = Entity::with('contacts.user')->where(['type' => 0])->get();
         if (count($entities) > 0) {
             return response()->json([
                 'status' => true,
@@ -47,7 +63,7 @@ class EntityController extends Controller
         } else {
             return response()->json([
                 'status' => false,
-                'message' => 'No Entities are available yet',
+                'message' => 'No Clients are available yet',
             ]);
         }
     }
@@ -96,7 +112,7 @@ class EntityController extends Controller
      */
     public function show($entity)
     {
-        $jobs = Task::with('site', 'user')->where(['is_job' => 1, 'entity_id' => $entity])->get();
+        $jobs = Task::with('site', 'user')->where(['type' => 2, 'entity_id' => $entity])->get();
         $contacts = Contact::with('user')->where(['entity_id' => $entity])->get();
         $entity = Entity::find($entity);
         return view('entities.show', [

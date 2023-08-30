@@ -18,27 +18,11 @@ class TaskController extends Controller
 
     public function fetchTasks()
     {
-        $tasks = Task::with('user', 'site', 'items', 'items.itemGalleries')->get();
+        $tasks = Task::with('contact.user', 'user', 'site', 'items', 'items.itemGalleries')->get();
         return response()->json([
             'status' => true,
             'tasks' => $tasks,
         ]);
-    }
-
-    public function fetchQuoteTasks()
-    {
-        $tasks = Task::where(['is_quote' => 1])->get();
-        if (count($tasks) > 0) {
-            return response()->json([
-                'status' => true,
-                'tasks' => $tasks,
-            ]);
-        } else {
-            return response()->json([
-                'status' => false,
-                'message' => 'No Quoted Task Found',
-            ]);
-        }
     }
 
     public function fetchUserTasks($user)

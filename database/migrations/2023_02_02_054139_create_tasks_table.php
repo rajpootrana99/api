@@ -18,11 +18,13 @@ return new class extends Migration
             $table->unsignedBigInteger('site_id');
             $table->unsignedBigInteger('entity_id')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('contact_id')->nullable();
             $table->string('title');
             $table->integer('status')->nullable()->default(0);
-            $table->integer('is_enquiry')->default(0)->nullable();
-            $table->integer('is_job')->default(0)->nullable();
-            $table->integer('is_quote')->default(0)->nullable();
+            $table->integer('type')->nullable()->default(0);
+            $table->integer('enquiry_status')->nullable()->default(0);
+            $table->integer('job_status')->nullable()->default(0);
+            $table->integer('quote_type')->nullable()->default(0);
             $table->date('requested_completion')->nullable();
             $table->timestamps();
         });

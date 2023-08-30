@@ -19,23 +19,7 @@ class UserController extends Controller
 
     public function fetchUsers()
     {
-        $users = User::role('Client')->get();
-        return response()->json([
-            'users' => $users,
-        ]);
-    }
-
-    public function fetchSuppliers()
-    {
-        $users = User::role('Supplier')->get();
-        return response()->json([
-            'users' => $users,
-        ]);
-    }
-
-    public function fetchClients()
-    {
-        $users = User::role('Client')->get();
+        $users = User::role('User')->get();
         return response()->json([
             'users' => $users,
         ]);

@@ -23,7 +23,7 @@ class JobController extends Controller
 
     public function fetchJobs()
     {
-        $jobs = Task::with('quotes.estimate.subheader.header', 'site', 'user', 'entity')->where(['is_job' => 1])->get();
+        $jobs = Task::with('contact.user', 'quotes.estimate.subheader.header', 'site', 'user', 'entity')->where(['type' => 2])->get();
         return response()->json([
             'jobs' => $jobs,
         ]);
@@ -90,8 +90,7 @@ class JobController extends Controller
         $task = Task::find($task);
         $task->update([
             'status' => 1,
-            'is_job' => 1,
-            'is_enquiry' => 0,
+            'type' => 2,
         ]);
         return redirect()->route('job.index');
         // $job = Job::with('user', 'site')->find($job);

@@ -38,4 +38,8 @@ class Contact extends Model
     {
         return $this->belongsTo(Entity::class);
     }
+
+    public function tasks(){
+        return $this->hasMany(Task::class);
+    }
 }

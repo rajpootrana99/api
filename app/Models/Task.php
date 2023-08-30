@@ -13,13 +13,29 @@ class Task extends Model
         'site_id',
         'entity_id',
         'user_id',
-        'is_enquiry',
-        'is_job',
-        'is_quote',
+        'contact_id',
+        'type',
+        'enquiry_status',
+        'job_status',
         'title',
         'status',
+        'quote_type',
         'requested_completion',
     ];
+
+    public function getTypeAttribute($attribute)
+    {
+        return $this->typeOptions()[$attribute] ?? 0;
+    }
+
+    public function typeOptions()
+    {
+        return [
+            2 => 'Job',
+            1 => 'Enquiry',
+            0 => 'Task',
+        ];
+    }
 
     public function getStatusAttribute($attribute)
     {
@@ -29,22 +45,65 @@ class Task extends Model
     public function statusOptions()
     {
         return [
-            9 => 'Complete',
-            8 => 'In Progress',
-            7 => 'Scheduled',
-            6 => 'Lost',
-            5 => 'Won',
-            4 => 'Submitted',
-            3 => 'Quoting',
             2 => 'Cancelled',
             1 => 'Approved',
             0 => 'Pending',
         ];
     }
 
+    public function getEnquiryStatusAttribute($attribute)
+    {
+        return $this->enquiryStatusOptions()[$attribute] ?? 0;
+    }
+
+    public function enquiryStatusOptions()
+    {
+        return [
+            5 => 'Cancelled',
+            4 => 'Lost',
+            3 => 'Won',
+            2 => 'Submitted',
+            1 => 'Quoting',
+            0 => 'Pending',
+        ];
+    }
+
+    public function getJobStatusAttribute($attribute)
+    {
+        return $this->jobStatusOptions()[$attribute] ?? 0;
+    }
+
+    public function jobStatusOptions()
+    {
+        return [
+            3 => 'Complete',
+            2 => 'In Progress',
+            1 => 'Scheduled',
+            0 => 'Pending',
+        ];
+    }
+
+    public function getQuoteTypeAttribute($attribute)
+    {
+        return $this->quoteTypeOptions()[$attribute] ?? 0;
+    }
+
+    public function quoteTypeOptions()
+    {
+        return [
+            1 => 'Do & Charge',
+            0 => 'Cost Plus',
+        ];
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function contact()
+    {
+        return $this->belongsTo(Contact::class);
     }
 
     public function entity()

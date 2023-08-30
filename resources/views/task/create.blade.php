@@ -32,7 +32,7 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <select class="select2 pl-1 form-control" name="entity_id" id="entity_id" style="width: 100%; height:30px;">
+                                    <select class="select2 pl-1 form-control" name="entity_id" id="entity_id" onchange="fetchContacts()" style="width: 100%; height:30px;">
 
                                     </select>
                                     <span class="text-danger error-text entity_id_error"></span>
@@ -42,6 +42,14 @@
                                 <div class="form-group">
                                     <input class="form-control" style="width: 100%; height:30px;" type="text" placeholder="Enter Title" name="title" id="title">
                                     <span class="text-danger error-text title_error"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <select class="select2 pl-1 form-control" name="contact_id" id="contact_id" style="width: 100%; height:30px;">
+
+                                    </select>
+                                    <span class="text-danger error-text contact_id_error"></span>
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -101,6 +109,25 @@
 </div>
 
 <script>
+    var entities;
+
+    function fetchContacts(){
+        console.log(entities);
+        console.log('hello');
+        let entity_id = $('#entity_id').val();
+        var contact_id = $('#contact_id');
+        $('#contact_id').children().remove().end();
+        $.each(entities, function(key, entity) {
+            if(entity.id == entity_id){
+                console.log(entity);
+                contact_id.append($("<option />").val(0).text('Requested By'));
+                $.each(entity.contacts, function(key, contact) {
+                    contact_id.append($("<option />").val(contact.id).text(contact.user.name));
+                });
+            }
+        });
+    }
+
     $(document).ready(function() {
 
         var itemsCount = 1;
@@ -131,6 +158,7 @@
             itemsCount++;
             itemsDetailDynamicField(itemsCount);
         });
+
         $(document).on('click', '#removeItems', function(e) {
             e.preventDefault();
             itemsCount--;
@@ -142,8 +170,9 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
         fetchSites();
-        fetchEntities();
+        fetchClientEntities();
 
         function fetchSites() {
             $.ajax({
@@ -161,12 +190,13 @@
             });
         }
 
-        function fetchEntities() {
+        function fetchClientEntities() {
             $.ajax({
                 type: "GET",
-                url: "/fetchEntities",
+                url: "/fetchClientEntities",
                 dataType: "json",
                 success: function(response) {
+                    entities = response.entities;
                     var entity_id = $('#entity_id');
                     $('#entity_id').children().remove().end();
                     entity_id.append($("<option />").val(0).text('Select Entity'));
