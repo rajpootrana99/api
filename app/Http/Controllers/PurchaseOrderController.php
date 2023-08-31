@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\PurchaseItem;
 use App\Models\PurchaseOrder;
 use App\Models\Quote;
+use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -61,12 +62,14 @@ class PurchaseOrderController extends Controller
 
         foreach ($request->items as $itemData) {
             $quote = Quote::find($itemData['quote_id']);
-            $quote->update([
-                'description' => $itemData['description'],
-                'qty' => $itemData['qty'],
-                'unit_price' => $itemData['unit_price'],
-                'amount' => $itemData['amount'],
-            ]);
+            if($quote){
+                $quote->update([
+                    'description' => $itemData['description'],
+                    'qty' => $itemData['qty'],
+                    'unit_price' => $itemData['unit_price'],
+                    'amount' => $itemData['amount'],
+                ]);
+            }                
         }
         return redirect()->route('purchaseOrder.index');
     }
@@ -126,7 +129,8 @@ class PurchaseOrderController extends Controller
         else{
             $purchaseNo = 1;
         }
+        $jobs = Task::with('contact.user', 'quotes.estimate.subheader.header', 'site', 'user', 'entity')->where(['type' => 2])->get();
         $quotes = Quote::with('task')->whereIn('id', $request->quote_id )->get();
-        return view('purchaseOrder.add', ['quotes' => $quotes, 'purchaseNo' => $purchaseNo]);
+        return view('purchaseOrder.add', ['quotes' => $quotes, 'purchaseNo' => $purchaseNo, 'jobs' => $jobs]);
     }
 }

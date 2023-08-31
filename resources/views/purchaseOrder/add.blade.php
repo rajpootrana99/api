@@ -165,16 +165,42 @@
 
 <script>
     var quotes = <?php echo $quotes ?>;
-    console.log(quotes);
-    var jobList;
+    var jobList = <?php echo $jobs ?>;
     var quoteList;
     
     var itemsCount = 1;
-    itemsDetailDynamicField(itemsCount);
+    fetchJobs();
+    fetchSupplierEntities();
+    itemsDynamicField(itemsCount);
+
+    function itemsDynamicField(number) {
+        $.each(quotes, function(key, quote){
+            itemsDetailDynamicField(number);
+            // html = '<tr class="item" >';
+            // html += '<td><select class="select2 form-control select-estimate" name="items[' + number + '][quote_id]" id="estimate_id_' + number + '" onchange="quoteInsert()"  style="width: 100%; height:30px;" data-placeholder="Select Cost Code"></select></td>';
+            // html += '<td><input type="text" style="height: 30px" name="items[' + number + '][description]" id="description_' + number + '" class="form-control" /></td>';
+            // html += '<td><input type="text" style="height: 30px" name="items[' + number + '][qty]" id="qty_' + number + '" onchange="calculateCost()" class="form-control qty" /></td>';
+            // html += '<td><input type="text" style="height: 30px" name="items[' + number + '][unit_price]" id="unit_price_' + number + '" onchange="calculateCost()" class="form-control price" /></td>';
+            // html += '<td><input type="text" style="height: 30px" name="items[' + number + '][amount]" id="amount_' + number + '" readonly class="form-control amount" /></td>';
+            // html += '<td><select class="select2 form-control" name="items[' + number + '][tax]" id="tax_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Tax Code"><option value="10">GST 10%</option></select></td>';
+            // if (number > 1) {
+            //     html += '<td><button style="border: none; background-color: #fff" name="addItems" id="addItems"><i class="fa fa-plus-circle"></i></button></td>';
+            //     html += '<td><button style="border: none; background-color: #fff" name="removeItems" id="removeItems"><i class="fa fa-minus-circle"></i></button></td></tr>';
+            //     $('#itemsDetailTableBody').append(html);
+            // } else {
+            //     html += '<td><button style="border: none; background-color: #fff" name="addItems" id="addItems"><i class="fa fa-plus-circle"></i></button></td>';
+            //     html += '<td></td></tr>';
+            //     $('#itemsDetailTableBody').html(html);
+
+            // }
+            number++;
+            itemsCount++;
+        })
+    }
 
     function itemsDetailDynamicField(number) {
         html = '<tr class="item" >';
-        html += '<td><select class="select2 form-control" name="items[' + number + '][quote_id]" id="estimate_id_' + number + '" onchange="quoteInsert()"  style="width: 100%; height:30px;" data-placeholder="Select Cost Code"><option value="0">Select Cost Code</option></select></td>';
+        html += '<td><select class="select2 form-control select-estimate" name="items[' + number + '][quote_id]" id="estimate_id_' + number + '" onchange="quoteInsert()"  style="width: 100%; height:30px;" data-placeholder="Select Cost Code"><option value="0">Select Cost Code</option></select></td>';
         html += '<td><input type="text" style="height: 30px" name="items[' + number + '][description]" id="description_' + number + '" class="form-control" /></td>';
         html += '<td><input type="text" style="height: 30px" name="items[' + number + '][qty]" id="qty_' + number + '" onchange="calculateCost()" class="form-control qty" /></td>';
         html += '<td><input type="text" style="height: 30px" name="items[' + number + '][unit_price]" id="unit_price_' + number + '" onchange="calculateCost()" class="form-control price" /></td>';
@@ -188,7 +214,6 @@
             html += '<td><button style="border: none; background-color: #fff" name="addItems" id="addItems"><i class="fa fa-plus-circle"></i></button></td>';
             html += '<td></td></tr>';
             $('#itemsDetailTableBody').html(html);
-
         }
     }
 
@@ -205,15 +230,11 @@
         calculateCost();
     });
 
-    
-
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-    fetchJobs();
-    fetchSupplierEntities();
 
     function fetchJobs() {
         $.ajax({
@@ -221,23 +242,14 @@
             url: "/fetchJobs",
             dataType: "json",
             success: function(response) {
-                jobList = response;
+                jobList = response.jobs;
                 var task_id = $('#task_id');
                 $('#task_id').children().remove().end();
                 task_id.append($("<option />").val(0).text('Select Job'));
                 $.each(response.jobs, function(key, job) {
                     task_id.append($("<option />").val(job.id).text(job.id + ' - ' + job.title + ' : ' + job.site.site));
                 });
-            }
-        });
-    }
-
-    function quoteInsert(){
-        var quote_id = $('#estimate_id_' + itemsCount).val();
-        $.each(quoteList, function(key, quote) {
-            if(quote.id == quote_id){
-                $('#description_' + itemsCount).val(quote.description);
-                $('#qty_' + itemsCount).val(quote.qty);
+                task_id.val(quotes[0].task.id).change();
             }
         });
     }
@@ -258,19 +270,49 @@
         });
     }
 
-    function fetchEstimates(){
-        var task = $('#task_id').val();
-        $.each(jobList.jobs, function(key, job) {
+    var task = quotes[0].task_id;
+    const estimates = document.querySelectorAll(".select-estimate")
+    $.each(estimates, function(key, estimate){
+        $.each(jobList, function(key, job) {
             if(job.id == task){
                 quoteList = job.quotes;
-                var estimate_id = $('#estimate_id_' + itemsCount);
-                estimate_id.children().remove().end();
-                estimate_id.append($("<option />").text('Select Cost Code'));
+                estimate.add(new Option('Select Cost Code', '', true, true));
                 $.each(job.quotes, function(key, quote) {
-                    estimate_id.append($("<option />").val(quote.id).text(quote.estimate.subheader.cost_code + '___' + quote.estimate.item));
+                    estimate.add(new Option(quote.estimate.subheader.cost_code + '___' + quote.estimate.item, quote.id));
                 });
             }
         });
+        estimate.value = quotes[key].id
+        let i = key+1
+        $('#description_' + i).val(quotes[key].description);
+        $('#qty_' + i).val(quotes[key].qty);
+    })
+
+    function quoteInsert(){
+        var quote_id = $('#estimate_id_' + itemsCount).val();
+        $.each(quoteList, function(key, quote) {
+            if(quote.id == quote_id){
+                $('#description_' + itemsCount).val(quote.description);
+                $('#qty_' + itemsCount).val(quote.qty);
+            }
+        });
+    }
+
+    function fetchEstimates(){
+        var estimate_id = $('#estimate_id_' + itemsCount);
+        $.each(jobList, function(key, job) {
+            if(job.id == task){
+                quoteList = job.quotes;
+                $('#estimate_id_'+itemsCount).children().remove().end();
+                $('#estimate_id_'+itemsCount).append($("<option />").text('Select Cost Code'));
+                $.each(job.quotes, function(key, quote) {
+                    $('#estimate_id_'+itemsCount).append($("<option />").val(quote.id).text(quote.estimate.subheader.cost_code + '___' + quote.estimate.item));
+                });
+            }
+        });
+        if(quotes.length >= itemsCount){
+            $('#estimate_id_'+itemsCount).val(quotes[itemsCount-1].id).change();
+        }
     }
 
     function calculateCost() {
@@ -292,23 +334,11 @@
         $('#total').val(total);
     }
 
+    
+    itemsDetailDynamicField(itemsCount);
+
     $(document).ready(function() {
 
-        // $(document).on('change', '#task_id', function(e) {
-        //     e.preventDefault();
-        //     var task = $('#task_id').val();
-        //     $.each(jobList.jobs, function(key, job) {
-        //         if(job.id == task){
-        //             quoteList = job.quotes;
-        //             var estimate_id = $('#estimate_id_' + itemsCount);
-        //             estimate_id.children().remove().end();
-        //             estimate_id.append($("<option />").text('Select Cost Code'));
-        //             $.each(job.quotes, function(key, quote) {
-        //                 estimate_id.append($("<option />").val(quote.id).text(quote.estimate.subheader.cost_code + '___' + quote.estimate.item));
-        //             });
-        //         }
-        //     });
-        // });
     });
 </script>
 @endsection
