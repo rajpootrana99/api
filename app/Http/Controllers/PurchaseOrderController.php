@@ -66,8 +66,8 @@ class PurchaseOrderController extends Controller
                 $quote->update([
                     'description' => $itemData['description'],
                     'qty' => $itemData['qty'],
-                    'unit_price' => $itemData['unit_price'],
-                    'amount' => $itemData['amount'],
+                    'order_unit_price' => $itemData['order_unit_price'],
+                    'order_total_amount' => $itemData['order_total_amount'],
                 ]);
             }                
         }

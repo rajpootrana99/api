@@ -178,7 +178,7 @@
                                 <a class="dropdown-item" href="#">Edit</a>\
                                 <a class="dropdown-item" href="/quote/'+job.id+'">Budget</a>\
                                 <a class="dropdown-item" href="#">Chat</a>\
-                                <a class="dropdown-item" href="job/'+job.id+'">Invoice</a>\
+                                <a class="dropdown-item" target=”_blank” href="job/'+job.id+'">Invoice</a>\
                             </div>\
                         </div>\</td>\
                     </tr>');
