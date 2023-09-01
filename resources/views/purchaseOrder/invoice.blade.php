@@ -80,15 +80,15 @@
                                         </tr><!--end tr-->
                                     </thead>
                                     <tbody>
-                                        @foreach($purchaseOrder->purchaseItems as $purchaseItem)
+                                        @foreach($purchaseOrder->task->quotes as $purchaseItem)
                                         <tr>
                                             <td>
                                                 <p class="mb-0">{{ $purchaseItem->estimate->subHeader->cost_code }}___{{ $purchaseItem->estimate->item }}</p>
                                             </td>
                                             <td>{{ $purchaseItem->description }}</td>
                                             <td>{{ $purchaseItem->qty }}</td>
-                                            <td>${{ $purchaseItem->unit_price }}</td>
-                                            <td>${{ $purchaseItem->amount }}</td>
+                                            <td>${{ $purchaseItem->order_unit_price }}</td>
+                                            <td>${{ $purchaseItem->order_total_amount }}</td>
                                         </tr><!--end tr-->
                                         @endforeach
                                         

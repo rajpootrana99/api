@@ -82,7 +82,7 @@ class PurchaseOrderController extends Controller
      */
     public function show($purchaseOrder)
     {
-        $purchaseOrder = PurchaseOrder::with('entity', 'task.site', 'purchaseItems.estimate.subHeader.header', 'task.entity')->find($purchaseOrder);
+        $purchaseOrder = PurchaseOrder::with('entity', 'task.site', 'task.quotes.estimate.subHeader.header', 'task.entity')->find($purchaseOrder);
         return view('purchaseOrder.invoice', ['purchaseOrder' => $purchaseOrder]);
     }
 

@@ -174,9 +174,9 @@
             tax = (subtotal/100) *10;
             let total = subtotal+tax;
             console.log(subtotal+' '+tax)
-            $('#subtotal').html(subtotal) 
-            $('#tax').html(tax) 
-            $('#total').html(total) 
+            $('#subtotal').html('$'+subtotal) 
+            $('#tax').html('$'+tax) 
+            $('#total').html('$'+total) 
         }
 
         $(document).ready(function() {
