@@ -47,6 +47,7 @@ return new class extends Migration
             $table->string('cost_code_label')->nullable()->default('');
             $table->unsignedDouble('amount_ordered')->nullable()->default(0);
             $table->unsignedDouble('capture_savings')->nullable()->default(0);
+            $table->unsignedDouble('movement')->nullable()->default(0);
             $table->timestamps();
         });
     }

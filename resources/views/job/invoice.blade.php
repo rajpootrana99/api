@@ -80,14 +80,14 @@
                     <div class="row">
                         <div class="col-md-6">    
                                 <div class="float-left">
-                                    <h6 class="font-14 text-center" style="background-color: #C65911; color: #fff; padding: 1% 0%; width: 300px">Customer</h6>
+                                    <h6 class="font-14 text-center" style="background-color: #F96D22; color: #fff; padding: 1% 0%; width: 300px">Customer</h6>
                                     <p>{{ $job->entity->entity }}</p>
                                     <p>{{ $job->entity->address }}</p>
                                 </div>
                         </div><!--end col--> 
                         <div class="col-md-6">
                             <div class="float-right">
-                                <h6 class="font-14 text-center" style="background-color: #C65911; color: #fff; padding: 1% 0%; width: 300px">Site Address</h6>
+                                <h6 class="font-14 text-center" style="background-color: #F96D22; color: #fff; padding: 1% 0%; width: 300px">Site Address</h6>
                                 <p>{{ $job->site->site }}</p>
                                 <p>{{ $job->site->site_address }}</p>
                             </div>

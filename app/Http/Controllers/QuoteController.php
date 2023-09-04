@@ -142,4 +142,24 @@ class QuoteController extends Controller
     {
         //
     }
+
+    public function captureSaving($quote){
+        $quote = Quote::find($quote);
+        if($quote->capture_savings == 0){
+            $quote->update([
+                'capture_savings' => 1,
+                'movement' => $quote->amount - $quote->order_total_amount,
+            ]);
+            return response()->json([
+                'status' => true,
+                'message' => 'Capture Saving updated successfully',
+            ]);
+        }
+        if($quote->capture_savings == 1){
+            $quote->update([
+                'capture_savings' => 0,
+                'movement' => 0,
+            ]);
+        }
+    }
 }

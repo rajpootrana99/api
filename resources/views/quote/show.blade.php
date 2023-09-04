@@ -126,26 +126,35 @@
                         $.each(header.sub_headers, function(key, subHeader) {
                             var sub_header_total_budget = 0;
                             var sub_header_total_balance = 0;
+                            var sub_header_total_value_ordered = 0;
                             $.each(response.quotes, function(key, quote) {
                                 if (subHeader.cost_code === quote.estimate.sub_header.cost_code) {
-                                    sub_header_total_budget += quote.amount;
-                                    sub_header_total_balance += quote.order_total_amount;
+                                    sub_header_total_budget += quote.order_total_amount;
+                                    sub_header_total_value_ordered += quote.amount;
+                                    sub_header_total_balance += quote.amount - quote.order_total_amount;
                                 }
                             });
                             $('tbody').append('<tr style="background:#fa9c69; color: #000">\
                                 <td></td>\
                                 <td colspan="5"><strong>' + subHeader.cost_code + '___' + subHeader.sub_header + '</strong></td>\
                                 <td><strong>' + USDollar.format(sub_header_total_budget) + '</strong></td>\
-                                <td></td>\
+                                <td><strong>' + USDollar.format(sub_header_total_value_ordered) + '</strong></td>\
                                 <td><strong>' + USDollar.format(sub_header_total_balance) + '</strong></td>\
                                 <td colspan="3"></td>\
                             </tr>');
                             $.each(response.quotes, function(key, quote) {
+                                let balance = 0;
                                 if (subHeader.cost_code === quote.estimate.sub_header.cost_code) {
                                     total_qty += quote.qty;
                                     total_rate += quote.rate;
-                                    total_budget += quote.amount;
-                                    total_balance += quote.order_total_amount;
+                                    total_budget += quote.order_total_amount;
+                                    balance = quote.amount - quote.order_total_amount;
+                                    total_balance += balance;
+                                    total_value_ordered += quote.amount;
+                                    var capture_savings = ''
+                                    if(quote.capture_savings == 1){
+                                        capture_savings = 'Checked'
+                                    }
                                     $('tbody').append('<tr>\
                                         <td><input type="checkbox" name="quote_id[]" value="'+quote.id+'"/></td>\
                                         <td>' + quote.estimate.sub_header.cost_code + '___' + quote.estimate.item + '</td>\
@@ -154,10 +163,10 @@
                                         <td>' + quote.qty + '</td>\
                                         <td>' + USDollar.format(quote.rate) + '</td>\
                                         <td>' + USDollar.format(quote.amount) + '</td>\
-                                        <td></td>\
                                         <td>' + USDollar.format(quote.order_total_amount) + '</td>\
-                                        <td></td>\
-                                        <td></td>\
+                                        <td>' + USDollar.format(balance) + '</td>\
+                                        <td><input class="align-center" type="checkbox" name="capture_saving_check" '+capture_savings+' id="capture_saving_check" value="'+quote.id+'" '+capture_savings+' class="capture_saving_check" /></td>\
+                                        <td>' + USDollar.format(quote.movement) + '</td>\
                                         <td><button value="' + quote.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
                                     </tr>');
                                 }
@@ -167,6 +176,7 @@
                     $('#total_qty').html(total_qty);
                     $('#total_rate').html(USDollar.format(total_rate));
                     $('#total_budget').html(USDollar.format(total_budget));
+                    $('#total_value_ordered').html(USDollar.format(total_value_ordered));
                     $('#total_balance').html(USDollar.format(total_balance));
                 }
             });
@@ -193,14 +203,17 @@
                             var subheaderflag = 0;
                             var sub_header_total_budget = 0;
                             var sub_header_total_balance = 0;
+                            var sub_header_total_value_ordered = 0;
                             $.each(response.quotes, function(key, quote) {
                                 if (subHeader.cost_code === quote.estimate.sub_header.cost_code) {
-                                    sub_header_total_budget += quote.amount;
-                                    sub_header_total_balance += quote.order_total_amount;
+                                    sub_header_total_budget += quote.order_total_amount;
+                                    sub_header_total_value_ordered += quote.amount;
+                                    sub_header_total_balance += quote.amount - quote.order_total_amount;
                                 }
                             });
                             
                             $.each(response.quotes, function(key, quote) {
+                                let balance = 0;
                                 if (subHeader.cost_code === quote.estimate.sub_header.cost_code) {
                                     if(flag == 0){
                                         flag = 1;
@@ -215,15 +228,21 @@
                                             <td></td>\
                                             <td colspan="5"><strong>' + subHeader.cost_code + '___' + subHeader.sub_header + '</strong></td>\
                                             <td><strong>' + USDollar.format(sub_header_total_budget) + '</strong></td>\
-                                            <td></td>\
+                                            <td><strong>' + USDollar.format(sub_header_total_value_ordered) + '</strong></td>\
                                             <td><strong>' + USDollar.format(sub_header_total_balance) + '</strong></td>\
                                             <td colspan="3"></td>\
                                         </tr>');
                                     }
                                     total_qty += quote.qty;
                                     total_rate += quote.rate;
-                                    total_budget += quote.amount;
-                                    total_balance += quote.order_total_amount;
+                                    total_budget += quote.order_total_amount;
+                                    balance = quote.amount - quote.order_total_amount;
+                                    total_balance += balance;
+                                    total_value_ordered += quote.amount;
+                                    var capture_savings = ''
+                                    if(quote.capture_savings == 1){
+                                        capture_savings = 'Checked'
+                                    }
                                     $('tbody').append('<tr>\
                                         <td><input type="checkbox" name="quote_id[]" value="'+quote.id+'"/></td>\
                                         <td>' + quote.estimate.sub_header.cost_code + '___' + quote.estimate.item + '</td>\
@@ -231,11 +250,11 @@
                                         <td>' + quote.unit + '</td>\
                                         <td>' + quote.qty + '</td>\
                                         <td>' + USDollar.format(quote.rate) + '</td>\
-                                        <td>' + USDollar.format(quote.amount) + '</td>\
-                                        <td></td>\
                                         <td>' + USDollar.format(quote.order_total_amount) + '</td>\
-                                        <td></td>\
-                                        <td></td>\
+                                        <td>' + USDollar.format(quote.amount) + '</td>\
+                                        <td>' + USDollar.format(balance) + '</td>\
+                                        <td><input class="align-center" type="checkbox" name="capture_saving_check_simple" '+capture_savings+' id="capture_saving_check_simple" value="'+quote.id+'" class="capture_saving_check_simple" /></td>\
+                                        <td>' + USDollar.format(quote.movement) + '</td>\
                                         <td><button value="' + quote.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
                                     </tr>');
                                 }
@@ -245,10 +264,35 @@
                     $('#total_qty').html(total_qty);
                     $('#total_rate').html(USDollar.format(total_rate));
                     $('#total_budget').html(USDollar.format(total_budget));
+                    $('#total_value_ordered').html(USDollar.format(total_value_ordered));
                     $('#total_balance').html(USDollar.format(total_balance));
                 }
             });
         }
+
+        $(document).on('change', '#capture_saving_check_simple', function(e) {
+            e.preventDefault();
+            var quote_id = $(this).val();
+            $.ajax({
+                type: "GET",
+                url: '/captureSaving/' + quote_id,
+                success: function(response) {
+                    fetchSimpleQuotes();
+                }
+            });     
+        });
+
+        $(document).on('change', '#capture_saving_check', function(e) {
+            e.preventDefault();
+            var quote_id = $(this).val();
+            $.ajax({
+                type: "GET",
+                url: '/captureSaving/' + quote_id,
+                success: function(response) {
+                    fetchQuotes();
+                }
+            });     
+        });
 
         $(document).on('change', '#view', function(e) {
             e.preventDefault();

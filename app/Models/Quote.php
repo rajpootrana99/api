@@ -42,6 +42,7 @@ class Quote extends Model
         'cost_code_label',
         'amount_ordered',
         'capture_savings',
+        'movement',
     ];
 
     public function task()
