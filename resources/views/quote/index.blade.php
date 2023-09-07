@@ -51,16 +51,16 @@
             }
         });
 
-        fetchTasks();
+        fetchJobs();
 
-        function fetchTasks() {
+        function fetchJobs() {
             $.ajax({
                 type: "GET",
-                url: "fetchTasks",
+                url: "fetchJobs",
                 dataType: "json",
                 success: function(response) {
                     $('tbody').html("");
-                    $.each(response.tasks, function(key, task) {
+                    $.each(response.jobs, function(key, task) {
                         $('tbody').append('<tr>\
                             <td>' + task.id + '</td>\
                             <td><a href="/quote/'+task.id+'">' + task.site.site+'-'+task.title + '</a></td>\

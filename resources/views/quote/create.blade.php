@@ -58,6 +58,16 @@
                                                 <tbody id="itemsDetailTableBody">
 
                                                 </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <td colspan="6"><strong>Total</strong></td>
+                                                        <td><input class="form-control" style="width: 100%; height:30px;" type="text" readonly name="total_amount" id="total_amount"></td>
+                                                        <td><input type="hidden" name="total_tax" id="total_tax"></td>
+                                                        <td ><input class="form-control" style="width: 100%; height:30px;" type="text" readonly name="total_subtotal" id="total_subtotal"></td>
+                                                        <td ><input class="form-control" style="width: 100%; height:30px;" type="text" readonly name="total_amount_inc_gst" id="total_amount_inc_gst"></td>
+                                                        <td colspan="3"></td>
+                                                    </tr>
+                                                </tfoot>
                                             </table><!--end /table-->
                                         </div><!--end tableresponsive-->
                                     </div><!--end card-body-->
@@ -164,17 +174,29 @@
     });
 
     function calculateCost() {
+        let total_amount = 0;
+        let total_tax = 0;
+        let total_subtotal = 0;
+        let total_amount_inc_gst = 0;
         document.querySelectorAll(".item").forEach((item) => {
             const quantity = parseInt(item.querySelector(".quantity").value) ? parseInt(item.querySelector(".quantity").value) : 0;
             const rate = parseFloat(item.querySelector(".rate").value) ? parseFloat(item.querySelector(".rate").value) : 0;
             const margin = parseFloat(item.querySelector(".margin").value) ? parseFloat(item.querySelector(".margin").value) : 0;
             const amount = rate*quantity;
+            total_amount += amount
             const subtotal = amount + ((amount/100)*margin)
+            total_subtotal += subtotal;
             const amountIncGst = subtotal + ((subtotal/100)*10);
+            total_amount_inc_gst += amountIncGst;
             item.querySelector(".amount").value = amount.toFixed(2);
             item.querySelector(".subtotal").value = subtotal.toFixed(2);
             item.querySelector(".amountincgst").value = amountIncGst.toFixed(2);
         });
+        total_tax = total_amount_inc_gst - total_subtotal;
+        $('#total_amount').val(total_amount);
+        $('#total_tax').val(total_tax);
+        $('#total_subtotal').val(total_subtotal);
+        $('#total_amount_inc_gst').val(total_amount_inc_gst);
     }
 </script>
 @endsection

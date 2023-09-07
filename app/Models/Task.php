@@ -134,4 +134,8 @@ class Task extends Model
     public function purchaseOrders(){
         return $this->hasMany(PurchaseOrder::class);
     }
+
+    public function invoices(){
+        return $this->hasMany(Invoice::class);
+    }
 }

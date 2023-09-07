@@ -28,6 +28,7 @@ return new class extends Migration
             $table->unsignedDouble('amount')->nullable()->default(0);
             $table->unsignedDouble('margin')->nullable()->default(0);
             $table->unsignedDouble('subtotal')->nullable()->default(0);
+            $table->unsignedBigInteger('account')->nullable()->default(0);
             $table->unsignedDouble('gst')->nullable()->default(0);
             $table->unsignedDouble('amount_inc_gst')->nullable()->default(0);
             $table->unsignedDouble('variation_total')->nullable()->default(0);
