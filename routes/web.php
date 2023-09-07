@@ -4,6 +4,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\EnquiryController;
 use App\Http\Controllers\EntityController;
 use App\Http\Controllers\EstimateController;
+use App\Http\Controllers\FileExplorerController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\UserController;
@@ -36,6 +37,20 @@ Route::get('/unathorized', function () {
 })->name('unathorized');
 
 Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
+
+    // EXPLORER ROUTES
+    Route::resource('explorer', FileExplorerController::class);
+    Route::post('/getFileFolders', [FileExplorerController::class, "getFileFolders"])->name("explorer.get");
+    Route::get('/download/{file}', [FileExplorerController::class, 'download'])->name('explorer.download');
+    Route::post('/delete', [FileExplorerController::class, 'deleteFileFolder'])->name('explorer.delete');
+    Route::post('/edit', [FileExplorerController::class, 'getEditData'])->name('explorer.getEditData');
+    Route::get('/tree/{path}', [FileExplorerController::class, 'getFolderTree'])->name('explorer.getFolderTree');
+    Route::post('/save', [FileExplorerController::class, 'saveEditedData'])->name('explorer.saveEditedData');
+    Route::post('/create', [FileExplorerController::class, 'createFolder'])->name('explorer.createFolder');
+    Route::get('/getUploadFolderInfo/{file}', [FileExplorerController::class, 'getUploadFolderInfo'])->name('explorer.getUploadFolderInfo');
+    Route::post('/upload', [FileExplorerController::class, 'uploadFiles'])->name('explorer.uploadFiles');
+
+
     Route::resource('user', UserController::class);
     Route::get('/fetchUsers', [UserController::class, 'fetchUsers'])->name('user.get');
     Route::get('/approveUser/{user}', [UserController::class, 'approveUser'])->name('user.approve');

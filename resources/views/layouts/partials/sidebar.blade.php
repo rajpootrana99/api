@@ -29,6 +29,9 @@
                 <a href="{{ route('task.index')}}"><i data-feather="check-square" class="align-self-center menu-icon"></i><span>Task</span></a>
             </li>
             <li>
+                <a href="{{ route('explorer.index')}}"><i data-feather="folder" class="align-self-center menu-icon"></i><span>Explorer</span></a>
+            </li>
+            <li>
                 <a href="{{ route('quote.index')}}"><i data-feather="box" class="align-self-center menu-icon"></i><span>Budget</span></a>
             </li>
             <li>
