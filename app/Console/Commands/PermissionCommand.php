@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use File;
 use Illuminate\Console\Command;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -61,6 +62,7 @@ class PermissionCommand extends Command
         }
         $role = Role::where('name', 'Admin')->first();
         $role->givePermissionTo(Permission::all());
+        File::makeDirectory(storage_path("app/explorer"));
         $this->info('Permissions successfully created!');
     }
 }
