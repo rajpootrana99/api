@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Invoice;
 use App\Models\Job;
 use App\Models\Site;
 use App\Models\Task;
@@ -75,8 +76,8 @@ class JobController extends Controller
      */
     public function show($job)
     {
-        $job = Task::with('entity', 'site', 'quotes.estimate.subHeader.header', 'entity')->find($job);
-        return view('job.invoice', ['job' => $job]);
+        $invoice = Invoice::with('entity', 'task.site', 'task.quotes.estimate.subHeader.header')->where(['task_id' => $job])->first();
+        return view('job.invoice', ['invoice' => $invoice]);
     }
 
     /**

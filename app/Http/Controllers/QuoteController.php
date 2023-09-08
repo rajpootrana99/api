@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Estimate;
 use App\Models\Header;
+use App\Models\Invoice;
 use App\Models\Quote;
 use App\Models\Task;
 use Illuminate\Http\Request;
@@ -56,6 +57,18 @@ class QuoteController extends Controller
         $task->update([
             'is_quote' => 1,
         ]);
+        $invoice = Invoice::create([
+            'entity_id' => $task->entity_id,
+            'task_id' => $task->id,
+            'issue_date' => date("Y-m-d"),
+            'due_date' => $task->requested_completion,
+            'amount_are' => 0,
+            'sub_total' => $request->total_subtotal,
+            'tax' => $request->total_tax,
+            'total' => $request->total_amount_inc_gst,
+            'status' => 0,
+        ]);
+
         foreach ($request->quotes as $quoteData) {
             $quote = Quote::create([
                 'task_id' => $request->task_id,
@@ -65,7 +78,6 @@ class QuoteController extends Controller
                 'qty' => $quoteData['qty'],
                 'rate' => $quoteData['rate'],
                 'amount' => $quoteData['amount'],
-                'order_total_amount' => $quoteData['amount'],
                 'margin' => $quoteData['margin'],
                 'subtotal' => $quoteData['subtotal'],
                 'gst' => 10,
@@ -100,6 +112,10 @@ class QuoteController extends Controller
         return view('quote.create', ['task' => Task::with('quotes.estimate.subHeader.header')->find($quote)]);
     }
 
+    public function editInvoice($task){
+        return view('job.edit', ['invoice' => Invoice::with('task.quotes.estimate.subHeader.header', 'entity')->where(['task_id' => $task])->first()]);
+    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -110,26 +126,19 @@ class QuoteController extends Controller
     public function update(Request $request, $quote)
     {
         $validator = Validator::make($request->all(), [
+            'entity_id' => ['required'],
             'task_id' => ['required'],
-            'qty' => ['required'],
-            'rate' => ['required'],
-            'margin' => ['required'],
-            'gst' => ['required'],
         ]);
-        if (!$validator->passes()) {
-            return response()->json([
-                'status' => 0,
-                'error' => $validator->errors()->toArray()
-            ]);
+        $invoice = Invoice::find($quote);
+        $invoice->update($request->all());
+
+        foreach ($request->items as $itemData) {
+            $quote = Quote::find($itemData['quote_id']);
+            if($quote){
+                $quote->update($request->all());
+            }                
         }
-        $quote = Quote::find($quote);
-        $quote = $quote->update($request->all());
-        if ($quote) {
-            return response()->json([
-                'status' => 1,
-                'message' => 'Quote Updated Successfully'
-            ]);
-        }
+        return redirect()->route('job.index');
     }
 
     /**

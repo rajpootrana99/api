@@ -77,10 +77,11 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
     Route::get('/fetchContacts', [ContactController::class, 'fetchContacts'])->name('contact.get');
     Route::resource('job', JobController::class);
     Route::get('/fetchJobs', [JobController::class, 'fetchJobs'])->name('job.get');
+    Route::get('/editInvoice/{task}', [QuoteController::class, 'editInvoice'])->name('invoice.edit');
     Route::resource('enquiry', EnquiryController::class);
     Route::get('/fetchEnquiries', [EnquiryController::class, 'fetchEnquiries'])->name('enquiry.get');
     Route::resource('quote', QuoteController::class);
-    Route::get('/fetchQuotes/{task}', [QuoteController::class, 'fetchQuotes'])->name('quote.get');
+    Route::get('/fetchQuotes/{task}', [QuoteController::class, 'fetchQuotes']);
     Route::get('/captureSaving/{task}', [QuoteController::class, 'captureSaving'])->name('captureSaving.get');
     Route::resource('site-user', SiteUserController::class);
     Route::get('/fetchSiteUsers', [SiteUserController::class, 'fetchSiteUsers'])->name('site-user.get');

@@ -92,9 +92,11 @@ class PurchaseOrderController extends Controller
      * @param  \App\Models\PurchaseOrder  $purchaseOrder
      * @return \Illuminate\Http\Response
      */
-    public function edit(PurchaseOrder $purchaseOrder)
+    public function edit($purchaseOrder)
     {
-        //
+        $purchaseOrder = PurchaseOrder::with('task.quotes')->find($purchaseOrder);
+        $jobs = Task::with('contact.user', 'quotes.estimate.subheader.header', 'site', 'user', 'entity')->where(['type' => 2])->get();
+        return view('purchaseOrder.edit', ['purchaseOrder' => $purchaseOrder, 'jobs' => $jobs]);
     }
 
     /**
@@ -104,9 +106,27 @@ class PurchaseOrderController extends Controller
      * @param  \App\Models\PurchaseOrder  $purchaseOrder
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, PurchaseOrder $purchaseOrder)
+    public function update(Request $request, $purchaseOrder)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'entity_id' => ['required'],
+            'task_id' => ['required'],
+        ]);
+        $purchaseOrder = PurchaseOrder::find($purchaseOrder);
+        $purchaseOrder->update($request->all());
+
+        foreach ($request->items as $itemData) {
+            $quote = Quote::find($itemData['quote_id']);
+            if($quote){
+                $quote->update([
+                    'description' => $itemData['description'],
+                    'qty' => $itemData['qty'],
+                    'order_unit_price' => $itemData['order_unit_price'],
+                    'order_total_amount' => $itemData['order_total_amount'],
+                ]);
+            }                
+        }
+        return redirect()->route('purchaseOrder.index');
     }
 
     /**

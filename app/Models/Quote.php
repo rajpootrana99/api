@@ -20,6 +20,7 @@ class Quote extends Model
         'unit',
         'qty',
         'rate',
+        'account',
         'amount',
         'margin',
         'subtotal',
@@ -44,6 +45,20 @@ class Quote extends Model
         'capture_savings',
         'movement',
     ];
+
+    public function getAccountAttribute($attribute)
+    {
+        return $this->accountOptions()[$attribute] ?? 0;
+    }
+
+    public function accountOptions()
+    {
+        return [
+            2 => 'Management Income',
+            1 => 'Construction Income',
+            0 => 'Maintenance Income',
+        ];
+    }
 
     public function task()
     {

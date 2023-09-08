@@ -61,17 +61,17 @@
                 <div class="card-body"> 
                     <div class="row">
                         <div class="col-md-6 mt-3 align-self-end">
-                            <h6 class="mb-0"><b>Date : </b>{{ $job->requested_completion }}</h6>
-                            <h6><b>Job # </b>{{ $job->id }}</h6>
-                            <h6><b>Invoice # </b>{{ $job->id }}</h6>
-                            <h6><b>Due Date : </b>{{ $job->requested_completion }}</h6>
+                            <h6 class="mb-0"><b>Date : </b>{{ $invoice->issue_date }}</h6>
+                            <h6><b>Job # </b>{{ $invoice->task_id }}</h6>
+                            <h6><b>Invoice # </b>{{ $invoice->id }}</h6>
+                            <h6><b>Due Date : </b>{{ $invoice->due_date }}</h6>
                         </div>
                         <div class="col-md-6 mt-3">
                             <div class="float-right">
                                 <img src="{{ asset('assets/images/logo.jpg')}}" alt="logo-small" class="logo-sm mr-1" width="100px">
-                                <h6 class="mb-0"><strong>Phone: </strong>{{ $job->entity->primary_phone }}</h6>
-                                <h6 class="mb-0"><strong>Email: </strong>{{ $job->entity->email }}</h6>
-                                <h6 class="mb-0"><strong>ABN: </strong>{{ $job->entity->abn }}</h6><br><br>         
+                                <h6 class="mb-0"><strong>Phone: </strong>{{ $invoice->entity->primary_phone }}</h6>
+                                <h6 class="mb-0"><strong>Email: </strong>{{ $invoice->entity->email }}</h6>
+                                <h6 class="mb-0"><strong>ABN: </strong>{{ $invoice->entity->abn }}</h6><br><br>         
                             </div>
                         </div>
                     </div><!--end row-->     
@@ -81,15 +81,15 @@
                         <div class="col-md-6">    
                                 <div class="float-left">
                                     <h6 class="font-14 text-center" style="background-color: #F96D22; color: #fff; padding: 1% 0%; width: 300px">Customer</h6>
-                                    <p>{{ $job->entity->entity }}</p>
-                                    <p>{{ $job->entity->address }}</p>
+                                    <p>{{ $invoice->entity->entity }}</p>
+                                    <p>{{ $invoice->entity->address }}</p>
                                 </div>
                         </div><!--end col--> 
                         <div class="col-md-6">
                             <div class="float-right">
                                 <h6 class="font-14 text-center" style="background-color: #F96D22; color: #fff; padding: 1% 0%; width: 300px">Site Address</h6>
-                                <p>{{ $job->site->site }}</p>
-                                <p>{{ $job->site->site_address }}</p>
+                                <p>{{ $invoice->task->site->site }}</p>
+                                <p>{{ $invoice->task->site->site_address }}</p>
                             </div>
                         </div> <!--end col-->                       
                     </div><!--end row-->
@@ -106,7 +106,7 @@
                                         </tr><!--end tr-->
                                     </thead>
                                     <tbody>
-                                        @foreach($job->quotes as $quote)
+                                        @foreach($invoice->task->quotes as $quote)
                                         <tr>
                                             <td>
                                                 <p class="mb-0">{{ $quote->estimate->subHeader->cost_code }}___{{ $quote->estimate->item }}</p>
@@ -119,17 +119,17 @@
                                         <tr>                                                        
                                             <td class="border-0"></td>
                                             <td class="border-0 font-14"><b>Sub Total</b></td>
-                                            <td class="border-0 font-14"><b id="subtotal"></b></td>
+                                            <td class="border-0 font-14"><b id="subtotal">${{ $invoice->sub_total }}</b></td>
                                         </tr><!--end tr-->
                                         <tr>
                                             <th class="border-0"></th>                                                        
                                             <td class="border-0 font-14"><b>Tax</b></td>
-                                            <td class="border-0 font-14"><b id="tax"></b></td>
+                                            <td class="border-0 font-14"><b id="tax">${{ $invoice->tax }}</b></td>
                                         </tr><!--end tr-->
                                         <tr class="bg-white text-black">
                                             <th class="border-0"></th>                                                        
                                             <td class="border-0 font-14 text-dark"><b>Total</b></td>
-                                            <td class="border-0 font-14 text-dark"><b id="total"></b></td>
+                                            <td class="border-0 font-14 text-dark"><b id="total">${{ $invoice->total }}</b></td>
                                         </tr><!--end tr-->
                                     </tbody>
                                 </table><!--end table-->
@@ -139,12 +139,8 @@
 
                     <div class="row justify-content-center">
                         <div class="col-lg-12">
-                            <h5 class="mt-4">Terms And Condition :</h5>
-                            <ul class="pl-3">
-                                <li><small class="font-12">All accounts are to be paid within 7 days from receipt of invoice. </small></li>
-                                <li><small class="font-12">To be paid by cheque or credit card or direct payment online.</small ></li>
-                                <li><small class="font-12"> If account is not paid within 7 days the credits details supplied as confirmation of work undertaken will be charged the agreed quoted fee noted above.</small></li>                                            
-                            </ul>
+                            <h5 class="mt-4">Note to Customer :</h5>
+                            <p>{{ $invoice->note }}</p>
                         </div> <!--end col-->  
                     </div><!--end row-->
                     <hr>
@@ -163,21 +159,6 @@
             </div><!--end card-->
         </div>
     <script>
-        var quotes = <?php echo $job->quotes ?>;
-        var subtotal = 0;
-        var tax = 0;
-        calculateAmount();
-        function calculateAmount(){
-            $.each(quotes, function(key, quote) {
-                subtotal += quote.subtotal;
-            })
-            tax = (subtotal/100) *10;
-            let total = subtotal+tax;
-            console.log(subtotal+' '+tax)
-            $('#subtotal').html('$'+subtotal) 
-            $('#tax').html('$'+tax) 
-            $('#total').html('$'+total) 
-        }
 
         $(document).ready(function() {
 
