@@ -96,10 +96,13 @@ class EntityController extends Controller
             ]);
         }
         $entity = Entity::create($request->all());
+        $entityName = $request->input('entity');
+        $manager = new FileExplorerController();
         if ($entity) {
             return response()->json([
                 'status' => 1,
-                'message' => 'Entity Added Successfully'
+                'message' => 'Entity Added Successfully',
+                'entityFolderCreated' => $manager->createEntity($entityName)
             ]);
         }
     }
@@ -165,11 +168,25 @@ class EntityController extends Controller
         }
 
         $entity = Entity::find($entity);
+        $oldEntityName = $entity->entity;
+        $newEntityName = $request->input('entity');
+        $oldEntityPath = "explorer/".$oldEntityName;
+        $newEntityPath = "explorer/";
+
         $entity = $entity->update($request->all());
+
+        $manager = new FileExplorerController();
+
         if ($entity) {
             return response()->json([
                 'status' => 1,
-                'message' => 'Entity Updated Successfully'
+                'message' => 'Entity Updated Successfully',
+                'entityFolderUpdated' => $manager->saveEditedData(new Request([
+                    "name" => $newEntityName,
+                    "isDir" => true,
+                    "path" => $oldEntityPath,
+                    "newParentFolderPath" => $newEntityPath
+                ])),
             ]);
         }
     }

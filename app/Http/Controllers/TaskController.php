@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Entity;
 use App\Models\Item;
 use App\Models\ItemGallery;
 use App\Models\Task;
@@ -90,6 +91,8 @@ class TaskController extends Controller
         if (!$validator->passes()) {
             return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
         }
+
+
         $task = Task::create($request->all());
 
         foreach ($request->items as $itemData) {
@@ -112,6 +115,13 @@ class TaskController extends Controller
                 }
             }
         }
+
+        //directory with task name in respected entity
+        $taskName = $request->input('title');
+        $entityName = Entity::find($request->input('entity_id'))->entity;
+        $manager = new FileExplorerController();
+        $manager->createTask($entityName, $taskName);
+
         return redirect()->route('task.index');
     }
 
