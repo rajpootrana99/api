@@ -589,7 +589,7 @@
                         render: function (data, type, row) {
                             // console.log(data)
                             let iconDesc = DATA.type == "File Folder" ? "bi-folder-fill" : ("bi-filetype-"+DATA.type.toLowerCase());
-                            let routeDesc = DATA.type == "File Folder" ? "href=\"Javascript:void(0);\" onclick=\"navigateTo('"+DATA.fileRoute+"')\"" : "href='"+DATA.fileRoute+"' download ";
+                            let routeDesc = DATA.type == "File Folder" ? "href=\"Javascript:void(0);\" onclick=\"navigateTo('"+DATA.encodedRoute+"')\"" : "href='"+DATA.fileRoute+"' download ";
                             let temp = '<a  ' + routeDesc + ' style="display: flex;align-items:center;column-gap:5%">'+
                                 '<i class="bi '+ iconDesc +' h2"></i>'+
                                "<span class='text-truncate' data-toggle='tooltip' data-placement='top' title data-original-title='"+ atob(DATA.encodedRoute) +"'> "+ ( DATA.searchResult == "true" ? DATA.name+"<div class='text-muted'>"+atob(DATA.encodedRoute)+"</div>" : DATA.name ) +"</span>"+
@@ -639,9 +639,10 @@
 
         function navigateTo(path)
         {
-            root_path = path;
+            root_path = atob(path);
             table.ajax.reload(null, false)
             updateNavigation()
+            console.log("reached 1");
         }
 
         function loadUploadFileInputDialog()
