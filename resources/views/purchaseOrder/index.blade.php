@@ -126,7 +126,7 @@
                                     <i class="las la-ellipsis-v font-20 text-muted"></i>\
                                 </a>\
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel11">\
-                                    <a class="dropdown-item" href="#">Edit</a>\
+                                    <a class="dropdown-item" href="purchaseOrder/'+purchaseOrder.id+'/edit">Edit</a>\
                                     <a class="dropdown-item" href="purchaseOrder/'+purchaseOrder.id+'">Purchase Order</a>\
                                 </div>\
                             </div>\</td>\
