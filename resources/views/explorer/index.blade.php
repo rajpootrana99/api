@@ -520,7 +520,7 @@
                     if ( i < pathArray.length-1 )
                     {
                         breadString += '<li class="breadcrumb-item">'+
-                                            '<a class="black-text" onclick="navigateTo(\''+storagePathString+'\')" href="Javascript:void(0);"> '+ pathArray[i][0].toUpperCase() + (pathArray[i].length > 1 ? pathArray[i].substring(1, pathArray[i].length) : "") +' </a>'+
+                                            '<a class="black-text" onclick="navigateTo(\''+btoa(storagePathString)+'\')" href="Javascript:void(0);"> '+ pathArray[i][0].toUpperCase() + (pathArray[i].length > 1 ? pathArray[i].substring(1, pathArray[i].length) : "") +' </a>'+
                                             '<i class="fas fa-angle-double-right mx-2" aria-hidden="true"></i>'+
                                             '</li>';
                     }

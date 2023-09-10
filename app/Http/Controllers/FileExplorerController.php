@@ -9,6 +9,7 @@ use File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Str;
+use Validator;
 class FileExplorerController extends Controller
 {
     protected $disk;
