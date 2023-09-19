@@ -94,22 +94,7 @@ class JobController extends Controller
             'type' => 2,
         ]);
         return redirect()->route('job.index');
-        // $job = Job::with('user', 'site')->find($job);
-        // $sites = Site::all();
-        // $users = User::role('Supplier')->get();
-        // if ($job) {
-        //     return response()->json([
-        //         'status' => true,
-        //         'job' => $job,
-        //         'sites' => $sites,
-        //         'users' => $users,
-        //     ]);
-        // } else {
-        //     return response()->json([
-        //         'status' => false,
-        //         'message' => 'No job available against this id',
-        //     ]);
-        // }
+        
     }
 
     /**

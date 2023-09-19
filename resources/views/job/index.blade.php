@@ -175,7 +175,8 @@
                                 <i class="las la-ellipsis-v font-20 text-muted"></i>\
                             </a>\
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel11">\
-                                <a class="dropdown-item" href="/editInvoice/'+job.id+'">Edit</a>\
+                                <a class="dropdown-item" href="">Edit</a>\
+                                <a class="dropdown-item" href="/editInvoice/'+job.id+'">Edit Invoice</a>\
                                 <a class="dropdown-item" href="/quote/'+job.id+'">Budget</a>\
                                 <a class="dropdown-item" href="#">Chat</a>\
                                 <a class="dropdown-item" target=”_blank” href="job/'+job.id+'">Invoice</a>\

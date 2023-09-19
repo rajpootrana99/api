@@ -69,4 +69,11 @@ class Quote extends Model
         return $this->belongsTo(Estimate::class);
     }
 
+    public function invoices(){
+        return $this->belongsToMany(Invoice::class);
+    }
+
+    public function purchaseOrders(){
+        return $this->belongsToMany(PurchaseOrder::class);
+    }
 }

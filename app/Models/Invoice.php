@@ -46,4 +46,8 @@ class Invoice extends Model
     public function task(){
         return $this->belongsTo(Task::class);
     }
+
+    public function quotes(){
+        return $this->belongsToMany(Quote::class);
+    }
 }

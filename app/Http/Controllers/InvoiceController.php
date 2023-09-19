@@ -2,14 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Enquiry;
-use App\Models\Site;
-use App\Models\Task;
-use App\Models\User;
+use App\Models\Invoice;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
-class EnquiryController extends Controller
+class InvoiceController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,15 +14,7 @@ class EnquiryController extends Controller
      */
     public function index()
     {
-        return view('enquiry.index');
-    }
-
-    public function fetchEnquiries()
-    {
-        $enquiries = Task::with('contact.user', 'quotes.estimate.subheader.header', 'site', 'user', 'entity')->where(['type' => 1])->get();
-        return response()->json([
-            'enquiries' => $enquiries,
-        ]);
+        //
     }
 
     /**
@@ -47,16 +35,16 @@ class EnquiryController extends Controller
      */
     public function store(Request $request)
     {
-        
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Enquiry  $enquiry
+     * @param  \App\Models\Invoice  $invoice
      * @return \Illuminate\Http\Response
      */
-    public function show($enquiry)
+    public function show(Invoice $invoice)
     {
         //
     }
@@ -64,39 +52,34 @@ class EnquiryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Enquiry  $enquiry
+     * @param  \App\Models\Invoice  $invoice
      * @return \Illuminate\Http\Response
      */
-    public function edit($task)
+    public function edit(Invoice $invoice)
     {
-        $task = Task::find($task);
-        $task->update([
-            'status' => 1,
-            'type' => 1,
-        ]);
-        return redirect()->route('enquiry.index');
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Enquiry  $enquiry
+     * @param  \App\Models\Invoice  $invoice
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $enquiry)
+    public function update(Request $request, Invoice $invoice)
     {
-       
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Enquiry  $enquiry
+     * @param  \App\Models\Invoice  $invoice
      * @return \Illuminate\Http\Response
      */
-    public function destroy($enquiry)
+    public function destroy(Invoice $invoice)
     {
-        
+        //
     }
 }
