@@ -86,9 +86,13 @@ class JobController extends Controller
      * @param  \App\Models\Job  $job
      * @return \Illuminate\Http\Response
      */
-    public function edit($task)
+    public function edit($job)
     {
-        
+        $task = Task::find($job);
+        return response()->json([
+            'status' => true,
+            'task' => $task,
+        ]);
     }
 
     /**
@@ -100,23 +104,12 @@ class JobController extends Controller
      */
     public function update(Request $request, $job)
     {
-        $validator = Validator::make($request->all(), [
-            'site_id' => ['required', 'integer'],
-            'description' => ['required', 'string', 'min:3'],
-        ]);
-        if (!$validator->passes()) {
+        $job= Task::find($job);
+        $job->update($request->all());
+        if($job){
             return response()->json([
-                'status' => 0,
-                'error' => $validator->errors()->toArray()
-            ]);
-        }
-
-        $job = Job::find($job);
-        $job = $job->update($request->all());
-        if ($job) {
-            return response()->json([
-                'status' => 1,
-                'message' => 'Job Updated Successfully'
+                'status' => true,
+                'message' => 'Job updated succesfully'
             ]);
         }
     }

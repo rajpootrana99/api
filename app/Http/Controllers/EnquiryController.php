@@ -67,9 +67,13 @@ class EnquiryController extends Controller
      * @param  \App\Models\Enquiry  $enquiry
      * @return \Illuminate\Http\Response
      */
-    public function edit($task)
+    public function edit($enquiry)
     {
-        
+        $task = Task::find($enquiry);
+        return response()->json([
+            'status' => true,
+            'task' => $task,
+        ]);
     }
 
     /**
@@ -81,7 +85,14 @@ class EnquiryController extends Controller
      */
     public function update(Request $request, $enquiry)
     {
-       
+        $enquiry = Task::find($enquiry);
+        $enquiry->update($request->all());
+        if($enquiry){
+            return response()->json([
+                'status' => true,
+                'message' => 'Enquiry updated succesfully'
+            ]);
+        }
     }
 
     /**
