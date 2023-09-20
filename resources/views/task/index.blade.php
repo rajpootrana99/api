@@ -123,6 +123,43 @@
     </div><!--end modal-dialog-->
 </div>
 
+<div class="modal fade" id="editTask" tabindex="-1" role="dialog" aria-labelledby="editTaskLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h6 class="modal-title m-0 text-white" id="editTaskLabel"></h6>
+                <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="la la-times text-white"></i></span>
+                </button>
+            </div><!--end modal-header-->
+            <form method="post" id="editTaskForm">
+                <div class="modal-body">
+                    <div class="row">
+                        @csrf
+                        @method('PATCH')
+                        <input type="hidden" name="task_id" id="task_id">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <select class="select2 pl-1 form-control edit_status" name="status" id="edit_status" style="width: 100%; height:30px !important;">
+                                    <option value="" selected disabled>Select Status</option>
+                                    <option value="0">Pending</option>
+                                    <option value="1">Approved</option>
+                                    <option value="2">Cancelled</option>
+                                </select>
+                                <span class="text-danger error-text status_update_error"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div><!--end modal-body-->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                </div><!--end modal-footer-->
+            </form>
+        </div><!--end modal-content-->
+    </div><!--end modal-dialog-->
+</div>
+
 <script>
     $(document).ready(function() {
         var tags = ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'dark'];
@@ -179,7 +216,7 @@
                                         <i class="las la-ellipsis-v font-20 text-muted"></i>\
                                     </a>\
                                     <div style="z-index: 1 !important;" class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel11">\
-                                        <a class="dropdown-item" href="#">Edit</a>\
+                                        <button value="' + task.id + '" style="border: none; background-color: #fff" class="edit_btn dropdown-item">Edit</button>\
                                         <a class="dropdown-item" href="/convertToEnquiry/'+task.id+'">Convert to Enquiry</a>\
                                         <a class="dropdown-item" href="/convertToJob/'+task.id+'">Convert to Job</a>\
                                         <a class="dropdown-item" href="#">Chat</a>\
@@ -325,6 +362,73 @@
                 }
             });
         });
+
+        $(document).on('click', '.edit_btn', function(e) {
+            e.preventDefault();
+            var task_id = $(this).val();
+            $('#editTask').modal('show');
+            $(document).find('span.error-text').text('');
+            $.ajax({
+                type: "GET",
+                url: 'task/' + task_id + '/edit',
+                success: function(response) {
+                    if (response.status == false) {
+                        $('#editTask').modal('hide');
+                    } else {
+                        var status = 0;
+                        if (response.task.status == 'Pending') {
+                            status = 0;
+                        }
+                        if (response.task.status == 'Approved') {
+                            status = 1;
+                        }
+                        if (response.task.status == 'Cancelled') {
+                            status = 2;
+                        }
+                        $('#task_id').val(task_id);
+                        $('.edit_status').val(status).change();
+                        $('#editTaskLabel').text(response.task.title);
+                    }
+                }
+            });
+        });
+
+        $(document).on('submit', '#editTaskForm', function(e) {
+            e.preventDefault();
+            var task_id = $('#task_id').val();
+            let EditFormData = new FormData($('#editTaskForm')[0]);
+
+            $.ajax({
+                type: "post",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf_token"]').attr('content'),
+                    '_method': 'patch'
+                },
+                url: "task/" + task_id,
+                data: EditFormData,
+                contentType: false,
+                processData: false,
+                beforeSend: function() {
+                    $(document).find('span.error-text').text('');
+                },
+                success: function(response) {
+                    if (response.status == 0) {
+                        $('#editTask').modal('show')
+                        $.each(response.error, function(prefix, val) {
+                            $('span.' + prefix + '_update_error').text(val[0]);
+                        });
+                    } else {
+                        $('#editTaskForm')[0].reset();
+                        $('#editTask').modal('hide');
+                        fetchTasks();
+                    }
+                },
+                error: function(error) {
+                    console.log(error)
+                    $('#editTask').modal('show');
+                }
+            });
+        })
 
     });
 </script>

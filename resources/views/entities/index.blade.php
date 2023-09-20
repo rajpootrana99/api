@@ -211,8 +211,6 @@
                 </button>
             </div><!--end modal-header-->
             <form method="post" id="editEntityForm">
-                @csrf
-                @method('PATCH')
                 <div class="modal-body">
                     <div class="row">
                         @csrf
