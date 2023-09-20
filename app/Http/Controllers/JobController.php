@@ -88,12 +88,6 @@ class JobController extends Controller
      */
     public function edit($task)
     {
-        $task = Task::find($task);
-        $task->update([
-            'status' => 1,
-            'type' => 2,
-        ]);
-        return redirect()->route('job.index');
         
     }
 
@@ -148,5 +142,15 @@ class JobController extends Controller
                 'message' => 'No job available against this id',
             ]);
         }
+    }
+
+    public function convertToJob($task)
+    {
+        $task = Task::find($task);
+        $task->update([
+            'status' => 1,
+            'type' => 2,
+        ]);
+        return redirect()->route('job.index');
     }
 }

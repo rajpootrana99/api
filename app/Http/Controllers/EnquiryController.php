@@ -69,12 +69,7 @@ class EnquiryController extends Controller
      */
     public function edit($task)
     {
-        $task = Task::find($task);
-        $task->update([
-            'status' => 1,
-            'type' => 1,
-        ]);
-        return redirect()->route('enquiry.index');
+        
     }
 
     /**
@@ -98,5 +93,15 @@ class EnquiryController extends Controller
     public function destroy($enquiry)
     {
         
+    }
+
+    public function convertToEnquiry($task)
+    {
+        $task = Task::find($task);
+        $task->update([
+            'status' => 1,
+            'type' => 1,
+        ]);
+        return redirect()->route('enquiry.index');
     }
 }

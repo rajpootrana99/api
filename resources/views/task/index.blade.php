@@ -180,8 +180,8 @@
                                     </a>\
                                     <div style="z-index: 1 !important;" class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel11">\
                                         <a class="dropdown-item" href="#">Edit</a>\
-                                        <a class="dropdown-item" href="/enquiry/'+task.id+'/edit">Convert to Enquiry</a>\
-                                        <a class="dropdown-item" href="/job/'+task.id+'/edit">Convert to Job</a>\
+                                        <a class="dropdown-item" href="/convertToEnquiry/'+task.id+'">Convert to Enquiry</a>\
+                                        <a class="dropdown-item" href="/convertToJob/'+task.id+'">Convert to Job</a>\
                                         <a class="dropdown-item" href="#">Chat</a>\
                                     </div>\
                                 </div>\
