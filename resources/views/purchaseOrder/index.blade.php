@@ -127,7 +127,7 @@
                                 </a>\
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel11">\
                                     <a class="dropdown-item" href="purchaseOrder/'+purchaseOrder.id+'/edit">Edit</a>\
-                                    <a class="dropdown-item" href="purchaseOrder/'+purchaseOrder.id+'">Purchase Order</a>\
+                                    <a class="dropdown-item" target="_blank" href="purchaseOrder/'+purchaseOrder.id+'">Purchase Order</a>\
                                 </div>\
                             </div>\</td>\
                     </tr>');

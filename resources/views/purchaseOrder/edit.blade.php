@@ -166,7 +166,7 @@
 
 <script>
     var purchaseOrder = <?php echo $purchaseOrder ?>;
-    var quotes = <?php echo $purchaseOrder->task->quotes ?>;
+    var quotes = <?php echo $purchaseOrder->quotes ?>;
     var jobList = <?php echo $jobs ?>;
     var quoteList;
     
@@ -277,10 +277,10 @@
         });
         estimate.value = quotes[key].id
         let i = key+1
-        $('#description_' + i).val(quotes[key].description);
-        $('#qty_' + i).val(quotes[key].qty);
-        $('#order_unit_price_' + i).val(quotes[key].order_unit_price);
-        $('#order_total_amount_' + i).val(quotes[key].order_total_amount);
+        $('#description_' + i).val(quotes[key].pivot.description);
+        $('#qty_' + i).val(quotes[key].pivot.qty);
+        $('#order_unit_price_' + i).val(quotes[key].pivot.rate);
+        $('#order_total_amount_' + i).val(quotes[key].pivot.amount);
     })
 
     function quoteInsert(){

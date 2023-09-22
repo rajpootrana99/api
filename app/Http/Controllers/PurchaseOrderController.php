@@ -62,10 +62,16 @@ class PurchaseOrderController extends Controller
 
         foreach ($request->items as $itemData) {
             $quote = Quote::find($itemData['quote_id']);
+            $purchaseOrder->quotes()->attach($quote, [
+                'description' => $itemData['description'],
+                'qty' => $itemData['qty'],
+                'rate' => $itemData['order_unit_price'],
+                'amount' => $itemData['order_total_amount'],
+                'tax' => $itemData['tax'],
+                'total' => $itemData['order_total_amount'] + (($itemData['order_total_amount']/100)*$itemData['tax'])
+            ]);
             if($quote){
                 $quote->update([
-                    'description' => $itemData['description'],
-                    'qty' => $itemData['qty'],
                     'order_unit_price' => $itemData['order_unit_price'],
                     'order_total_amount' => $itemData['order_total_amount'],
                 ]);
@@ -82,8 +88,8 @@ class PurchaseOrderController extends Controller
      */
     public function show($purchaseOrder)
     {
-        $purchaseOrder = PurchaseOrder::with('entity', 'task.site', 'task.quotes.estimate.subHeader.header', 'task.entity')->find($purchaseOrder);
-        return view('purchaseOrder.invoice', ['purchaseOrder' => $purchaseOrder]);
+        $purchaseOrder = PurchaseOrder::with('quotes.estimate.subHeader.header', 'entity', 'task.site', 'task.quotes.estimate.subHeader.header', 'task.entity')->find($purchaseOrder);
+        return view('purchaseOrder.purchaseOrder', ['purchaseOrder' => $purchaseOrder]);
     }
 
     /**
@@ -94,7 +100,7 @@ class PurchaseOrderController extends Controller
      */
     public function edit($purchaseOrder)
     {
-        $purchaseOrder = PurchaseOrder::with('task.quotes')->find($purchaseOrder);
+        $purchaseOrder = PurchaseOrder::with('quotes.estimate.subheader.header', 'task.quotes')->find($purchaseOrder);
         $jobs = Task::with('contact.user', 'quotes.estimate.subheader.header', 'site', 'user', 'entity')->where(['type' => 2])->get();
         return view('purchaseOrder.edit', ['purchaseOrder' => $purchaseOrder, 'jobs' => $jobs]);
     }
@@ -117,10 +123,28 @@ class PurchaseOrderController extends Controller
 
         foreach ($request->items as $itemData) {
             $quote = Quote::find($itemData['quote_id']);
-            if($quote){
-                $quote->update([
+            if($purchaseOrder->quotes->contains($itemData['quote_id'])){
+                $purchaseOrder->quotes()->updateExistingPivot($itemData['quote_id'], [
                     'description' => $itemData['description'],
                     'qty' => $itemData['qty'],
+                    'rate' => $itemData['order_unit_price'],
+                    'amount' => $itemData['order_total_amount'],
+                    'tax' => $itemData['tax'],
+                    'total' => $itemData['order_total_amount'] + (($itemData['order_total_amount']/100)*$itemData['tax'])
+                ]);
+            }
+            else {
+                $purchaseOrder->quotes()->attach($itemData['quote_id'], [
+                    'description' => $itemData['description'],
+                    'qty' => $itemData['qty'],
+                    'rate' => $itemData['order_unit_price'],
+                    'amount' => $itemData['order_total_amount'],
+                    'tax' => $itemData['tax'],
+                    'total' => $itemData['order_total_amount'] + (($itemData['order_total_amount']/100)*$itemData['tax'])
+                ]);
+            }
+            if($quote){
+                $quote->update([
                     'order_unit_price' => $itemData['order_unit_price'],
                     'order_total_amount' => $itemData['order_total_amount'],
                 ]);

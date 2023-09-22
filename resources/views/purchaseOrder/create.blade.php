@@ -292,21 +292,6 @@
 
     $(document).ready(function() {
 
-        // $(document).on('change', '#task_id', function(e) {
-        //     e.preventDefault();
-        //     var task = $('#task_id').val();
-        //     $.each(jobList.jobs, function(key, job) {
-        //         if(job.id == task){
-        //             quoteList = job.quotes;
-        //             var estimate_id = $('#estimate_id_' + itemsCount);
-        //             estimate_id.children().remove().end();
-        //             estimate_id.append($("<option />").text('Select Cost Code'));
-        //             $.each(job.quotes, function(key, quote) {
-        //                 estimate_id.append($("<option />").val(quote.id).text(quote.estimate.subheader.cost_code + '___' + quote.estimate.item));
-        //             });
-        //         }
-        //     });
-        // });
     });
 </script>
 @endsection

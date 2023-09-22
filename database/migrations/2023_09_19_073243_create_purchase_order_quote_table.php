@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('purchase_order_quote', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('invoice_id')->nullable();
+            $table->unsignedBigInteger('purchase_order_id')->nullable();
             $table->unsignedBigInteger('quote_id')->nullable();
             $table->string('description')->nullable()->default('');
             $table->unsignedBigInteger('qty')->nullable()->default(1);

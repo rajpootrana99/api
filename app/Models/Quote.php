@@ -74,6 +74,6 @@ class Quote extends Model
     }
 
     public function purchaseOrders(){
-        return $this->belongsToMany(PurchaseOrder::class);
+        return $this->belongsToMany(PurchaseOrder::class)->withPivot('description', 'qty', 'rate', 'amount', 'tax', 'total');
     }
 }
