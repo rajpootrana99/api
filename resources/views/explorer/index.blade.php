@@ -657,6 +657,7 @@
                     hideThumbnailContent: false,
                     showBrowse: false,
                     showUpload: false,
+                    // showPreview: false,
                     browseOnZoneClick: true,
                     overwriteInitial: true,
                     initialPreviewShowDelete: true,
@@ -746,7 +747,7 @@
                     success: function (data, status, xhr) {
                         if( data == "true" ){
                             showToast("Uploaded Files successfully in folder \""+ folderPath + "\".", "success")
-                            navigateTo(folderPath)
+                            navigateTo(btoa(folderPath))
                         }
                         else showToast("Cannot Upload Files in \""+ (folderPath) +"\". Try Later!", "danger")
 
@@ -870,7 +871,7 @@
                 success: function (data, status, xhr) {
                     if( data == "true" ){
                         showToast("Folder \""+ $("#createFolderName").val() + "\" has been created successfully", "success")
-                        navigateTo(root_path)
+                        navigateTo(btoa(root_path))
                     }
                     else showToast("Cannot Create folder \""+ $("#createFolderName").val() +"\". Try Later!", "danger")
                 },
@@ -1032,8 +1033,8 @@
 
 
 <script defer src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.0/js/plugins/buffer.min.js" type="text/javascript"></script>
-<script defer src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.0/js/plugins/filetype.min.js" type="text/javascript"></script>
-
+{{-- <script defer src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.0/js/plugins/filetype.min.js" type="text/javascript"></script> --}}
+<script defer src="{{asset("assets/js/filetype.js")}}" type="text/javascript"></script>
 <!-- the main fileinput plugin script JS file -->
 <script defer src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.0/js/fileinput.min.js"></script>
     @endsection
