@@ -77,7 +77,7 @@
                     </div><!--end card-body-->
                     <div class="card-footer">
                         <button type="submit" style="float:right" class="btn btn-primary mb-3" id="create_btn">Create</button>
-                        <a href="{{ route('enquiry.index') }}" style="float:right" class="btn btn-primary mb-3" id="back_btn">Back</a>
+                        <a href="{{ URL::previous() }}" style="float:right" class="btn btn-primary mb-3" id="back_btn">Back</a>
                     </div>
                 </form>
             </div><!--end card-->
