@@ -67,6 +67,11 @@ class SiteController extends Controller
         }
 
         if ($site) {
+            //creating site folder under the entity folder in explorer directory
+            $entityName = Entity::find($request->input('entity_id'))->entity;
+            $manager = new FileExplorerController();
+            $manager->createSite($entityName, $request->input('site'));
+
             return response()->json(['status' => 1, 'message' => 'Site Added Successfully']);
         }
     }
@@ -127,6 +132,19 @@ class SiteController extends Controller
         }
 
         $site = Site::find($site);
+
+        //Change site name also under the entity name
+        $siteOldName = $site->site;
+        $siteNewName = $request->input("site");
+        $entityName = Entity::find($site->entity_id)->entity;
+        $manager = new FileExplorerController();
+        $manager->saveEditedData(new Request([
+            "name" => $siteNewName,
+            "path" => "explorer/".$entityName."/".$siteOldName,
+            "isDir" => true,
+            "newParentFolderPath" => "explorer/".$entityName,
+        ]));
+
         $site->update($request->all());
         if ($site) {
             return response()->json(['status' => 1, 'message' => 'Site Updated Successfully']);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Entity;
 use App\Models\Item;
 use App\Models\ItemGallery;
+use App\Models\Site;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -119,8 +120,9 @@ class TaskController extends Controller
         //directory with task name in respected entity
         $taskName = $request->input('title');
         $entityName = Entity::find($request->input('entity_id'))->entity;
+        $siteName = Site::find($request->input('site_id'))->site;
         $manager = new FileExplorerController();
-        $manager->createTask($entityName, $taskName);
+        $manager->createTask($entityName, $siteName, $taskName);
 
         return redirect()->route('task.index');
     }
@@ -137,7 +139,41 @@ class TaskController extends Controller
     public function update(Request $request, $task)
     {
         $task= Task::find($task);
+
+        $taskOldName = $task->title;
+        $taskNewName = $request->input("title");
+
         $task->update($request->all());
+
+        //Change task name in all places
+        $siteName = Site::find($task->site_id)->site;
+        $entityName = Entity::find($task->entity_id)->entity;
+        $manager = new FileExplorerController();
+        $manager->saveEditedData(new Request([
+            "name" => $taskNewName,
+            "path" => "explorer/".$entityName."/".$siteName."/Tasks"."/".$taskOldName,
+            "isDir" => true,
+            "newParentFolderPath" => "explorer/".$entityName."/".$siteName."/Tasks",
+        ]));
+
+        if($task->type >=1 ){
+            $manager->saveEditedData(new Request([
+                "name" => $taskNewName,
+                "path" => "explorer/".$entityName."/".$siteName."/Enquiries"."/".$taskOldName,
+                "isDir" => true,
+                "newParentFolderPath" => "explorer/".$entityName."/".$siteName."/Enquiries",
+            ]));
+
+            if($task->type >=2 ){
+                $manager->saveEditedData(new Request([
+                    "name" => $taskNewName,
+                    "path" => "explorer/".$entityName."/".$siteName."/Jobs"."/".$taskOldName,
+                    "isDir" => true,
+                    "newParentFolderPath" => "explorer/".$entityName."/".$siteName."/Jobs",
+                ]));
+            }
+        }
+
         if($task){
             return response()->json([
                 'status' => true,

@@ -622,7 +622,7 @@
                         render: function (data, type, row) {
 
                             return '<button data-toggle="modal" data-target="#editFileFolder" onclick="loadEditingData(\''+ data.encodedRoute +'\')" class="btn btn-light folder_action_button" onclick="deleteFileFolder(this)" data-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Edit">'+ editIcon +'</button>'+
-                            ( root_path.split("/").length >= 2 ? '<button data-toggle="modal" data-target="#uploadFile" onclick="loadUploadFolderInfo(\''+ data.encodedRoute +'\')" class="btn btn-light  folder_action_button" style="" data-toggle="tooltip" data-placement="top" title="Upload" data-original-title="Upload Files in Current Folder">'+ uploadIcon +'</button>' : " ") +
+                            ( root_path.split("/").length >= 2 && DATA.type == "File Folder" ? '<button data-toggle="modal" data-target="#uploadFile" onclick="loadUploadFolderInfo(\''+ data.encodedRoute +'\')" class="btn btn-light  folder_action_button" style="" data-toggle="tooltip" data-placement="top" title="Upload" data-original-title="Upload Files in Current Folder">'+ uploadIcon +'</button>' : " ") +
                             '<button class="btn btn-light folder_action_button" onclick="deleteFileFolder(\''+ data.encodedRoute +'\')" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete">'+ trashIcon +'</button>'
                             ;
 
@@ -849,7 +849,7 @@
                     success: function (data, status, xhr) {
                         if( data == "true" ){
                             showToast("\""+ editFileFolderObject.path + "\" has been edited successfully", "success")
-                            navigateTo(root_path)
+                            navigateTo(btoa(root_path))
                         }
                         else showToast("Cannot Edit \""+ editFileFolderObject.path +"\". Try Later!", "danger")
                     },

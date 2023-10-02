@@ -67,7 +67,7 @@ class FileExplorerController extends Controller
             $size = $this->isDir($file) ? "" : $this->getSizeAbbrev(Storage::size($file));
 
             // echo $searchName."<br>".str_contains($searc, $searchName)."<br>";
-            if (str_contains($searchName, $query["value"]) || str_contains($type, $query["value"]) || str_contains($size, $query["value"]) || str_contains($dateModified, $query["value"]))
+            if (Str::contains($searchName, $query["value"], true) || Str::contains($type, $query["value"], true) || Str::contains($size, $query["value"], true) || str_contains($dateModified, $query["value"]))
             {
                 // if( $index == ((int)($request->input("start")) + (int)($request->input("length"))) )
 
@@ -155,7 +155,6 @@ class FileExplorerController extends Controller
         return $response ? "true" : "false";
     }
 
-    // you can modify this by throwing an associative array
     public function createEntity($entity)
     {
         $entityPath = "explorer";
@@ -163,11 +162,37 @@ class FileExplorerController extends Controller
         return $this->createFolder($createRequest); //returns true if created otherwise false as string
     }
 
-    // you can modify this by throwing an associative array
-    public function createTask($entity, $task)
+    public function createSite($entity, $site)
     {
-        $taskPath = "explorer/".$entity;
+        $sitePath = "explorer/".$entity;
+        $createRequest = new Request([ "path" => $sitePath , "name" => $site]);
+        if( $this->createFolder($createRequest) == "true") //returns true if created otherwise false as string
+        {
+            $siteAbsolutePath = $sitePath."/".$site;
+            $this->createFolder(new Request([ "path" => $siteAbsolutePath , "name" => "Tasks"]));
+            $this->createFolder(new Request([ "path" => $siteAbsolutePath , "name" => "Enquiries"]));
+            $this->createFolder(new Request([ "path" => $siteAbsolutePath , "name" => "Jobs"]));
+        }
+    }
+
+    public function createTask($entity, $site, $task)
+    {
+        $taskPath = "explorer/".$entity."/".$site."/Tasks";
         $createRequest = new Request([ "path" => $taskPath , "name" => $task]);
+        return $this->createFolder($createRequest); //returns true if created otherwise false as string
+    }
+
+    public function createEnquiry($entity, $site, $enquiry)
+    {
+        $enquiryPath = "explorer/".$entity."/".$site."/Enquiries";
+        $createRequest = new Request([ "path" => $enquiryPath , "name" => $enquiry]);
+        return $this->createFolder($createRequest); //returns true if created otherwise false as string
+    }
+
+    public function createJob($entity, $site, $job)
+    {
+        $jobPath = "explorer/".$entity."/".$site."/Jobs";
+        $createRequest = new Request([ "path" => $jobPath , "name" => $job]);
         return $this->createFolder($createRequest); //returns true if created otherwise false as string
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Enquiry;
+use App\Models\Entity;
 use App\Models\Site;
 use App\Models\Task;
 use App\Models\User;
@@ -47,7 +48,7 @@ class EnquiryController extends Controller
      */
     public function store(Request $request)
     {
-        
+
     }
 
     /**
@@ -86,7 +87,41 @@ class EnquiryController extends Controller
     public function update(Request $request, $enquiry)
     {
         $enquiry = Task::find($enquiry);
+
+        $enquiryOldName = $enquiry->title;
+        $enquiryNewName = $request->input("title");
+
         $enquiry->update($request->all());
+
+        //Change task name in all places
+        $siteName = Site::find($enquiry->site_id)->site;
+        $entityName = Entity::find($enquiry->entity_id)->entity;
+        $manager = new FileExplorerController();
+        $manager->saveEditedData(new Request([
+            "name" => $enquiryNewName,
+            "path" => "explorer/".$entityName."/".$siteName."/Tasks"."/".$enquiryOldName,
+            "isDir" => true,
+            "newParentFolderPath" => "explorer/".$entityName."/".$siteName."/Tasks",
+        ]));
+
+        if($enquiry->type >= 1 ){
+            $manager->saveEditedData(new Request([
+                "name" => $enquiryNewName,
+                "path" => "explorer/".$entityName."/".$siteName."/Enquiries"."/".$enquiryOldName,
+                "isDir" => true,
+                "newParentFolderPath" => "explorer/".$entityName."/".$siteName."/Enquiries",
+            ]));
+
+            if($enquiry->type >= 2 ){
+                $manager->saveEditedData(new Request([
+                    "name" => $enquiryNewName,
+                    "path" => "explorer/".$entityName."/".$siteName."/Jobs"."/".$enquiryOldName,
+                    "isDir" => true,
+                    "newParentFolderPath" => "explorer/".$entityName."/".$siteName."/Jobs",
+                ]));
+            }
+        }
+
         if($enquiry){
             return response()->json([
                 'status' => true,
@@ -103,7 +138,7 @@ class EnquiryController extends Controller
      */
     public function destroy($enquiry)
     {
-        
+
     }
 
     public function convertToEnquiry($task)
@@ -113,6 +148,14 @@ class EnquiryController extends Controller
             'status' => 1,
             'type' => 1,
         ]);
+
+        //creating folder under site's enquiry folder with the name of the task turning to enuiry
+        $enquiryName = $task->title;
+        $entityName = Entity::find($task->entity_id)->entity;
+        $siteName = Site::find($task->site_id)->site;
+        $manager = new FileExplorerController();
+        $manager->createEnquiry($entityName, $siteName, $enquiryName);
+
         return redirect()->route('enquiry.index');
     }
 }
