@@ -206,8 +206,8 @@
                             var sub_header_total_value_ordered = 0;
                             $.each(response.quotes, function(key, quote) {
                                 if (subHeader.cost_code === quote.estimate.sub_header.cost_code) {
-                                    sub_header_total_budget += quote.order_total_amount;
-                                    sub_header_total_value_ordered += quote.amount;
+                                    sub_header_total_budget += quote.amount;
+                                    sub_header_total_value_ordered += quote.order_total_amount;
                                     sub_header_total_balance += quote.amount - quote.order_total_amount;
                                 }
                             });
@@ -235,10 +235,10 @@
                                     }
                                     total_qty += quote.qty;
                                     total_rate += quote.rate;
-                                    total_budget += quote.order_total_amount;
+                                    total_budget += quote.amount;
                                     balance = quote.amount - quote.order_total_amount;
                                     total_balance += balance;
-                                    total_value_ordered += quote.amount;
+                                    total_value_ordered += quote.order_total_amount;
                                     var capture_savings = ''
                                     if(quote.capture_savings == 1){
                                         capture_savings = 'Checked'
@@ -250,8 +250,8 @@
                                         <td>' + quote.unit + '</td>\
                                         <td>' + quote.qty + '</td>\
                                         <td>' + USDollar.format(quote.rate) + '</td>\
-                                        <td>' + USDollar.format(quote.order_total_amount) + '</td>\
                                         <td>' + USDollar.format(quote.amount) + '</td>\
+                                        <td>' + USDollar.format(quote.order_total_amount) + '</td>\
                                         <td>' + USDollar.format(balance) + '</td>\
                                         <td><input class="align-center" type="checkbox" name="capture_saving_check_simple" '+capture_savings+' id="capture_saving_check_simple" value="'+quote.id+'" class="capture_saving_check_simple" /></td>\
                                         <td>' + USDollar.format(quote.movement) + '</td>\
