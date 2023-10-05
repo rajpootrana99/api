@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Invoice;
+use App\Models\Quote;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class InvoiceController extends Controller
 {
@@ -67,9 +69,22 @@ class InvoiceController extends Controller
      * @param  \App\Models\Invoice  $invoice
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Invoice $invoice)
+    public function update(Request $request, $invoice)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'entity_id' => ['required'],
+            'task_id' => ['required'],
+        ]);
+        $invoice = Invoice::find($invoice);
+        $invoice->update($request->all());
+
+        foreach ($request->items as $itemData) {
+            $quote = Quote::find($itemData['quote_id']);
+            if($quote){
+                $quote->update($request->all());
+            }                
+        }
+        return redirect()->route('invoice.index');
     }
 
     /**
