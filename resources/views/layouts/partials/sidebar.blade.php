@@ -47,6 +47,9 @@
                 <a href="{{ route('contact.index')}}"><i data-feather="phone" class="align-self-center menu-icon"></i><span>Contact</span></a>
             </li>
             <li>
+                <a href="{{ route('invoice.index')}}"><i data-feather="file-text" class="align-self-center menu-icon"></i><span>Invoice</span></a>
+            </li>
+            <li>
                 <a href="{{ route('purchaseOrder.index')}}"><i data-feather="file-text" class="align-self-center menu-icon"></i><span>Purchase Order</span></a>
             </li>
             <li>
