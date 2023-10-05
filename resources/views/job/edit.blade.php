@@ -115,7 +115,7 @@
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="form-group row">
-                                            <label for="notes_to_customer" class="col-sm-12 col-form-label text-left">Notes to Customer</label>
+                                            <label for="notes_to_customer" class="col-sm-12 col-form-label text-left">Note to Customer</label>
                                             <div class="col-sm-12">
                                                 <select class="select2 pl-1 form-control" name="notes_to_customer" onchange="fetchNote()" id="notes_to_customer" style="width: 100%; height:30px !important;">
                                                     <option value="" selected disabled>Select Std Note</option>
@@ -125,7 +125,7 @@
                                             </div>
                                         </div>   
                                         <div class="form-group row">
-                                            <label for="note" class="col-sm-12 col-form-label text-left">Notes</label>
+                                            <label for="note" class="col-sm-12 col-form-label text-left">Note</label>
                                             <div class="col-sm-12">
                                             <textarea class="form-control" rows="2" name="note" id="note">{{ $invoice->note }}</textarea>
                                             </div>
