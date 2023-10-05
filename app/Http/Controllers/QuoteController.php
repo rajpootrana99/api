@@ -54,21 +54,6 @@ class QuoteController extends Controller
             'task_id' => ['required'],
         ]);
         $task = Task::find($request->task_id);
-        $task->update([
-            'is_quote' => 1,
-        ]);
-        $invoice = Invoice::create([
-            'entity_id' => $task->entity_id,
-            'task_id' => $task->id,
-            'issue_date' => date("Y-m-d"),
-            'due_date' => $task->requested_completion,
-            'amount_are' => 0,
-            'sub_total' => $request->total_subtotal,
-            'tax' => $request->total_tax,
-            'total' => $request->total_amount_inc_gst,
-            'status' => 0,
-        ]);
-
         foreach ($request->quotes as $quoteData) {
             $quote = Quote::create([
                 'task_id' => $request->task_id,

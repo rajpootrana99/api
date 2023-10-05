@@ -77,8 +77,8 @@ class JobController extends Controller
      */
     public function show($job)
     {
-        $invoice = Invoice::with('entity', 'task.site', 'task.quotes.estimate.subHeader.header')->where(['task_id' => $job])->first();
-        return view('job.invoice', ['invoice' => $invoice]);
+        $invoice = Invoice::with('quotes.estimate.subHeader.header', 'entity', 'task.site', 'task.quotes.estimate.subHeader.header')->where(['task_id' => $job])->first();
+        return view('invoice.invoice', ['invoice' => $invoice]);
     }
 
     /**
