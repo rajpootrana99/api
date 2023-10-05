@@ -45,7 +45,7 @@
                                         <div class="form-group row">
                                             <label for="message" class="col-sm-12 col-form-label text-left">Site Address</label>
                                             <div class="col-sm-12">
-                                            <textarea class="form-control" rows="2" name="site_address" id="site_address"></textarea>
+                                            <textarea readonly class="form-control" rows="2" name="site_address" id="site_address"></textarea>
                                             </div>
                                         </div>                             
                                     </div>
@@ -267,6 +267,7 @@
                 $.each(job.quotes, function(key, quote) {
                     estimate_id.append($("<option />").val(quote.id).text(quote.estimate.subheader.cost_code + '___' + quote.estimate.item));
                 });
+                $('#site_address').val(job.site.site_address)
             }
         });
     }
