@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('invoice_id')->nullable();
             $table->unsignedBigInteger('quote_id')->nullable();
             $table->string('description')->nullable()->default('');
+            $table->string('account')->nullable()->default(0);
             $table->unsignedBigInteger('qty')->nullable()->default(1);
             $table->unsignedDouble('rate')->nullable()->default(0);
             $table->unsignedDouble('amount')->nullable()->default(0);

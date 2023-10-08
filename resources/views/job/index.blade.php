@@ -196,6 +196,7 @@
                     if (job.contact_id != null) {
                         name = job.contact.user.name;
                     }
+                    console.log(job);
                     $('tbody').append('<tr>\
                         <td>' + job.id + '</td>\
                         <td>' + job.site.site + '</td>\
@@ -216,7 +217,6 @@
                             </a>\
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel11">\
                                 <button value="' + job.id + '" style="border: none; background-color: #fff" class="edit_btn dropdown-item">Edit</button>\
-                                <a class="dropdown-item" href="/editInvoice/'+job.id+'">Edit Invoice</a>\
                                 <a class="dropdown-item" href="/quote/'+job.id+'">Budget</a>\
                                 <a class="dropdown-item" href="/quote/' + job.id + '/edit/">Quote</a>\
                                 <a class="dropdown-item" href="#">Chat</a>\

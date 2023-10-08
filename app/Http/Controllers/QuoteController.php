@@ -54,21 +54,6 @@ class QuoteController extends Controller
             'task_id' => ['required'],
         ]);
         $task = Task::find($request->task_id);
-        $task->update([
-            'is_quote' => 1,
-        ]);
-        $invoice = Invoice::create([
-            'entity_id' => $task->entity_id,
-            'task_id' => $task->id,
-            'issue_date' => date("Y-m-d"),
-            'due_date' => $task->requested_completion,
-            'amount_are' => 0,
-            'sub_total' => $request->total_subtotal,
-            'tax' => $request->total_tax,
-            'total' => $request->total_amount_inc_gst,
-            'status' => 0,
-        ]);
-
         foreach ($request->quotes as $quoteData) {
             $quote = Quote::create([
                 'task_id' => $request->task_id,
@@ -109,7 +94,15 @@ class QuoteController extends Controller
      */
     public function edit($quote)
     {
-        return view('quote.create', ['task' => Task::with('quotes.estimate.subHeader.header')->find($quote)]);
+        if(count(Quote::where(['task_id' => $quote])->get()) > 0){
+            return view('quote.edit', [
+                'task' => Task::with('quotes.estimate.subHeader.header')->find($quote), 
+                'estimates' => Estimate::with('subHeader.header')->get()
+            ]);
+        }
+        else{
+            return view('quote.create', ['task' => Task::with('quotes.estimate.subHeader.header')->find($quote)]);
+        }
     }
 
     public function editInvoice($task){
@@ -123,20 +116,32 @@ class QuoteController extends Controller
      * @param  \App\Models\Quote  $quote
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $quote)
+    public function update(Request $request, $task)
     {
         $validator = Validator::make($request->all(), [
-            'entity_id' => ['required'],
+            'estimate_id' => ['required'],
             'task_id' => ['required'],
         ]);
-        $invoice = Invoice::find($quote);
-        $invoice->update($request->all());
 
-        foreach ($request->items as $itemData) {
-            $quote = Quote::find($itemData['quote_id']);
-            if($quote){
-                $quote->update($request->all());
-            }                
+        $quotes = Quote::where(['task_id' => $task])->get();
+        foreach($quotes as $quote){
+            $quote->delete();
+        }
+        foreach ($request->quotes as $quoteData) {
+            $quote = Quote::create([
+                'task_id' => $task,
+                'description' => $quoteData['description'],
+                'estimate_id' => $quoteData['estimate_id'],
+                'unit' => $quoteData['unit'],
+                'qty' => $quoteData['qty'],
+                'rate' => $quoteData['rate'],
+                'amount' => $quoteData['amount'],
+                'margin' => $quoteData['margin'],
+                'subtotal' => $quoteData['subtotal'],
+                'gst' => 10,
+                'amount_inc_gst' => $quoteData['amount_inc_gst'],
+                'quote_complete' => $quoteData['quote_complete'] ?? ' ',
+            ]);               
         }
         return redirect()->route('job.index');
     }

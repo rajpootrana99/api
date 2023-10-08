@@ -117,7 +117,7 @@
                             <td>' + purchaseOrder.id + '</td>\
                             <td>' + purchaseOrder.entity.entity + '</td>\
                             <td>' + purchaseOrder.total + '</td>\
-                            <td>' + purchaseOrder.date + '</td>\
+                            <td></td>\
                             <td>' + purchaseOrder.site_start + '</td>\
                             <td>' + purchaseOrder.task_id + '</td>\
                             <td>' + purchaseOrder.task.site.site + '</td>\

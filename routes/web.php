@@ -5,6 +5,7 @@ use App\Http\Controllers\EnquiryController;
 use App\Http\Controllers\EntityController;
 use App\Http\Controllers\EstimateController;
 use App\Http\Controllers\FileExplorerController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\UserController;
@@ -95,6 +96,8 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
     Route::resource('purchaseOrder', PurchaseOrderController::class);
     Route::post('/purchaseOrder/add', [PurchaseOrderController::class, 'add'])->name('purchaseOrder.add');
     Route::get('/fetchPurchaseOrders', [PurchaseOrderController::class, 'fetchPurchaseOrders'])->name('purchaseOrder.get');
+    Route::resource('invoice', InvoiceController::class);
+    Route::get('/fetchInvoices', [InvoiceController::class, 'fetchInvoices'])->name('invoice.get');
 });
 
 require __DIR__ . '/auth.php';

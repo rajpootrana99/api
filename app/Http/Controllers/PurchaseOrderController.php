@@ -134,14 +134,16 @@ class PurchaseOrderController extends Controller
                 ]);
             }
             else {
-                $purchaseOrder->quotes()->attach($itemData['quote_id'], [
-                    'description' => $itemData['description'],
-                    'qty' => $itemData['qty'],
-                    'rate' => $itemData['order_unit_price'],
-                    'amount' => $itemData['order_total_amount'],
-                    'tax' => $itemData['tax'],
-                    'total' => $itemData['order_total_amount'] + (($itemData['order_total_amount']/100)*$itemData['tax'])
-                ]);
+                if($itemData['description']){
+                    $purchaseOrder->quotes()->attach($itemData['quote_id'], [
+                        'description' => $itemData['description'],
+                        'qty' => $itemData['qty'],
+                        'rate' => $itemData['order_unit_price'],
+                        'amount' => $itemData['order_total_amount'],
+                        'tax' => $itemData['tax'],
+                        'total' => $itemData['order_total_amount'] + (($itemData['order_total_amount']/100)*$itemData['tax'])
+                    ]);
+                }               
             }
             if($quote){
                 $quote->update([

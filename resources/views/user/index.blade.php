@@ -444,7 +444,7 @@
                     } else {
                         $('#editUserForm')[0].reset();
                         $('#editUser').modal('hide');
-                        fetchContacts();
+                        fetchUsers();
                     }
                 },
                 error: function(error) {
@@ -475,7 +475,7 @@
                     } else {
                         $('#addUserForm')[0].reset();
                         $('#addUser').modal('hide');
-                        fetchContacts();
+                        fetchUsers();
                     }
                 },
                 error: function(error) {
