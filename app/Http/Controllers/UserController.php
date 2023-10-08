@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Entity;
 use App\Models\User;
+use App\Models\Site;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -19,7 +23,7 @@ class UserController extends Controller
 
     public function fetchUsers()
     {
-        $users = User::role('Client', 'Supplier')->get();
+        $users = User::role(['Supplier', 'Client'])->get();
         return response()->json([
             'users' => $users,
         ]);
@@ -43,7 +47,43 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'fname' => ['required', 'string', 'min:3'],
+            'lname' => ['required', 'string', 'min:3'],
+            'email' => ['required', 'email', 'min:3'],
+            'phone' => ['required'],
+            'entity_id' => ['required'],
+            'role' => ['required', 'string', 'min:3'],
+            'active' => ['required', 'integer'],
+        ]);
+        if (!$validator->passes()) {
+            return response()->json([
+                'status' => 0,
+                'error' => $validator->errors()->toArray()
+            ]);
+        }
+        $user = User::create([
+            'name' => $request->fname . ' ' . $request->lname,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'password' => Hash::make('password'),
+            'entity_id' => $request->entity_id,
+            'role' => $request->role,
+            'is_approved' => $request->active,
+        ]);
+        $entity = Entity::find($request->entity_id);
+        if($entity->type == 0){
+            $user->assignRole('Client');
+        }
+        else{
+            $user->assignRole('Supplier');
+        }
+        if ($user) {
+            return response()->json([
+                'status' => 1,
+                'message' => 'Contact Added Successfully'
+            ]);
+        }
     }
 
     /**
@@ -74,9 +114,24 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit($user)
     {
-        //
+        $user = User::find($user);
+        $sites = Site::all();
+        $entities = Entity::all();
+        if ($user) {
+            return response()->json([
+                'status' => true,
+                'user' => $user,
+                'sites' => $sites,
+                'entities' => $entities,
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'No user available against this id',
+            ]);
+        }
     }
 
     /**
@@ -86,9 +141,45 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, $user)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'fname' => ['required', 'string', 'min:3'],
+            'lname' => ['required', 'string', 'min:3'],
+            'email' => ['required', 'email', 'min:3'],
+            'phone' => ['required'],
+            'entity_id' => ['required'],
+            'role' => ['required', 'string', 'min:3'],
+            'active' => ['required', 'integer'],
+        ]);
+        if (!$validator->passes()) {
+            return response()->json([
+                'status' => 0,
+                'error' => $validator->errors()->toArray()
+            ]);
+        }
+        $user = User::find($user);
+        $user->update([
+            'name' => $request->fname . ' ' . $request->lname,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'entity_id' => $request->entity_id,
+            'role' => $request->role,
+            'is_approved' => $request->active,
+        ]);
+        $entity = Entity::find($request->entity_id);
+        if($entity->type == 0){
+            $user->assignRole('Client');
+        }
+        else{
+            $user->assignRole('Supplier');
+        }
+        if ($user) {
+            return response()->json([
+                'status' => 1,
+                'message' => 'User Updated Successfully'
+            ]);
+        }
     }
 
     /**

@@ -62,7 +62,9 @@ class PermissionCommand extends Command
         }
         $role = Role::where('name', 'Admin')->first();
         $role->givePermissionTo(Permission::all());
-        File::makeDirectory(storage_path("app/explorer"));
+
+        File::makeDirectory(storage_path("app/explorer"), 0777, true, true);
+
         $this->info('Permissions successfully created!');
     }
 }
