@@ -117,12 +117,9 @@
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="form-group row">
-                                            <label for="notes_to_customer" class="col-sm-12 col-form-label text-left">Note to Customer</label>
+                                            <label for="note_id" class="col-sm-12 col-form-label text-left">Note to Customer</label>
                                             <div class="col-sm-12">
-                                                <select class="select2 pl-1 form-control" name="notes_to_customer" onchange="fetchNote()" id="notes_to_customer" style="width: 100%; height:30px !important;">
-                                                    <option value="" selected disabled>Select Std Note</option>
-                                                    <option value="This is Note 1">This is Note 1</option>
-                                                    <option value="This is Note 2">This is Note 2</option>
+                                                <select class="select2 pl-1 form-control" name="note_id" onchange="fetchNote()" id="note_id" style="width: 100%; height:30px !important;">
                                                 </select>
                                             </div>
                                         </div>   
@@ -172,6 +169,7 @@
     var itemsCount = 1;
     fetchJobs();
     fetchClientEntities();
+    fetchNotes();
     itemsDynamicField(itemsCount);
 
     function itemsDynamicField(number) {
@@ -218,7 +216,24 @@
 
 
     function fetchNote(){
-        $('#note').text($('#notes_to_customer').val());
+        const note = $('#note_id option:selected').text();
+        $('#note').text(note);
+    }
+
+    function fetchNotes() {
+        $.ajax({
+            type: "GET",
+            url: "/fetchNotes",
+            dataType: "json",
+            success: function(response) {
+                var note_id = $('#note_id');
+                $('#note_id').children().remove().end();
+                note_id.append($("<option />").text('Select Notes').prop({selected: true, disabled: true}));
+                $.each(response.notes, function(key, note) {
+                    note_id.append($("<option />").val(note.id).text(note.note));
+                });
+            }
+        });
     }
 
     $.ajaxSetup({
@@ -236,7 +251,7 @@
                 jobList = response.jobs;
                 var task_id = $('#task_id');
                 $('#task_id').children().remove().end();
-                task_id.append($("<option />").val(0).text('Select Job'));
+                task_id.append($("<option />").text('Select Job').prop({selected: true, disabled: true}));
                 $.each(response.jobs, function(key, job) {
                     task_id.append($("<option />").val(job.id).text(job.id + ' - ' + job.title + ' : ' + job.site.site));
                 });
@@ -252,7 +267,7 @@
             success: function(response) {
                 var entity_id = $('#entity_id');
                 $('#entity_id').children().remove().end();
-                entity_id.append($("<option />").val(0).text('Select Customer'));
+                entity_id.append($("<option />").text('Select Customer').prop({selected: true, disabled: true}));
                 $.each(response.entities, function(key, entity) {
                     entity_id.append($("<option />").val(entity.id).text(entity.entity));
                 });
@@ -280,7 +295,7 @@
             if(job.id == task){
                 quoteList = job.quotes;
                 $('#estimate_id_'+itemsCount).children().remove().end();
-                $('#estimate_id_'+itemsCount).append($("<option />").text('Select Cost Code'));
+                $('#estimate_id_'+itemsCount).append($("<option />").text('Select Cost Code').prop({selected: true, disabled: true}));
                 $.each(job.quotes, function(key, quote) {
                     $('#estimate_id_'+itemsCount).append($("<option />").val(quote.id).text(quote.estimate.subheader.cost_code + '___' + quote.estimate.item));
                 });

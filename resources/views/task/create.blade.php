@@ -112,15 +112,13 @@
     var entities;
 
     function fetchContacts(){
-        console.log(entities);
-        console.log('hello');
         let entity_id = $('#entity_id').val();
         var contact_id = $('#contact_id');
         $('#contact_id').children().remove().end();
         $.each(entities, function(key, entity) {
             if(entity.id == entity_id){
                 console.log(entity);
-                contact_id.append($("<option />").val(0).text('Requested By'));
+                contact_id.append($("<option />").text('Requested By').prop({selected: true, disabled: true}));
                 $.each(entity.contacts, function(key, contact) {
                     contact_id.append($("<option />").val(contact.id).text(contact.user.name));
                 });
@@ -182,7 +180,7 @@
                 success: function(response) {
                     var site_id = $('#site_id');
                     $('#site_id').children().remove().end();
-                    site_id.append($("<option />").val(0).text('Select Site'));
+                    site_id.append($("<option />").text('Select Site').prop({selected: true, disabled: true}));
                     $.each(response.sites, function(site) {
                         site_id.append($("<option />").val(response.sites[site].id).text(response.sites[site].site));
                     });
@@ -199,7 +197,7 @@
                     entities = response.entities;
                     var entity_id = $('#entity_id');
                     $('#entity_id').children().remove().end();
-                    entity_id.append($("<option />").val(0).text('Select Entity'));
+                    entity_id.append($("<option />").text('Select Entity').prop({selected: true, disabled: true}));
                     $.each(response.entities, function(key) {
                         entity_id.append($("<option />").val(response.entities[key].id).text(response.entities[key].entity));
                     });

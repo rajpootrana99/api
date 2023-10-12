@@ -160,7 +160,7 @@
                     <div class="row justify-content-center">
                         <div class="col-lg-12">
                             <h5 class="mt-4">Note to Supplier :</h5>
-                            <p>{{ $purchaseOrder->note }}</p>
+                            <p>{{ $purchaseOrder->note->note }}</p>
                         </div> <!--end col-->  
                     </div><!--end row-->
                     <hr>

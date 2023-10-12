@@ -22,7 +22,7 @@ class PurchaseOrderController extends Controller
     }
 
     public function fetchPurchaseOrders(){
-        $purchaseOrders = PurchaseOrder::with('entity', 'task.site')->get();
+        $purchaseOrders = PurchaseOrder::with('entity', 'task.site', 'note')->get();
         return response()->json([
             'status' => true,
             'purchaseOrders' => $purchaseOrders
@@ -88,7 +88,7 @@ class PurchaseOrderController extends Controller
      */
     public function show($purchaseOrder)
     {
-        $purchaseOrder = PurchaseOrder::with('quotes.estimate.subHeader.header', 'entity', 'task.site', 'task.quotes.estimate.subHeader.header', 'task.entity')->find($purchaseOrder);
+        $purchaseOrder = PurchaseOrder::with('quotes.estimate.subHeader.header', 'entity', 'task.site', 'task.quotes.estimate.subHeader.header', 'task.entity', 'note')->find($purchaseOrder);
         return view('purchaseOrder.purchaseOrder', ['purchaseOrder' => $purchaseOrder]);
     }
 
@@ -100,7 +100,7 @@ class PurchaseOrderController extends Controller
      */
     public function edit($purchaseOrder)
     {
-        $purchaseOrder = PurchaseOrder::with('quotes.estimate.subheader.header', 'task.quotes')->find($purchaseOrder);
+        $purchaseOrder = PurchaseOrder::with('quotes.estimate.subheader.header', 'task.quotes', 'note')->find($purchaseOrder);
         $jobs = Task::with('contact.user', 'quotes.estimate.subheader.header', 'site', 'user', 'entity')->where(['type' => 2])->get();
         return view('purchaseOrder.edit', ['purchaseOrder' => $purchaseOrder, 'jobs' => $jobs]);
     }

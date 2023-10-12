@@ -275,7 +275,7 @@
                 success: function(response) {
                     var entity_id = $('#entity_id');
                     $('#entity_id').children().remove().end();
-                    entity_id.append($("<option />").text('Select Entity'));
+                    entity_id.append($("<option />").text('Select Entity').prop({selected: true, disabled: true}));
                     $.each(response.entities, function(entity) {
                         entity_id.append($("<option />").val(response.entities[entity].id).text(response.entities[entity].entity));
                     });
@@ -334,7 +334,7 @@
                         }
                         var entity_id = $('#edit_entity_id');
                         $('#edit_entity_id').children().remove().end();
-                        entity_id.append($("<option />").val(0).text('Select Client'));
+                        entity_id.append($("<option />").val(0).text('Select Client').prop({selected: true, disabled: true}));
                         $.each(response.entities, function(entity) {
                             entity_id.append($("<option />").val(response.entities[entity].id).text(response.entities[entity].entity));
                         });

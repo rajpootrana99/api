@@ -108,7 +108,7 @@
             success: function(response) {
                 var estimate_id = $('#estimate_id_' + itemsCount);
                 estimate_id.children().remove().end();
-                estimate_id.append($("<option />").text('Select Cost Code'));
+                estimate_id.append($("<option />").text('Select Cost Code').prop({selected: true, disabled: true}));
                 $.each(response.estimates, function(key, estimate) {
                     estimate_id.append($("<option />").val(estimate.id).text(estimate.sub_header.cost_code + '___' + estimate.item));
                 });

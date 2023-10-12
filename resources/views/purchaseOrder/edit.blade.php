@@ -121,13 +121,21 @@
                             </div> <!-- end col -->
                             <div class="col-lg-12 mt-4">
                                 <div class="row">
-                                    <div class="col-lg-6">
+                                <div class="col-lg-6">
                                         <div class="form-group row">
-                                            <label for="note" class="col-sm-12 col-form-label text-left">Notes</label>
+                                            <label for="note_id" class="col-sm-12 col-form-label text-left">Note to Supplier</label>
                                             <div class="col-sm-12">
-                                            <textarea class="form-control" rows="2" name="note" id="note">{{ $purchaseOrder->note }}</textarea>
+                                                <select class="select2 pl-1 form-control" name="note_id" onchange="fetchNote()" id="note_id" style="width: 100%; height:30px !important;">
+                                                    
+                                                </select>
                                             </div>
-                                        </div>                             
+                                        </div>   
+                                        <div class="form-group row">
+                                            <label for="note" class="col-sm-12 col-form-label text-left">Note</label>
+                                            <div class="col-sm-12">
+                                            <textarea class="form-control" rows="2" name="note" id="note">{{ $purchaseOrder->note->note }}</textarea>
+                                            </div>
+                                        </div>                          
                                     </div>
 
                                     <div class="col-lg-6">
@@ -173,6 +181,7 @@
     var itemsCount = 1;
     fetchJobs();
     fetchSupplierEntities();
+    fetchNotes();
     itemsDynamicField(itemsCount);
 
     if (purchaseOrder.amount_are == 0){
@@ -237,7 +246,7 @@
                 jobList = response.jobs;
                 var task_id = $('#task_id');
                 $('#task_id').children().remove().end();
-                task_id.append($("<option />").val(0).text('Select Job'));
+                task_id.append($("<option />").val(0).text('Select Job').prop({selected: true, disabled: true}));
                 $.each(response.jobs, function(key, job) {
                     task_id.append($("<option />").val(job.id).text(job.id + ' - ' + job.title + ' : ' + job.site.site));
                 });
@@ -254,11 +263,33 @@
             success: function(response) {
                 var entity_id = $('#entity_id');
                 $('#entity_id').children().remove().end();
-                entity_id.append($("<option />").val(0).text('Select Supplier'));
+                entity_id.append($("<option />").val(0).text('Select Supplier').prop({selected: true, disabled: true}));
                 $.each(response.entities, function(key, entity) {
                     entity_id.append($("<option />").val(entity.id).text(entity.entity));
                 });
                 entity_id.val(purchaseOrder.entity_id).change();
+            }
+        });
+    }
+
+    function fetchNote(){
+        const note = $('#note_id option:selected').text();
+        $('#note').text(note);
+    }
+
+    function fetchNotes() {
+        $.ajax({
+            type: "GET",
+            url: "/fetchNotes",
+            dataType: "json",
+            success: function(response) {
+                var note_id = $('#note_id');
+                $('#note_id').children().remove().end();
+                note_id.append($("<option />").text('Select Notes').prop({selected: true, disabled: true}));
+                $.each(response.notes, function(key, note) {
+                    note_id.append($("<option />").val(note.id).text(note.note));
+                });
+                note_id.val(purchaseOrder.note_id).change();
             }
         });
     }
@@ -299,7 +330,7 @@
             if(job.id == task){
                 quoteList = job.quotes;
                 $('#estimate_id_'+itemsCount).children().remove().end();
-                $('#estimate_id_'+itemsCount).append($("<option />").text('Select Cost Code'));
+                $('#estimate_id_'+itemsCount).append($("<option />").text('Select Cost Code').prop({selected: true, disabled: true}));
                 $.each(job.quotes, function(key, quote) {
                     $('#estimate_id_'+itemsCount).append($("<option />").val(quote.id).text(quote.estimate.subheader.cost_code + '___' + quote.estimate.item));
                 });

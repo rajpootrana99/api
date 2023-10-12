@@ -121,13 +121,11 @@
                             <div class="col-lg-12 mt-4">
                                 <div class="row">
                                     <div class="col-lg-6">
-                                    <div class="form-group row">
-                                            <label for="notes_to_customer" class="col-sm-12 col-form-label text-left">Note to Supplier</label>
+                                        <div class="form-group row">
+                                            <label for="note_id" class="col-sm-12 col-form-label text-left">Note to Supplier</label>
                                             <div class="col-sm-12">
-                                                <select class="select2 pl-1 form-control" name="notes_to_customer" onchange="fetchNote()" id="notes_to_customer" style="width: 100%; height:30px !important;">
-                                                    <option value="" selected disabled>Select Std Note</option>
-                                                    <option value="This is Note 1">This is Note 1</option>
-                                                    <option value="This is Note 2">This is Note 2</option>
+                                                <select class="select2 pl-1 form-control" name="note_id" onchange="fetchNote()" id="note_id" style="width: 100%; height:30px !important;">
+                                                    
                                                 </select>
                                             </div>
                                         </div>   
@@ -221,6 +219,7 @@
         }
     });
     fetchJobs();
+    fetchNotes();
     fetchSupplierEntities();
 
     function fetchJobs() {
@@ -232,7 +231,7 @@
                 jobList = response;
                 var task_id = $('#task_id');
                 $('#task_id').children().remove().end();
-                task_id.append($("<option />").val(0).text('Select Job'));
+                task_id.append($("<option />").val(0).text('Select Job').prop({selected: true, disabled: true}));
                 $.each(response.jobs, function(key, job) {
                     task_id.append($("<option />").val(job.id).text(job.id + ' - ' + job.title + ' : ' + job.site.site));
                 });
@@ -241,7 +240,24 @@
     }
 
     function fetchNote(){
-        $('#note').text($('#notes_to_customer').val());
+        const note = $('#note_id option:selected').text();
+        $('#note').text(note);
+    }
+
+    function fetchNotes() {
+        $.ajax({
+            type: "GET",
+            url: "/fetchNotes",
+            dataType: "json",
+            success: function(response) {
+                var note_id = $('#note_id');
+                $('#note_id').children().remove().end();
+                note_id.append($("<option />").text('Select Notes').prop({selected: true, disabled: true}));
+                $.each(response.notes, function(key, note) {
+                    note_id.append($("<option />").val(note.id).text(note.note));
+                });
+            }
+        });
     }
 
     function quoteInsert(){
@@ -262,7 +278,7 @@
             success: function(response) {
                 var entity_id = $('#entity_id');
                 $('#entity_id').children().remove().end();
-                entity_id.append($("<option />").val(0).text('Select Supplier'));
+                entity_id.append($("<option />").val(0).text('Select Supplier').prop({selected: true, disabled: true}));
                 $.each(response.entities, function(key, entity) {
                     entity_id.append($("<option />").val(entity.id).text(entity.entity));
                 });
@@ -277,7 +293,7 @@
                 quoteList = job.quotes;
                 var estimate_id = $('#estimate_id_' + itemsCount);
                 estimate_id.children().remove().end();
-                estimate_id.append($("<option />").text('Select Cost Code'));
+                estimate_id.append($("<option />").text('Select Cost Code').prop({selected: true, disabled: true}));
                 $.each(job.quotes, function(key, quote) {
                     estimate_id.append($("<option />").val(quote.id).text(quote.estimate.subheader.cost_code + '___' + quote.estimate.item));
                 });

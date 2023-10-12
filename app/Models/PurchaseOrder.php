@@ -15,7 +15,7 @@ class PurchaseOrder extends Model
         'date',
         'site_start',
         'amount_are',
-        'note',
+        'note_id',
         'site_address',
         'sub_total',
         'tax',
@@ -49,5 +49,9 @@ class PurchaseOrder extends Model
     
     public function quotes(){
         return $this->belongsToMany(Quote::class)->withPivot('description', 'qty', 'rate', 'amount', 'tax', 'total');
+    }
+
+    public function note(){
+        return $this->belongsTo(Note::class);
     }
 }

@@ -16,7 +16,7 @@ class Invoice extends Model
         'issue_date',
         'due_date',
         'amount_are',
-        'note',
+        'note_id',
         'sub_total',
         'tax',
         'total',
@@ -50,4 +50,9 @@ class Invoice extends Model
     public function quotes(){
         return $this->belongsToMany(Quote::class)->withPivot('description', 'qty', 'rate', 'amount', 'tax', 'total');
     }
+
+    public function note(){
+        return $this->belongsTo(Note::class);
+    }
+
 }

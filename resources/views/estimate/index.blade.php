@@ -306,7 +306,7 @@
                     $('#header_id').children().remove().end();
                     $('#header').children().remove().end();
                     header_id.append($("<option />").text('Select Header'));
-                    header_estimate.append($("<option />").text('Select Header'));
+                    header_estimate.append($("<option />").text('Select Header').prop({selected: true, disabled: true}));
                     $.each(response.headers, function(header) {
                         header_estimate.append($("<option />").val(response.headers[header].id).text(response.headers[header].header));
                         header_id.append($("<option />").val(response.headers[header].id).text(response.headers[header].header));
@@ -324,7 +324,7 @@
                 success: function(response) {
                     var sub_header_id = $('#sub_header_id');
                     $('#sub_header_id').children().remove().end();
-                    sub_header_id.append($("<option />").text('Select Sub Header'));
+                    sub_header_id.append($("<option />").text('Select Sub Header').prop({selected: true, disabled: true}));
                     $.each(response.subHeaders, function(subHeader) {
                         sub_header_id.append($("<option />").val(response.subHeaders[subHeader].id).text(response.subHeaders[subHeader].sub_header));
                     });
