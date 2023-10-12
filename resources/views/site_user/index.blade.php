@@ -205,7 +205,6 @@
                 success: function(response) {
                     var user_id = $('#user_id');
                     $('#user_id').children().remove().end();
-                    user_id.append($("<option />").text('Select User').prop({selected: true, disabled: true}));
                     $.each(response.users, function(user) {
                         user_id.append($("<option />").val(response.users[user].id).text(response.users[user].name));
                     });
@@ -221,7 +220,6 @@
                 success: function(response) {
                     var site_id = $('#site_id');
                     $('#site_id').children().remove().end();
-                    site_id.append($("<option />").text('Select Site').prop({selected: true, disabled: true}));
                     $.each(response.sites, function(site) {
                         site_id.append($("<option />").val(response.sites[site].id).text(response.sites[site].site));
                     });
