@@ -197,7 +197,7 @@
         html = '<tr class="item" >';
         html += '<td><select class="select2 form-control select-estimate" name="items[' + number + '][quote_id]" id="estimate_id_' + number + '" onchange="quoteInsert()"  style="width: 100%; height:30px;" data-placeholder="Select Cost Code"><option value="0">Select Cost Code</option></select></td>';
         html += '<td><input type="text" style="height: 30px" name="items[' + number + '][description]" id="description_' + number + '" class="form-control" /></td>';
-        html += '<td><select class="select2 form-control" name="items[' + number + '][account]" id="account_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Account"><option value="0">Maintenance Income</option><option value="1">Construction Income</option><option value="2">Management Income</option></select></td>';
+        html += '<td><select class="select2 form-control" name="items[' + number + '][account]" id="account_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Account"><option value="Maintenance Income">Maintenance Income</option><option value="Construction Income">Construction Income</option><option value="Management Income">Management Income</option></select></td>';
         html += '<td><input type="text" style="height: 30px" name="items[' + number + '][qty]" id="qty_' + number + '" onchange="calculateCost()" class="form-control qty" /></td>';
         html += '<td><input type="text" style="height: 30px" name="items[' + number + '][rate]" id="rate_' + number + '" onchange="calculateCost()" class="form-control rate" /></td>';
         html += '<td><input type="text" style="height: 30px" name="items[' + number + '][amount]" id="amount_' + number + '" readonly class="form-control amount" /></td>';
@@ -304,7 +304,8 @@
         $('#qty_' + i).val(quotes[key].pivot.qty);
         $('#rate_' + i).val(quotes[key].pivot.rate);
         $('#amount_' + i).val(quotes[key].pivot.amount);
-        $('#account_' + i).val(quotes[key].pivot.account);
+        $('#account_' + i).val(quotes[key].pivot.account).change();
+        console.log(quotes[key].pivot.account);
         $('#total_' + i).val(quotes[key].pivot.total);
     });
 
@@ -315,7 +316,6 @@
                 $('#description_' +itemsCount).val(quote.description);
                 $('#qty_' +itemsCount).val(quote.qty);
                 $('#rate_' +itemsCount).val(quote.rate);
-                $('#account_' +itemsCount).val(quote.account);
                 $('#amount_' +itemsCount).val(quote.amount);
                 $('#total_' +itemsCount).val(quote.amount_inc_gst);
             }

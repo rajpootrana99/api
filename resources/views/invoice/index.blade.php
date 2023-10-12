@@ -111,7 +111,6 @@
                 success: function(response) {
                     $('tbody').html("");
                     $.each(response.invoices, function(key, invoice) {
-                        console.log(invoice)
                         $('tbody').append('<tr>\
                             <td>' + invoice.issue_date + '</td>\
                             <td>' + invoice.customer_po_number + '</td>\

@@ -24,7 +24,7 @@ class EntityController extends Controller
 
     public function fetchEntities()
     {
-        $entities = Entity::with('contacts.user')->get();
+        $entities = Entity::with('contacts.user', 'users')->get();
         if (count($entities) > 0) {
             return response()->json([
                 'status' => true,
@@ -39,7 +39,7 @@ class EntityController extends Controller
     }
 
     public function fetchSupplierEntities(){
-        $entities = Entity::with('contacts.user')->where(['type' => 1])->get();
+        $entities = Entity::with('contacts.user', 'users')->where(['type' => 1])->get();
         if (count($entities) > 0) {
             return response()->json([
                 'status' => true,
@@ -54,7 +54,7 @@ class EntityController extends Controller
     }
 
     public function fetchClientEntities(){
-        $entities = Entity::with('contacts.user')->where(['type' => 0])->get();
+        $entities = Entity::with('contacts.user', 'users')->where(['type' => 0])->get();
         if (count($entities) > 0) {
             return response()->json([
                 'status' => true,

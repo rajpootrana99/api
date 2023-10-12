@@ -48,7 +48,7 @@ class Invoice extends Model
     }
 
     public function quotes(){
-        return $this->belongsToMany(Quote::class)->withPivot('description', 'qty', 'rate', 'amount', 'tax', 'total');
+        return $this->belongsToMany(Quote::class)->withPivot('description', 'account', 'qty', 'rate', 'amount', 'tax', 'total');
     }
 
     public function note(){

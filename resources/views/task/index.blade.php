@@ -270,11 +270,11 @@
                         } else {
                             file = 'No image or video file exists';
                         }
-                        if (task.contact_id == null)[
+                        if (task.user_id == null)[
                             client = "No Client"
                         ]
                         else {
-                            client = task.contact.user.name;
+                            client = task.user.name;
                         }
                         $('#item-body-' + task.id).append('<tr>\
                             <td>' + item.id + '</td>\

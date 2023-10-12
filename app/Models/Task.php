@@ -13,12 +13,12 @@ class Task extends Model
         'site_id',
         'entity_id',
         'user_id',
-        'contact_id',
         'type',
         'enquiry_status',
         'job_status',
         'title',
         'status',
+        'is_enquiry',
         'quote_type',
         'requested_completion',
     ];
@@ -99,11 +99,6 @@ class Task extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function contact()
-    {
-        return $this->belongsTo(Contact::class);
     }
 
     public function entity()

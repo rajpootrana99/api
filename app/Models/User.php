@@ -89,7 +89,7 @@ class User extends Authenticatable
 
     public function entity()
     {
-        return $this->hasOne(Entity::class);
+        return $this->belongsTo(Entity::class);
     }
 
     public function contact()

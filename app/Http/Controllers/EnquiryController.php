@@ -24,7 +24,7 @@ class EnquiryController extends Controller
 
     public function fetchEnquiries()
     {
-        $enquiries = Task::with('contact.user', 'quotes.estimate.subheader.header', 'site', 'user', 'entity')->where(['type' => 1])->get();
+        $enquiries = Task::with('quotes.estimate.subheader.header', 'site', 'user', 'entity')->where(['type' => 1])->orWhere(['is_enquiry' => 1])->get();
         return response()->json([
             'enquiries' => $enquiries,
         ]);
@@ -145,6 +145,7 @@ class EnquiryController extends Controller
     {
         $task = Task::find($task);
         $task->update([
+            'is_enquiry' => 1,
             'status' => 1,
             'type' => 1,
         ]);

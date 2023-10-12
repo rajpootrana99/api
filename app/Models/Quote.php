@@ -70,7 +70,7 @@ class Quote extends Model
     }
 
     public function invoices(){
-        return $this->belongsToMany(Invoice::class)->withPivot('description', 'qty', 'rate', 'amount', 'tax', 'total');
+        return $this->belongsToMany(Invoice::class)->withPivot('description', 'account', 'qty', 'rate', 'amount', 'tax', 'total');
     }
 
     public function purchaseOrders(){

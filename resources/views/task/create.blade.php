@@ -32,7 +32,7 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <select class="select2 pl-1 form-control" name="entity_id" id="entity_id" onchange="fetchContacts()" style="width: 100%; height:30px;">
+                                    <select class="select2 pl-1 form-control" name="entity_id" id="entity_id" onchange="fetchUsers()" style="width: 100%; height:30px;">
 
                                     </select>
                                     <span class="text-danger error-text entity_id_error"></span>
@@ -46,10 +46,10 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <select class="select2 pl-1 form-control" name="contact_id" id="contact_id" style="width: 100%; height:30px;">
+                                    <select class="select2 pl-1 form-control" name="user_id" id="user_id" style="width: 100%; height:30px;">
 
                                     </select>
-                                    <span class="text-danger error-text contact_id_error"></span>
+                                    <span class="text-danger error-text user_id_error"></span>
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -111,16 +111,16 @@
 <script>
     var entities;
 
-    function fetchContacts(){
+    function fetchUsers(){
         let entity_id = $('#entity_id').val();
-        var contact_id = $('#contact_id');
-        $('#contact_id').children().remove().end();
+        var user_id = $('#user_id');
+        $('#user_id').children().remove().end();
         $.each(entities, function(key, entity) {
             if(entity.id == entity_id){
                 console.log(entity);
-                contact_id.append($("<option />").text('Requested By').prop({selected: true, disabled: true}));
-                $.each(entity.contacts, function(key, contact) {
-                    contact_id.append($("<option />").val(contact.id).text(contact.user.name));
+                user_id.append($("<option />").text('Requested By').prop({selected: true, disabled: true}));
+                $.each(entity.users, function(key, user) {
+                    user_id.append($("<option />").val(user.id).text(user.name));
                 });
             }
         });

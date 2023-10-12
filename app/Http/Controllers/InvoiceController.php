@@ -95,7 +95,7 @@ class InvoiceController extends Controller
     public function edit($invoice)
     {
         $invoice = Invoice::with('quotes.estimate.subheader.header', 'task.quotes' , 'entity', 'note')->find($invoice);
-        $jobs = Task::with('contact.user', 'quotes.estimate.subheader.header', 'site', 'user', 'entity')->where(['type' => 2])->get();
+        $jobs = Task::with('quotes.estimate.subheader.header', 'site', 'user', 'entity')->where(['type' => 2])->get();
         return view('invoice.edit', ['invoice' => $invoice, 'jobs' => $jobs]);
     }
 
@@ -116,21 +116,10 @@ class InvoiceController extends Controller
         $invoice->update($request->all());
 
         foreach ($request->items as $itemData) {
-            $quote = Quote::find($itemData['quote_id']);
-            if($invoice->quotes->contains($itemData['quote_id'])){
-                $invoice->quotes()->updateExistingPivot($itemData['quote_id'], [
-                    'description' => $itemData['description'],
-                    'account' => $itemData['account'],
-                    'qty' => $itemData['qty'],
-                    'rate' => $itemData['rate'],
-                    'amount' => $itemData['amount'],
-                    'tax' => $itemData['tax'],
-                    'total' => $itemData['total']
-                ]);
-            }
-            else {
-                if($itemData['description']){
-                    $invoice->quotes()->attach($itemData['quote_id'], [
+            if($itemData['description'] != null){
+                $quote = Quote::find($itemData['quote_id']);
+                if($invoice->quotes->contains($itemData['quote_id'])){
+                    $invoice->quotes()->updateExistingPivot($itemData['quote_id'], [
                         'description' => $itemData['description'],
                         'account' => $itemData['account'],
                         'qty' => $itemData['qty'],
@@ -139,8 +128,21 @@ class InvoiceController extends Controller
                         'tax' => $itemData['tax'],
                         'total' => $itemData['total']
                     ]);
-                }               
-            }            
+                }
+                else {
+                    if($itemData['description'] != null){
+                        $invoice->quotes()->attach($itemData['quote_id'], [
+                            'description' => $itemData['description'],
+                            'account' => $itemData['account'],
+                            'qty' => $itemData['qty'],
+                            'rate' => $itemData['rate'],
+                            'amount' => $itemData['amount'],
+                            'tax' => $itemData['tax'],
+                            'total' => $itemData['total']
+                        ]);
+                    }               
+                }  
+            }          
         }
         return redirect()->route('invoice.index');
     }

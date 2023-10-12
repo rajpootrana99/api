@@ -61,6 +61,11 @@ class Entity extends Model
         return $this->hasMany(Contact::class);
     }
 
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
+
     public function sites()
     {
         return $this->hasMany(Site::class);
