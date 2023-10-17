@@ -21,7 +21,8 @@ class PurchaseOrderController extends Controller
         return view('purchaseOrder.index');
     }
 
-    public function fetchPurchaseOrders(){
+    public function fetchPurchaseOrders()
+    {
         $purchaseOrders = PurchaseOrder::with('entity', 'task.site', 'note')->get();
         return response()->json([
             'status' => true,
@@ -37,10 +38,9 @@ class PurchaseOrderController extends Controller
     public function create()
     {
         $purchaseOrder = PurchaseOrder::latest()->first();
-        if($purchaseOrder){
+        if ($purchaseOrder) {
             $purchaseNo = $purchaseOrder->id + 1;
-        }
-        else{
+        } else {
             $purchaseNo = 1;
         }
         return view('purchaseOrder.create', ['purchaseNo' => $purchaseNo]);
@@ -68,14 +68,14 @@ class PurchaseOrderController extends Controller
                 'rate' => $itemData['order_unit_price'],
                 'amount' => $itemData['order_total_amount'],
                 'tax' => $itemData['tax'],
-                'total' => $itemData['order_total_amount'] + (($itemData['order_total_amount']/100)*$itemData['tax'])
+                'total' => $itemData['order_total_amount'] + (($itemData['order_total_amount'] / 100) * $itemData['tax'])
             ]);
-            if($quote){
+            if ($quote) {
                 $quote->update([
                     'order_unit_price' => $itemData['order_unit_price'],
                     'order_total_amount' => $itemData['order_total_amount'],
                 ]);
-            }                
+            }
         }
         return redirect()->route('purchaseOrder.index');
     }
@@ -122,38 +122,36 @@ class PurchaseOrderController extends Controller
         $purchaseOrder->update($request->all());
 
         foreach ($request->items as $itemData) {
-            if($itemData['description'] != null){
+            if ($itemData['description'] != null) {
                 $quote = Quote::find($itemData['quote_id']);
-                if($purchaseOrder->quotes->contains($itemData['quote_id'])){
+                if ($purchaseOrder->quotes->contains($itemData['quote_id'])) {
                     $purchaseOrder->quotes()->updateExistingPivot($itemData['quote_id'], [
                         'description' => $itemData['description'],
                         'qty' => $itemData['qty'],
                         'rate' => $itemData['order_unit_price'],
                         'amount' => $itemData['order_total_amount'],
                         'tax' => $itemData['tax'],
-                        'total' => $itemData['order_total_amount'] + (($itemData['order_total_amount']/100)*$itemData['tax'])
+                        'total' => $itemData['order_total_amount'] + (($itemData['order_total_amount'] / 100) * $itemData['tax'])
                     ]);
-                }
-                else {
-                    if($itemData['description']){
+                } else {
+                    if ($itemData['description']) {
                         $purchaseOrder->quotes()->attach($itemData['quote_id'], [
                             'description' => $itemData['description'],
                             'qty' => $itemData['qty'],
                             'rate' => $itemData['order_unit_price'],
                             'amount' => $itemData['order_total_amount'],
                             'tax' => $itemData['tax'],
-                            'total' => $itemData['order_total_amount'] + (($itemData['order_total_amount']/100)*$itemData['tax'])
+                            'total' => $itemData['order_total_amount'] + (($itemData['order_total_amount'] / 100) * $itemData['tax'])
                         ]);
-                    }               
+                    }
                 }
-                if($quote){
+                if ($quote) {
                     $quote->update([
                         'order_unit_price' => $itemData['order_unit_price'],
                         'order_total_amount' => $itemData['order_total_amount'],
                     ]);
-                }  
+                }
             }
-                          
         }
         return redirect()->route('purchaseOrder.index');
     }
@@ -172,14 +170,13 @@ class PurchaseOrderController extends Controller
     public function add(Request $request)
     {
         $purchaseOrder = PurchaseOrder::latest()->first();
-        if($purchaseOrder){
+        if ($purchaseOrder) {
             $purchaseNo = $purchaseOrder->id + 1;
-        }
-        else{
+        } else {
             $purchaseNo = 1;
         }
-        $jobs = Task::with('contact.user', 'quotes.estimate.subheader.header', 'site', 'user', 'entity')->where(['type' => 2])->get();
-        $quotes = Quote::with('task')->whereIn('id', $request->quote_id )->get();
+        $jobs = Task::with('quotes.estimate.subheader.header', 'site', 'user', 'entity')->where(['type' => 2])->get();
+        $quotes = Quote::with('task')->whereIn('id', $request->quote_id)->get();
         return view('purchaseOrder.add', ['quotes' => $quotes, 'purchaseNo' => $purchaseNo, 'jobs' => $jobs]);
     }
 }
