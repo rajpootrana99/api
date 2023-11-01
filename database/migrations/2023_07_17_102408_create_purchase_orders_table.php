@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('site_start')->nullable();
             $table->integer('amount_are')->nullable();
             $table->string('site_address')->nullable();
-            $table->unsignedBigInteger('note_id')->nullable();
+            $table->string('note')->nullable();
             $table->unsignedBigInteger('sub_total')->nullable();
             $table->unsignedBigInteger('tax')->nullable();
             $table->unsignedBigInteger('total')->nullable();

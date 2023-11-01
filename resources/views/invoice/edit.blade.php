@@ -34,7 +34,7 @@
                                                 </select>
                                                 <span class="text-danger error-text entity_id_error"></span>
                                             </div>
-                                        </div>                        
+                                        </div>
                                     </div>
 
                                     <div class="col-lg-6">
@@ -43,14 +43,14 @@
                                             <div class="col-sm-6">
                                                 <input class="form-control" style="width: 100%; height:30px;" type="number" readonly value="{{ $invoice->id }}">
                                                 <span class="text-danger error-text inoice_id_error"></span>
-                                            </div>      
+                                            </div>
                                         </div>
                                         <div class="form-group row">
                                             <label for="customer_po_number" class="col-sm-6 col-form-label text-right">Customer PO Number</label>
                                             <div class="col-sm-6">
                                                 <input class="form-control" style="width: 100%; height:30px;" type="number" value="{{ $invoice->customer_po_number }}" name="customer_po_number" >
                                                 <span class="text-danger error-text customer_po_number_error"></span>
-                                            </div>      
+                                            </div>
                                         </div>
                                         <div class="form-group row">
                                             <label for="task_id" class="col-sm-6 col-form-label text-right">Job<strong>*</strong></label>
@@ -59,7 +59,7 @@
                                                     <option value="" selected disabled>Select Job</option>
                                                 </select>
                                                 <span class="text-danger error-text task_id_error"></span>
-                                            </div>      
+                                            </div>
                                         </div>
                                         <div class="form-group row">
                                             <label for="issue_date" class="col-sm-6 col-form-label text-right">Issue Date<strong>*</strong></label>
@@ -87,7 +87,7 @@
                                                     <label class="custom-control-label" for="customRadio4">Tax Exclusive</label>
                                                 </div>
                                             </div>
-                                        </div>                                                                                    
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -123,13 +123,13 @@
                                                 <select class="select2 pl-1 form-control" name="note_id" onchange="fetchNote()" id="note_id" style="width: 100%; height:30px !important;">
                                                 </select>
                                             </div>
-                                        </div>   
+                                        </div>
                                         <div class="form-group row">
                                             <label for="note" class="col-sm-12 col-form-label text-left">Note</label>
                                             <div class="col-sm-12">
-                                            <textarea class="form-control" rows="2" name="note" id="note">{{ $invoice->note->note }}</textarea>
+                                            <textarea class="form-control" rows="2" name="note" id="note">{{ $invoice->note }}</textarea>
                                             </div>
-                                        </div>                             
+                                        </div>
                                     </div>
 
                                     <div class="col-lg-6">
@@ -137,7 +137,7 @@
                                             <label for="subtotal" class="col-sm-6 col-form-label text-right"><strong>Subtotal</strong></label>
                                             <div class="col-sm-6">
                                                 <input class="form-control" style="width: 100%; height:30px;" type="text" readonly name="sub_total" id="sub_total" value="{{ $invoice->sub_total }}">
-                                            </div>      
+                                            </div>
                                         </div>
                                         <div class="form-group row">
                                             <label for="tax" class="col-sm-6 col-form-label text-right"><strong>Tax</strong></label>
@@ -150,7 +150,7 @@
                                             <div class="col-sm-6">
                                                 <input class="form-control" type="text" readonly style="width: 100%; height:30px;" id="total" name="total" value="{{ $invoice->total }}">
                                             </div>
-                                        </div>                                                                                
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -178,7 +178,7 @@
     else{
         $('#customRadio4').prop("checked", true);
     }
-    
+
     var itemsCount = 1;
     fetchJobs();
     fetchClientEntities();
@@ -293,7 +293,7 @@
 
     var task = invoice.task_id;
     const estimates = document.querySelectorAll(".select-estimate")
-    $.each(estimates, function(key, estimate){ 
+    $.each(estimates, function(key, estimate){
         estimate.add(new Option('Select Cost Code', '', true, true));
         $.each(quotes, function(key, quote) {
             estimate.add(new Option(quote.estimate.subheader.cost_code + '___' + quote.estimate.item, quote.id));
@@ -360,7 +360,7 @@
         $('#total').val(total);
     }
 
-    
+
     itemsDetailDynamicField(itemsCount);
 
     $(document).ready(function() {

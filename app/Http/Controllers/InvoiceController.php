@@ -21,7 +21,7 @@ class InvoiceController extends Controller
     }
 
     public function fetchInvoices(){
-        $invoices = Invoice::with('entity', 'task.site', 'note')->get();
+        $invoices = Invoice::with('entity', 'task.site')->get();
         return response()->json([
             'status' => true,
             'invoices' => $invoices
@@ -69,7 +69,7 @@ class InvoiceController extends Controller
                 'amount' => $itemData['amount'],
                 'tax' => $itemData['tax'],
                 'total' => $itemData['total']
-            ]);               
+            ]);
         }
         return redirect()->route('invoice.index');
     }
@@ -82,7 +82,7 @@ class InvoiceController extends Controller
      */
     public function show($invoice)
     {
-        $invoice = Invoice::with('quotes.estimate.subHeader.header', 'entity', 'task.site', 'task.quotes.estimate.subHeader.header', 'note')->find($invoice);
+        $invoice = Invoice::with('quotes.estimate.subHeader.header', 'entity', 'task.site', 'task.quotes.estimate.subHeader.header')->find($invoice);
         return view('invoice.invoice', ['invoice' => $invoice]);
     }
 
@@ -94,7 +94,7 @@ class InvoiceController extends Controller
      */
     public function edit($invoice)
     {
-        $invoice = Invoice::with('quotes.estimate.subheader.header', 'task.quotes' , 'entity', 'note')->find($invoice);
+        $invoice = Invoice::with('quotes.estimate.subheader.header', 'task.quotes' , 'entity')->find($invoice);
         $jobs = Task::with('quotes.estimate.subheader.header', 'site', 'user', 'entity')->where(['type' => 2])->get();
         return view('invoice.edit', ['invoice' => $invoice, 'jobs' => $jobs]);
     }
@@ -140,9 +140,9 @@ class InvoiceController extends Controller
                             'tax' => $itemData['tax'],
                             'total' => $itemData['total']
                         ]);
-                    }               
-                }  
-            }          
+                    }
+                }
+            }
         }
         return redirect()->route('invoice.index');
     }

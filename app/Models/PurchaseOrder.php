@@ -15,7 +15,7 @@ class PurchaseOrder extends Model
         'date',
         'site_start',
         'amount_are',
-        'note_id',
+        'note',
         'site_address',
         'sub_total',
         'tax',
@@ -34,8 +34,8 @@ class PurchaseOrder extends Model
             0 => 'Pending',
             1 => 'Completed',
             2 => 'Cancelled',
-            
-            
+
+
         ];
     }
 
@@ -46,12 +46,9 @@ class PurchaseOrder extends Model
     public function task(){
         return $this->belongsTo(Task::class);
     }
-    
+
     public function quotes(){
         return $this->belongsToMany(Quote::class)->withPivot('description', 'qty', 'rate', 'amount', 'tax', 'total');
     }
 
-    public function note(){
-        return $this->belongsTo(Note::class);
-    }
 }

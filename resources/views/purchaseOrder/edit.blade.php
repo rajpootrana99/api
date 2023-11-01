@@ -42,13 +42,13 @@
                                                     <label class="custom-control-label" for="tpar">Report to ATO via TPAR</label>
                                                 </div>
                                             </div>
-                                        </div>  
+                                        </div>
                                         <div class="form-group row">
                                             <label for="message" class="col-sm-12 col-form-label text-left">Site Address</label>
                                             <div class="col-sm-12">
                                             <textarea class="form-control" rows="2" name="site_address" id="site_address" >{{ $purchaseOrder->site_address }}</textarea>
                                             </div>
-                                        </div>                             
+                                        </div>
                                     </div>
 
                                     <div class="col-lg-6">
@@ -59,14 +59,14 @@
                                                     <option value="" selected disabled>Select Job</option>
                                                 </select>
                                                 <span class="text-danger error-text task_id_error"></span>
-                                            </div>      
+                                            </div>
                                         </div>
                                         <div class="form-group row">
                                             <label for="purchase_order_id" class="col-sm-6 col-form-label text-right">Purchase Order Number<strong>*</strong></label>
                                             <div class="col-sm-6">
                                                 <input class="form-control" style="width: 100%; height:30px;" type="number" name="purchase_order_id" readonly value="{{ $purchaseOrder->id }}">
                                                 <span class="text-danger error-text purchase_order_id_error"></span>
-                                            </div>      
+                                            </div>
                                         </div>
                                         <div class="form-group row">
                                             <label for="date" class="col-sm-6 col-form-label text-right">Date<strong>*</strong></label>
@@ -94,7 +94,7 @@
                                                     <label class="custom-control-label" for="customRadio4">Tax Exclusive</label>
                                                 </div>
                                             </div>
-                                        </div>                                                                                    
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -126,16 +126,16 @@
                                             <label for="note_id" class="col-sm-12 col-form-label text-left">Note to Supplier</label>
                                             <div class="col-sm-12">
                                                 <select class="select2 pl-1 form-control" name="note_id" onchange="fetchNote()" id="note_id" style="width: 100%; height:30px !important;">
-                                                    
+
                                                 </select>
                                             </div>
-                                        </div>   
+                                        </div>
                                         <div class="form-group row">
                                             <label for="note" class="col-sm-12 col-form-label text-left">Note</label>
                                             <div class="col-sm-12">
-                                            <textarea class="form-control" rows="2" name="note" id="note">{{ $purchaseOrder->note->note }}</textarea>
+                                            <textarea class="form-control" rows="2" name="note" id="note">{{ $purchaseOrder->note }}</textarea>
                                             </div>
-                                        </div>                          
+                                        </div>
                                     </div>
 
                                     <div class="col-lg-6">
@@ -143,7 +143,7 @@
                                             <label for="subtotal" class="col-sm-6 col-form-label text-right"><strong>Subtotal</strong></label>
                                             <div class="col-sm-6">
                                                 <input class="form-control" style="width: 100%; height:30px;" type="text" readonly name="sub_total" id="sub_total" value="{{ $purchaseOrder->sub_total }}">
-                                            </div>      
+                                            </div>
                                         </div>
                                         <div class="form-group row">
                                             <label for="tax" class="col-sm-6 col-form-label text-right"><strong>Tax</strong></label>
@@ -156,7 +156,7 @@
                                             <div class="col-sm-6">
                                                 <input class="form-control" type="text" readonly style="width: 100%; height:30px;" id="total" name="total" value="{{ $purchaseOrder->total }}">
                                             </div>
-                                        </div>                                                                                
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -177,7 +177,7 @@
     var quotes = <?php echo $purchaseOrder->quotes ?>;
     var jobList = <?php echo $jobs ?>;
     var quoteList;
-    
+
     var itemsCount = 1;
     fetchJobs();
     fetchSupplierEntities();
@@ -285,11 +285,10 @@
             success: function(response) {
                 var note_id = $('#note_id');
                 $('#note_id').children().remove().end();
-                note_id.append($("<option />").text('Select Notes').prop({selected: true, disabled: true}));
+                note_id.append($("<option />").text('Select Note').prop({selected: true, disabled: true}));
                 $.each(response.notes, function(key, note) {
                     note_id.append($("<option />").val(note.id).text(note.note));
                 });
-                note_id.val(purchaseOrder.note_id).change();
             }
         });
     }
@@ -360,7 +359,7 @@
         $('#total').val(total);
     }
 
-    
+
     itemsDetailDynamicField(itemsCount);
 
     $(document).ready(function() {

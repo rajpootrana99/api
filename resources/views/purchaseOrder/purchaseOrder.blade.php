@@ -36,7 +36,7 @@
             margin-bottom: 5px !important;
         }
 
-        body{    
+        body{
             color: #fff;
         }
 
@@ -58,7 +58,7 @@
 <body>
         <div class="container" style="width: 60vw; background-color: #1C1C1E;">
             <div class="card">
-                <div class="card-body"> 
+                <div class="card-body">
                     <div class="row">
                         <div class="col-md-6 mt-3 align-self-end">
                             <h6 class="mb-0"><b>Date : </b>{{ $purchaseOrder->date }}</h6>
@@ -71,27 +71,27 @@
                                 <img src="{{ asset('assets/images/logo.jpg')}}" alt="logo-small" class="logo-sm mr-1" width="100px">
                                 <h6 class="mb-0"><strong>Phone: </strong>{{ $purchaseOrder->entity->primary_phone }}</h6>
                                 <h6 class="mb-0"><strong>Email: </strong>{{ $purchaseOrder->entity->email }}</h6>
-                                <h6 class="mb-0"><strong>ABN: </strong>{{ $purchaseOrder->entity->abn }}</h6><br><br>         
+                                <h6 class="mb-0"><strong>ABN: </strong>{{ $purchaseOrder->entity->abn }}</h6><br><br>
                             </div>
                         </div>
-                    </div><!--end row-->     
+                    </div><!--end row-->
                 </div><!--end card-body-->
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-6">    
+                        <div class="col-md-6">
                                 <div class="float-left">
                                     <h6 class="font-14 text-center" style="background-color: #F96D22; color: #fff; padding: 1% 0%; width: 300px">Supplier</h6>
                                     <p>{{ $purchaseOrder->entity->entity }}</p>
                                     <p>{{ $purchaseOrder->entity->address }}</p>
                                 </div>
-                        </div><!--end col--> 
+                        </div><!--end col-->
                         <div class="col-md-6">
                             <div class="float-right">
                                 <h6 class="font-14 text-center" style="background-color: #F96D22; color: #fff; padding: 1% 0%; width: 300px">Site Address</h6>
                                 <p>{{ $purchaseOrder->task->site->site }}</p>
                                 <p>{{ $purchaseOrder->task->site->site_address }}</p>
                             </div>
-                        </div> <!--end col-->                       
+                        </div> <!--end col-->
                     </div><!--end row-->
 
                     <div class="row">
@@ -123,8 +123,8 @@
                                             <td>${{ $quote->pivot->total }}</td>
                                         </tr><!--end tr-->
                                         @endforeach
-                                        
-                                        <tr>                                                        
+
+                                        <tr>
                                             <td class="border-0"></td>
                                             <td class="border-0 font-14"><b>Sub Total</b></td>
                                             <td class="border-0"></td>
@@ -134,7 +134,7 @@
                                             <td class="border-0"></td>
                                         </tr><!--end tr-->
                                         <tr>
-                                            <th class="border-0"></th>                                                        
+                                            <th class="border-0"></th>
                                             <td class="border-0 font-14"><b>Tax</b></td>
                                             <td class="border-0"></td>
                                             <td class="border-0"></td>
@@ -143,7 +143,7 @@
                                             <td class="border-0"></td>
                                         </tr><!--end tr-->
                                         <tr class="bg-white text-black">
-                                            <th class="border-0"></th>                                                        
+                                            <th class="border-0"></th>
                                             <td class="border-0 font-14 text-dark"><b>Total</b></td>
                                             <td class="border-0"></td>
                                             <td class="border-0"></td>
@@ -153,15 +153,15 @@
                                         </tr><!--end tr-->
                                     </tbody>
                                 </table><!--end table-->
-                            </div>  <!--end /div-->                                          
-                        </div>  <!--end col-->                                      
+                            </div>  <!--end /div-->
+                        </div>  <!--end col-->
                     </div><!--end row-->
 
                     <div class="row justify-content-center">
                         <div class="col-lg-12">
                             <h5 class="mt-4">Note to Supplier :</h5>
-                            <p>{{ $purchaseOrder->note->note }}</p>
-                        </div> <!--end col-->  
+                            <p>{{ $purchaseOrder->note }}</p>
+                        </div> <!--end col-->
                     </div><!--end row-->
                     <hr>
                     <div class="row d-flex justify-content-center">

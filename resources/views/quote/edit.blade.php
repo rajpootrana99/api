@@ -112,10 +112,10 @@
             html += '<td><input type="text" style="height: 30px" class="form-control" name="quotes[' + number + '][description]" id="description_' + number + '" value="'+quote.description+'" /></td>';
             html += '<td><select class="select2 form-control select-estimate" name="quotes[' + number + '][estimate_id]" id="estimate_id_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Cost Code"></select></td>';
             html += '<td><input type="text" style="height: 30px" class="form-control" name="quotes[' + number + '][unit]" id="unit_' + number + '" value="'+quote.unit+'" /></td>';
-            html += '<td><input type="number" style="height: 30px" class="form-control quantity" name="quotes[' + number + '][qty]" id="qty_' + number + '" value="'+quote.qty+'" /></td>';
-            html += '<td><input type="text" style="height: 30px" class="form-control rate" name="quotes[' + number + '][rate]" id="rate_' + number + '" value="'+quote.rate+'" /></td>';
+            html += '<td><input type="number" style="height: 30px" class="form-control quantity" name="quotes[' + number + '][qty]" id="qty_' + number + '" value="'+quote.qty+'" onchange="calculateCost()" /></td>';
+            html += '<td><input type="text" style="height: 30px" class="form-control rate" name="quotes[' + number + '][rate]" id="rate_' + number + '" value="'+quote.rate+'" onchange="calculateCost()" /></td>';
             html += '<td><input type="text" style="height: 30px" class="form-control amount" name="quotes[' + number + '][amount]" id="amount_' + number + '" readonly value="'+quote.amount+'" /></td>';
-            html += '<td><input type="number" style="height: 30px" class="form-control margin" name="quotes[' + number + '][margin]" id="margin_' + number + '" value="'+quote.margin+'" /></td>';
+            html += '<td><input type="number" style="height: 30px" class="form-control margin" name="quotes[' + number + '][margin]" id="margin_' + number + '" value="'+quote.margin+'" onchange="calculateCost()" /></td>';
             html += '<td><input type="text" style="height: 30px" class="form-control subtotal" name="quotes[' + number + '][subtotal]" id="subtotal_' + number + '" readonly value="'+quote.subtotal+'" /></td>';
             html += '<td><input type="text" style="height: 30px" class="form-control amountincgst" name="quotes[' + number + '][amount_inc_gst]" id="amount_inc_gst_' + number + '" readonly value="'+quote.amount_inc_gst+'" /></td>';
             html += '<td><input type="text" style="height: 30px" class="form-control" name="quotes[' + number + '][quote_complete]" id="quote_complete_' + number + '" value="'+quote.quote_complete+'" /></td>';
