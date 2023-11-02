@@ -126,6 +126,21 @@
         });
     }
 
+    function fetchSites() {
+            $.ajax({
+                type: "GET",
+                url: "/fetchSites",
+                dataType: "json",
+                success: function(response) {
+                    var site_id = $('#site_id');
+                    $('#site_id').children().remove().end();
+                    site_id.append($("<option />").text('Select Site').prop({selected: true, disabled: true}));
+                    $.each(response.sites, function(site) {
+                        site_id.append($("<option />").val(response.sites[site].id).text(response.sites[site].site));
+                    });
+                }
+            });
+        }
     $(document).ready(function() {
 
         var itemsCount = 1;
@@ -172,21 +187,7 @@
         fetchSites();
         fetchClientEntities();
 
-        function fetchSites() {
-            $.ajax({
-                type: "GET",
-                url: "/fetchSites",
-                dataType: "json",
-                success: function(response) {
-                    var site_id = $('#site_id');
-                    $('#site_id').children().remove().end();
-                    site_id.append($("<option />").text('Select Site').prop({selected: true, disabled: true}));
-                    $.each(response.sites, function(site) {
-                        site_id.append($("<option />").val(response.sites[site].id).text(response.sites[site].site));
-                    });
-                }
-            });
-        }
+
 
         function fetchClientEntities() {
             $.ajax({

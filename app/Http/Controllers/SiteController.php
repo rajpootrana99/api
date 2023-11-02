@@ -48,7 +48,7 @@ class SiteController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'site' => ['required', 'string', 'min:3'],
+            'site' => ['required', 'string', 'min:3', 'unique:sites,site,NULL,id,entity_id,' . $request->input('entity_id')],
             'site_address' => ['required', 'string', 'min:3'],
             'entity_id' => ['required'],
             'suburb' => ['required'],
@@ -120,7 +120,7 @@ class SiteController extends Controller
     public function update(Request $request, $site)
     {
         $validator = Validator::make($request->all(), [
-            'site' => ['required', 'string', 'min:3'],
+            'site' => ['required', 'string', 'min:3', 'unique:sites,site,NULL,id,entity_id,' . $request->input('entity_id')],
             'site_address' => ['required', 'string', 'min:3'],
             'suburb' => ['required'],
             'state' => ['required'],

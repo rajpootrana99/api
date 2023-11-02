@@ -87,7 +87,7 @@ class TaskController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'site_id' => ['required'],
-            'title' => ['required'],
+            'title' => ['required', 'unique:tasks,title,NULL,id,site_id,' . $request->input('site_id') . ',entity_id,' . $request->input('entity_id')],
         ]);
         if (!$validator->passes()) {
             return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
