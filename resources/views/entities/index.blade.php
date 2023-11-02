@@ -547,6 +547,7 @@
                     if (response.status == 0) {
                         $('#addEntity').modal('show')
                         $.each(response.error, function(prefix, val) {
+                            console.log(prefix)
                             $('span.' + prefix + '_error').text(val[0]);
                         });
                     } else {

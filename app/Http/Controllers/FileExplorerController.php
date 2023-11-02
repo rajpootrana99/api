@@ -132,7 +132,7 @@ class FileExplorerController extends Controller
             $response = $this->isDir($file) ? File::deleteDirectory(storage_path($this->globalPath.$file)) : File::delete([storage_path($this->globalPath.$file)]);
         }
         catch(Exception $e){
-            return $e->getMessage();
+            return "false";
         }
 
         return $response ? "true" : "false";
@@ -146,10 +146,11 @@ class FileExplorerController extends Controller
 
         $response = null;
         try{
+            // if()
             $response = File::makeDirectory(storage_path($this->globalPath.$path."/".$name));
         }
         catch(Exception $e){
-            return $e->getMessage();
+            return "false";
         }
 
         return $response ? "true" : "false";
