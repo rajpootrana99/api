@@ -144,10 +144,10 @@ class FileExplorerController extends Controller
         $path = $request->input('path');
         // $file = base64_decode($file);
 
-        $response = null;
+        $response = false;
         try{
-            // if()
-            $response = File::makeDirectory(storage_path($this->globalPath.$path."/".$name));
+            if(!File::exists(storage_path($this->globalPath.$path."/".$name)))
+                $response = File::makeDirectory(storage_path($this->globalPath.$path."/".$name));
         }
         catch(Exception $e){
             return "false";

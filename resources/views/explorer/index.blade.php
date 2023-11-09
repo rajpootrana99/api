@@ -282,7 +282,7 @@
         </div><!--end modal-dialog-->
     </div>
 
-    <div class="modal fade" id="uploadFile" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="uploadFile"  data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-primary">
@@ -491,6 +491,20 @@
         </div><!--end modal-dialog-->
     </div>
 
+    <div class="modal fade" id="loaderContainer" tabindex="-1" role="dialog"  data-backdrop="static" data-keyboard="false" aria-modal="true" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="loader_content">
+                <div class="progress" style="height: 18px;">
+                    <div id="loader_bar" class="progress-bar  progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+
+                <div class="loader_metadata">
+                    Uploading Files (10.05 MB/100.00 MB) 10%
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script defer>
         let table = null
         let editIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>';
@@ -621,7 +635,7 @@
                         data: null,
                         render: function (data, type, row) {
 
-                            return ( root_path.split("/").length >= 4 ? '<button data-toggle="modal" data-target="#editFileFolder" onclick="loadEditingData(\''+ data.encodedRoute +'\')" class="btn btn-light folder_action_button" data-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Edit">'+ editIcon +'</button>' : '') +
+                            return ( root_path.split("/").length >= 5 ? '<button data-toggle="modal" data-target="#editFileFolder" onclick="loadEditingData(\''+ data.encodedRoute +'\')" class="btn btn-light folder_action_button" data-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Edit">'+ editIcon +'</button>' : '') +
                             ( root_path.split("/").length >= 2 && DATA.type == "File Folder" ? '<button data-toggle="modal" data-target="#uploadFile" onclick="loadUploadFolderInfo(\''+ data.encodedRoute +'\')" class="btn btn-light  folder_action_button" style="" data-toggle="tooltip" data-placement="top" title="Upload" data-original-title="Upload Files in Current Folder">'+ uploadIcon +'</button>' : " ") +
                             '<button class="btn btn-light folder_action_button" onclick="deleteFileFolder(\''+ data.encodedRoute +'\')" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete">'+ trashIcon +'</button>'
                             ;
@@ -744,6 +758,35 @@
                     data: formData,
                     processData: false,
                     contentType: false,
+                    xhr: function (params) {
+                        var xhr = new window.XMLHttpRequest()
+
+                        document.querySelector(".loader_metadata").innerText = "";
+                        document.querySelector(".progress > div").style = "width: 0%";
+
+                        xhr.upload.addEventListener("progress", function (event) {
+                            const formattedNumber = (value) => new Intl.NumberFormat('en', { minimumFractionDigits: 0, maximumFractionDigits: 1 }).format(value)
+
+                            let message = "Uploading Files (0 MB/"+ formattedNumber(event.loaded / (1024*1024)) +" MB) 0%"
+
+                            if (event.lengthComputable) {
+                                var totalSize = event.total;
+                                var loaded = event.loaded;
+                                let percentage = parseInt(loaded / totalSize * 100);
+                                message = "Uploading Files (" + formattedNumber(loaded / (1024*1024)) + " MB/" + formattedNumber(totalSize / (1024*1024)) + " MB) " + percentage + "%"
+
+
+                                console.log(message)
+
+                                document.querySelector("#loader_bar").style = "width: " + percentage + "%;";
+                            }
+
+                            document.querySelector(".loader_metadata").innerText = message;
+                            $("#loaderContainer").modal("show")
+
+                        }, false)
+                        return xhr;
+                    },
                     success: function (data, status, xhr) {
                         if( data == "true" ){
                             showToast("Uploaded Files successfully in folder \""+ folderPath + "\".", "success")
@@ -751,12 +794,16 @@
                         }
                         else showToast("Cannot Upload Files in \""+ (folderPath) +"\". Try Later!", "danger")
 
+                        $("#loaderContainer").modal("hide")
                         $("#uploadFileClose").click()
                     },
                     error: function (xhr, textStatus, errorMessage) {
                         showToast("Cannot Upload Files in \""+ (folderPath) +"\". Check your network connection or try again", "danger")
                     },
                 })
+
+
+
 
 
                 // $('#event_result').html('Selected: ' + r.join(', '));
@@ -892,7 +939,7 @@
                 success: function (data, status, xhr) {
                     if( data == "true" ){
                         showToast("\""+atob(file) + "\" has been deleted successfully", "success")
-                        navigateTo(root_path)
+                        navigateTo(btoa(root_path))
                     }
                     else showToast("Cannot Delete \""+ atob(file) +"\". Try Later!", "danger")
                 },
@@ -1029,6 +1076,40 @@
         .has-error .help-block {
     display: none;
 }
+
+
+        #loaderContainer{
+            overflow-x: hidden;
+            display: flex;
+            z-index: 1100;
+            align-items: center;
+            backdrop-filter: brightness(0.5);
+        }
+
+        .loader_content{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background-color: #F0F0F0;
+            border-radius: 10px;
+            align-items: center;
+            gap: 20px;
+            padding: 30px;
+            /* width: 300px; */
+            height: 200px;
+        }
+        .progress{
+            width: 100%;
+            background-color: #d3d6d9;
+        }
+
+        .loader_metadata{
+            padding-left: 20px;
+            padding-right: 20px;
+            font-size: 1em;
+            font-family: monospace;
+            font-weight: bold;
+        }
     </style>
 
 

@@ -24,6 +24,7 @@
     <link href="{{ asset('assets/plugins/dropify/css/dropify.min.css') }}" rel="stylesheet">
 
 
+
     {{-- Explorer New Dependencies --}}
     <link href="{{ asset('assets/plugins/treeview/themes/default/style.css')}}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
@@ -107,6 +108,7 @@
     {{-- EXPLORER REQUIRED SCRIPTS BELOW ALL --}}
     <script src="{{ asset('assets/plugins/treeview/jstree.min.js') }}"></script>
     <script src="{{ asset('assets/js/popper.min.js') }}"></script>
+    <script src="{{ asset('assets/js/waves.js') }}"></script>
 
     <!-- Required datatable js -->
     <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
