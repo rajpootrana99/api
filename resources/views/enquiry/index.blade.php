@@ -43,7 +43,7 @@
                             <div class="row">
                                 <label for="example-search-input" class="col-sm-3 col-form-label text-right">Search</label>
                                 <div class="col-sm-9">
-                                    <input class="form-control" type="search" placeholder="Search by desc site or client" style="height: 30px" id="example-search-input">
+                                    <input class="form-control" type="search" placeholder="Search by desc site or client" style="height: 30px" id="search-input">
                                 </div>
                             </div>
                         </div>
@@ -144,6 +144,22 @@
 
         fetchEnquiries();
 
+        $("#search-input").keyup(function(){
+            $('tbody').html("");
+            var val = $.trim(this.value);
+            if (val.length == 0) {
+                showEnquiries(enquiries);
+            }
+            if (val) {
+                val = val.toLowerCase();
+                $.each(enquiries, function(_,enquiry) {
+                    if (enquiry.site.site.toLowerCase().indexOf(val) != -1) {
+                        viewEnquiries(enquiry);
+                    }
+                });
+            }
+        });
+
         function showEnquiries(enquiries){
             $('tbody').html("");   
             var total_quoted_price_ex_gst = 0;
@@ -179,61 +195,62 @@
                         viewEnquiries(enquiry);
                     }
                 }
-                function viewEnquiries(enquiry){
-                    var status = '';  
-                    if (enquiry.enquiry_status === "Quoting") {
-                        status = '<span class="badge badge-info">' + enquiry.enquiry_status + '</span>';
-                    } else if (enquiry.enquiry_status === "Submitted") {
-                        status = '<span class="badge badge-primary">' + enquiry.enquiry_status + '</span>';
-                    } else if (enquiry.enquiry_status === "Won") {
-                        status = '<span class="badge badge-success">' + enquiry.enquiry_status + '</span>';
-                    } else if (enquiry.enquiry_status === "Lost") {
-                        status = '<span class="badge badge-danger">' + enquiry.enquiry_status + '</span>';
-                    } else if (enquiry.enquiry_status === "Cancelled") {
-                        status = '<span class="badge badge-warning">' + enquiry.enquiry_status + '</span>';
-                    } else {
-                        status = '<span class="badge badge-secondary">' + enquiry.enquiry_status + '</span>';
-                    }
-
-                    var quoted_price_ex_gst = 0;
-                    var profit = 0;
-                    $.each(enquiry.quotes, function(key, quote) {
-                        quoted_price_ex_gst += quote.subtotal;
-                        profit += quote.subtotal - quote.amount;
-                    })
-                    total_quoted_price_ex_gst += quoted_price_ex_gst;
-                    total_profit += profit;
-                    var name = "No Client";
-                    if (enquiry.contact_id != null) {
-                        name = enquiry.contact.user.name;
-                    }
-                    $('tbody').append('<tr>\
-                        <td>' + enquiry.id + '</td>\
-                        <td>' + enquiry.site.site + '</td>\
-                        <td>' + enquiry.title + '</td>\
-                        <td>' + enquiry.entity.entity + '</td>\
-                        <td>' + status + '</td>\
-                        <td>' + USDollar.format(quoted_price_ex_gst) + '</td>\
-                        <td>' + USDollar.format(profit) + '</td>\
-                        <td>' + name + '</td>\
-                        <td>' + enquiry.requested_completion + '</td>\
-                        <td>' + enquiry.quote_type + '</td>\
-                        <td><div class="dropdown d-inline-block" style="float:right;">\
-                            <a class="dropdown-toggle arrow-none" id="dLabel11" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">\
-                                <i class="las la-ellipsis-v font-20 text-muted"></i>\
-                            </a>\
-                            <div style="z-index: 1 !important;" class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel11">\
-                                <button value="' + enquiry.id + '" style="border: none; background-color: #fff" class="edit_btn dropdown-item">Edit</button>\
-                                <a class="dropdown-item" href="/convertToJob/'+enquiry.id+'">Convert to Job</a>\
-                                <a class="dropdown-item" href="/quote/' + enquiry.id + '/edit/">Quote</a>\
-                                <a class="dropdown-item" href="#">Chat</a>\
-                            </div>\
-                        </div>\</td>\
-                    </tr>');
-                }
             });
             $('#total_quoted_price_ex_gst').html(USDollar.format(total_quoted_price_ex_gst));
             $('#total_profit').html(USDollar.format(total_profit));
+        }
+
+        function viewEnquiries(enquiry){
+            var status = '';  
+            if (enquiry.enquiry_status === "Quoting") {
+                status = '<span class="badge badge-info">' + enquiry.enquiry_status + '</span>';
+            } else if (enquiry.enquiry_status === "Submitted") {
+                status = '<span class="badge badge-primary">' + enquiry.enquiry_status + '</span>';
+            } else if (enquiry.enquiry_status === "Won") {
+                status = '<span class="badge badge-success">' + enquiry.enquiry_status + '</span>';
+            } else if (enquiry.enquiry_status === "Lost") {
+                status = '<span class="badge badge-danger">' + enquiry.enquiry_status + '</span>';
+            } else if (enquiry.enquiry_status === "Cancelled") {
+                status = '<span class="badge badge-warning">' + enquiry.enquiry_status + '</span>';
+            } else {
+                status = '<span class="badge badge-secondary">' + enquiry.enquiry_status + '</span>';
+            }
+
+            var quoted_price_ex_gst = 0;
+            var profit = 0;
+            $.each(enquiry.quotes, function(key, quote) {
+                quoted_price_ex_gst += quote.subtotal;
+                profit += quote.subtotal - quote.amount;
+            })
+            total_quoted_price_ex_gst += quoted_price_ex_gst;
+            total_profit += profit;
+            var name = "No Client";
+            if (enquiry.contact_id != null) {
+                name = enquiry.contact.user.name;
+            }
+            $('tbody').append('<tr>\
+                <td>' + enquiry.id + '</td>\
+                <td>' + enquiry.site.site + '</td>\
+                <td>' + enquiry.title + '</td>\
+                <td>' + enquiry.entity.entity + '</td>\
+                <td>' + status + '</td>\
+                <td>' + USDollar.format(quoted_price_ex_gst) + '</td>\
+                <td>' + USDollar.format(profit) + '</td>\
+                <td>' + name + '</td>\
+                <td>' + enquiry.requested_completion + '</td>\
+                <td>' + enquiry.quote_type + '</td>\
+                <td><div class="dropdown d-inline-block" style="float:right;">\
+                    <a class="dropdown-toggle arrow-none" id="dLabel11" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">\
+                        <i class="las la-ellipsis-v font-20 text-muted"></i>\
+                    </a>\
+                    <div style="z-index: 1 !important;" class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel11">\
+                        <button value="' + enquiry.id + '" style="border: none; background-color: #fff" class="edit_btn dropdown-item">Edit</button>\
+                        <a class="dropdown-item" href="/convertToJob/'+enquiry.id+'">Convert to Job</a>\
+                        <a class="dropdown-item" href="/quote/' + enquiry.id + '/edit/">Quote</a>\
+                        <a class="dropdown-item" href="#">Chat</a>\
+                    </div>\
+                </div>\</td>\
+            </tr>');
         }
 
         function fetchEnquiries() {
