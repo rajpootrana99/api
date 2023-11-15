@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\Quote;
 use App\Models\Task;
+use Illuminate\Mail\Message;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -156,5 +158,18 @@ class InvoiceController extends Controller
     public function destroy(Invoice $invoice)
     {
         //
+    }
+
+    public function sendEmail($invoice){
+        $invoice = Invoice::with('quotes.estimate.subHeader.header', 'entity', 'task.site', 'task.quotes.estimate.subHeader.header')->find($invoice);
+        $email = $invoice->entity->email;
+        Mail::send('Mails.invoice', ['invoice' => $invoice], function (Message $message) use ($email) {
+            $message->to($email);
+            $message->subject('Invoice Detail');
+        });
+
+        return response()->json([
+            'message' => 'Email send Successfully',
+        ]);
     }
 }

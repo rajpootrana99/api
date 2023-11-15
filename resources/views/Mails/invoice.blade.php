@@ -131,25 +131,25 @@
     <div class="header">
       <div class="i_row">
         <div class="i_logo">
-          <p>Coding Market</p>
+          <p>{{ $invoice->task->title }}</p>
         </div>
         <div class="i_title">
           <h2>INVOICE</h2>
           <p class="p_title text_right">
-            April 20, 2023
+            {{ $invoice->issue_date }}
           </p>
         </div>
       </div>
       <div class="i_row">
         <div class="i_number">
-          <p class="p_title">INVOICE NO: 3452324</p>
+          <p class="p_title">INVOICE NO: {{ $invoice->id }}</p>
         </div>
         <div class="i_address text_right">
           <p>TO</p>
           <p class="p_title">
-            Facebook <br />
-            <span>Menlo Park, California</span><br />
-            <span>United States</span>
+          {{ $invoice->entity->entity }} <br />
+            <span>{{ $invoice->entity->address }}</span><br />
+            <span>{{ $invoice->entity->primary_phone }}</span>
           </p>
         </div>
       </div>
@@ -173,51 +173,23 @@
           </div>
         </div>
         <div class="i_table_body">
-          <div class="i_row">
-            <div class="i_col w_15">
-              <p>3</p>
-            </div>
-            <div class="i_col w_55">
-              <p>Lorem, ipsum.</p>
-              <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam, vel.</span>
-            </div>
-            <div class="i_col w_15">
-              <p>$10.00</p>
-            </div>
-            <div class="i_col w_15">
-              <p>$30.00</p>
-            </div>
-          </div>
-          <div class="i_row">
-            <div class="i_col w_15">
-              <p>2</p>
-            </div>
-            <div class="i_col w_55">
-              <p>Lorem, ipsum.</p>
-              <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam, vel.</span>
-            </div>
-            <div class="i_col w_15">
-              <p>$10.00</p>
-            </div>
-            <div class="i_col w_15">
-              <p>$20.00</p>
-            </div>
-          </div>
-          <div class="i_row">
-            <div class="i_col w_15">
-              <p>5</p>
-            </div>
-            <div class="i_col w_55">
-              <p>Lorem, ipsum.</p>
-              <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam, vel.</span>
-            </div>
-            <div class="i_col w_15">
-              <p>$10.00</p>
-            </div>
-            <div class="i_col w_15">
-              <p>$100.00</p>
-            </div>
-          </div>
+          @foreach($invoice->quotes as $quote)
+              <div class="i_row">
+                <div class="i_col w_15">
+                  <p>{{ $quote->pivot->qty }}</p>
+                </div>
+                <div class="i_col w_55">
+                  <p>{{ $quote->description }}</p>
+                  <span>{{ $quote->pivot->description }}</span>
+                </div>
+                <div class="i_col w_15">
+                  <p>${{ $quote->pivot->rate }}</p>
+                </div>
+                <div class="i_col w_15">
+                  <p>${{ $quote->pivot->total }}</p>
+                </div>
+              </div>
+          @endforeach
         </div>
         <div class="i_table_foot">
           <div class="i_row">
@@ -232,8 +204,8 @@
               <p>Tax 10%</p>
             </div>
             <div class="i_col w_15">
-              <p>$150.00</p>
-              <p>$15.00</p>
+              <p>${{ $invoice->sub_total }}</p>
+              <p>${{ $invoice->tax }}</p>
             </div>
           </div>
           <div class="i_row grand_total_wrap">
@@ -241,7 +213,7 @@
             </div>
             <div class="i_col w_50 grand_total">
               <p><span>GRAND TOTAL:</span>
-                <span>$165.00</span>
+                <span>${{ $invoice->total }}</span>
               </p>
             </div>
           </div>
@@ -251,8 +223,8 @@
     <div class="footer">
       <div class="i_row">
         <div class="i_col w_50">
-          <p class="p_title">Payment Method</p>
-          <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cumque, dicta distinctio! Laudantium voluptatibus est nemo.</p>
+          <p class="p_title">Note to Customer: </p>
+          <p>{{ $invoice->note }}</p>
         </div>
         <div class="i_col w_50 text_right">
           <p class="p_title">Terms and Conditions</p>
