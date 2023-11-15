@@ -82,7 +82,7 @@ class SiteUserController extends Controller
      */
     public function edit($user)
     {
-        $users = User::where(['is_admin' => 0])->get();
+        $users = User::role(['Supplier', 'Client'])->get();
         $sites = Site::all();
         $site_user = User::with('sites')->where('id', $user)->first();
         if ($site_user) {
