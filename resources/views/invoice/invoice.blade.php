@@ -171,7 +171,7 @@
                         <div class="col-lg-12 col-xl-6">
                             <div class="float-right d-print-none">
                                 <a href="javascript:window.print()" class="btn btn-soft-info btn-sm">Print</a>
-                                <a href="{{ route('sendEmail', ['invoice' => $invoice->id]) }}" class="btn btn-soft-primary btn-sm">Email</a>
+                                <a href="{{ route('invoice.sendEmail', ['invoice' => $invoice->id]) }}" class="btn btn-soft-primary btn-sm">Email</a>
                             </div>
                         </div><!--end col-->
                     </div><!--end row-->
