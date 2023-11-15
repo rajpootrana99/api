@@ -134,7 +134,7 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
     Route::get('/fetchNotes', [  NoteController::class, 'fetchNotes'])->name('note.get');
 
     //Email Send
-    Route::get('sendEmail/{invoice}', [  InvoiceController::class, 'sendEmail'])->name('sendEmail.get');
+    Route::get('/sendEmail/{invoice}', [  InvoiceController::class, 'sendEmail']);
 });
 
 require __DIR__ . '/auth.php';
