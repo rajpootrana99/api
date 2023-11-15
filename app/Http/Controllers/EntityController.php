@@ -159,6 +159,7 @@ class EntityController extends Controller
         $validator = Validator::make($request->all(), [
             'type' => ['required', 'integer'],
             'entity' => ['required', 'string', 'min:3'],
+            'abn' => ['integer'],
         ]);
 
         if (!$validator->passes()) {

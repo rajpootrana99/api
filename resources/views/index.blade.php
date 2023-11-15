@@ -49,13 +49,9 @@
                             <div class="row d-flex justify-content-center">
                                 <div class="col">
                                     <p class="text-dark mb-0 font-weight-semibold">
-                                        Users
+                                        Entities
                                     </p>
-                                    <h3 class="m-0">1</h3>
-                                    <p class="mb-0 text-truncate text-muted">
-                                        <span class="text-success"><i class="mdi mdi-trending-up"></i>8.5%</span>
-                                        New Users Today
-                                    </p>
+                                    <h3 class="m-0">{{ count($entities) }}</h3>
                                 </div>
                                 <div class="col-auto align-self-center">
                                     <div class="report-main-icon bg-light-alt">
@@ -75,13 +71,31 @@
                             <div class="row d-flex justify-content-center">
                                 <div class="col">
                                     <p class="text-dark mb-0 font-weight-semibold">
+                                        Users
+                                    </p>
+                                    <h3 class="m-0">{{ count($users) }}</h3>
+                                </div>
+                                <div class="col-auto align-self-center">
+                                    <div class="report-main-icon bg-light-alt">
+                                        <i data-feather="user" class="align-self-center text-muted icon-sm"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end card-body-->
+                    </div>
+                    <!--end card-->
+                </div>
+                <!--end col-->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card report-card">
+                        <div class="card-body">
+                            <div class="row d-flex justify-content-center">
+                                <div class="col">
+                                    <p class="text-dark mb-0 font-weight-semibold">
                                         Sites
                                     </p>
-                                    <h3 class="m-0">1</h3>
-                                    <p class="mb-0 text-truncate text-muted">
-                                        <span class="text-success"><i class="mdi mdi-trending-up"></i>8.5%</span>
-                                        New Sites Today
-                                    </p>
+                                    <h3 class="m-0">{{ count($sites) }}</h3>
                                 </div>
                                 <div class="col-auto align-self-center">
                                     <div class="report-main-icon bg-light-alt">
@@ -103,11 +117,7 @@
                                     <p class="text-dark mb-0 font-weight-semibold">
                                         Tasks
                                     </p>
-                                    <h3 class="m-0">1</h3>
-                                    <p class="mb-0 text-truncate text-muted">
-                                        <span class="text-success"><i class="mdi mdi-trending-up"></i>8.5%</span>
-                                        New Tasks Today
-                                    </p>
+                                    <h3 class="m-0">{{ count($tasks) }}</h3>
                                 </div>
                                 <div class="col-auto align-self-center">
                                     <div class="report-main-icon bg-light-alt">

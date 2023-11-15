@@ -28,7 +28,7 @@
                             <div class="row">
                                 <label for="example-search-input" class="col-sm-3 col-form-label text-right">Search</label>
                                 <div class="col-sm-9">
-                                    <input class="form-control" type="search" placeholder="Search by Site Name" id="example-search-input" style="height: 30px">
+                                    <input class="form-control" type="search" placeholder="Search by Site Name" id="search-input" style="height: 30px">
                                 </div>
                             </div>
                         </div>
@@ -235,7 +235,7 @@
 
 <script>
     $(document).ready(function() {
-
+        var sites;
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -244,24 +244,45 @@
 
         fetchSites();
 
+        $("#search-input").keyup(function(){
+            $('tbody').html("");
+            var val = $.trim(this.value);
+            if (val.length == 0) {
+                fetchSites();
+            }
+            if (val) {
+                val = val.toLowerCase();
+                $.each(sites, function(_,site) {
+                    if (site.site.toLowerCase().indexOf(val) != -1) {
+                        siteData(site);
+                    }
+                });
+            }
+        });
+
+        function siteData(site){
+            $('tbody').append('<tr>\
+                <td>' + site.id + '</td>\
+                <td>' + site.site + '</td>\
+                <td>' + site.site_address + '</td>\
+                <td>' + site.suburb + '</td>\
+                <td>' + site.state + '</td>\
+                <td>' + site.post_code + '</td>\
+                <td>' + site.entity.entity + '</td>\
+                <td><button value="' + site.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
+            </tr>');
+        }
+
         function fetchSites() {
             $.ajax({
                 type: "GET",
                 url: "fetchSites",
                 dataType: "json",
                 success: function(response) {
+                    sites = response.sites;
                     $('tbody').html("");
                     $.each(response.sites, function(key, site) {
-                        $('tbody').append('<tr>\
-                            <td>' + site.id + '</td>\
-                            <td>' + site.site + '</td>\
-                            <td>' + site.site_address + '</td>\
-                            <td>' + site.suburb + '</td>\
-                            <td>' + site.state + '</td>\
-                            <td>' + site.post_code + '</td>\
-                            <td>' + site.entity.entity + '</td>\
-                            <td><button value="' + site.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
-                    </tr>');
+                        siteData(site);
                     });
                 }
             });
