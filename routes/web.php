@@ -132,6 +132,9 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
     //NOTE ROUTES
     Route::resource('note',  NoteController::class);
     Route::get('/fetchNotes', [  NoteController::class, 'fetchNotes'])->name('note.get');
+
+    //Email Send
+    Route::get('sendEmail/{invoice}', [  InvoiceController::class, 'sendEmail'])->name('sendEmail.get');
 });
 
 require __DIR__ . '/auth.php';
