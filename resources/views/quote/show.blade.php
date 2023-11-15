@@ -32,7 +32,7 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <a href="" class="btn btn-primary" style="float:left;margin-left: 10px">Orders by Job</a>
-                                <a href="{{route('enquiry.index')}}" class="btn btn-primary" style="float:left;margin-left: 10px">Orders By </a>
+                                <a href="" class="btn btn-primary" style="float:left;margin-left: 10px">Orders By </a>
                             </div>
                             <div class="col-sm-6">
                                 <div class="custom-control custom-switch switch-primary">
@@ -59,7 +59,6 @@
                                         <th>Balance</th>
                                         <th>Capture Savings</th>
                                         <th>Movement</th>
-                                        <th width="3%">Modify</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -73,7 +72,7 @@
                                         <td id="total_budget"></td>
                                         <td id="total_value_ordered"></td>
                                         <td id="total_balance"></td>
-                                        <td colspan="3"></td>
+                                        <td colspan="2"></td>
                                     </tr>
                                 </tfoot>
                             </table><!--end /table-->
@@ -121,7 +120,7 @@
                     $.each(response.headers, function(key, header) {
                         $('tbody').append('<tr style="background:#F96D22; color: #fff">\
                             <td></td>\
-                            <td colspan="11"><strong>' + header.major_code + '___' + header.header + '</strong></td>\
+                            <td colspan="10"><strong>' + header.major_code + '___' + header.header + '</strong></td>\
                         </tr>');
                         $.each(header.sub_headers, function(key, subHeader) {
                             var sub_header_total_budget = 0;
@@ -140,7 +139,7 @@
                                 <td><strong>' + USDollar.format(sub_header_total_budget) + '</strong></td>\
                                 <td><strong>' + USDollar.format(sub_header_total_value_ordered) + '</strong></td>\
                                 <td><strong>' + USDollar.format(sub_header_total_balance) + '</strong></td>\
-                                <td colspan="3"></td>\
+                                <td colspan="2"></td>\
                             </tr>');
                             $.each(response.quotes, function(key, quote) {
                                 let balance = 0;
@@ -167,7 +166,6 @@
                                         <td>' + USDollar.format(balance) + '</td>\
                                         <td><input class="align-center" type="checkbox" name="capture_saving_check" '+capture_savings+' id="capture_saving_check" value="'+quote.id+'" '+capture_savings+' class="capture_saving_check" /></td>\
                                         <td>' + USDollar.format(quote.movement) + '</td>\
-                                        <td><button value="' + quote.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
                                     </tr>');
                                 }
                             });
@@ -219,7 +217,7 @@
                                         flag = 1;
                                         $('tbody').append('<tr style="background:#F96D22; color: #fff">\
                                             <td></td>\
-                                            <td colspan="11"><strong>' + header.major_code + '___' + header.header + '</strong></td>\
+                                            <td colspan="10"><strong>' + header.major_code + '___' + header.header + '</strong></td>\
                                         </tr>');
                                     }
                                     if(subheaderflag == 0){
@@ -230,7 +228,7 @@
                                             <td><strong>' + USDollar.format(sub_header_total_budget) + '</strong></td>\
                                             <td><strong>' + USDollar.format(sub_header_total_value_ordered) + '</strong></td>\
                                             <td><strong>' + USDollar.format(sub_header_total_balance) + '</strong></td>\
-                                            <td colspan="3"></td>\
+                                            <td colspan="2"></td>\
                                         </tr>');
                                     }
                                     total_qty += quote.qty;
@@ -255,7 +253,6 @@
                                         <td>' + USDollar.format(balance) + '</td>\
                                         <td><input class="align-center" type="checkbox" name="capture_saving_check_simple" '+capture_savings+' id="capture_saving_check_simple" value="'+quote.id+'" class="capture_saving_check_simple" /></td>\
                                         <td>' + USDollar.format(quote.movement) + '</td>\
-                                        <td><button value="' + quote.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
                                     </tr>');
                                 }
                             });

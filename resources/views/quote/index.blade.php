@@ -25,7 +25,6 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Header</th>
-                                    <th width="3%">Modify</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -64,7 +63,6 @@
                         $('tbody').append('<tr>\
                             <td>' + task.id + '</td>\
                             <td><a href="/quote/'+task.id+'">' + task.site.site+'-'+task.title + '</a></td>\
-                            <td><button value="' + task.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
                     </tr>');
                     });
                 }
