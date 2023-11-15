@@ -24,8 +24,8 @@
                     </div>
                     <div class="row">
                         <div class="custom-control custom-checkbox col-sm-3" style="display:flex; padding:8px;float:left;margin-left: 30px">
-                            <input type="checkbox" class="custom-control-input" id="customCheck02">
-                            <label class="custom-control-label" for="customCheck02">Display Active Only</label>
+                            <input type="checkbox" class="custom-control-input" id="display-active-only">
+                            <label class="custom-control-label" for="display-active-only">Display Active Only</label>
                         </div>
                     </div>
                 </div><!--end card-header-->
@@ -266,6 +266,8 @@
             }
         });
 
+        var users;
+
         fetchUsers();
 
         function fetchUsers() {
@@ -274,28 +276,50 @@
                 url: "fetchUsers",
                 dataType: "json",
                 success: function(response) {
+                    users = response.users;
                     $('tbody').html("");
                     $.each(response.users, function(key, user) {
-                        var status, date_of_interview;
-                        if (user.is_approved == 'Approved') {
-                            status = '<span class="badge badge-success">' + user.is_approved + '</span>';
-                        } else {
-                            status = '<span class="badge badge-primary">' + user.is_approved + '</span>';
-                        }
-                        $('tbody').append('<tr>\
-                            <td>' + user.id + '</td>\
-                            <td>' + user.name + '</td>\
-                            <td>' + user.email + '</td>\
-                            <td>' + status + '</td>\
-                            <td><button value="' + user.id + '" style="border: none; background-color: #fff" class="view_btn"><i class="fas fa-eye"></i></button></td>\
-                            <td><button value="' + user.id + '" style="border: none; background-color: #fff" class="approve_btn"><i class="fa fa-check-circle"></i></button></td>\
-                            <td><button value="' + user.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
-                            <td><button value="' + user.id + '" style="border: none; background-color: #fff" class="delete_btn"><i class="fa fa-trash"></i></button></td>\
-                    </tr>');
+                        userData(user);
                     });
                 }
             });
         }
+
+        function userData(user){
+            var status, date_of_interview;
+            if (user.is_approved == 'Approved') {
+                status = '<span class="badge badge-success">' + user.is_approved + '</span>';
+            } else {
+                status = '<span class="badge badge-primary">' + user.is_approved + '</span>';
+            }
+            $('tbody').append('<tr>\
+                <td>' + user.id + '</td>\
+                <td>' + user.name + '</td>\
+                <td>' + user.email + '</td>\
+                <td>' + status + '</td>\
+                <td><button value="' + user.id + '" style="border: none; background-color: #fff" class="view_btn"><i class="fas fa-eye"></i></button></td>\
+                <td><button value="' + user.id + '" style="border: none; background-color: #fff" class="approve_btn"><i class="fa fa-check-circle"></i></button></td>\
+                <td><button value="' + user.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
+                <td><button value="' + user.id + '" style="border: none; background-color: #fff" class="delete_btn"><i class="fa fa-trash"></i></button></td>\
+            </tr>');
+        }
+
+        $(document).on('change', '#display-active-only', function(e) {
+            if ($("#display-active-only").prop('checked') == true){
+                $('tbody').html("");
+                $.each(users, function(key, user) {
+                    if (user.is_approved == 'Approved'){
+                        userData(user);
+                    }
+                });
+            } 
+            else {
+                $('tbody').html("");
+                $.each(users, function(key, user) {
+                    userData(user);
+                });
+            }
+        });
 
         $(document).on('click', '.view_btn', function(e) {
             e.preventDefault();
