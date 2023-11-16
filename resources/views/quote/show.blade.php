@@ -27,7 +27,7 @@
                             <!-- href="{{ route('purchaseOrder.create') }}" -->
                         </div>
                         <div class="row" style="position:absolute; top:10px; right: 20px;">
-                            <button type="submit" class="btn btn-primary" style="float:right;margin-left: 10px"><i class="fa fa-plus"></i> New Order </button>
+                            <button type="submit" id="newOrderBtn" class="btn btn-primary" style="float:right;margin-left: 10px"><i class="fa fa-plus"></i> New Order </button>
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
@@ -93,6 +93,8 @@
 
     var i=1;
 
+
+
     $(document).ready(function() {
 
         $.ajaxSetup({
@@ -100,6 +102,26 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+        // NEW ORDER BUTTON VALIDATION MECHANISM
+        $("#newOrderBtn").on("click", function (event) {
+            // if nothing selected show error message
+            flag = false
+            $("input[name='quote_id[]']").each((check, el)=>{
+                if( el.checked == true)
+                {
+                    flag = true
+                }
+            })
+
+            if(!flag) {
+                showToast("No Item Selected! \nPlease select at least one to proceed to \"New Order\"", "danger")
+                event.preventDefault()
+            }
+
+        });
+
+
 
         fetchSimpleQuotes();
 
@@ -196,7 +218,7 @@
                     var i = 0;
                     $.each(response.headers, function(key, header) {
                         var flag = 0;
-                        
+
                         $.each(header.sub_headers, function(key, subHeader) {
                             var subheaderflag = 0;
                             var sub_header_total_budget = 0;
@@ -209,7 +231,7 @@
                                     sub_header_total_balance += quote.amount - quote.order_total_amount;
                                 }
                             });
-                            
+
                             $.each(response.quotes, function(key, quote) {
                                 let balance = 0;
                                 if (subHeader.cost_code === quote.estimate.sub_header.cost_code) {
@@ -276,7 +298,7 @@
                 success: function(response) {
                     fetchSimpleQuotes();
                 }
-            });     
+            });
         });
 
         $(document).on('change', '#capture_saving_check', function(e) {
@@ -288,7 +310,7 @@
                 success: function(response) {
                     fetchQuotes();
                 }
-            });     
+            });
         });
 
         $(document).on('change', '#view', function(e) {
@@ -340,6 +362,27 @@
             });
         });
 
+
+        function showToast(text, type)
+        {
+            let types = {
+                success: ["#03d87f", "#fff"],
+                danger: ["#f5325c", "#fff"],
+            }
+            Toastify({
+            text: text,
+            duration: 3000,
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: "right", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+                background: types[type][0],
+                color: types[type][1]
+            }
+            }).showToast();
+        }
+
         $(document).on('submit', '#editQuoteForm', function(e) {
             e.preventDefault();
             var quote_id = $('#quote_id').val();
@@ -376,5 +419,26 @@
             });
         });
     });
+
+
+    function showToast(text, type)
+        {
+            let types = {
+                success: ["#03d87f", "#fff"],
+                danger: ["#f5325c", "#fff"],
+            }
+            Toastify({
+            text: text,
+            duration: 3000,
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: "right", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+                background: types[type][0],
+                color: types[type][1]
+            }
+            }).showToast();
+        }
 </script>
 @endsection

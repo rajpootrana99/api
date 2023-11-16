@@ -69,6 +69,7 @@
             });
         }
 
+
         $(document).on('click', '.edit_btn', function(e) {
             e.preventDefault();
             var quote_id = $(this).val();
