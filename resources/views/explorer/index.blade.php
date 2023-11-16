@@ -567,7 +567,7 @@
                     console.log("table has be redrawn")
 
                     var toolbar = document.querySelector("#explorer_datatable_wrapper > .row > div");
-                    if( root_path.split("/").length > 3 ) toolbar.innerHTML = '<button data-toggle="modal" data-target="#createFolder" class="btn btn-primary mr-1" style="" title="New Folder"><i class="fa fa-plus"></i> New Folder </button>'
+                    if( root_path.split("/").length >= 5 ) toolbar.innerHTML = '<button data-toggle="modal" data-target="#createFolder" class="btn btn-primary mr-1" style="" title="New Folder"><i class="fa fa-plus"></i> New Folder </button>'
                     else toolbar.innerHTML = ""
                     //activating tooltips
                     setTimeout(() => {
@@ -635,9 +635,10 @@
                         data: null,
                         render: function (data, type, row) {
 
-                            return ( root_path.split("/").length >= 5 ? '<button data-toggle="modal" data-target="#editFileFolder" onclick="loadEditingData(\''+ data.encodedRoute +'\')" class="btn btn-light folder_action_button" data-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Edit">'+ editIcon +'</button>' : '') +
-                            ( root_path.split("/").length >= 2 && DATA.type == "File Folder" ? '<button data-toggle="modal" data-target="#uploadFile" onclick="loadUploadFolderInfo(\''+ data.encodedRoute +'\')" class="btn btn-light  folder_action_button" style="" data-toggle="tooltip" data-placement="top" title="Upload" data-original-title="Upload Files in Current Folder">'+ uploadIcon +'</button>' : " ") +
-                            '<button class="btn btn-light folder_action_button" onclick="deleteFileFolder(\''+ data.encodedRoute +'\')" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete">'+ trashIcon +'</button>'
+                            return ( root_path.split("/").length < 5 && DATA.type == "File Folder" ? '' : '<button data-toggle="modal" data-target="#editFileFolder" onclick="loadEditingData(\''+ data.encodedRoute +'\')" class="btn btn-light folder_action_button" data-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Edit">'+ editIcon +'</button>') +
+                            ( root_path.split("/").length >= 1 && DATA.type == "File Folder" ? '<button data-toggle="modal" data-target="#uploadFile" onclick="loadUploadFolderInfo(\''+ data.encodedRoute +'\')" class="btn btn-light  folder_action_button" style="" data-toggle="tooltip" data-placement="top" title="Upload" data-original-title="Upload Files in Current Folder">'+ uploadIcon +'</button>' : " ") +
+                            ( root_path.split("/").length < 5 && DATA.type == "File Folder" ? '' : '<button class="btn btn-light folder_action_button" onclick="deleteFileFolder(\''+ data.encodedRoute +'\')" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete">'+ trashIcon +'</button>')
+
                             ;
 
                         },
@@ -1080,7 +1081,7 @@
 
         #loaderContainer{
             overflow-x: hidden;
-            display: flex;
+            /* display: flex; */
             z-index: 1100;
             align-items: center;
             backdrop-filter: brightness(0.5);
