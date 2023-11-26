@@ -672,13 +672,12 @@
                     hideThumbnailContent: false,
                     showBrowse: false,
                     showUpload: false,
-                    // showPreview: false,
+                    showPreview: true,
+                    showRemove: true,
                     browseOnZoneClick: true,
                     overwriteInitial: true,
                     initialPreviewShowDelete: true,
                     removeFromPreviewOnError: true,
-                    showRemove: true,
-                    showUpload: false,
                     dropZoneTitleClass: 'file-drop-zone-title ',
                     dropZoneClickTitle: "",
                     dropZoneTitle: '<i class="bi bi-cloud-upload" style="font-size: 4em;"></i><div style="font-size: 0.8em;">Drag and drop file here or click</div>'
@@ -1075,8 +1074,8 @@
         }
 
         .has-error .help-block {
-    display: none;
-}
+            display: none;
+        }
 
 
         #loaderContainer{

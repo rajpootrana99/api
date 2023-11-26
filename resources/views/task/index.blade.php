@@ -178,7 +178,7 @@
         }
 
         function showTasks(tasks){
-            $('#task-section').html("");                
+            $('#task-section').html("");
             $.each(tasks, function(key, task) {
                 var options = new Array();
                 let i = 0;
@@ -190,7 +190,7 @@
                 });
                 console.log($('#view_status').val)
                 if($('#view_status').val() == 0){
-                    if(task.status == 'Pending'){     
+                    if(task.status == 'Pending'){
                         viewTasks(task);
                     }
                 }
@@ -204,7 +204,7 @@
                         viewTasks(task);
                     }
                 }
-                
+
             });
         }
 
