@@ -91,7 +91,25 @@
     <script src="{{ asset('assets/plugins/bootstrap-touchspin/js/jquery.bootstrap-touchspin.min.js')}}"></script>
     <script src="{{ asset('assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js')}}"></script>
     <script src="{{ asset('assets/pages/jquery.forms-advanced.js')}}"></script>
-    <script>
+    <script defer>
+        function showToast(text, type) {
+            let types = {
+                success: ["#03d87f", "#fff"],
+                danger: ["#f5325c", "#fff"],
+            }
+            Toastify({
+                text: text,
+                duration: 3000,
+                close: true,
+                gravity: "top", // `top` or `bottom`
+                position: "right", // `left`, `center` or `right`
+                stopOnFocus: true, // Prevents dismissing of toast on hover
+                style: {
+                    background: types[type][0],
+                    color: types[type][1]
+                }
+            }).showToast();
+        }
         $('.custom-file-input').on('change', function() {
             var fileName = $(this).val();
             $(this).next('.custom-file-label').addClass("selected").html(fileName);

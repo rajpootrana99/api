@@ -56,21 +56,23 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
     Route::resource('user', UserController::class);
     Route::get('/fetchUsers', [UserController::class, 'fetchUsers'])->name('user.get');
     Route::get('/approveUser/{user}', [UserController::class, 'approveUser'])->name('user.approve');
-    
+
     // ENTITY ROUTES
     Route::resource('entity', EntityController::class);
     Route::get('/fetchEntities', [EntityController::class, 'fetchEntities'])->name('entity.get');
+    Route::post('/addTradeType', [EntityController::class, 'addTradeType'])->name('entity.addTradeType');
+    Route::post('/removeTradeType', [EntityController::class, 'removeTradeType'])->name('entity.removeTradeType');
     Route::get('/fetchSupplierEntities', [EntityController::class, 'fetchSupplierEntities'])->name('supplierEntity.get');
     Route::get('/fetchClientEntities', [EntityController::class, 'fetchClientEntities'])->name('clientEntity.get');
-    
+
     // SITE ROUTES
     Route::resource('site', SiteController::class);
     Route::get('/fetchSites', [SiteController::class, 'fetchSites'])->name('site.get');
-    
+
     // TRADE TYPE ROUTES
     Route::resource('tradeType', TraderTypeController::class);
     Route::get('/fetchTradeTypes', [TraderTypeController::class, 'fetchTradeTypes'])->name('tradeType.get');
-    
+
     // TASK ROUTES
     Route::resource('task', TaskController::class);
     Route::get('/fetchTasks', [TaskController::class, 'fetchTasks'])->name('task.get');
@@ -87,7 +89,7 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
     // NOTIFICATION ROUTES
     Route::resource('notification', NotificationController::class);
     Route::get('/fetchNotifications', [NotificationController::class, 'fetchNotifications'])->name('notification.get');
-    
+
     // CONTACT ROUTES
     Route::resource('contact', ContactController::class);
     Route::get('/fetchContacts', [ContactController::class, 'fetchContacts'])->name('contact.get');
@@ -131,10 +133,10 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
 
     //NOTE ROUTES
     Route::resource('note',  NoteController::class);
-    Route::get('/fetchNotes', [  NoteController::class, 'fetchNotes'])->name('note.get');
+    Route::get('/fetchNotes', [NoteController::class, 'fetchNotes'])->name('note.get');
 
     //Email Send
-    Route::get('/sendEmail/{invoice}', [  InvoiceController::class, 'sendEmail'])->name('invoice.sendEmail');
+    Route::get('/sendEmail/{invoice}', [InvoiceController::class, 'sendEmail'])->name('invoice.sendEmail');
 });
 
 require __DIR__ . '/auth.php';

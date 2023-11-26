@@ -91,7 +91,7 @@
         currency: 'USD',
     });
 
-    var i=1;
+    var i = 1;
 
 
 
@@ -104,17 +104,16 @@
         });
 
         // NEW ORDER BUTTON VALIDATION MECHANISM
-        $("#newOrderBtn").on("click", function (event) {
+        $("#newOrderBtn").on("click", function(event) {
             // if nothing selected show error message
             flag = false
-            $("input[name='quote_id[]']").each((check, el)=>{
-                if( el.checked == true)
-                {
+            $("input[name='quote_id[]']").each((check, el) => {
+                if (el.checked == true) {
                     flag = true
                 }
             })
 
-            if(!flag) {
+            if (!flag) {
                 showToast("No Item Selected! \nPlease select at least one to proceed to \"New Order\"", "danger")
                 event.preventDefault()
             }
@@ -173,11 +172,11 @@
                                     total_balance += balance;
                                     total_value_ordered += quote.amount;
                                     var capture_savings = ''
-                                    if(quote.capture_savings == 1){
+                                    if (quote.capture_savings == 1) {
                                         capture_savings = 'Checked'
                                     }
                                     $('tbody').append('<tr>\
-                                        <td><input type="checkbox" name="quote_id[]" value="'+quote.id+'"/></td>\
+                                        <td><input type="checkbox" name="quote_id[]" value="' + quote.id + '"/></td>\
                                         <td>' + quote.estimate.sub_header.cost_code + '___' + quote.estimate.item + '</td>\
                                         <td>' + quote.description + '</td>\
                                         <td>' + quote.unit + '</td>\
@@ -186,7 +185,7 @@
                                         <td>' + USDollar.format(quote.amount) + '</td>\
                                         <td>' + USDollar.format(quote.order_total_amount) + '</td>\
                                         <td>' + USDollar.format(balance) + '</td>\
-                                        <td><input class="align-center" type="checkbox" name="capture_saving_check" '+capture_savings+' id="capture_saving_check" value="'+quote.id+'" '+capture_savings+' class="capture_saving_check" /></td>\
+                                        <td><input class="align-center" type="checkbox" name="capture_saving_check" ' + capture_savings + ' id="capture_saving_check" value="' + quote.id + '" ' + capture_savings + ' class="capture_saving_check" /></td>\
                                         <td>' + USDollar.format(quote.movement) + '</td>\
                                     </tr>');
                                 }
@@ -235,14 +234,14 @@
                             $.each(response.quotes, function(key, quote) {
                                 let balance = 0;
                                 if (subHeader.cost_code === quote.estimate.sub_header.cost_code) {
-                                    if(flag == 0){
+                                    if (flag == 0) {
                                         flag = 1;
                                         $('tbody').append('<tr style="background:#F96D22; color: #fff">\
                                             <td></td>\
                                             <td colspan="10"><strong>' + header.major_code + '___' + header.header + '</strong></td>\
                                         </tr>');
                                     }
-                                    if(subheaderflag == 0){
+                                    if (subheaderflag == 0) {
                                         subheaderflag = 1;
                                         $('tbody').append('<tr style="background:#fa9c69; color: #000">\
                                             <td></td>\
@@ -260,11 +259,11 @@
                                     total_balance += balance;
                                     total_value_ordered += quote.order_total_amount;
                                     var capture_savings = ''
-                                    if(quote.capture_savings == 1){
+                                    if (quote.capture_savings == 1) {
                                         capture_savings = 'Checked'
                                     }
                                     $('tbody').append('<tr>\
-                                        <td><input type="checkbox" name="quote_id[]" value="'+quote.id+'"/></td>\
+                                        <td><input type="checkbox" name="quote_id[]" value="' + quote.id + '"/></td>\
                                         <td>' + quote.estimate.sub_header.cost_code + '___' + quote.estimate.item + '</td>\
                                         <td>' + quote.description + '</td>\
                                         <td>' + quote.unit + '</td>\
@@ -273,7 +272,7 @@
                                         <td>' + USDollar.format(quote.amount) + '</td>\
                                         <td>' + USDollar.format(quote.order_total_amount) + '</td>\
                                         <td>' + USDollar.format(balance) + '</td>\
-                                        <td><input class="align-center" type="checkbox" name="capture_saving_check_simple" '+capture_savings+' id="capture_saving_check_simple" value="'+quote.id+'" class="capture_saving_check_simple" /></td>\
+                                        <td><input class="align-center" type="checkbox" name="capture_saving_check_simple" ' + capture_savings + ' id="capture_saving_check_simple" value="' + quote.id + '" class="capture_saving_check_simple" /></td>\
                                         <td>' + USDollar.format(quote.movement) + '</td>\
                                     </tr>');
                                 }
@@ -315,10 +314,9 @@
 
         $(document).on('change', '#view', function(e) {
             e.preventDefault();
-            if($('#view').is(":checked")){
+            if ($('#view').is(":checked")) {
                 fetchQuotes();
-            }
-            else{
+            } else {
                 fetchSimpleQuotes();
             }
         });
@@ -362,27 +360,6 @@
             });
         });
 
-
-        function showToast(text, type)
-        {
-            let types = {
-                success: ["#03d87f", "#fff"],
-                danger: ["#f5325c", "#fff"],
-            }
-            Toastify({
-            text: text,
-            duration: 3000,
-            close: true,
-            gravity: "top", // `top` or `bottom`
-            position: "right", // `left`, `center` or `right`
-            stopOnFocus: true, // Prevents dismissing of toast on hover
-            style: {
-                background: types[type][0],
-                color: types[type][1]
-            }
-            }).showToast();
-        }
-
         $(document).on('submit', '#editQuoteForm', function(e) {
             e.preventDefault();
             var quote_id = $('#quote_id').val();
@@ -421,13 +398,12 @@
     });
 
 
-    function showToast(text, type)
-        {
-            let types = {
-                success: ["#03d87f", "#fff"],
-                danger: ["#f5325c", "#fff"],
-            }
-            Toastify({
+    function showToast(text, type) {
+        let types = {
+            success: ["#03d87f", "#fff"],
+            danger: ["#f5325c", "#fff"],
+        }
+        Toastify({
             text: text,
             duration: 3000,
             close: true,
@@ -438,7 +414,7 @@
                 background: types[type][0],
                 color: types[type][1]
             }
-            }).showToast();
-        }
+        }).showToast();
+    }
 </script>
 @endsection

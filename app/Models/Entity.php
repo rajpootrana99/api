@@ -71,11 +71,18 @@ class Entity extends Model
         return $this->hasMany(Site::class);
     }
 
-    public function purchaseOrders(){
+    public function purchaseOrders()
+    {
         return $this->hasMany(PurchaseOrder::class);
     }
 
-    public function invoices(){
+    public function invoices()
+    {
         return $this->hasMany(Invoice::class);
+    }
+
+    public function tradeTypes()
+    {
+        return $this->belongsToMany(TradeType::class);
     }
 }

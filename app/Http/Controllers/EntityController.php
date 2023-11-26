@@ -6,6 +6,7 @@ use App\Models\Entity;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use App\Models\Task;
+use App\Models\TradeType;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -38,7 +39,8 @@ class EntityController extends Controller
         }
     }
 
-    public function fetchSupplierEntities(){
+    public function fetchSupplierEntities()
+    {
         $entities = Entity::with('contacts.user', 'users')->where(['type' => 1])->get();
         if (count($entities) > 0) {
             return response()->json([
@@ -53,7 +55,8 @@ class EntityController extends Controller
         }
     }
 
-    public function fetchClientEntities(){
+    public function fetchClientEntities()
+    {
         $entities = Entity::with('contacts.user', 'users')->where(['type' => 0])->get();
         if (count($entities) > 0) {
             return response()->json([
@@ -118,11 +121,12 @@ class EntityController extends Controller
     {
         $jobs = Task::with('site', 'user')->where(['type' => 2, 'entity_id' => $entity])->get();
         $contacts = Contact::with('user')->where(['entity_id' => $entity])->get();
-        $entity = Entity::find($entity);
+        $entity = Entity::with('tradeTypes')->find($entity);
         return view('entities.show', [
             'entity' => $entity,
             'jobs' => $jobs,
-            'contacts' => $contacts,]);
+            'contacts' => $contacts,
+        ]);
     }
 
     /**
@@ -172,7 +176,7 @@ class EntityController extends Controller
         $entity = Entity::find($entity);
         $oldEntityName = $entity->entity;
         $newEntityName = $request->input('entity');
-        $oldEntityPath = "explorer/".$oldEntityName;
+        $oldEntityPath = "explorer/" . $oldEntityName;
         $newEntityPath = "explorer/";
 
         $entity = $entity->update($request->all());
@@ -214,5 +218,27 @@ class EntityController extends Controller
                 'message' => 'No entity available against this id',
             ]);
         }
+    }
+
+    public function addTradeType(Request $request)
+    {
+        $entity = Entity::find($request->input('entity_id'));
+        $tradeType = TradeType::find($request->input('trade_type_id'));
+        $entity->tradeTypes()->sync($tradeType->id, false);
+        return response()->json([
+            'status' => true,
+            'message' => 'Trade type added',
+        ]);
+    }
+
+    public function removeTradeType(Request $request)
+    {
+        $entity = Entity::find($request->input('entity_id'));
+        $tradeType = TradeType::find($request->input('trade_type_id'));
+        $entity->tradeTypes()->detach($tradeType->id);
+        return response()->json([
+            'status' => false,
+            'message' => 'Trade type removed',
+        ]);
     }
 }

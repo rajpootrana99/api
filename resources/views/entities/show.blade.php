@@ -69,18 +69,18 @@
                                     </thead>
                                     <tbody>
                                         @foreach($contacts as $contact)
-                                            <tr>
-                                                <td>{{$contact->user->name}}</td>
-                                                <td>{{$contact->role}}</td>
-                                                <td>{{$contact->user->phone}}</td>
-                                                <td>{{$contact->user->email}}</td>
-                                                <td></td>
-                                                <td></td>
-                                                <td>Contractor</td>
-                                                <td><button class="btn btn-primary"><i class="fas fa-mobile-alt"></i> SMS App</button></td>
-                                                <td><button class="btn btn-primary"><i class="far fa-envelope"></i> Password</button></td>
-                                                <td></td>
-                                            </tr>
+                                        <tr>
+                                            <td>{{$contact->user->name}}</td>
+                                            <td>{{$contact->role}}</td>
+                                            <td>{{$contact->user->phone}}</td>
+                                            <td>{{$contact->user->email}}</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>Contractor</td>
+                                            <td><button class="btn btn-primary"><i class="fas fa-mobile-alt"></i> SMS App</button></td>
+                                            <td><button class="btn btn-primary"><i class="far fa-envelope"></i> Password</button></td>
+                                            <td></td>
+                                        </tr>
                                         @endforeach
                                     </tbody>
                                 </table><!--end /table-->
@@ -111,7 +111,7 @@
                                     <div class="col-sm-8">
                                         <input class="form-control" type="text" value="{{$entity->entity}}" id="example-text-input" style="width: 100%; height:30px;">
                                     </div>
-                                </div> 
+                                </div>
                                 <div class="form-group row" style="margin-bottom: 0px !important;">
                                     <label for="example-text-input" class="col-sm-2 col-form-label text-right">Phone:</label>
                                     <div class="col-sm-8">
@@ -152,7 +152,7 @@
                         </div>
                         <div class="tab-pane p-3" id="tradrtypes" role="tabpanel">
                             <div class="form-group row" id="tradeList">
-                                
+
                             </div>
                         </div>
                         <div class="tab-pane p-3" id="prequal" role="tabpanel">
@@ -161,7 +161,7 @@
                             </p>
                         </div>
                         <div class="tab-pane p-3" id="joblist" role="tabpanel">
-                        <div class="table-responsive mb-0 fixed-solution">
+                            <div class="table-responsive mb-0 fixed-solution">
                                 <table class="table table-bordered mb-0 table-sm">
                                     <thead>
                                         <tr>
@@ -172,20 +172,20 @@
                                     </thead>
                                     <tbody>
                                         @foreach($jobs as $job)
-                                            <tr>
-                                                <td>{{$job->id}}</td>
-                                                <td>{{$job->site->site_address}}<br>{{$job->title}}</td>
-                                                <td class="row">@if($job->user){{$job->user->name}}@endif
-                                                    <ul class="list-group list-group-horizontal-md col-6">
-                                                        <li class="list-group-item">Swms: 0</li>
-                                                        <li class="list-group-item">Wkrs: 5</li>
-                                                        <li class="list-group-item">Ords: 0</li>
-                                                        <li class="list-group-item">PQual: 0</li>
-                                                    </ul>
-                                                    <span class="list-group-item col-3"><a href="#">CheckList</a>
+                                        <tr>
+                                            <td>{{$job->id}}</td>
+                                            <td>{{$job->site->site_address}}<br>{{$job->title}}</td>
+                                            <td class="row">@if($job->user){{$job->user->name}}@endif
+                                                <ul class="list-group list-group-horizontal-md col-6">
+                                                    <li class="list-group-item">Swms: 0</li>
+                                                    <li class="list-group-item">Wkrs: 5</li>
+                                                    <li class="list-group-item">Ords: 0</li>
+                                                    <li class="list-group-item">PQual: 0</li>
+                                                </ul>
+                                                <span class="list-group-item col-3"><a href="#">CheckList</a>
                                                     <a href="#" class="ml-4">Status</a></span>
-                                                </td>
-                                            </tr>
+                                            </td>
+                                        </tr>
                                         @endforeach
                                     </tbody>
                                 </table><!--end /table-->
@@ -532,8 +532,55 @@
 </div>
 
 <script>
-    $(document).ready(function() {
+    function tradeTypesChange(e) {
+        var trade_type_id = e.value;
+        var entity_id = <?php echo $entity->id ?>;
+        let formData = new FormData();
+        formData.append('trade_type_id', trade_type_id);
+        formData.append('entity_id', entity_id);
+        if (e.checked) {
+            $.ajax({
+                type: "post",
+                url: "/addTradeType",
+                data: formData,
+                contentType: false,
+                processData: false,
+                beforeSend: function() {
+                    $(document).find('span.error-text').text('');
+                },
+                success: function(response) {
+                    showToast(response.message, "success");
+                    event.preventDefault();
+                },
+                error: function(error) {
 
+                }
+            });
+        } else {
+            $.ajax({
+                type: "post",
+                url: "/removeTradeType",
+                data: formData,
+                contentType: false,
+                processData: false,
+                beforeSend: function() {
+                    $(document).find('span.error-text').text('');
+                },
+                success: function(response) {
+                    showToast(response.message, "danger");
+                    event.preventDefault();
+                },
+                error: function(error) {
+
+                }
+            });
+        }
+
+    };
+
+    $(document).ready(function() {
+        var tradeTypes = <?php echo $entity->tradeTypes->pluck('id'); ?>;
+        console.log(tradeTypes);
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -549,12 +596,19 @@
                 dataType: "json",
                 success: function(response) {
                     $.each(response.tradeTypes, function(key, tradeType) {
-                        console.log(tradeType);
+                        let checked = "";
+                        for (let index = 0; index < tradeTypes.length; index++) {
+                            const element = tradeTypes[index];
+                            if (element == tradeType.id) {
+                                checked = "checked";
+                                break;
+                            }
+                        }
                         $('#tradeList').append('<div class="col-md-12">\
                             <div class="checkbox">\
                                 <div class="custom-control custom-checkbox">\
-                                    <input type="checkbox" class="custom-control-input" id="customCheck02" value="' + tradeType.id + '" data-parsley-multiple="groups" data-parsley-mincheck="2">\
-                                    <label class="custom-control-label" for="customCheck02">' + tradeType.name + '</label>\
+                                    <input type="checkbox" onchange="tradeTypesChange(this)" class="custom-control-input"' + checked + ' id="trade_type' + tradeType.id + '" value="' + tradeType.id + '" >\
+                                    <label class="custom-control-label" for="trade_type_' + tradeType.id + '">' + tradeType.name + '</label>\
                                 </div>\
                             </div>\
                         </div>');

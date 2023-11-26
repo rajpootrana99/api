@@ -12,4 +12,9 @@ class TradeType extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function entities()
+    {
+        return $this->belongsToMany(Entity::class);
+    }
 }
