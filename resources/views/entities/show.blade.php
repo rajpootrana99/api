@@ -46,6 +46,9 @@
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" href="#swms" role="tab" aria-selected="false">SWMS</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#files" role="tab" aria-selected="false">Files</a>
+                        </li>
                     </ul>
 
                     <!-- Tab panes -->
@@ -199,6 +202,11 @@
                         <div class="tab-pane p-3" id="swms" role="tabpanel">
                             <p class="text-muted mb-0">
                                 ?????????????????????????????????????????????
+                            </p>
+                        </div>
+                        <div class="tab-pane p-3" id="files" role="tabpanel">
+                            <p class="mb-0 text-muted">
+                                @include("explorer.simulator")
                             </p>
                         </div>
                     </div>

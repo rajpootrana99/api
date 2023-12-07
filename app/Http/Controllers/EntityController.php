@@ -129,6 +129,7 @@ class EntityController extends Controller
             'entity' => $entity,
             'jobs' => $jobs,
             'contacts' => $contacts,
+            'currentPath' => "explorer/".$entity->entity
         ]);
     }
 
