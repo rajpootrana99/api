@@ -68,9 +68,12 @@ class SiteController extends Controller
 
         if ($site) {
             //creating site folder under the entity folder in explorer directory
-            $entityName = Entity::find($request->input('entity_id'))->entity;
+            $entity = Entity::find($request->input('entity_id'));
             $manager = new FileExplorerController();
-            $manager->createSite($entityName, $request->input('site'));
+            if( $entity->type == "Client" ){
+                $manager->createSite($entity->entity, $request->input('site'));
+            }
+
 
             return response()->json(['status' => 1, 'message' => 'Site Added Successfully']);
         }
@@ -120,7 +123,7 @@ class SiteController extends Controller
     public function update(Request $request, $site)
     {
         $validator = Validator::make($request->all(), [
-            'site' => ['required', 'string', 'min:3', 'unique:sites,site,NULL,id,entity_id,' . $request->input('entity_id')],
+            'site' => ['required', 'string', 'min:3', 'unique:sites,site,'.$site.',id,entity_id,' . $request->input('entity_id')],
             'site_address' => ['required', 'string', 'min:3'],
             'suburb' => ['required'],
             'state' => ['required'],
@@ -136,14 +139,17 @@ class SiteController extends Controller
         //Change site name also under the entity name
         $siteOldName = $site->site;
         $siteNewName = $request->input("site");
-        $entityName = Entity::find($site->entity_id)->entity;
+        $entity = Entity::find($site->entity_id);
         $manager = new FileExplorerController();
-        $manager->saveEditedData(new Request([
-            "name" => $siteNewName,
-            "path" => "explorer/".$entityName."/".$siteOldName,
-            "isDir" => true,
-            "newParentFolderPath" => "explorer/".$entityName,
-        ]));
+        if( $entity->type == "Client" ){
+            $manager->saveEditedData(new Request([
+                "name" => $siteNewName,
+                "path" => "explorer/".$entity->entity."/Sites/".$siteOldName,
+                "isDir" => true,
+                "newParentFolderPath" => "explorer/".$entity->entity."/Sites",
+            ]));
+        }
+
 
         $site->update($request->all());
         if ($site) {
@@ -159,8 +165,18 @@ class SiteController extends Controller
      */
     public function destroy(Site $site)
     {
+        $entity = Entity::find($site->entity_id);
+        $site_name = $site->site;
+
         $site->users()->detach();
         $site->delete();
+
+
+        if($entity->type == "Client"){
+            $sitePath = "explorer/".$entity->entity."/Sites/".$site_name;
+            $manager = new FileExplorerController();
+            $manager->deleteFileFolder(new Request(["file" => base64_encode($sitePath)]));
+        }
         return response()->json([
             'status' => 1,
             'message' => 'Site deleted successfully',

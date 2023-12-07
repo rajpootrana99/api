@@ -91,7 +91,7 @@ class JobController extends Controller
             }
             return view('invoice.create', ['invoiceNo' => $invoiceNo]);
         }
-        
+
     }
 
     /**
@@ -118,41 +118,41 @@ class JobController extends Controller
      */
     public function update(Request $request, $job)
     {
-        $job= Task::find($job);
+        // $job= Task::find($job);
 
-        $jobOldName = $job->title;
-        $jobNewName = $request->input("title");
+        // $jobOldName = $job->title;
+        // $jobNewName = $request->input("title");
 
         $job->update($request->all());
 
         //Change task name in all places
-        $siteName = Site::find($job->site_id)->site;
-        $entityName = Entity::find($job->entity_id)->entity;
-        $manager = new FileExplorerController();
-        $manager->saveEditedData(new Request([
-            "name" => $jobNewName,
-            "path" => "explorer/".$entityName."/".$siteName."/Tasks"."/".$jobOldName,
-            "isDir" => true,
-            "newParentFolderPath" => "explorer/".$entityName."/".$siteName."/Tasks",
-        ]));
+        // $siteName = Site::find($job->site_id)->site;
+        // $entityName = Entity::find($job->entity_id)->entity;
+        // $manager = new FileExplorerController();
+        // $manager->saveEditedData(new Request([
+        //     "name" => $jobNewName,
+        //     "path" => "explorer/".$entityName."/".$siteName."/Tasks"."/".$jobOldName,
+        //     "isDir" => true,
+        //     "newParentFolderPath" => "explorer/".$entityName."/".$siteName."/Tasks",
+        // ]));
 
-        if($job->type ==1 ){
-            $manager->saveEditedData(new Request([
-                "name" => $jobNewName,
-                "path" => "explorer/".$entityName."/".$siteName."/Enquiries"."/".$jobOldName,
-                "isDir" => true,
-                "newParentFolderPath" => "explorer/".$entityName."/".$siteName."/Enquiries",
-            ]));
+        // if($job->type ==1 ){
+        //     $manager->saveEditedData(new Request([
+        //         "name" => $jobNewName,
+        //         "path" => "explorer/".$entityName."/".$siteName."/Enquiries"."/".$jobOldName,
+        //         "isDir" => true,
+        //         "newParentFolderPath" => "explorer/".$entityName."/".$siteName."/Enquiries",
+        //     ]));
 
-            if($job->type ==2 ){
-                $manager->saveEditedData(new Request([
-                    "name" => $jobNewName,
-                    "path" => "explorer/".$entityName."/".$siteName."/Jobs"."/".$jobOldName,
-                    "isDir" => true,
-                    "newParentFolderPath" => "explorer/".$entityName."/".$siteName."/Jobs",
-                ]));
-            }
-        }
+        //     if($job->type ==2 ){
+        //         $manager->saveEditedData(new Request([
+        //             "name" => $jobNewName,
+        //             "path" => "explorer/".$entityName."/".$siteName."/Jobs"."/".$jobOldName,
+        //             "isDir" => true,
+        //             "newParentFolderPath" => "explorer/".$entityName."/".$siteName."/Jobs",
+        //         ]));
+        //     }
+        // }
 
         if($job){
             return response()->json([
@@ -199,11 +199,11 @@ class JobController extends Controller
         ]);
 
         //creating folder under site's enquiry folder with the name of the task turning to enuiry
-        $jobName = $task->title;
-        $entityName = Entity::find($task->entity_id)->entity;
-        $siteName = Site::find($task->site_id)->site;
-        $manager = new FileExplorerController();
-        $manager->createJob($entityName, $siteName, $jobName);
+        // $jobName = $task->title;
+        // $entityName = Entity::find($task->entity_id)->entity;
+        // $siteName = Site::find($task->site_id)->site;
+        // $manager = new FileExplorerController();
+        // $manager->createJob($entityName, $siteName, $jobName);
 
         return redirect()->route('job.index');
     }

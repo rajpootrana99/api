@@ -8,6 +8,7 @@ use App\Models\Site;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Log;
 
 class UserController extends Controller
 {
@@ -50,7 +51,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'fname' => ['required', 'string', 'min:3'],
             'lname' => ['required', 'string', 'min:3'],
-            'email' => ['required', 'email', 'min:3'],
+            'email' => ['required', 'email', 'min:3', 'unique:users'],
             'phone' => ['required'],
             'entity_id' => ['required'],
             'role' => ['required', 'string', 'min:3'],
@@ -62,8 +63,23 @@ class UserController extends Controller
                 'error' => $validator->errors()->toArray()
             ]);
         }
+        else{
+            $username = $request->fname . ' ' . $request->lname;
+            $data = count(User::where("entity_id", $request->entity_id)->where("name", $username)->get());
+            if($data > 0)
+            {
+                $validator->errors()->add("fname", "User with this Full Name already exists in entity ");
+                $validator->errors()->add("lname", "User with this Full Name already exists in entity ");
+                return response()->json([
+                    'status' => 0,
+                    'error' => $validator->errors()->toArray()
+                ]);
+            }
+        }
+
+
         $user = User::create([
-            'name' => $request->fname . ' ' . $request->lname,
+            'name' => $username,
             'email' => $request->email,
             'phone' => $request->phone,
             'password' => Hash::make('password'),
@@ -72,8 +88,10 @@ class UserController extends Controller
             'is_approved' => $request->active,
         ]);
         $entity = Entity::find($request->entity_id);
-        if($entity->type == 0){
+        if($entity->type == 'Client'){
             $user->assignRole('Client');
+            $manager = new FileExplorerController();
+            $manager->createClient($entity->entity, $request->fname . ' ' . $request->lname);
         }
         else{
             $user->assignRole('Supplier');
@@ -146,7 +164,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'fname' => ['required', 'string', 'min:3'],
             'lname' => ['required', 'string', 'min:3'],
-            'email' => ['required', 'email', 'min:3'],
+            'email' => ['required', 'email', 'min:3', 'unique:users,email,'.$user.',id'],
             'phone' => ['required'],
             'entity_id' => ['required'],
             'role' => ['required', 'string', 'min:3'],
@@ -158,7 +176,24 @@ class UserController extends Controller
                 'error' => $validator->errors()->toArray()
             ]);
         }
+        else{
+            $username = $request->fname . ' ' . $request->lname;
+            $data = count(User::where("entity_id", $request->entity_id)->where("name", $username)->get());
+            if($data > 0)
+            {
+                $validator->errors()->add("fname", "User with this Full Name already exists in entity ");
+                $validator->errors()->add("lname", "User with this Full Name already exists in entity ");
+                return response()->json([
+                    'status' => 0,
+                    'error' => $validator->errors()->toArray()
+                ]);
+            }
+        }
         $user = User::find($user);
+
+        $userOldName = $user->name;
+        $userNewName = $request->fname . ' ' . $request->lname;
+
         $user->update([
             'name' => $request->fname . ' ' . $request->lname,
             'email' => $request->email,
@@ -168,8 +203,18 @@ class UserController extends Controller
             'is_approved' => $request->active,
         ]);
         $entity = Entity::find($request->entity_id);
-        if($entity->type == 0){
+
+        if($entity->type == "Client"){
             $user->assignRole('Client');
+            //Change user name in all places
+            $entityName = $entity->entity;
+            $manager = new FileExplorerController();
+            $manager->saveEditedData(new Request([
+                "name" => $userNewName,
+                "path" => "explorer/".$entityName."/Clients"."/".$userOldName,
+                "isDir" => true,
+                "newParentFolderPath" => "explorer/".$entityName."/Clients",
+            ]));
         }
         else{
             $user->assignRole('Supplier');
@@ -190,8 +235,17 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        $entity = Entity::find($user->entity_id);
+        $clientPath = "explorer/".$entity->entity."/Clients/".$user->name;
+
         $user->sites()->detach();
         $user->delete();
+
+        if($entity->type == "Client"){
+            $manager = new FileExplorerController();
+            $manager->deleteFileFolder(new Request(["file" => base64_encode($clientPath)]));
+        }
+
         return response()->json([
             'status' => 1,
             'message' => 'User deleted successfully',
