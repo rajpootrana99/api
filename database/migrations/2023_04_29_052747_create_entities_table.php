@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('primary_phone')->nullable();
             $table->string('fax')->nullable();
             $table->string('director')->nullable();
-            $table->string('trade')->nullable();
+            $table->integer('trading_type')->nullable();
             $table->string('inc')->nullable();
             $table->string('abbrev')->nullable();
             $table->string('pl_expirey')->nullable();

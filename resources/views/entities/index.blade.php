@@ -132,8 +132,13 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="trade" id="trade" placeholder="Enter Trade">
-                                <span class="text-danger error-text trade_error"></span>
+                                <select class="select2 pl-1 form-control" name="trading_type" id="trading_type" style="width: 100%; height:30px;">
+                                    <option value="" disabled selected>Select Trading Type</option>
+                                    <option value="0">Company</option>
+                                    <option value="1">Trust</option>
+                                    <option value="2">Sole Trader</option>
+                                </select>
+                                <span class="text-danger error-text trading_type_error"></span>
                             </div>
                         </div>
                         <div class="col-lg-4">
@@ -279,8 +284,13 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="trade" id="edit_trade" placeholder="Enter Trade">
-                                <span class="text-danger error-text trade_update_error"></span>
+                                <select class="select2 pl-1 form-control edit_trading_type" name="trading_type" id="edit_trading_type" style="width: 100%; height:30px;">
+                                    <option value="" disabled selected>Select Trading Type</option>
+                                    <option value="0">Company</option>
+                                    <option value="1">Trust</option>
+                                    <option value="2">Sole Trader</option>
+                                </select>
+                                <span class="text-danger error-text trading_type_update_error"></span>
                             </div>
                         </div>
                         <div class="col-lg-4">
@@ -394,10 +404,11 @@
                 success: function(response) {
                     $('tbody').html("");
                     $.each(response.entities, function(key, entity) {
+
                         $('tbody').append('<tr>\
                             <td>' + entity.id + '</td>\
                             <td>' + entity.type + '</td>\
-                            <td><a href="/entity/'+entity.id+'">' + entity.entity + '</a></td>\
+                            <td><a href="/entity/' + entity.id + '">' + entity.entity + '</a></td>\
                             <td>' + entity.abn + '</td>\
                             <td>' + entity.email + '</td>\
                             <td>' + entity.address + '</td>\
@@ -405,7 +416,7 @@
                             <td>' + entity.mobile + '</td>\
                             <td>' + entity.fax + '</td>\
                             <td>' + entity.director + '</td>\
-                            <td>' + entity.trade + '</td>\
+                            <td>' + entity.trading_type + '</td>\
                             <td>' + entity.abbrev + '</td>\
                             <td><button value="' + entity.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
                     </tr>');
@@ -466,6 +477,15 @@
                         if (response.entity.type == 'Client') {
                             type = 0;
                         }
+                        if (response.entity.trading_type == 'Company') {
+                            $('#edit_trading_type').val(0).change();
+                        } else if (response.entity.trading_type == 'Trust') {
+                            $('#edit_trading_type').val(1).change();
+                        } else if (response.entity.trading_type == 'Sole Trader') {
+                            $('#edit_trading_type').val(2).change();
+                        } else {
+                            $('#edit_trading_type').val(null).change();
+                        }
                         $('.edit_type').val(type).change();
                         $('.edit_active').val(active).change();
                         $('#entity_id').val(response.entity.id);
@@ -478,7 +498,6 @@
                         $('#edit_mobile').val(response.entity.mobile);
                         $('#edit_fax').val(response.entity.fax);
                         $('#edit_director').val(response.entity.director);
-                        $('#edit_trade').val(response.entity.trade);
                         $('#edit_inc').val(response.entity.inc);
                         $('#edit_abbrev').val(response.entity.abbrev);
                         $('#edit_pl_expirey').val(response.entity.pl_expirey);

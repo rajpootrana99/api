@@ -18,7 +18,7 @@ class Entity extends Model
         'primary_phone',
         'fax',
         'director',
-        'trade',
+        'trading_type',
         'inc',
         'abbrev',
         'pl_expirey',
@@ -53,6 +53,20 @@ class Entity extends Model
         return [
             1 => 'Supplier',
             0 => 'Client',
+        ];
+    }
+
+    public function getTradingTypeAttribute($attribute)
+    {
+        return $this->tradingTypeOptions()[$attribute] ?? 0;
+    }
+
+    public function tradingTypeOptions()
+    {
+        return [
+            0 => 'Company',
+            1 => 'Trust',
+            2 => 'Sole Trader',
         ];
     }
 

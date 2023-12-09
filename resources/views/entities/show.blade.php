@@ -94,13 +94,18 @@
                                 <div class="form-group row" style="margin-bottom: 0px !important;">
                                     <label for="example-text-input" class="col-sm-2 col-form-label text-right">Registered Name:</label>
                                     <div class="col-sm-8">
-                                        <input class="form-control" type="text" value="" id="example-text-input" style="width: 100%; height:30px;">
+                                        <input class="form-control" type="text" value="{{$entity->entity}}" id="example-text-input" style="width: 100%; height:30px;">
                                     </div>
                                 </div>
                                 <div class="form-group row" style="margin-bottom: 0px !important;">
                                     <label for="example-text-input" class="col-sm-2 col-form-label text-right">Trading Type:</label>
                                     <div class="col-sm-8">
-                                        <input class="form-control" type="text" value="{{$entity->entity}}" id="example-text-input" style="width: 100%; height:30px;">
+                                        <select class="select2 pl-1 form-control" name="trading_type" id="trading_type" style="width: 100%; height:30px;">
+                                            <option value="" disabled selected>Select Trading Type</option>
+                                            <option value="0" {{ 'Company' == $entity->trading_type ? 'selected' : ''}}>Company</option>
+                                            <option value="1" {{ 'Trust' == $entity->trading_type ? 'selected' : ''}}>Trust</option>
+                                            <option value="2" {{ 'Sole Trader' == $entity->trading_type ? 'selected' : ''}}>Sole Trader</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group row" style="margin-bottom: 0px !important;">
