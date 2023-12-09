@@ -27,6 +27,8 @@ class User extends Authenticatable
         'phone',
         'password',
         'is_approved',
+        'orders',
+        'accounts',
         'image',
     ];
 
@@ -40,6 +42,32 @@ class User extends Authenticatable
         return [
             1 => 'Approved',
             0 => 'Not Approved',
+        ];
+    }
+
+    public function getOrdersAttribute($attribute)
+    {
+        return $this->ordersOptions()[$attribute] ?? 0;
+    }
+
+    public function ordersOptions()
+    {
+        return [
+            0 => 'No',
+            1 => 'Yes',
+        ];
+    }
+
+    public function getAccountsAttribute($attribute)
+    {
+        return $this->accountsOptions()[$attribute] ?? 0;
+    }
+
+    public function accountsOptions()
+    {
+        return [
+            0 => 'No',
+            1 => 'Yes',
         ];
     }
 

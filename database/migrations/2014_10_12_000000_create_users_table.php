@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('address')->nullable()->unique();
             $table->bigInteger('phone')->nullable();
             $table->integer('is_approved')->nullable()->default(0);
+            $table->integer('orders')->nullable()->default(0);
+            $table->integer('accounts')->nullable()->default(0);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->string('image')->nullable()->default(' ');

@@ -64,6 +64,9 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
     Route::post('/removeTradeType', [EntityController::class, 'removeTradeType'])->name('entity.removeTradeType');
     Route::get('/fetchSupplierEntities', [EntityController::class, 'fetchSupplierEntities'])->name('supplierEntity.get');
     Route::get('/fetchClientEntities', [EntityController::class, 'fetchClientEntities'])->name('clientEntity.get');
+    Route::get('/fetchEntityUsers/{entity}', [EntityController::class, 'fetchEntityUsers'])->name('entityUser.get');
+    Route::post('/changeOrder', [EntityController::class, 'changeOrder'])->name('entity.changeOrder');
+    Route::post('/changeAccount', [EntityController::class, 'changeAccount'])->name('entity.changeAccount');
 
     // SITE ROUTES
     Route::resource('site', SiteController::class);
