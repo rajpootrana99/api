@@ -18,7 +18,8 @@ class NoteController extends Controller
         return view('notes.index');
     }
 
-    public function fetchNotes(){
+    public function fetchNotes()
+    {
         $notes = Note::all();
         return response()->json([
             'status' => true,
@@ -46,12 +47,13 @@ class NoteController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'note' => ['required', 'string'],
+            'note_type' => ['required', 'string'],
         ]);
         if (!$validator->passes()) {
             return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
         }
         $note = Note::create($request->all());
-        if($note){
+        if ($note) {
             return response()->json([
                 'status' => true,
                 'message' => 'Note added successfully',
@@ -96,6 +98,7 @@ class NoteController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'note' => ['required', 'string'],
+            'note_type' => ['required', 'string'],
         ]);
         if (!$validator->passes()) {
             return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
@@ -103,7 +106,7 @@ class NoteController extends Controller
 
         $note = Note::find($note);
         $note->update($request->all());
-        if($note){
+        if ($note) {
             return response()->json([
                 'status' => true,
                 'message' => 'Note Updated successfully',
@@ -120,14 +123,13 @@ class NoteController extends Controller
     public function destroy($note)
     {
         $note = Note::find($note);
-        if($note){
+        if ($note) {
             $note->delete();
             return response()->json([
                 'status' => true,
                 'message' => 'Note deleted successfully',
             ]);
-        }
-        else{
+        } else {
             return response()->json([
                 'status' => true,
                 'message' => 'Note doesnot exist',

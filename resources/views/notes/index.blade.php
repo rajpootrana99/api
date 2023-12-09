@@ -30,6 +30,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Notes</th>
+                                    <th>Note Type</th>
                                     <th width="3%">Modify</th>
                                     <th width="3%">Delete</th>
                                 </tr>
@@ -64,6 +65,12 @@
                                 <span class="text-danger error-text note_error"></span>
                             </div>
                         </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="note_type" id="note_type" placeholder="Enter Note Type">
+                                <span class="text-danger error-text note_type_error"></span>
+                            </div>
+                        </div>
                     </div><!--end row-->
                 </div><!--end modal-body-->
                 <div class="modal-footer">
@@ -96,7 +103,12 @@
                                 <span class="text-danger error-text note_update_error"></span>
                             </div>
                         </div>
-
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="note_type" id="edit_note_type" placeholder="Enter Note Type">
+                                <span class="text-danger error-text note_type_update_error"></span>
+                            </div>
+                        </div>
                     </div><!--end row-->
                 </div><!--end modal-body-->
                 <div class="modal-footer">
@@ -157,6 +169,7 @@
                         $('tbody').append('<tr>\
                             <td>' + note.id + '</td>\
                             <td>' + note.note + '</td>\
+                            <td>' + note.note_type + '</td>\
                             <td><button value="' + note.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
                             <td><button value="' + note.id + '" style="border: none; background-color: #fff" class="delete_btn"><i class="fa fa-trash"></i></button></td>\
                     </tr>');
@@ -205,9 +218,10 @@
                 type: "GET",
                 url: 'note/' + note_id + '/edit',
                 success: function(response) {
-                    $('#editNoteLabel').text('Trade Type ID ' + response.note.id);
+                    $('#editNoteLabel').text('Note ID ' + response.note.id);
                     $('#note_id').val(response.note.id);
                     $('#edit_note').val(response.note.note);
+                    $('#edit_note_type').val(response.note.note_type);
                 }
             });
         });

@@ -11,7 +11,7 @@
                         <h4 class="page-title">Invoice</h4>
                     </div><!--end col-->
                     <div class="col-4">
-                    <a href="{{ route('invoice.create') }}" class="btn btn-primary" style="float:right;margin-left: 10px"><i class="fa fa-plus"></i> New Invoice </a>
+                        <a href="{{ route('invoice.create') }}" class="btn btn-primary" style="float:right;margin-left: 10px"><i class="fa fa-plus"></i> New Invoice </a>
                     </div>
                 </div><!--end row-->
             </div><!--end page-title-box-->
@@ -53,7 +53,7 @@
                     <strong><a href="" style="float:right; margin-left: 10px">Reset</a></strong>
                 </div><!--end card-header-->
                 <div class="card-body">
-                <p href="" style="float:right; margin-left: 10px"><strong>Total Amount $0.00</strong></p>
+                    <p href="" style="float:right; margin-left: 10px"><strong>Total Amount $0.00</strong></p>
                     <p href="" style="float:right; margin-left: 10px">Total Amount $0.00</p>
                     <div class="table-responsive mb-0 fixed-solution">
                         <table class="table table-bordered mb-0 table-centered">
@@ -89,8 +89,8 @@
 
 <script>
     let USDollar = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
+        style: 'currency',
+        currency: 'USD',
     });
 
     $(document).ready(function() {
@@ -124,8 +124,8 @@
                                     <i class="las la-ellipsis-v font-20 text-muted"></i>\
                                 </a>\
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel11">\
-                                    <a class="dropdown-item" href="invoice/'+invoice.id+'/edit">Edit</a>\
-                                    <a class="dropdown-item" target="_blank" href="invoice/'+invoice.id+'">Invoice</a>\
+                                    <a class="dropdown-item" href="invoice/' + invoice.id + '/edit">Edit</a>\
+                                    <a class="dropdown-item" target="_blank" href="invoice/' + invoice.id + '">View</a>\
                                 </div>\
                             </div>\</td>\
                     </tr>');

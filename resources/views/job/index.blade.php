@@ -31,6 +31,7 @@
                                             <option value="1">Scheduled</option>
                                             <option value="2">In Progress</option>
                                             <option value="3">Complete</option>
+                                            <option value="4">Invoiced</option>
                                         </select>
                                     </div>
                                 </div>
@@ -52,7 +53,7 @@
                         <table class="table table-bordered mb-0 table-centered">
                             <thead>
                                 <tr>
-                                <th>#</th>
+                                    <th>#</th>
                                     <th>Site</th>
                                     <th>Description</th>
                                     <th>Suppliers</th>
@@ -110,7 +111,8 @@
                                     <option value="0">Pending</option>
                                     <option value="1">Scheduled</option>
                                     <option value="2">In Progress</option>
-                                    <option value="2">Complete</option>
+                                    <option value="3">Invoiced</option>
+                                    <option value="4">Complete</option>
                                 </select>
                                 <span class="text-danger error-text job_status_update_error"></span>
                             </div>
@@ -131,8 +133,8 @@
         var jobs;
 
         let USDollar = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
+            style: 'currency',
+            currency: 'USD',
         });
 
         $.ajaxSetup({
@@ -143,7 +145,7 @@
 
         fetchJobs();
 
-        $("#search-input").keyup(function(){
+        $("#search-input").keyup(function() {
             $('tbody').html("");
             var val = $.trim(this.value);
             if (val.length == 0) {
@@ -151,7 +153,7 @@
             }
             if (val) {
                 val = val.toLowerCase();
-                $.each(jobs, function(_,job) {
+                $.each(jobs, function(_, job) {
                     if (job.site.site.toLowerCase().indexOf(val) != -1) {
                         viewJobs(job);
                     }
@@ -159,31 +161,37 @@
             }
         });
 
-        function showJobs(jobs){
-            $('tbody').html("");   
+        function showJobs(jobs) {
+            $('tbody').html("");
             var total_quoted_price_ex_gst = 0;
-            var total_profit = 0;            
+            var total_profit = 0;
             $.each(jobs, function(key, job) {
-                if($('#view_status').val() == 0){
-                    if(job.job_status == 'Pending'){     
+                if ($('#view_status').val() == 0) {
+                    if (job.job_status == 'Pending') {
                         console.log(job)
                         viewJobs(job);
                     }
                 }
-                if($('#view_status').val() == 1){
-                    if(job.job_status == 'Scheduled'){
+                if ($('#view_status').val() == 1) {
+                    if (job.job_status == 'Scheduled') {
                         console.log(job)
                         viewJobs(job);
                     }
                 }
-                if($('#view_status').val() == 2){
-                    if(job.job_status == 'In Progress'){
+                if ($('#view_status').val() == 2) {
+                    if (job.job_status == 'In Progress') {
                         console.log(job)
                         viewJobs(job);
                     }
                 }
-                if($('#view_status').val() == 3){
-                    if(job.job_status == 'Complete'){
+                if ($('#view_status').val() == 3) {
+                    if (job.job_status == 'Invoiced') {
+                        console.log(job)
+                        viewJobs(job);
+                    }
+                }
+                if ($('#view_status').val() == 4) {
+                    if (job.job_status == 'Complete') {
                         console.log(job)
                         viewJobs(job);
                     }
@@ -193,12 +201,14 @@
             $('#total_profit').html(USDollar.format(total_profit));
         }
 
-        function viewJobs(job){
-            var status = '';  
+        function viewJobs(job) {
+            var status = '';
             if (job.job_status === "Scheduled") {
                 status = '<span class="badge badge-primary">' + job.job_status + '</span>';
             } else if (job.job_status === "Complete") {
                 status = '<span class="badge badge-success">' + job.job_status + '</span>';
+            } else if (job.job_status === "Invoiced") {
+                status = '<span class="badge badge-info">' + job.job_status + '</span>';
             } else if (job.job_status === "In Progress") {
                 status = '<span class="badge badge-warning">' + job.job_status + '</span>';
             } else {
@@ -214,8 +224,8 @@
             total_quoted_price_ex_gst += quoted_price_ex_gst;
             total_profit += profit;
             var name = "No Client";
-            if (job.contact_id != null) {
-                name = job.contact.user.name;
+            if (job.user_id != null) {
+                name = job.user.name;
             }
             $('tbody').append('<tr>\
                 <td>' + job.id + '</td>\
@@ -237,10 +247,10 @@
                     </a>\
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel11">\
                         <button value="' + job.id + '" style="border: none; background-color: #fff" class="edit_btn dropdown-item">Edit</button>\
-                        <a class="dropdown-item" href="/quote/'+job.id+'">Budget</a>\
+                        <a class="dropdown-item" href="/quote/' + job.id + '">Budget</a>\
                         <a class="dropdown-item" href="/quote/' + job.id + '/edit/">Quote</a>\
                         <a class="dropdown-item" href="#">Chat</a>\
-                        <a class="dropdown-item" target="_blank" href="job/'+job.id+'">Invoice</a>\
+                        <a class="dropdown-item" target="_blank" href="job/' + job.id + '">Invoice</a>\
                     </div>\
                 </div>\</td>\
             </tr>');
@@ -284,8 +294,11 @@
                         if (response.task.job_status == 'In Progress') {
                             status = 2;
                         }
-                        if (response.task.job_status == 'Complete') {
+                        if (response.task.job_status == 'Invoiced') {
                             status = 3;
+                        }
+                        if (response.task.job_status == 'Complete') {
+                            status = 4;
                         }
                         $('#task_id').val(task_id);
                         $('.edit_job_status').val(status).change();
