@@ -86,41 +86,41 @@ class EnquiryController extends Controller
      */
     public function update(Request $request, $enquiry)
     {
-        $enquiry = Task::find($enquiry);
+        // $enquiry = Task::find($enquiry);
 
-        $enquiryOldName = $enquiry->title;
-        $enquiryNewName = $request->input("title");
+        // $enquiryOldName = $enquiry->title;
+        // $enquiryNewName = $request->input("title");
 
         $enquiry->update($request->all());
 
         //Change task name in all places
-        $siteName = Site::find($enquiry->site_id)->site;
-        $entityName = Entity::find($enquiry->entity_id)->entity;
-        $manager = new FileExplorerController();
-        $manager->saveEditedData(new Request([
-            "name" => $enquiryNewName,
-            "path" => "explorer/".$entityName."/".$siteName."/Tasks"."/".$enquiryOldName,
-            "isDir" => true,
-            "newParentFolderPath" => "explorer/".$entityName."/".$siteName."/Tasks",
-        ]));
+        // $siteName = Site::find($enquiry->site_id)->site;
+        // $entityName = Entity::find($enquiry->entity_id)->entity;
+        // $manager = new FileExplorerController();
+        // $manager->saveEditedData(new Request([
+        //     "name" => $enquiryNewName,
+        //     "path" => "explorer/".$entityName."/".$siteName."/Tasks"."/".$enquiryOldName,
+        //     "isDir" => true,
+        //     "newParentFolderPath" => "explorer/".$entityName."/".$siteName."/Tasks",
+        // ]));
 
-        if($enquiry->type >= 1 ){
-            $manager->saveEditedData(new Request([
-                "name" => $enquiryNewName,
-                "path" => "explorer/".$entityName."/".$siteName."/Enquiries"."/".$enquiryOldName,
-                "isDir" => true,
-                "newParentFolderPath" => "explorer/".$entityName."/".$siteName."/Enquiries",
-            ]));
+        // if($enquiry->type >= 1 ){
+        //     $manager->saveEditedData(new Request([
+        //         "name" => $enquiryNewName,
+        //         "path" => "explorer/".$entityName."/".$siteName."/Enquiries"."/".$enquiryOldName,
+        //         "isDir" => true,
+        //         "newParentFolderPath" => "explorer/".$entityName."/".$siteName."/Enquiries",
+        //     ]));
 
-            if($enquiry->type >= 2 ){
-                $manager->saveEditedData(new Request([
-                    "name" => $enquiryNewName,
-                    "path" => "explorer/".$entityName."/".$siteName."/Jobs"."/".$enquiryOldName,
-                    "isDir" => true,
-                    "newParentFolderPath" => "explorer/".$entityName."/".$siteName."/Jobs",
-                ]));
-            }
-        }
+        //     if($enquiry->type >= 2 ){
+        //         $manager->saveEditedData(new Request([
+        //             "name" => $enquiryNewName,
+        //             "path" => "explorer/".$entityName."/".$siteName."/Jobs"."/".$enquiryOldName,
+        //             "isDir" => true,
+        //             "newParentFolderPath" => "explorer/".$entityName."/".$siteName."/Jobs",
+        //         ]));
+        //     }
+        // }
 
         if($enquiry){
             return response()->json([
@@ -151,11 +151,11 @@ class EnquiryController extends Controller
         ]);
 
         //creating folder under site's enquiry folder with the name of the task turning to enuiry
-        $enquiryName = $task->title;
-        $entityName = Entity::find($task->entity_id)->entity;
-        $siteName = Site::find($task->site_id)->site;
-        $manager = new FileExplorerController();
-        $manager->createEnquiry($entityName, $siteName, $enquiryName);
+        // $enquiryName = $task->title;
+        // $entityName = Entity::find($task->entity_id)->entity;
+        // $siteName = Site::find($task->site_id)->site;
+        // $manager = new FileExplorerController();
+        // $manager->createEnquiry($entityName, $siteName, $enquiryName);
 
         return redirect()->route('enquiry.index');
     }

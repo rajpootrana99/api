@@ -70,8 +70,18 @@ class TaskController extends Controller
     {
         $task = Task::find($task);
         if ($task) {
+            $entity = Entity::find($task->entity_id);
+            $siteName = Site::find($task->site_id)->site;
+            $taskName = $task->title;
+
             $task->items()->delete();
             $task->delete();
+
+            if($entity->type == "Client"){
+                $taskPath = "explorer/".$entity->entity."/Sites/".$siteName."/Tasks/".$taskName;
+                $manager = new FileExplorerController();
+                $manager->deleteFileFolder(new Request(["file" => base64_encode($taskPath)]));
+            }
             return response()->json([
                 'status' => 200,
                 'message' => 'Task Deleted Successfully'
@@ -119,10 +129,14 @@ class TaskController extends Controller
 
         //directory with task name in respected entity
         $taskName = $request->input('title');
-        $entityName = Entity::find($request->input('entity_id'))->entity;
+        $entity = Entity::find($request->input('entity_id'));
         $siteName = Site::find($request->input('site_id'))->site;
         $manager = new FileExplorerController();
-        $manager->createTask($entityName, $siteName, $taskName);
+        if( $entity->type == "Client" ){
+            $entityName = $entity->entity;
+            $manager->createTask($entityName, $siteName, $taskName);
+        }
+
 
         return redirect()->route('task.index');
     }
@@ -145,36 +159,25 @@ class TaskController extends Controller
 
         $task->update($request->all());
 
-        //Change task name in all places
-        $siteName = Site::find($task->site_id)->site;
-        $entityName = Entity::find($task->entity_id)->entity;
-        $manager = new FileExplorerController();
-        $manager->saveEditedData(new Request([
-            "name" => $taskNewName,
-            "path" => "explorer/".$entityName."/".$siteName."/Tasks"."/".$taskOldName,
-            "isDir" => true,
-            "newParentFolderPath" => "explorer/".$entityName."/".$siteName."/Tasks",
-        ]));
 
-        if($task->type >=1 ){
-            $manager->saveEditedData(new Request([
-                "name" => $taskNewName,
-                "path" => "explorer/".$entityName."/".$siteName."/Enquiries"."/".$taskOldName,
-                "isDir" => true,
-                "newParentFolderPath" => "explorer/".$entityName."/".$siteName."/Enquiries",
-            ]));
-
-            if($task->type >=2 ){
-                $manager->saveEditedData(new Request([
-                    "name" => $taskNewName,
-                    "path" => "explorer/".$entityName."/".$siteName."/Jobs"."/".$taskOldName,
-                    "isDir" => true,
-                    "newParentFolderPath" => "explorer/".$entityName."/".$siteName."/Jobs",
-                ]));
-            }
-        }
 
         if($task){
+
+            //Change task name in all places
+            $siteName = Site::find($task->site_id)->site;
+            $entity = Entity::find($task->entity_id);
+            $manager = new FileExplorerController();
+            $entityName = $entity->entity;
+            if( $entity->type == "Client" ){
+                $manager->saveEditedData(new Request([
+                    "name" => $taskNewName,
+                    "path" => "explorer/".$entityName."/Sites"."/".$siteName."/Tasks"."/".$taskOldName,
+                    "isDir" => true,
+                    "newParentFolderPath" => "explorer/".$entityName."/Sites"."/".$siteName."/Tasks",
+                ]));
+            }
+
+
             return response()->json([
                 'status' => true,
                 'message' => 'Task updated succesfully'

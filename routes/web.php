@@ -46,7 +46,7 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
     Route::get('/download/{file}', [FileExplorerController::class, 'download'])->name('explorer.download');
     Route::post('/delete', [FileExplorerController::class, 'deleteFileFolder'])->name('explorer.delete');
     Route::post('/edit', [FileExplorerController::class, 'getEditData'])->name('explorer.getEditData');
-    Route::get('/tree/{path}', [FileExplorerController::class, 'getFolderTree'])->name('explorer.getFolderTree');
+    Route::get('/tree/{path?}', [FileExplorerController::class, 'getFolderTree'])->name('explorer.getFolderTree');
     Route::post('/save', [FileExplorerController::class, 'saveEditedData'])->name('explorer.saveEditedData');
     Route::post('/create', [FileExplorerController::class, 'createFolder'])->name('explorer.createFolder');
     Route::get('/getUploadFolderInfo/{file}', [FileExplorerController::class, 'getUploadFolderInfo'])->name('explorer.getUploadFolderInfo');

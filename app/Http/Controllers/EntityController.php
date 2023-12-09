@@ -99,14 +99,17 @@ class EntityController extends Controller
                 'error' => $validator->errors()->toArray()
             ]);
         }
+
         $entity = Entity::create($request->all());
+        $entity_type = $request->input("type");
         $entityName = $request->input('entity');
         $manager = new FileExplorerController();
         if ($entity) {
+            if( $entity_type == 0 ) $manager->createEntity($entityName);
+
             return response()->json([
                 'status' => 1,
-                'message' => 'Entity Added Successfully',
-                'entityFolderCreated' => $manager->createEntity($entityName)
+                'message' => 'Entity Added Successfully'
             ]);
         }
     }
@@ -126,6 +129,7 @@ class EntityController extends Controller
             'entity' => $entity,
             'jobs' => $jobs,
             'contacts' => $contacts,
+            'currentPath' => "explorer/".$entity->entity
         ]);
     }
 
@@ -174,25 +178,29 @@ class EntityController extends Controller
         }
 
         $entity = Entity::find($entity);
+        $entity_type = $entity->type;
         $oldEntityName = $entity->entity;
         $newEntityName = $request->input('entity');
-        $oldEntityPath = "explorer/" . $oldEntityName;
-        $newEntityPath = "explorer/";
 
+        // return $entity;
         $entity = $entity->update($request->all());
 
         $manager = new FileExplorerController();
 
         if ($entity) {
+
+            if( $entity_type == "Client" ){
+                $manager->saveEditedData(new Request([
+                    "name" => $newEntityName,
+                    "isDir" => true,
+                    "path" => "explorer/" . $oldEntityName,
+                    "newParentFolderPath" => "explorer/"
+                ]));
+            }
+
             return response()->json([
                 'status' => 1,
                 'message' => 'Entity Updated Successfully',
-                'entityFolderUpdated' => $manager->saveEditedData(new Request([
-                    "name" => $newEntityName,
-                    "isDir" => true,
-                    "path" => $oldEntityPath,
-                    "newParentFolderPath" => $newEntityPath
-                ])),
             ]);
         }
     }
@@ -207,7 +215,14 @@ class EntityController extends Controller
     {
         $entity = Entity::find($entity);
         if ($entity) {
+            $name = $entity->entity;
+            $type = $entity->type;
             $entity->delete();
+            if($type == "Client"){
+                $entityPath = "explorer/".$name;
+                $manager = new FileExplorerController();
+                $manager->deleteFileFolder(new Request(["file" => base64_encode($entityPath)]));
+            }
             return response()->json([
                 'status' => true,
                 'message' => 'Entity deleted successfully',
