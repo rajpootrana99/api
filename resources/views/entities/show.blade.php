@@ -46,6 +46,12 @@
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" href="#swms" role="tab" aria-selected="false">SWMS</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#admin" role="tab" aria-selected="false">Admin</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#files" role="tab" aria-selected="false">Files</a>
+                        </li>
                     </ul>
 
                     <!-- Tab panes -->
@@ -68,12 +74,12 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($contacts as $contact)
+                                        @foreach($entity->users as $user)
                                         <tr>
-                                            <td>{{$contact->user->name}}</td>
-                                            <td>{{$contact->role}}</td>
-                                            <td>{{$contact->user->phone}}</td>
-                                            <td>{{$contact->user->email}}</td>
+                                            <td>{{$user->name}}</td>
+                                            <td>{{$user->role}}</td>
+                                            <td>{{$user->phone}}</td>
+                                            <td>{{$user->email}}</td>
                                             <td></td>
                                             <td></td>
                                             <td>Contractor</td>
@@ -197,6 +203,16 @@
                             </p>
                         </div>
                         <div class="tab-pane p-3" id="swms" role="tabpanel">
+                            <p class="text-muted mb-0">
+                                ?????????????????????????????????????????????
+                            </p>
+                        </div>
+                        <div class="tab-pane p-3" id="admin" role="tabpanel">
+                            <p class="text-muted mb-0">
+                                ?????????????????????????????????????????????
+                            </p>
+                        </div>
+                        <div class="tab-pane p-3" id="files" role="tabpanel">
                             <p class="text-muted mb-0">
                                 ?????????????????????????????????????????????
                             </p>

@@ -121,7 +121,7 @@ class EntityController extends Controller
     {
         $jobs = Task::with('site', 'user')->where(['type' => 2, 'entity_id' => $entity])->get();
         $contacts = Contact::with('user')->where(['entity_id' => $entity])->get();
-        $entity = Entity::with('tradeTypes')->find($entity);
+        $entity = Entity::with('tradeTypes', 'users')->find($entity);
         return view('entities.show', [
             'entity' => $entity,
             'jobs' => $jobs,
