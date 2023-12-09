@@ -204,6 +204,8 @@
                     } else {
                         fetchNotes();
                         $('#deleteNote').modal('hide');
+                        showToast(response.message, "danger");
+                        event.preventDefault();
                     }
                 }
             });
@@ -252,6 +254,8 @@
                     } else {
                         $('#editNoteForm')[0].reset();
                         $('#editNote').modal('hide');
+                        showToast(response.message, "success");
+                        event.preventDefault();
                         fetchNotes();
                     }
                 },
@@ -283,6 +287,8 @@
                     } else {
                         $('#addNoteForm')[0].reset();
                         $('#addNote').modal('hide');
+                        showToast(response.message, "success");
+                        event.preventDefault();
                         fetchNotes();
                     }
                 },
