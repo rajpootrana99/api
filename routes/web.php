@@ -38,7 +38,7 @@ Route::get('/unathorized', function () {
     return view('unathorized');
 })->name('unathorized');
 
-Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:Admin|Client|Supplier'])->group(function () {
 
     // EXPLORER ROUTES
     Route::resource('explorer', FileExplorerController::class);
