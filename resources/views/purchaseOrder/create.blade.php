@@ -41,31 +41,31 @@
                                                     <label class="custom-control-label" for="tpar">Report to ATO via TPAR</label>
                                                 </div>
                                             </div>
-                                        </div>  
+                                        </div>
                                         <div class="form-group row">
                                             <label for="message" class="col-sm-12 col-form-label text-left">Site Address</label>
                                             <div class="col-sm-12">
-                                            <textarea readonly class="form-control" rows="2" name="site_address" id="site_address"></textarea>
+                                                <textarea readonly class="form-control" rows="2" name="site_address" id="site_address"></textarea>
                                             </div>
-                                        </div>                             
+                                        </div>
                                     </div>
 
                                     <div class="col-lg-6">
-                                    <div class="form-group row">
+                                        <div class="form-group row">
                                             <label for="task_id" class="col-sm-6 col-form-label text-right">Job<strong>*</strong></label>
                                             <div class="col-sm-6">
                                                 <select class="select2 pl-1 form-control" name="task_id" onchange="fetchEstimates()" id="task_id" style="width: 100%; height:30px !important;">
                                                     <option value="" selected disabled>Select Job</option>
                                                 </select>
                                                 <span class="text-danger error-text task_id_error"></span>
-                                            </div>      
+                                            </div>
                                         </div>
                                         <div class="form-group row">
                                             <label for="po_number" class="col-sm-6 col-form-label text-right">Purchase Order Number<strong>*</strong></label>
                                             <div class="col-sm-6">
                                                 <input class="form-control" style="width: 100%; height:30px;" type="number" readonly value="{{ $purchaseNo }}">
                                                 <span class="text-danger error-text po_number_error"></span>
-                                            </div>      
+                                            </div>
                                         </div>
                                         <div class="form-group row">
                                             <label for="date" class="col-sm-6 col-form-label text-right">Date<strong>*</strong></label>
@@ -75,14 +75,14 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="site_start" class="col-sm-6 col-form-label text-right">Site Start</label>
+                                            <label for="site_start" class="col-sm-6 col-form-label text-right">Estimate Site Start</label>
                                             <div class="col-sm-6">
                                                 <input class="form-control" type="date" style="width: 100%; height:30px;" name="site_start" id="site_start">
                                                 <span class="text-danger error-text site_start_error"></span>
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                        <label for="promised_date" class="col-sm-6 col-form-label text-right">Amounts Are</label>
+                                            <label for="promised_date" class="col-sm-6 col-form-label text-right">Amounts Are</label>
                                             <div class="col-sm-6">
                                                 <div class="custom-control custom-radio">
                                                     <input type="radio" id="customRadio3" name="amount_are" value="0" class="custom-control-input" checked>
@@ -93,7 +93,7 @@
                                                     <label class="custom-control-label" for="customRadio4">Tax Exclusive</label>
                                                 </div>
                                             </div>
-                                        </div>                                                                                    
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -125,16 +125,16 @@
                                             <label for="note_id" class="col-sm-12 col-form-label text-left">Note to Supplier</label>
                                             <div class="col-sm-12">
                                                 <select class="select2 pl-1 form-control" name="note_id" onchange="fetchNote()" id="note_id" style="width: 100%; height:30px !important;">
-                                                    
+
                                                 </select>
                                             </div>
-                                        </div>   
+                                        </div>
                                         <div class="form-group row">
                                             <label for="note" class="col-sm-12 col-form-label text-left">Note</label>
                                             <div class="col-sm-12">
-                                            <textarea class="form-control" rows="2" name="note" id="note"></textarea>
+                                                <textarea class="form-control" rows="2" name="note" id="note"></textarea>
                                             </div>
-                                        </div>                          
+                                        </div>
                                     </div>
 
                                     <div class="col-lg-6">
@@ -142,7 +142,7 @@
                                             <label for="subtotal" class="col-sm-6 col-form-label text-right"><strong>Subtotal</strong></label>
                                             <div class="col-sm-6">
                                                 <input class="form-control" style="width: 100%; height:30px;" type="text" readonly name="sub_total" id="sub_total">
-                                            </div>      
+                                            </div>
                                         </div>
                                         <div class="form-group row">
                                             <label for="tax" class="col-sm-6 col-form-label text-right"><strong>Tax</strong></label>
@@ -155,7 +155,7 @@
                                             <div class="col-sm-6">
                                                 <input class="form-control" type="text" readonly style="width: 100%; height:30px;" id="total" name="total">
                                             </div>
-                                        </div>                                                                                
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -174,7 +174,7 @@
 <script>
     var jobList;
     var quoteList;
-    
+
     var itemsCount = 1;
     itemsDetailDynamicField(itemsCount);
 
@@ -211,7 +211,7 @@
         calculateCost();
     });
 
-    
+
 
     $.ajaxSetup({
         headers: {
@@ -231,7 +231,10 @@
                 jobList = response;
                 var task_id = $('#task_id');
                 $('#task_id').children().remove().end();
-                task_id.append($("<option />").val(0).text('Select Job').prop({selected: true, disabled: true}));
+                task_id.append($("<option />").val(0).text('Select Job').prop({
+                    selected: true,
+                    disabled: true
+                }));
                 $.each(response.jobs, function(key, job) {
                     task_id.append($("<option />").val(job.id).text(job.id + ' - ' + job.title + ' : ' + job.site.site));
                 });
@@ -239,7 +242,7 @@
         });
     }
 
-    function fetchNote(){
+    function fetchNote() {
         const note = $('#note_id option:selected').text();
         $('#note').text(note);
     }
@@ -252,7 +255,10 @@
             success: function(response) {
                 var note_id = $('#note_id');
                 $('#note_id').children().remove().end();
-                note_id.append($("<option />").text('Select Notes').prop({selected: true, disabled: true}));
+                note_id.append($("<option />").text('Select Notes').prop({
+                    selected: true,
+                    disabled: true
+                }));
                 $.each(response.notes, function(key, note) {
                     note_id.append($("<option />").val(note.id).text(note.note));
                 });
@@ -260,10 +266,10 @@
         });
     }
 
-    function quoteInsert(){
+    function quoteInsert() {
         var quote_id = $('#estimate_id_' + itemsCount).val();
         $.each(quoteList, function(key, quote) {
-            if(quote.id == quote_id){
+            if (quote.id == quote_id) {
                 $('#description_' + itemsCount).val(quote.description);
                 $('#qty_' + itemsCount).val(quote.qty);
             }
@@ -278,7 +284,10 @@
             success: function(response) {
                 var entity_id = $('#entity_id');
                 $('#entity_id').children().remove().end();
-                entity_id.append($("<option />").val(0).text('Select Supplier').prop({selected: true, disabled: true}));
+                entity_id.append($("<option />").val(0).text('Select Supplier').prop({
+                    selected: true,
+                    disabled: true
+                }));
                 $.each(response.entities, function(key, entity) {
                     entity_id.append($("<option />").val(entity.id).text(entity.entity));
                 });
@@ -286,14 +295,17 @@
         });
     }
 
-    function fetchEstimates(){
+    function fetchEstimates() {
         var task = $('#task_id').val();
         $.each(jobList.jobs, function(key, job) {
-            if(job.id == task){
+            if (job.id == task) {
                 quoteList = job.quotes;
                 var estimate_id = $('#estimate_id_' + itemsCount);
                 estimate_id.children().remove().end();
-                estimate_id.append($("<option />").text('Select Cost Code').prop({selected: true, disabled: true}));
+                estimate_id.append($("<option />").text('Select Cost Code').prop({
+                    selected: true,
+                    disabled: true
+                }));
                 $.each(job.quotes, function(key, quote) {
                     estimate_id.append($("<option />").val(quote.id).text(quote.estimate.subheader.cost_code + '___' + quote.estimate.item));
                 });
@@ -310,9 +322,9 @@
             const quantity = parseInt(item.querySelector(".qty").value) ? parseInt(item.querySelector(".qty").value) : 0;
             const price = parseFloat(item.querySelector(".price").value) ? parseFloat(item.querySelector(".price").value) : 0;
             subtotal += quantity * price
-            const itemTax = ((quantity * price)/100)*10;
+            const itemTax = ((quantity * price) / 100) * 10;
             tax += itemTax;
-            total = subtotal+tax;
+            total = subtotal + tax;
             const amount = quantity * price;
             item.querySelector(".amount").value = amount.toFixed(2);
         });

@@ -64,7 +64,7 @@
                                     <th>Total Sell Price</th>
                                     <th>Profit</th>
                                     <th>%</th>
-                                    <th>Invoiced</th>
+                                    <th>Invoiced (ex GST)</th>
                                     <th>Remaining Invoice Amount</th>
                                     <th width="3%"></th>
                                 </tr>
