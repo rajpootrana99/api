@@ -128,12 +128,13 @@
 
 <script>
     let USDollar = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
+        style: 'currency',
+        currency: 'USD',
     });
 
     $(document).ready(function() {
-
+        var total_quoted_price_ex_gst = 0;
+        var total_profit = 0;
         var enquiries;
 
         $.ajaxSetup({
@@ -144,7 +145,7 @@
 
         fetchEnquiries();
 
-        $("#search-input").keyup(function(){
+        $("#search-input").keyup(function() {
             $('tbody').html("");
             var val = $.trim(this.value);
             if (val.length == 0) {
@@ -152,46 +153,44 @@
             }
             if (val) {
                 val = val.toLowerCase();
-                $.each(enquiries, function(_,enquiry) {
-                    if (enquiry.site.site.toLowerCase().indexOf(val) != -1) {
+                $.each(enquiries, function(_, enquiry) {
+                    if (enquiry.title.toLowerCase().indexOf(val) != -1 || enquiry.entity.entity.toLowerCase().indexOf(val) != -1) {
                         viewEnquiries(enquiry);
                     }
                 });
             }
         });
 
-        function showEnquiries(enquiries){
-            $('tbody').html("");   
-            var total_quoted_price_ex_gst = 0;
-            var total_profit = 0;            
+        function showEnquiries(enquiries) {
+            $('tbody').html("");
             $.each(enquiries, function(key, enquiry) {
-                if($('#view_status').val() == 0){
-                    if(enquiry.enquiry_status == 'Pending'){     
+                if ($('#view_status').val() == 0) {
+                    if (enquiry.enquiry_status == 'Pending') {
                         viewEnquiries(enquiry);
                     }
                 }
-                if($('#view_status').val() == 1){
-                    if(enquiry.enquiry_status == 'Quoting'){
+                if ($('#view_status').val() == 1) {
+                    if (enquiry.enquiry_status == 'Quoting') {
                         viewEnquiries(enquiry);
                     }
                 }
-                if($('#view_status').val() == 2){
-                    if(enquiry.enquiry_status == 'Submitted'){
+                if ($('#view_status').val() == 2) {
+                    if (enquiry.enquiry_status == 'Submitted') {
                         viewEnquiries(enquiry);
                     }
                 }
-                if($('#view_status').val() == 3){
-                    if(enquiry.enquiry_status == 'Won'){
+                if ($('#view_status').val() == 3) {
+                    if (enquiry.enquiry_status == 'Won') {
                         viewEnquiries(enquiry);
                     }
                 }
-                if($('#view_status').val() == 4){
-                    if(enquiry.enquiry_status == 'Lost'){
+                if ($('#view_status').val() == 4) {
+                    if (enquiry.enquiry_status == 'Lost') {
                         viewEnquiries(enquiry);
                     }
                 }
-                if($('#view_status').val() == 5){
-                    if(enquiry.enquiry_status == 'Cancelled'){
+                if ($('#view_status').val() == 5) {
+                    if (enquiry.enquiry_status == 'Cancelled') {
                         viewEnquiries(enquiry);
                     }
                 }
@@ -200,8 +199,8 @@
             $('#total_profit').html(USDollar.format(total_profit));
         }
 
-        function viewEnquiries(enquiry){
-            var status = '';  
+        function viewEnquiries(enquiry) {
+            var status = '';
             if (enquiry.enquiry_status === "Quoting") {
                 status = '<span class="badge badge-info">' + enquiry.enquiry_status + '</span>';
             } else if (enquiry.enquiry_status === "Submitted") {
@@ -225,8 +224,8 @@
             total_quoted_price_ex_gst += quoted_price_ex_gst;
             total_profit += profit;
             var name = "No Client";
-            if (enquiry.contact_id != null) {
-                name = enquiry.contact.user.name;
+            if (enquiry.user_id != null) {
+                name = enquiry.user.name;
             }
             $('tbody').append('<tr>\
                 <td>' + enquiry.id + '</td>\
@@ -245,7 +244,7 @@
                     </a>\
                     <div style="z-index: 1 !important;" class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel11">\
                         <button value="' + enquiry.id + '" style="border: none; background-color: #fff" class="edit_btn dropdown-item">Edit</button>\
-                        <a class="dropdown-item" href="/convertToJob/'+enquiry.id+'">Convert to Job</a>\
+                        <a class="dropdown-item" href="/convertToJob/' + enquiry.id + '">Convert to Job</a>\
                         <a class="dropdown-item" href="/quote/' + enquiry.id + '/edit/">Quote</a>\
                         <a class="dropdown-item" href="#">Chat</a>\
                     </div>\

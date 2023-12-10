@@ -154,7 +154,7 @@
             if (val) {
                 val = val.toLowerCase();
                 $.each(jobs, function(_, job) {
-                    if (job.site.site.toLowerCase().indexOf(val) != -1) {
+                    if (job.title.toLowerCase().indexOf(val) != -1) {
                         viewJobs(job);
                     }
                 });
