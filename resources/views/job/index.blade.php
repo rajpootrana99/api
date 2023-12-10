@@ -131,6 +131,8 @@
 <script>
     $(document).ready(function() {
         var jobs;
+        var total_quoted_price_ex_gst = 0;
+        var total_profit = 0;
 
         let USDollar = new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -163,8 +165,6 @@
 
         function showJobs(jobs) {
             $('tbody').html("");
-            var total_quoted_price_ex_gst = 0;
-            var total_profit = 0;
             $.each(jobs, function(key, job) {
                 if ($('#view_status').val() == 0) {
                     if (job.job_status == 'Pending') {
@@ -234,7 +234,7 @@
                 <td> </td>\
                 <td>' + status + '</td>\
                 <td>' + job.entity.entity + '</td>\
-                <td>' + job.requested_completion + '</td>\
+                <td>' + formatDate(job.requested_completion) + '</td>\
                 <td>20</td>\
                 <td>' + USDollar.format(quoted_price_ex_gst) + '</td>\
                 <td>' + USDollar.format(profit) + '</td>\

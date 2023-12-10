@@ -115,6 +115,33 @@
             $(this).next('.custom-file-label').addClass("selected").html(fileName);
             $('.custom-file-input').css('overflow', 'hidden');
         });
+
+        //Date format
+        function formatDate(inputDate) {
+            // Convert the input date string to a Date object
+            const date = new Date(inputDate);
+
+            // Check if the date is valid
+            if (isNaN(date)) {
+                return "Invalid date";
+            }
+
+            // Array of month names to convert month number to month name abbreviation
+            const monthNames = [
+                "jan", "feb", "mar", "apr", "may", "jun",
+                "jul", "aug", "sep", "oct", "nov", "dec"
+            ];
+
+            // Get the day, month, and year
+            const day = date.getDate().toString().padStart(2, '0'); // Ensure two digits for day
+            const month = monthNames[date.getMonth()]; // Get the month abbreviation
+            const year = date.getFullYear().toString().slice(-2); // Get the last two digits of the year
+
+            // Construct the formatted date
+            const formattedDate = `${day}-${month}-${year}`;
+
+            return formattedDate;
+        }
     </script>
     <!-- App js -->
     <script src="{{ asset('assets/js/app.js') }}"></script>

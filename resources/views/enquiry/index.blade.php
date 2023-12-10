@@ -236,7 +236,7 @@
                 <td>' + USDollar.format(quoted_price_ex_gst) + '</td>\
                 <td>' + USDollar.format(profit) + '</td>\
                 <td>' + name + '</td>\
-                <td>' + enquiry.requested_completion + '</td>\
+                <td>' + formatDate(enquiry.requested_completion) + '</td>\
                 <td>' + enquiry.quote_type + '</td>\
                 <td><div class="dropdown d-inline-block" style="float:right;">\
                     <a class="dropdown-toggle arrow-none" id="dLabel11" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">\
