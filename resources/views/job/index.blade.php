@@ -202,6 +202,10 @@
         }
 
         function viewJobs(job) {
+            var invoiced = 0;
+            $.each(job.invoices, function(key, invoice) {
+                invoiced += parseFloat(invoice.sub_total);
+            })
             var status = '';
             if (job.job_status === "Scheduled") {
                 status = '<span class="badge badge-primary">' + job.job_status + '</span>';
@@ -238,9 +242,9 @@
                 <td>20</td>\
                 <td>' + USDollar.format(quoted_price_ex_gst) + '</td>\
                 <td>' + USDollar.format(profit) + '</td>\
-                <td></td>\
-                <td></td>\
-                <td></td>\
+                <td>' + ((profit / quoted_price_ex_gst) * 100).toFixed(2) + '%</td>\
+                <td>' + USDollar.format(invoiced) + '</td>\
+                <td>' + USDollar.format(parseFloat(quoted_price_ex_gst) - parseFloat(invoiced)) + '</td>\
                 <td><div class="dropdown d-inline-block" style="float:right;">\
                     <a class="dropdown-toggle arrow-none" id="dLabel11" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">\
                         <i class="las la-ellipsis-v font-20 text-muted"></i>\

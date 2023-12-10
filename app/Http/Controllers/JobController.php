@@ -25,7 +25,7 @@ class JobController extends Controller
 
     public function fetchJobs()
     {
-        $jobs = Task::with('quotes.estimate.subheader.header', 'site', 'user', 'entity')->where(['type' => 2])->get();
+        $jobs = Task::with('quotes.estimate.subheader.header', 'site', 'user', 'entity', 'invoices')->where(['type' => 2])->get();
         return response()->json([
             'jobs' => $jobs,
         ]);
@@ -80,18 +80,15 @@ class JobController extends Controller
         $invoice = Invoice::with('quotes.estimate.subHeader.header', 'entity', 'task.site', 'task.quotes.estimate.subHeader.header')->where(['task_id' => $job])->first();
         if ($invoice) {
             return view('invoice.invoice', ['invoice' => $invoice]);
-        }
-        else{
+        } else {
             $invoice = Invoice::latest()->first();
-            if($invoice){
+            if ($invoice) {
                 $invoiceNo = $invoice->id + 1;
-            }
-            else{
+            } else {
                 $invoiceNo = 1;
             }
             return view('invoice.create', ['invoiceNo' => $invoiceNo]);
         }
-
     }
 
     /**
@@ -154,7 +151,7 @@ class JobController extends Controller
         //     }
         // }
 
-        if($job){
+        if ($job) {
             return response()->json([
                 'status' => true,
                 'message' => 'Job updated succesfully'
@@ -189,7 +186,7 @@ class JobController extends Controller
     {
         $task = Task::find($task);
         $enquiry_status = 0;
-        if($task->type == 'Enquiry'){
+        if ($task->type == 'Enquiry') {
             $enquiry_status = 3;
         }
         $task->update([

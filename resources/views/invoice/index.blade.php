@@ -109,13 +109,15 @@
                 url: "fetchInvoices",
                 dataType: "json",
                 success: function(response) {
+                    var total_amount = 0;
                     $('tbody').html("");
                     $.each(response.invoices, function(key, invoice) {
+                        total_amount = total_amount + parseFloat(invoice.total);
                         $('tbody').append('<tr>\
-                            <td>' + invoice.issue_date + '</td>\
+                            <td>' + formatDate(invoice.issue_date) + '</td>\
                             <td>' + invoice.customer_po_number + '</td>\
                             <td>' + invoice.entity.entity + '</td>\
-                            <td>' + invoice.total + '</td>\
+                            <td>' + USDollar.format(invoice.total) + '</td>\
                             <td></td>\
                             <td>' + invoice.task_id + '</td>\
                             <td>' + invoice.task.site.site + '</td>\
@@ -130,6 +132,7 @@
                             </div>\</td>\
                     </tr>');
                     });
+                    $('#total_amount').text(USDollar.format(total_amount));
                 }
             });
         }
