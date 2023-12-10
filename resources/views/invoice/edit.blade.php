@@ -48,7 +48,7 @@
                                         <div class="form-group row">
                                             <label for="customer_po_number" class="col-sm-6 col-form-label text-right">Customer PO Number</label>
                                             <div class="col-sm-6">
-                                                <input class="form-control" style="width: 100%; height:30px;" type="number" value="{{ $invoice->customer_po_number }}" name="customer_po_number" >
+                                                <input class="form-control" style="width: 100%; height:30px;" type="number" value="{{ $invoice->customer_po_number }}" name="customer_po_number">
                                                 <span class="text-danger error-text customer_po_number_error"></span>
                                             </div>
                                         </div>
@@ -76,7 +76,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                        <label for="promised_date" class="col-sm-6 col-form-label text-right">Amounts Are</label>
+                                            <label for="promised_date" class="col-sm-6 col-form-label text-right">Amounts Are</label>
                                             <div class="col-sm-6">
                                                 <div class="custom-control custom-radio">
                                                     <input type="radio" id="customRadio3" name="amount_are" value="0" class="custom-control-input">
@@ -127,7 +127,7 @@
                                         <div class="form-group row">
                                             <label for="note" class="col-sm-12 col-form-label text-left">Note</label>
                                             <div class="col-sm-12">
-                                            <textarea class="form-control" rows="2" name="note" id="note">{{ $invoice->note }}</textarea>
+                                                <textarea class="form-control" rows="2" name="note" id="note">{{ $invoice->note }}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -170,12 +170,12 @@
     var quotes = <?php echo $invoice->quotes ?>;
     var invoice = <?php echo $invoice ?>;
     var jobList = <?php echo $jobs ?>;
+    var selectedJob;
     var quoteList;
 
-    if (invoice.amount_are == 0){
+    if (invoice.amount_are == 0) {
         $('#customRadio3').prop("checked", true);
-    }
-    else{
+    } else {
         $('#customRadio4').prop("checked", true);
     }
 
@@ -186,7 +186,7 @@
     itemsDynamicField(itemsCount);
 
     function itemsDynamicField(number) {
-        $.each(quotes, function(key, quote){
+        $.each(quotes, function(key, quote) {
             itemsDetailDynamicField(number);
             number++;
             itemsCount++;
@@ -228,7 +228,7 @@
     });
 
 
-    function fetchNote(){
+    function fetchNote() {
         const note = $('#note_id option:selected').text();
         $('#note').text(note);
     }
@@ -241,7 +241,10 @@
             success: function(response) {
                 var note_id = $('#note_id');
                 $('#note_id').children().remove().end();
-                note_id.append($("<option />").text('Select Notes').prop({selected: true, disabled: true}));
+                note_id.append($("<option />").text('Select Notes').prop({
+                    selected: true,
+                    disabled: true
+                }));
                 $.each(response.notes, function(key, note) {
                     note_id.append($("<option />").val(note.id).text(note.note));
                 });
@@ -265,7 +268,10 @@
                 jobList = response.jobs;
                 var task_id = $('#task_id');
                 $('#task_id').children().remove().end();
-                task_id.append($("<option />").text('Select Job').prop({selected: true, disabled: true}));
+                task_id.append($("<option />").text('Select Job').prop({
+                    selected: true,
+                    disabled: true
+                }));
                 $.each(response.jobs, function(key, job) {
                     task_id.append($("<option />").val(job.id).text(job.id + ' - ' + job.title + ' : ' + job.site.site));
                 });
@@ -282,7 +288,10 @@
             success: function(response) {
                 var entity_id = $('#entity_id');
                 $('#entity_id').children().remove().end();
-                entity_id.append($("<option />").text('Select Customer').prop({selected: true, disabled: true}));
+                entity_id.append($("<option />").text('Select Customer').prop({
+                    selected: true,
+                    disabled: true
+                }));
                 $.each(response.entities, function(key, entity) {
                     entity_id.append($("<option />").val(entity.id).text(entity.entity));
                 });
@@ -293,13 +302,13 @@
 
     var task = invoice.task_id;
     const estimates = document.querySelectorAll(".select-estimate")
-    $.each(estimates, function(key, estimate){
+    $.each(estimates, function(key, estimate) {
         estimate.add(new Option('Select Cost Code', '', true, true));
         $.each(quotes, function(key, quote) {
             estimate.add(new Option(quote.estimate.subheader.cost_code + '___' + quote.estimate.item, quote.id));
         });
         estimate.value = quotes[key].id
-        let i = key+1
+        let i = key + 1
         $('#description_' + i).val(quotes[key].pivot.description);
         $('#qty_' + i).val(quotes[key].pivot.qty);
         $('#rate_' + i).val(quotes[key].pivot.rate);
@@ -309,33 +318,37 @@
         $('#total_' + i).val(quotes[key].pivot.total);
     });
 
-    function quoteInsert(){
+    function quoteInsert() {
         var quote_id = $('#estimate_id_' + itemsCount).val();
         $.each(quoteList, function(key, quote) {
-            if(quote.id == quote_id){
-                $('#description_' +itemsCount).val(quote.description);
-                $('#qty_' +itemsCount).val(quote.qty);
-                $('#rate_' +itemsCount).val(quote.rate);
-                $('#amount_' +itemsCount).val(quote.amount);
-                $('#total_' +itemsCount).val(quote.amount_inc_gst);
+            if (quote.id == quote_id) {
+                $('#description_' + itemsCount).val(selectedJob.title);
+                $('#qty_' + itemsCount).val(quote.qty);
+                $('#rate_' + itemsCount).val(quote.rate);
+                $('#amount_' + itemsCount).val(quote.amount);
+                $('#total_' + itemsCount).val(quote.amount_inc_gst);
             }
         });
     }
 
-    function fetchEstimates(){
+    function fetchEstimates() {
         var estimate_id = $('#estimate_id_' + itemsCount);
         $.each(jobList, function(key, job) {
-            if(job.id == task){
+            if (job.id == task) {
+                selectedJob = job;
                 quoteList = job.quotes;
-                $('#estimate_id_'+itemsCount).children().remove().end();
-                $('#estimate_id_'+itemsCount).append($("<option />").text('Select Cost Code').prop({selected: true, disabled: true}));
+                $('#estimate_id_' + itemsCount).children().remove().end();
+                $('#estimate_id_' + itemsCount).append($("<option />").text('Select Cost Code').prop({
+                    selected: true,
+                    disabled: true
+                }));
                 $.each(job.quotes, function(key, quote) {
-                    $('#estimate_id_'+itemsCount).append($("<option />").val(quote.id).text(quote.estimate.subheader.cost_code + '___' + quote.estimate.item));
+                    $('#estimate_id_' + itemsCount).append($("<option />").val(quote.id).text(quote.estimate.subheader.cost_code + '___' + quote.estimate.item));
                 });
             }
         });
-        if(quotes.length >= itemsCount){
-            $('#estimate_id_'+itemsCount).val(quotes[itemsCount-1].id).change();
+        if (quotes.length >= itemsCount) {
+            $('#estimate_id_' + itemsCount).val(quotes[itemsCount - 1].id).change();
         }
     }
 
@@ -347,11 +360,11 @@
             const quantity = parseInt(item.querySelector(".qty").value) ? parseInt(item.querySelector(".qty").value) : 0;
             const rate = parseFloat(item.querySelector(".rate").value) ? parseFloat(item.querySelector(".rate").value) : 0;
             subtotal += quantity * rate
-            const itemTax = ((quantity * rate)/100)*10;
+            const itemTax = ((quantity * rate) / 100) * 10;
             tax += itemTax;
-            total = subtotal+tax;
+            total = subtotal + tax;
             const amount = quantity * rate;
-            const item_total = amount + ((amount/100)*10)
+            const item_total = amount + ((amount / 100) * 10)
             item.querySelector(".amount").value = amount.toFixed(2);
             item.querySelector(".total").value = item_total.toFixed(2);
         });
