@@ -57,7 +57,7 @@ class EntityController extends Controller
 
     public function fetchClientEntities()
     {
-        $entities = Entity::with('contacts.user', 'users')->where(['type' => 0])->get();
+        $entities = Entity::with('users.sites')->where(['type' => 0])->get();
         if (count($entities) > 0) {
             return response()->json([
                 'status' => true,

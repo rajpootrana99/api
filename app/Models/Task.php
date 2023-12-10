@@ -97,6 +97,19 @@ class Task extends Model
         ];
     }
 
+    public function getProgressAttribute($attribute)
+    {
+        return $this->progressOptions()[$attribute] ?? 0;
+    }
+
+    public function progressOptions()
+    {
+        return [
+            1 => 'Order',
+            0 => 'Quote',
+        ];
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

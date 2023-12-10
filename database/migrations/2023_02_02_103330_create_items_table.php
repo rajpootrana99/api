@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('task_id');
+            $table->unsignedBigInteger('user_id');
             $table->string('description')->nullable();
             $table->integer('priority')->nullable()->default(0);
-            $table->integer('progress')->nullable()->default(0);
             $table->timestamps();
         });
     }

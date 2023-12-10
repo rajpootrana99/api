@@ -77,8 +77,8 @@ class TaskController extends Controller
             $task->items()->delete();
             $task->delete();
 
-            if($entity->type == "Client"){
-                $taskPath = "explorer/".$entity->entity."/Sites/".$siteName."/Tasks/".$taskName;
+            if ($entity->type == "Client") {
+                $taskPath = "explorer/" . $entity->entity . "/Sites/" . $siteName . "/Tasks/" . $taskName;
                 $manager = new FileExplorerController();
                 $manager->deleteFileFolder(new Request(["file" => base64_encode($taskPath)]));
             }
@@ -103,15 +103,14 @@ class TaskController extends Controller
             return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
         }
 
-
         $task = Task::create($request->all());
 
         foreach ($request->items as $itemData) {
             $item = Item::create([
+                'user_id' => $task->user_id,
                 'task_id' => $task->id,
                 'description' => $itemData['description'],
                 'priority' => $itemData['priority'],
-                'progress' => $itemData['progress'],
             ]);
             if ($itemData['image']) {
                 foreach ($itemData['image'] as $image) {
@@ -132,7 +131,7 @@ class TaskController extends Controller
         $entity = Entity::find($request->input('entity_id'));
         $siteName = Site::find($request->input('site_id'))->site;
         $manager = new FileExplorerController();
-        if( $entity->type == "Client" ){
+        if ($entity->type == "Client") {
             $entityName = $entity->entity;
             $manager->createTask($entityName, $siteName, $taskName);
         }
@@ -152,7 +151,7 @@ class TaskController extends Controller
 
     public function update(Request $request, $task)
     {
-        $task= Task::find($task);
+        $task = Task::find($task);
 
         $taskOldName = $task->title;
         $taskNewName = $request->input("title");
@@ -161,19 +160,19 @@ class TaskController extends Controller
 
 
 
-        if($task){
+        if ($task) {
 
             //Change task name in all places
             $siteName = Site::find($task->site_id)->site;
             $entity = Entity::find($task->entity_id);
             $manager = new FileExplorerController();
             $entityName = $entity->entity;
-            if( $entity->type == "Client" ){
+            if ($entity->type == "Client") {
                 $manager->saveEditedData(new Request([
                     "name" => $taskNewName,
-                    "path" => "explorer/".$entityName."/Sites"."/".$siteName."/Tasks"."/".$taskOldName,
+                    "path" => "explorer/" . $entityName . "/Sites" . "/" . $siteName . "/Tasks" . "/" . $taskOldName,
                     "isDir" => true,
-                    "newParentFolderPath" => "explorer/".$entityName."/Sites"."/".$siteName."/Tasks",
+                    "newParentFolderPath" => "explorer/" . $entityName . "/Sites" . "/" . $siteName . "/Tasks",
                 ]));
             }
 

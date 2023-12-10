@@ -39,7 +39,7 @@
                             </div>
                         </div>
                         <div class="custom-control custom-checkbox col-sm-3" style="display:flex; padding:8px;float:left;margin-left: 30px">
-                            <input type="checkbox" class="custom-control-input" id="customCheck02" >
+                            <input type="checkbox" class="custom-control-input" id="customCheck02">
                             <label class="custom-control-label" for="customCheck02">Hide Archived Items</label>
                         </div>
                         <div class="form-group col-sm-4">
@@ -177,7 +177,7 @@
             return filename.split('.').pop();
         }
 
-        function showTasks(tasks){
+        function showTasks(tasks) {
             $('#task-section').html("");
             $.each(tasks, function(key, task) {
                 var options = new Array();
@@ -189,18 +189,18 @@
                     i = i + 1;
                 });
                 console.log($('#view_status').val)
-                if($('#view_status').val() == 0){
-                    if(task.status == 'Pending'){
+                if ($('#view_status').val() == 0) {
+                    if (task.status == 'Pending') {
                         viewTasks(task);
                     }
                 }
-                if($('#view_status').val() == 1){
-                    if(task.status == 'Approved'){
+                if ($('#view_status').val() == 1) {
+                    if (task.status == 'Approved') {
                         viewTasks(task);
                     }
                 }
-                if($('#view_status').val() == 2){
-                    if(task.status == 'Cancelled'){
+                if ($('#view_status').val() == 2) {
+                    if (task.status == 'Cancelled') {
                         viewTasks(task);
                     }
                 }
@@ -208,7 +208,7 @@
             });
         }
 
-        function viewTasks(task){
+        function viewTasks(task) {
             $('#task-section').append('<div class="accordion" id="accordionExample">\
                 <div class="card border mb-1 shadow-none">\
                     <div class="card-header rounded-0" id="heading_' + task.id + '">\
@@ -221,8 +221,8 @@
                             </a>\
                             <div style="z-index: 1 !important;" class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel11">\
                                 <button value="' + task.id + '" style="border: none; background-color: #fff" class="edit_btn dropdown-item">Edit</button>\
-                                <a class="dropdown-item" href="/convertToEnquiry/'+task.id+'">Convert to Enquiry</a>\
-                                <a class="dropdown-item" href="/convertToJob/'+task.id+'">Convert to Job</a>\
+                                <a class="dropdown-item" href="/convertToEnquiry/' + task.id + '">Convert to Enquiry</a>\
+                                <a class="dropdown-item" href="/convertToJob/' + task.id + '">Convert to Job</a>\
                                 <a class="dropdown-item" href="#">Chat</a>\
                             </div>\
                         </div>\
@@ -287,12 +287,12 @@
                     <td><button value="' + item.id + '" style="border: none; background-color: none" class="view_galery">' + file + '</button></td>\
                     <td>' + priority + '</td>\
                     <td>' + status + '</td>\
-                    <td>' + item.progress + '</td>\
+                    <td>' + task.progress + '</td>\
                 </tr>')
             });
         }
 
-        $("#search-input").keyup(function(){
+        $("#search-input").keyup(function() {
             $('#task-section').html("");
             var val = $.trim(this.value);
             if (val.length == 0) {
@@ -300,7 +300,7 @@
             }
             if (val) {
                 val = val.toLowerCase();
-                $.each(tasks, function(_,task) {
+                $.each(tasks, function(_, task) {
                     if (task.title.toLowerCase().indexOf(val) != -1) {
                         viewTasks(task);
                     }
