@@ -103,8 +103,30 @@
                         <input type="hidden" name="task_id" id="task_id">
                         <div class="col-lg-12">
                             <div class="form-group">
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" placeholder="Enter Title" name="title" id="title">
+                                <span class="text-danger error-text title_update_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="requested_completion" id="requested_completion" onfocus="(this.type='date')" onblur="(this.type='text')" placeholder="Requested Completion Date">
+                                <span class="text-danger error-text requested_completion_update_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <select class="select2 pl-1 form-control" name="quote_type" id="quote_type" style="width: 100%; height:30px !important;">
+                                    <option value="" selected disabled>Select Quote Type</option>
+                                    <option value="0">Cost Plus</option>
+                                    <option value="1">Do & Charge</option>
+                                </select>
+                                <span class="text-danger error-text quote_type_update_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
                                 <select class="select2 pl-1 form-control edit_enquiry_status" name="enquiry_status" id="edit_enquiry_status" style="width: 100%; height:30px !important;">
-                                    <option value="" selected disabled>Select Status</option>
+                                    <option value="" selected disabled>Select Enquiry Status</option>
                                     <option value="0">Pending</option>
                                     <option value="1">Quoting</option>
                                     <option value="2">Submitted</option>
@@ -259,12 +281,16 @@
                 dataType: "json",
                 success: function(response) {
                     enquiries = response.enquiries;
+                    total_quoted_price_ex_gst = 0;
+                    total_profit = 0;
                     showEnquiries(enquiries);
                 }
             });
         }
 
         $(document).on('change', '#view_status', function(e) {
+            total_quoted_price_ex_gst = 0;
+            total_profit = 0;
             showEnquiries(enquiries);
         });
 
@@ -280,7 +306,7 @@
                     if (response.status == false) {
                         $('#editEnquiry').modal('hide');
                     } else {
-                        var status = 0;
+                        var status, quote_type = 0;
                         if (response.task.enquiry_status == 'Pending') {
                             status = 0;
                         }
@@ -299,8 +325,17 @@
                         if (response.task.enquiry_status == 'Cancelled') {
                             status = 5;
                         }
+                        if(response.task.quote_type == 'Cost Plus'){
+                            quote_type = 0;
+                        }
+                        if(response.task.quote_type == 'Do & Charge'){
+                            quote_type = 1;
+                        }
                         $('#task_id').val(task_id);
                         $('.edit_enquiry_status').val(status).change();
+                        $('#quote_type').val(quote_type).change();
+                        $('#title').val(response.task.title);
+                        $('#requested_completion').val(response.task.requested_completion);
                         $('#editEnquiryLabel').text(response.task.title);
                     }
                 }

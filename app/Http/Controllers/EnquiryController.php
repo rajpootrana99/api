@@ -86,7 +86,16 @@ class EnquiryController extends Controller
      */
     public function update(Request $request, $enquiry)
     {
-        // $enquiry = Task::find($enquiry);
+        $validator = Validator::make($request->all(), [
+            'title' => ['required', 'unique:tasks,title,NULL,id,site_id,' . $request->input('site_id') . ',entity_id,' . $request->input('entity_id')],
+            'requested_completion' => ['required'],
+            'enquiry_status' => ['required'],
+            'quote_type' => ['required'],
+        ]);
+        if (!$validator->passes()) {
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
+        $enquiry = Task::find($enquiry);
 
         // $enquiryOldName = $enquiry->title;
         // $enquiryNewName = $request->input("title");

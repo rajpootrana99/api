@@ -8,6 +8,7 @@ use App\Models\Job;
 use App\Models\Site;
 use App\Models\Task;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -115,7 +116,7 @@ class JobController extends Controller
      */
     public function update(Request $request, $job)
     {
-        // $job= Task::find($job);
+        $job= Task::find($job);
 
         // $jobOldName = $job->title;
         // $jobNewName = $request->input("title");
@@ -193,6 +194,7 @@ class JobController extends Controller
             'enquiry_status' => $enquiry_status,
             'status' => 1,
             'type' => 2,
+            'job_created_at' => Carbon::now(),
         ]);
 
         //creating folder under site's enquiry folder with the name of the task turning to enuiry

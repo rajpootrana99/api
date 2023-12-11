@@ -106,6 +106,12 @@
                         <input type="hidden" name="task_id" id="task_id">
                         <div class="col-lg-12">
                             <div class="form-group">
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" placeholder="Enter Title" name="title" id="title">
+                                <span class="text-danger error-text title_update_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
                                 <select class="select2 pl-1 form-control edit_job_status" name="job_status" id="edit_job_status" style="width: 100%; height:30px !important;">
                                     <option value="" selected disabled>Select Status</option>
                                     <option value="0">Pending</option>
@@ -115,6 +121,12 @@
                                     <option value="4">Complete</option>
                                 </select>
                                 <span class="text-danger error-text job_status_update_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="requested_completion" id="requested_completion" onfocus="(this.type='date')" onblur="(this.type='text')" placeholder="Requested Completion Date">
+                                <span class="text-danger error-text requested_completion_update_error"></span>
                             </div>
                         </div>
                     </div>
@@ -202,6 +214,14 @@
         }
 
         function viewJobs(job) {
+            // Get the current date
+            const currentDate = new Date();
+            // Create a new Date object for "2023-12-01"
+            const targetDate = new Date(job.job_created_at);
+            // Calculate the difference in milliseconds
+            const differenceInMilliseconds = currentDate - targetDate;
+            // Convert the difference to days
+            const daysInProgress = Math.floor(differenceInMilliseconds / (1000 * 3600 * 24));
             var invoiced = 0;
             $.each(job.invoices, function(key, invoice) {
                 invoiced += parseFloat(invoice.sub_total);
@@ -239,7 +259,7 @@
                 <td>' + status + '</td>\
                 <td>' + job.entity.entity + '</td>\
                 <td>' + formatDate(job.requested_completion) + '</td>\
-                <td>20</td>\
+                <td>'+ daysInProgress +'</td>\
                 <td>' + USDollar.format(quoted_price_ex_gst) + '</td>\
                 <td>' + USDollar.format(profit) + '</td>\
                 <td>' + ((profit / quoted_price_ex_gst) * 100).toFixed(2) + '%</td>\
@@ -267,12 +287,16 @@
                 dataType: "json",
                 success: function(response) {
                     jobs = response.jobs;
+                    total_quoted_price_ex_gst = 0;
+                    total_profit = 0;
                     showJobs(jobs);
                 }
             });
         }
 
         $(document).on('change', '#view_status', function(e) {
+            total_quoted_price_ex_gst = 0;
+            total_profit = 0;
             showJobs(jobs);
         });
 
@@ -307,6 +331,8 @@
                         $('#task_id').val(task_id);
                         $('.edit_job_status').val(status).change();
                         $('#editJobLabel').text(response.task.title);
+                        $('#title').val(response.task.title);
+                        $('#requested_completion').val(response.task.requested_completion);
                     }
                 }
             });

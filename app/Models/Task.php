@@ -21,6 +21,7 @@ class Task extends Model
         'is_enquiry',
         'quote_type',
         'requested_completion',
+        'job_created_at',
     ];
 
     public function getTypeAttribute($attribute)
