@@ -86,6 +86,10 @@ Route::middleware(['auth', 'verified', 'role:Admin|Client|Supplier'])->group(fun
     Route::get('/fetchTaskMessages/{task}', [MessageController::class, 'fetchTaskMessages']);
     Route::post('/send-message', [MessageController::class, 'sendMessage']);
 
+
+    Route::get('/getTasks', [MessageController::class, 'getTasks']);
+
+
     // NOTIFICATION ROUTES
     Route::resource('notification', NotificationController::class);
     Route::get('/fetchNotifications', [NotificationController::class, 'fetchNotifications'])->name('notification.get');

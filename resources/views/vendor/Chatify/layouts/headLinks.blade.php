@@ -13,14 +13,17 @@
   src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{{ asset('js/chatify/font.awesome.min.js') }}"></script>
 <script src="{{ asset('js/chatify/autosize.js') }}"></script>
-<script src="{{ asset('js/app.js') }}"></script>
+<script src="{{ asset('assets/js/app.js') }}"></script>
 <script src='https://unpkg.com/nprogress@0.2.0/nprogress.js'></script>
 
 {{-- styles --}}
 <link rel='stylesheet' href='https://unpkg.com/nprogress@0.2.0/nprogress.css'/>
 <link href="{{ asset('css/chatify/style.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/chatify/'.$dark_mode.'.mode.css') }}" rel="stylesheet" />
-<link href="{{ asset('css/app.css') }}" rel="stylesheet" />
+<link href="{{ asset('assets/css/app.css') }}" rel="stylesheet" />
+<link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('assets/plugins/bootstrap/_root.scss') }}" rel="stylesheet" type="text/css" />
+
 
 {{-- Setting messenger primary color to css --}}
 <style>

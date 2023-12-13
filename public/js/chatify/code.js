@@ -72,7 +72,7 @@ function routerPush(title, url) {
   return window.history.pushState({}, title || document.title, url);
 }
 function updateSelectedContact(user_id) {
-  $(document).find(".messenger-list-item").removeClass("m-list-active");
+  $(document).find(".messenger-list-item[data-contact]").removeClass("m-list-active");
   $(document)
     .find(
       ".messenger-list-item[data-contact=" + (user_id || getMessengerId()) + "]"
@@ -812,7 +812,7 @@ function checkInternet(state, selector) {
   switch (state) {
     case "connected":
       if (net_errs < 1) {
-        messengerTitle.text(messengerTitleDefault);
+        // messengerTitle.text(messengerTitleDefault);
         selector.addClass("successBG-rgba");
         selector.find("span").hide();
         selector.slideDown("fast", function () {
@@ -824,7 +824,7 @@ function checkInternet(state, selector) {
       }
       break;
     case "connecting":
-      messengerTitle.text($(".ic-connecting").text());
+    //   messengerTitle.text($(".ic-connecting").text());
       selector.removeClass("successBG-rgba");
       selector.find("span").hide();
       selector.slideDown("fast", function () {
@@ -834,7 +834,7 @@ function checkInternet(state, selector) {
       break;
     // Not connected
     default:
-      messengerTitle.text($(".ic-noInternet").text());
+    //   messengerTitle.text($(".ic-noInternet").text());
       selector.removeClass("successBG-rgba");
       selector.find("span").hide();
       selector.slideDown("fast", function () {
@@ -844,6 +844,99 @@ function checkInternet(state, selector) {
       break;
   }
 }
+
+// loading placeholder for tasks list item
+function listTaskItemLoading(items) {
+    let template = "";
+    for (let i = 0; i < items; i++) {
+      template += `
+  <div class="loadingPlaceholder">
+  <div class="loadingPlaceholder-wrapper">
+  <div class="loadingPlaceholder-body">
+  <table class="loadingPlaceholder-header">
+  <tr>
+  <td><div class="avatar av-m" style="background-color: transparent;border:0;width:45px;height:45px;"></div></span></td>
+  <td>
+  <div class="loadingPlaceholder-name text-muted"></div>
+  <div class="loadingPlaceholder-name"></div>
+  </td>
+  </tr>
+  </table>
+  </div>
+  </div>
+  </div>
+  `;
+    }
+    return template;
+  }
+
+/**
+ *-------------------------------------------------------------
+ * Get tasks
+ *-------------------------------------------------------------
+ */
+ $("body").on("click", ".messenger-list-item[data-task]", function () {
+    $(".messenger-list-item[data-task]").removeClass("m-list-active");
+    $(this).addClass("m-list-active");
+    const taskID = $(this).attr("data-task");
+    const entityID = $(this).attr("data-entity");
+
+    $(".listOfContacts").html("");
+    getContacts(entityID)
+    // routerPush(document.title, `${url}/${userID}`);
+    // updateSelectedContact(userID);
+  });
+
+ let tasksPage = 1;
+ let tasksLoading = false;
+ let noMoreTasks = false;
+ function setTasksLoading(loading = false) {
+   if (!loading) {
+     $(".listOfTasks").find(".loading-tasks").remove();
+   } else {
+     $(".listOfTasks").append(
+       `<div class="loading-tasks">${listTaskItemLoading(4)}</div>`
+     );
+   }
+   tasksLoading = loading;
+ }
+ function getTasks(input = "") {
+   if (!tasksLoading && !noMoreTasks) {
+     setTasksLoading(true);
+     $.ajax({
+       url: "/getTasks",
+       method: "GET",
+       data: { _token: csrfToken, page: tasksPage, search: input },
+       dataType: "JSON",
+       success: (data) => {
+         setTasksLoading(false);
+
+        $(".listOfTasks").html(data.tasks);
+        //  } else {
+        //    $(".listOfTasks").append(data.tasks);
+        //  }
+        //  updateSelectedContact();
+         // update data-action required with [responsive design]
+         cssMediaQueries();
+         // Pagination lock & messages page
+         noMoreTasks = tasksPage >= data?.last_page;
+         if (!noMoreTasks) tasksPage += 1;
+       },
+       error: (error) => {
+         setTasksLoading(false);
+         console.error(error);
+       },
+     });
+   }
+ }
+
+ $(".messenger-task-search").on("keyup",function (el) {
+    const value = $(this).val();
+    console.log(value)
+    // if( value.length <= 0 ) return;
+    getTasks(value)
+ })
+
 
 /**
  *-------------------------------------------------------------
@@ -863,13 +956,13 @@ function setContactsLoading(loading = false) {
   }
   contactsLoading = loading;
 }
-function getContacts() {
+function getContacts(entityID) {
   if (!contactsLoading && !noMoreContacts) {
     setContactsLoading(true);
     $.ajax({
       url: url + "/getContacts",
       method: "GET",
-      data: { _token: csrfToken, page: contactsPage },
+      data: { _token: csrfToken, page: contactsPage, entityID: entityID },
       dataType: "JSON",
       success: (data) => {
         setContactsLoading(false);
@@ -916,7 +1009,7 @@ function updateContactItem(user_id) {
         if (user_id == getMessengerId()) updateSelectedContact(user_id);
         // show/hide message hint (empty state message)
         const totalContacts =
-          $(".listOfContacts").find(".messenger-list-item")?.length || 0;
+          $(".listOfContacts").find(".messenger-list-item[data-contact]")?.length || 0;
         if (totalContacts > 0) {
           $(".listOfContacts").find(".message-hint").hide();
         } else {
@@ -1251,8 +1344,11 @@ function setActiveStatus(status) {
  *-------------------------------------------------------------
  */
 $(document).ready(function () {
+    // /fetch tasks
+    getTasks()
+
   // get contacts list
-  getContacts();
+//   getContacts();
 
   // get contacts list
   getFavoritesList();
@@ -1275,7 +1371,7 @@ $(document).ready(function () {
       // On connection state change [Updating] and get [info & msgs]
       if (getMessengerId() != 0) {
         if (
-          $(".messenger-list-item")
+          $(".messenger-list-item[data-contact]")
             .find("tr[data-action]")
             .attr("data-action") == "1"
         ) {
@@ -1291,13 +1387,13 @@ $(document).ready(function () {
     var dataView = $(this).attr("data-view");
     $(".messenger-listView-tabs a").removeClass("active-tab");
     $(this).addClass("active-tab");
-    $(".messenger-tab").hide();
+    $(".messenger-tab[data-view='users']").hide();
     $(".messenger-tab[data-view=" + dataView + "]").show();
   });
 
   // set item active on click
-  $("body").on("click", ".messenger-list-item", function () {
-    $(".messenger-list-item").removeClass("m-list-active");
+  $("body").on("click", ".messenger-list-item[data-contact]", function () {
+    $(".messenger-list-item[data-contact]").removeClass("m-list-active");
     $(this).addClass("m-list-active");
     const userID = $(this).attr("data-contact");
     routerPush(document.title, `${url}/${userID}`);
@@ -1313,7 +1409,7 @@ $(document).ready(function () {
   hScroller(".messenger-favorites");
 
   // click action for list item [user/group]
-  $("body").on("click", ".messenger-list-item", function () {
+  $("body").on("click", ".messenger-list-item[data-contact]", function () {
     if ($(this).find("tr[data-action]").attr("data-action") == "1") {
       $(".messenger-listView").hide();
     }
@@ -1446,28 +1542,28 @@ $(document).ready(function () {
   });
 
   // Search input on focus
-  $(".messenger-search").on("focus", function () {
-    $(".messenger-tab").hide();
+  $(".messenger-users-search").on("focus", function () {
+    $(".messenger-tab[data-view='users']").hide();
     $('.messenger-tab[data-view="search"]').show();
   });
-  $(".messenger-search").on("blur", function () {
+  $(".messenger-users-search").on("blur", function () {
     setTimeout(function () {
-      $(".messenger-tab").hide();
+      $(".messenger-tab[data-view='search']").hide();
       $('.messenger-tab[data-view="users"]').show();
     }, 200);
   });
   // Search action on keyup
   const debouncedSearch = debounce(function () {
-    const value = $(".messenger-search").val();
+    const value = $(".messenger-users-search").val();
     messengerSearch(value);
   }, 500);
-  $(".messenger-search").on("keyup", function (e) {
+  $(".messenger-users-search").on("keyup", function (e) {
     const value = $(this).val();
     if ($.trim(value).length > 0) {
-      $(".messenger-search").trigger("focus");
+      $(".messenger-users-search").trigger("focus");
       debouncedSearch();
     } else {
-      $(".messenger-tab").hide();
+      $(".messenger-tab[data-view='search']").hide();
       $('.messenger-listView-tabs a[data-view="users"]').trigger("click");
     }
   });
@@ -1603,7 +1699,7 @@ $(document).ready(function () {
   });
   //Search pagination
   actionOnScroll(".messenger-tab.search-tab", function () {
-    messengerSearch($(".messenger-search").val());
+    messengerSearch($(".messenger-users-search").val());
   });
 });
 

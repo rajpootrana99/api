@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\ForgetController;
 use App\Http\Controllers\Api\MessageController;
 use App\Http\Controllers\Api\SiteController;
 use App\Http\Controllers\Api\TaskController;
+use Chatify\Http\Controllers\MessagesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -40,4 +41,6 @@ Route::group(['middleware' => ['auth:sanctum', 'user_verified']], function () {
     Route::get('/fetchTasks', [TaskController::class, 'fetchTasks']);
     Route::get('/fetchItems', [TaskController::class, 'fetchItems']);
     Route::get('/groupTasks', [TaskController::class, 'groupTasks']);
+
+
 });

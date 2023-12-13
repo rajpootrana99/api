@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Entity;
 use App\Models\Message;
 use App\Models\Task;
 use App\Models\Token;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Response;
+use stdClass;
+
 
 class MessageController extends Controller
 {
@@ -23,6 +27,71 @@ class MessageController extends Controller
             'status' => 1,
             'users' => $users,
         ]);
+    }
+
+
+    public function getTaskItems($task)
+    {
+        return view('Chatify::layouts.listItem'
+        , [
+            "get" => "tasks",
+            "task" => ($task),
+            "entity" => $task->entity
+            ])->render();
+    }
+
+    protected $perPage = 30;
+
+    public function getTasks(Request $request)
+    {
+
+        // get all users that received/sent message from/to [Auth user]
+        // $users = Message::join('users', function ($join) {
+        //     $join->on('ch_messages.from_id', '=', 'users.id')
+        //         ->orOn('ch_messages.to_id', '=', 'users.id');
+        // })
+        //     ->where(function ($q) {
+        //         $q->where('ch_messages.from_id', Auth::user()->id)
+        //             ->orWhere('ch_messages.to_id', Auth::user()->id);
+        //     })
+        //     ->where('users.id', '!=', Auth::user()->id)
+        //     ->select('users.*', DB::raw('MAX(ch_messages.created_at) as max_created_at'))
+        //     ->orderBy('max_created_at', 'desc')
+        //     ->groupBy(
+        //         'users.id',
+        //         'users.entity_id'
+        //     )
+        //     ->paginate($request->per_page ?? $this->perPage);
+
+
+        // $tasks = Task::all()->where("status","!=","Cancelled")->all();
+
+        $tasks = Task::where("title","LIKE","%".$request->input("search","")."%")
+        ->with(['entity', 'site'])
+        ->orderByDesc("updated_at")
+        ->get()
+        ->where("status","!=","Cancelled");
+        // return response()->json([
+        //     "tasks"=>$tasks,
+        //     // "query" =>
+        //     // "entity" => Entity::all()->where("id","==",$tasks[0]["entity_id"])->first()->toArray()
+        // ], 200);
+
+        $taskList = "";
+        if (count($tasks) > 0) {
+            foreach ($tasks as $task) {
+                $taskList .= $this->getTaskItems($task);
+            }
+        } else {
+            $taskList = '<p class="message-hint center-el"><span>No Tasks Found</span></p>';
+        }
+
+
+        return Response::json([
+            'tasks' => $taskList,
+            'total' => count($tasks) ?? 0,
+            // 'last_page' => $users->lastPage() ?? 1,
+        ], 200);
     }
 
     public function fetchMessages($sender)

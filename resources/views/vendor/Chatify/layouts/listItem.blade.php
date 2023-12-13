@@ -62,6 +62,42 @@ $lastMessageBody = strlen($lastMessageBody) > 30 ? mb_substr($lastMessageBody, 0
 </table>
 @endif
 
+{{-- -------------------- Tasks list -------------------- --}}
+@if($get == 'tasks')
+@php
+    $task_status = [
+        "Pending" => ["warning", "clock", "--warning"],
+        "Approved" => ["primary", "check-circle", "--success"]
+];
+@endphp
+<table class="messenger-list-item" data-task="{{ $task->id }}" data-entity="{{ $entity->id }}">
+    <tr data-action="0">
+        {{-- Avatar side --}}
+        <td style="position: relative">
+        <div class="avatar av-m" style="background-color: transparent;border:0;">
+            <i class="fas fa-{{$task_status[$task->status][1]}} av-m" style="width: max-content;color: var({{$task_status[$task->status][2]}});"></i>
+        </div>
+        {{-- <span class="badge badge-pill badge-{{$task_status[$task->status][0]}}">Primary</span> --}}
+        </td>
+        {{-- center side --}}
+        <td>
+        <span>
+            <span class="text-muted text-truncate" style="width: 60%;display: inline-block;">{{$entity->entity}}</span>
+            <span style="float: inline-end;"> {{$task->status}} </span>
+        </span>
+        <p class="text-truncate ">
+            {{$task->title}}
+
+        </p>
+
+        <span>
+        </span>
+        </td>
+    </tr>
+</table>
+@endif
+
+
 {{-- -------------------- Search Item -------------------- --}}
 @if($get == 'search_item')
 <table class="messenger-list-item" data-contact="{{ $user->id }}">
