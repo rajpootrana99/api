@@ -76,7 +76,7 @@
                             </div>
                         </div>
                         <div class="col-lg-2">
-                            <a data-toggle="modal" data-target="#addSubHeader" id="addSubHeaderButton" class="btn btn-secondary" style="margin-left: 10px"><i class="fa fa-plus"></i></a>
+                            <a data-toggle="modal" data-target="#addSubHeader" id="addSubHeaderButton" class="align-middle text-danger font-weight-bold" style="cursor:pointer;">Add New</a>
                         </div>
                         <div class="col-lg-12">
                             <div class="form-group">
