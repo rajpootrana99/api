@@ -61,16 +61,16 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="form-group">
-                                <select class="select2 pl-1 form-control" name="header" id="header" style="width: 100%; height:30px !important;">
-
+                                <select class="select2 pl-1 form-control" name="header_id" id="header_id" style="width: 100%; height:30px !important;">
+                                    <option value selected disabled>Select header</option>
                                 </select>
-                                <span class="text-danger error-text header_error"></span>
+                                <span class="text-danger error-text header_id_error"></span>
                             </div>
                         </div>
                         <div class="col-lg-10">
                             <div class="form-group">
                                 <select class="select2 pl-1 form-control" name="sub_header_id" id="sub_header_id" style="width: 100%; height:30px !important;">
-
+                                    <option value selected disabled>Select header first</option>
                                 </select>
                                 <span class="text-danger error-text sub_header_id_error"></span>
                             </div>
@@ -110,7 +110,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="form-group">
-                                <select class="select2 pl-1 form-control" name="header_id" id="header_id" style="width: 100%; height:30px !important;">
+                                <select class="select2 pl-1 form-control" name="header_id" id="subHeader_id" style="width: 100%; height:30px !important;">
 
                                 </select>
                                 <span class="text-danger error-text header_id_error"></span>
@@ -150,61 +150,39 @@
                 <div class="modal-body">
                     <div class="row">
                         <input type="hidden" id="estimate_id" name="estimate_id">
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
                             <div class="form-group">
-                                <input class="form-control" type="text" name="major_code" id="edit_major_code" placeholder="Enter Major Code" style="width: 100%; height:30px;">
+                                <input class="form-control" type="text" name="major_code" readonly id="edit_major_code" placeholder="Enter Major Code" style="width: 100%; height:30px;">
                                 <span class="text-danger error-text major_code_update_error"></span>
                             </div>
                         </div>
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
                             <div class="form-group">
-                                <input class="form-control" type="text" name="cost_code" id="edit_cost_code" placeholder="Enter Cost Code" style="width: 100%; height:30px;">
+                                <input class="form-control" type="text" name="cost_code" readonly id="edit_cost_code" placeholder="Enter Cost Code" style="width: 100%; height:30px;">
                                 <span class="text-danger error-text cost_code_update_error"></span>
                             </div>
                         </div>
                         <div class="col-lg-12">
                             <div class="form-group">
-                                <select class="select2 pl-1 form-control edit_header" name="header" id="edit_header" style="width: 100%; height:30px !important;">
-                                    <option value="0">PRELIMINARIES</option>
-                                    <option value="1">DEMOLITION</option>
-                                    <option value="2">SITEWORKS</option>
-                                    <option value="3">CONCRETE</option>
-                                    <option value="4">STRUCTURAL STEELWORK</option>
-                                    <option value="5">METALWORK</option>
-                                    <option value="6">BRICKWORK</option>
-                                    <option value="7">CARPENTRY</option>
-                                    <option value="8">JOINERY</option>
-                                    <option value="9">ROOF COVER</option>
-                                    <option value="10">HYDRAULIC SERVICES</option>
-                                    <option value="11">ELECTRICAL SERVICES</option>
-                                    <option value="12">MECHANICAL SERVICES</option>
-                                    <option value="13">PLASTERING</option>
-                                    <option value="14">CEILINGS</option>
-                                    <option value="15">FLOOR FINISHES</option>
-                                    <option value="16">GLAZING</option>
-                                    <option value="17">PARTITIONING</option>
-                                    <option value="18">PAINTING</option>
-                                    <option value="19">FURNITURE</option>
+                                <select class="select2 pl-1 form-control edit_header_id" name="header_id" id="edit_header_id" style="width: 100%; height:30px !important;">
+                                    <option value selected disabled>Select Header</option>
+
                                 </select>
-                                <span class="text-danger error-text header_update_error"></span>
+                                <span class="text-danger error-text header_id_update_error"></span>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-12">
                             <div class="form-group">
-                                <input class="form-control" type="text" name="sub_header" id="edit_sub_header" placeholder="Enter Sub Header" style="width: 100%; height:30px;">
-                                <span class="text-danger error-text sub_header_update_error"></span>
+                                <select class="select2 pl-1 form-control" name="sub_header_id" id="edit_sub_header_id" style="width: 100%; height:30px !important;">
+                                    <option value selected disabled>Select header first</option>
+                                </select>
+                                <span class="text-danger error-text sub_header_id_update_error"></span>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-12">
                             <div class="form-group">
                                 <input class="form-control" type="text" name="item" id="edit_item" placeholder="Enter Item" style="width: 100%; height:30px;">
                                 <span class="text-danger error-text item_update_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <input class="form-control" type="text" name="label" id="edit_label" placeholder="Enter Label" style="width: 100%; height:30px;">
-                                <span class="text-danger error-text label_update_error"></span>
                             </div>
                         </div>
                     </div>
@@ -248,6 +226,7 @@
 <script>
     $(document).ready(function() {
 
+        var headers, subHeaders;
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -265,23 +244,23 @@
                     $('tbody').html("");
                     $.each(response.headers, function(key, header) {
                         $('tbody').append('<tr style="background:#F96D22; color: #fff; font-size: 16px;">\
-                            <td><strong>'+header.major_code+'</strong></td>\
-                            <td><strong>'+header.major_code+'</strong></td>\
-                            <td><strong>'+header.header+'</strong></td>\
+                            <td><strong>' + header.major_code + '</strong></td>\
+                            <td><strong>' + header.major_code + '</strong></td>\
+                            <td><strong>' + header.header + '</strong></td>\
                             <td colspan="2"><strong>' + header.major_code + '___' + header.header + '</strong></td>\
                         </tr>');
                         $.each(header.sub_headers, function(key, subHeader) {
                             $('tbody').append('<tr style="background:#c7c7c7; color: #000">\
-                                <td><strong>'+header.major_code+'</strong></td>\
-                                <td><strong>'+subHeader.cost_code+'</strong></td>\
-                                <td><strong>'+subHeader.sub_header+'</strong></td>\
+                                <td><strong>' + header.major_code + '</strong></td>\
+                                <td><strong>' + subHeader.cost_code + '</strong></td>\
+                                <td><strong>' + subHeader.sub_header + '</strong></td>\
                                 <td colspan="2"><strong>' + subHeader.cost_code + '___' + subHeader.sub_header + '</strong></td>\
                             </tr>');
                             $.each(subHeader.estimates, function(key, estimate) {
-                                    $('tbody').append('<tr>\
-                                    <td>'+header.major_code+'</td>\
-                                    <td>'+subHeader.cost_code+'</td>\
-                                    <td>'+estimate.item+'</td>\
+                                $('tbody').append('<tr>\
+                                    <td>' + header.major_code + '</td>\
+                                    <td>' + subHeader.cost_code + '</td>\
+                                    <td>' + estimate.item + '</td>\
                                     <td>' + subHeader.cost_code + '___' + estimate.item + '</td>\
                                     <td><button value="' + estimate.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
                                 </tr>');
@@ -292,7 +271,7 @@
             });
         }
 
-        var headers;
+        fetchHeaders();
 
         function fetchHeaders() {
             $.ajax({
@@ -301,22 +280,12 @@
                 dataType: "json",
                 success: function(response) {
                     headers = response.headers;
-                    var header_id = $('#header_id');
-                    var header_estimate = $('#header');
-                    $('#header_id').children().remove().end();
-                    $('#header').children().remove().end();
-                    header_id.append($("<option />").text('Select Header'));
-                    header_estimate.append($("<option />").text('Select Header').prop({selected: true, disabled: true}));
-                    $.each(response.headers, function(header) {
-                        header_estimate.append($("<option />").val(response.headers[header].id).text(response.headers[header].header));
-                        header_id.append($("<option />").val(response.headers[header].id).text(response.headers[header].header));
-                    });
                 }
             });
         }
 
         function fetchSubHeaders() {
-            const header_id = $('#header').val();
+            const header_id = $('#header_id').val();
             $.ajax({
                 type: "GET",
                 url: "/fetchSubHeaders/" + header_id,
@@ -324,34 +293,37 @@
                 success: function(response) {
                     var sub_header_id = $('#sub_header_id');
                     $('#sub_header_id').children().remove().end();
-                    sub_header_id.append($("<option />").text('Select Sub Header').prop({selected: true, disabled: true}));
-                    $.each(response.subHeaders, function(subHeader) {
-                        sub_header_id.append($("<option />").val(response.subHeaders[subHeader].id).text(response.subHeaders[subHeader].sub_header));
+                    sub_header_id.append($("<option />").text('Select Sub Header').prop({
+                        selected: true,
+                        disabled: true
+                    }));
+                    console.log(response.subHeaders);
+                    $.each(response.subHeaders, function(key, subHeader) {
+                        sub_header_id.append($("<option />").val(subHeader.id).text(subHeader.sub_header));
                     });
                 }
             });
         }
 
-        $(document).on('change', '#header', function(e) {
+        $(document).on('change', '#header_id', function(e) {
             fetchSubHeaders();
         });
-        $(document).on('change', '#header_id', function(e) {
+
+        $(document).on('change', '#subHeader_id', function(e) {
             e.preventDefault();
             $.each(headers, function(key, header) {
-                if ($('#header_id').val() == header.id) {
+                if ($('#subHeader_id').val() == header.id) {
                     var code;
                     var cost_code;
-                    if(header.sub_headers.length==0){
+                    if (header.sub_headers.length == 0) {
                         code = header.code + 1;
                         cost_code = '5-' + code.toString().padStart(4, '0');
-                    }
-                    else{
+                    } else {
                         code = header.sub_headers[header.sub_headers.length - 1].code + 1;
                         cost_code = '5-' + code.toString().padStart(4, '0');
                     }
                     $('#code').val(code)
                     $('#cost_code').val(cost_code)
-
                 }
             });
         });
@@ -359,9 +331,15 @@
         $(document).on('click', '#addEstimateButton', function(e) {
             e.preventDefault();
             $('#addEstimate').modal('show');
-            $('#sub_header_id').children().remove().end();
-            $('#header').children().remove().end();
-            fetchHeaders();
+            var header_id = $('#header_id');
+            $('#header_id').children().remove().end();
+            header_id.append($("<option />").text('Select Header').prop({
+                selected: true,
+                disabled: true
+            }));
+            $.each(headers, function(key, header) {
+                header_id.append($("<option />").val(header.id).text(header.header));
+            });
             $(document).find('span.error-text').text('');
         });
 
@@ -386,6 +364,7 @@
                     } else {
                         $('#addEstimateForm')[0].reset();
                         $('#addEstimate').modal('hide');
+                        showToast(response.message, "success");
                         fetchEstimates();
                     }
                 },
@@ -400,7 +379,15 @@
             $('#addEstimate').modal('hide');
             $('#addSubHeader').modal('show');
             $('#addSubHeaderForm')[0].reset();
-            fetchHeaders();
+            var header_id = $('#subHeader_id');
+            $('#subHeader_id').children().remove().end();
+            header_id.append($("<option />").text('Select Header').prop({
+                selected: true,
+                disabled: true
+            }));
+            $.each(headers, function(key, header) {
+                header_id.append($("<option />").val(header.id).text(header.header));
+            });
             $(document).find('span.error-text').text('');
         });
 
@@ -427,6 +414,7 @@
                         $('#addSubHeaderForm')[0].reset();
                         $('#addSubHeader').modal('hide');
                         $('#addEstimate').modal('show');
+                        showToast(response.message, "success");
                         fetchEstimates();
                     }
                 },
@@ -449,14 +437,36 @@
                     if (response.status == false) {
                         $('#editEstimate').modal('hide');
                     } else {
+                        console.log(response)
                         $('#editEstimateLabel').text('Estimate ID ' + response.estimate.id);
                         $('#estimate_id').val(response.estimate.id);
-                        $('#edit_header').find(response.estimate.header).change();
-                        $('#edit_major_code').val(response.estimate.major_code);
-                        $('#edit_cost_code').val(response.estimate.cost_code);
-                        $('#edit_sub_header').val(response.estimate.sub_header);
+                        var header_id = $('#edit_header_id');
+                        $('#edit_header_id').children().remove().end();
+                        header_id.append($("<option />").text('Select Header').prop({
+                            selected: true,
+                            disabled: true
+                        }));
+                        $.each(headers, function(key, header) {
+                            header_id.append($("<option />").val(header.id).text(header.header));
+                        });
+                        $('#edit_header_id').val(response.estimate.sub_header.header_id).change();
+                        $('#edit_major_code').val(response.estimate.sub_header.header.major_code);
+                        $('#edit_cost_code').val(response.estimate.sub_header.cost_code);
+                        var edit_sub_header_id = $('#edit_sub_header_id');
+                        $('#edit_sub_header_id').children().remove().end();
+                        edit_sub_header_id.append($("<option />").text('Select Sub Header').prop({
+                            selected: true,
+                            disabled: true
+                        }));
+                        $.each(headers, function(key, header) {
+                            if (header.id == response.estimate.sub_header.header_id) {
+                                $.each(header.sub_headers, function(key, sub_header) {
+                                    edit_sub_header_id.append($("<option />").val(sub_header.id).text(sub_header.sub_header));
+                                })
+                            }
+                        });
+                        $('#edit_sub_header_id').val(response.estimate.sub_header_id).change();
                         $('#edit_item').val(response.estimate.item);
-                        $('#edit_label').val(response.estimate.label);
                     }
                 }
             });
@@ -489,6 +499,7 @@
                     } else {
                         $('#editEstimateForm')[0].reset();
                         $('#editEstimate').modal('hide');
+                        showToast(response.message, "success");
                         fetchEstimates();
                     }
                 },

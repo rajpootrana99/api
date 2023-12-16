@@ -98,7 +98,7 @@ class EstimateController extends Controller
      */
     public function edit($estimate)
     {
-        $estimate = Estimate::find($estimate);
+        $estimate = Estimate::with('subHeader.header')->find($estimate);
         if ($estimate) {
             return response()->json([
                 'status' => true,
@@ -122,12 +122,9 @@ class EstimateController extends Controller
     public function update(Request $request, $estimate)
     {
         $validator = Validator::make($request->all(), [
-            'header' => ['required'],
-            'major_code' => ['required'],
-            'cost_code' => ['required'],
-            'sub_header' => ['required'],
+            'header_id' => ['required'],
+            'sub_header_id' => ['required'],
             'item' => ['required'],
-            'label' => ['required'],
         ]);
         if (!$validator->passes()) {
             return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
