@@ -166,7 +166,7 @@
 </div>
 
 <script>
-    var job = "{{ $job ? $job : '' }}";
+    var job = <?php echo $job ?>;
     var itemsCount = 1;
     var selectedJob;
 
