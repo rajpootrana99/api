@@ -97,11 +97,28 @@ class EnquiryController extends Controller
         }
         $enquiry = Task::find($enquiry);
 
-        // $enquiryOldName = $enquiry->title;
-        // $enquiryNewName = $request->input("title");
+        $enquiryId = $enquiry->id;
+        $enquiryOldName = $enquiry->title." (".$enquiryId.")";
+        $enquiryNewName = $request->input("title")." (".$enquiryId.")";
 
         $enquiry->update($request->all());
 
+        if ($enquiry) {
+
+            //Change task name in all places
+            $siteName = Site::find($enquiry->site_id)->site;
+            $entity = Entity::find($enquiry->entity_id);
+            $manager = new FileExplorerController();
+            $entityName = $entity->entity;
+            if ($entity->type == "Client") {
+                $manager->saveEditedData(new Request([
+                    "name" => $enquiryNewName,
+                    "path" => "explorer/" . $entityName . "/" . $siteName . "/" . $enquiryOldName,
+                    "isDir" => true,
+                    "newParentFolderPath" => "explorer/" . $entityName . "/" . $siteName,
+                ]));
+            }
+        }
         //Change task name in all places
         // $siteName = Site::find($enquiry->site_id)->site;
         // $entityName = Entity::find($enquiry->entity_id)->entity;

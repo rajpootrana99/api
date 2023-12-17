@@ -97,7 +97,8 @@ class TaskController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'site_id' => ['required'],
-            'title' => ['required', 'unique:tasks,title,NULL,id,site_id,' . $request->input('site_id') . ',entity_id,' . $request->input('entity_id')],
+            'title' => ['required'],
+            // 'title' => ['required', 'unique:tasks,title,NULL,id,site_id,' . $request->input('site_id') . ',entity_id,' . $request->input('entity_id')],
         ]);
         if (!$validator->passes()) {
             return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
@@ -127,7 +128,7 @@ class TaskController extends Controller
         }
 
         //directory with task name in respected entity
-        $taskName = $request->input('title');
+        $taskName = $request->input('title')." (".$task->id.")";
         $entity = Entity::find($request->input('entity_id'));
         $siteName = Site::find($request->input('site_id'))->site;
         $manager = new FileExplorerController();
@@ -153,8 +154,9 @@ class TaskController extends Controller
     {
         $task = Task::find($task);
 
-        $taskOldName = $task->title;
-        $taskNewName = $request->input("title");
+        $taskId = $task->id;
+        $taskOldName = $task->title." (".$taskId.")";
+        $taskNewName = $request->input("title")." (".$taskId.")";
 
         $task->update($request->all());
 
@@ -170,9 +172,9 @@ class TaskController extends Controller
             if ($entity->type == "Client") {
                 $manager->saveEditedData(new Request([
                     "name" => $taskNewName,
-                    "path" => "explorer/" . $entityName . "/Sites" . "/" . $siteName . "/Tasks" . "/" . $taskOldName,
+                    "path" => "explorer/" . $entityName . "/" . $siteName . "/" . $taskOldName,
                     "isDir" => true,
-                    "newParentFolderPath" => "explorer/" . $entityName . "/Sites" . "/" . $siteName . "/Tasks",
+                    "newParentFolderPath" => "explorer/" . $entityName . "/" . $siteName,
                 ]));
             }
 

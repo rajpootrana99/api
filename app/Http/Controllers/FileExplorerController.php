@@ -165,24 +165,24 @@ class FileExplorerController extends Controller
             $relativeEntityPath = $entityPath."/".$entity;
 
             $this->createFolder(new Request([ "path" => $relativeEntityPath , "name" => "Documentation"]));
-            $this->createFolder(new Request([ "path" => $relativeEntityPath , "name" => "Clients"]));
-            $this->createFolder(new Request([ "path" => $relativeEntityPath , "name" => "Sites"]));
+            $this->createFolder(new Request([ "path" => $relativeEntityPath , "name" => "Correspondence"]));
+            // $this->createFolder(new Request([ "path" => $relativeEntityPath , "name" => "Sites"]));
             return "true";
         }
         return "false";
     }
 
-    public function createClient($entity, $user)
-    {
-        $clientPath = "explorer/".$entity."/Clients";
-        $createRequest = new Request([ "path" => $clientPath , "name" => $user]);
+    // public function createClient($entity, $user)
+    // {
+    //     $clientPath = "explorer/".$entity."/Correspondence";
+    //     $createRequest = new Request([ "path" => $clientPath , "name" => $user]);
 
-        return $this->createFolder($createRequest); //returns true if created otherwise false as string;
-    }
+    //     return $this->createFolder($createRequest); //returns true if created otherwise false as string;
+    // }
 
     public function createSite($entity, $site)
     {
-        $sitePath = "explorer/".$entity."/Sites";
+        $sitePath = "explorer/".$entity;
         $createRequest = new Request([ "path" => $sitePath , "name" => $site]);
         if( $this->createFolder($createRequest) == "true") //returns true if created otherwise false as string
         {
@@ -190,14 +190,14 @@ class FileExplorerController extends Controller
             $this->createFolder(new Request([ "path" => $siteAbsolutePath , "name" => "Images"]));
             $this->createFolder(new Request([ "path" => $siteAbsolutePath , "name" => "Plans"]));
             $this->createFolder(new Request([ "path" => $siteAbsolutePath , "name" => "Safety"]));
-            $this->createFolder(new Request([ "path" => $siteAbsolutePath , "name" => "Tasks"]));
+            // $this->createFolder(new Request([ "path" => $siteAbsolutePath , "name" => "Tasks"]));
         }
         return "false";
     }
 
     public function createTask($entity, $site, $task)
     {
-        $taskPath = "explorer/".$entity."/Sites/".$site."/Tasks";
+        $taskPath = "explorer/".$entity."/".$site;
         $createRequest = new Request([ "path" => $taskPath , "name" => $task]);
         if( $this->createFolder($createRequest) == "true" ) //returns true if created otherwise false as string
         {

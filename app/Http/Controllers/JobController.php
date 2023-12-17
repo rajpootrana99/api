@@ -101,11 +101,26 @@ class JobController extends Controller
     {
         $job = Task::find($job);
 
-        // $jobOldName = $job->title;
-        // $jobNewName = $request->input("title");
+        $jobId = $job->id;
+        $jobOldName = $job->title." (".$jobId.")";
+        $jobNewName = $request->input("title")." (".$jobId.")";
 
         $job->update($request->all());
 
+
+        //Change task name in all places
+        $siteName = Site::find($job->site_id)->site;
+        $entity = Entity::find($job->entity_id);
+        $manager = new FileExplorerController();
+        $entityName = $entity->entity;
+        if ($entity->type == "Client") {
+            $manager->saveEditedData(new Request([
+                "name" => $jobNewName,
+                "path" => "explorer/" . $entityName . "/" . $siteName . "/" . $jobOldName,
+                "isDir" => true,
+                "newParentFolderPath" => "explorer/" . $entityName . "/" . $siteName,
+            ]));
+        }
         //Change task name in all places
         // $siteName = Site::find($job->site_id)->site;
         // $entityName = Entity::find($job->entity_id)->entity;
