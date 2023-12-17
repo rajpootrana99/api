@@ -166,6 +166,7 @@
 </div>
 
 <script>
+    var job = "{{ $job ? $job : '' }}";
     var itemsCount = 1;
     var selectedJob;
     fetchJobs();
@@ -261,6 +262,9 @@
                 $.each(response.jobs, function(key, job) {
                     task_id.append($("<option />").val(job.id).text(job.id + ' - ' + job.title + ' : ' + job.site.site));
                 });
+                if (job) {
+                    task_id.val(job.id).change();
+                }
             }
         });
     }
@@ -280,6 +284,9 @@
                 $.each(response.entities, function(key, entity) {
                     entity_id.append($("<option />").val(entity.id).text(entity.entity));
                 });
+                if (job) {
+                    entity_id.val(job.entity_id).change();
+                }
             }
         });
     }

@@ -50,24 +50,6 @@ class JobController extends Controller
      */
     public function store(Request $request)
     {
-        // $validator = Validator::make($request->all(), [
-        //     'site_id' => ['required', 'integer'],
-        //     'description' => ['required', 'string', 'min:3'],
-        // ]);
-        // if (!$validator->passes()) {
-        //     return response()->json([
-        //         'status' => 0,
-        //         'error' => $validator->errors()->toArray()
-        //     ]);
-        // }
-
-        // $job = Job::create($request->all());
-        // if ($job) {
-        //     return response()->json([
-        //         'status' => 1,
-        //         'message' => 'Job Added Successfully'
-        //     ]);
-        // }
     }
 
     /**
@@ -88,7 +70,8 @@ class JobController extends Controller
             } else {
                 $invoiceNo = 1;
             }
-            return view('invoice.create', ['invoiceNo' => $invoiceNo]);
+            $job = Task::find($job);
+            return view('invoice.create', ['invoiceNo' => $invoiceNo, 'job' => $job]);
         }
     }
 
@@ -116,7 +99,7 @@ class JobController extends Controller
      */
     public function update(Request $request, $job)
     {
-        $job= Task::find($job);
+        $job = Task::find($job);
 
         // $jobOldName = $job->title;
         // $jobNewName = $request->input("title");
