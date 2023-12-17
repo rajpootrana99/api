@@ -26,7 +26,7 @@
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label for="client_id">Select Client</label>
-                                <select class="select2 form-control" name="client_id" id="client_id">
+                                <select class="select2 form-control" onchange="search()" name="entity_id" id="entity_id">
                                     <option value="" disabled selected>Select Client</option>
                                 </select>
                             </div>
@@ -50,7 +50,7 @@
                             </div>
                         </div>
                     </div>
-                    <strong><a href="" style="float:right; margin-left: 10px">Reset</a></strong>
+                    <strong><a href="javascript:void(0)" style="float:right; margin-left: 10px" onclick="clearFilters()">Reset</a></strong>
                 </div><!--end card-header-->
                 <div class="card-body">
                     <p href="" style="float:right; margin-left: 10px"><strong>Total Amount $0.00</strong></p>
@@ -92,28 +92,81 @@
         style: 'currency',
         currency: 'USD',
     });
+    var invoices, clients;
 
-    $(document).ready(function() {
+    fetchClientEntities();
 
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    function fetchClientEntities() {
+        $.ajax({
+            type: "GET",
+            url: "/fetchClientEntities",
+            dataType: "json",
+            success: function(response) {
+                clients = response.entities;
+                showClients(clients);
             }
         });
+    }
 
-        fetchInvoices();
+    function showClients(clients) {
+        var entity_id = $('#entity_id');
+        $('#entity_id').children().remove().end();
+        entity_id.append($("<option />").text('Select Client').prop({
+            selected: true,
+            disabled: true
+        }));
+        $.each(clients, function(key, entity) {
+            entity_id.append($("<option />").val(entity.id).text(entity.entity));
+        });
+    }
 
-        function fetchInvoices() {
-            $.ajax({
-                type: "GET",
-                url: "fetchInvoices",
-                dataType: "json",
-                success: function(response) {
-                    var total_amount = 0;
-                    $('tbody').html("");
-                    $.each(response.invoices, function(key, invoice) {
-                        total_amount = total_amount + parseFloat(invoice.total);
-                        $('tbody').append('<tr>\
+    const clientDropdown = document.getElementById("entity_id");
+    const issuedFromDateInput = document.getElementById("issued_from");
+    const issuedToDateInput = document.getElementById("issued_to");
+    const searchTextInput = document.getElementById("search_text");
+
+    issuedFromDateInput.addEventListener("change", search);
+    issuedToDateInput.addEventListener("change", search);
+    searchTextInput.addEventListener("keyup", search);
+
+    function search() {
+        // Get selected client
+        const selectedClient = clientDropdown;
+
+        // Get date values for Issued From and Issued To
+        const issuedFromDate = issuedFromDateInput.value;
+        const issuedToDate = issuedToDateInput.value;
+
+        // Get search text
+        const searchText = searchTextInput.value.toLowerCase();
+
+        // Convert date inputs to Date objects
+        const fromDate = new Date(issuedFromDate);
+        const toDate = new Date(issuedToDate);
+
+        // Filter the data based on the selected client, date range, and search text
+        var filterInvoices = [];
+        $.each(invoices, function(key, invoice) {
+            const issuedDate = new Date(invoice.issue_date);
+            if ((selectedClient.selectedIndex == 0 || invoice.entity_id == selectedClient.value) &&
+                (!issuedFromDate || issuedDate >= fromDate) &&
+                (!issuedToDate || issuedDate <= toDate) &&
+                (invoice.task.title.toLowerCase().includes(searchText))) {
+                filterInvoices.push(invoice);
+            }
+        });
+        // Display the filtered results
+        displayResults(filterInvoices);
+    }
+
+    function displayResults(results) {
+        // Display the results
+        if (results.length >= 0) {
+            var total_amount = 0;
+            $('tbody').html("");
+            $.each(results, function(key, invoice) {
+                total_amount = total_amount + parseFloat(invoice.total);
+                $('tbody').append('<tr>\
                             <td>' + formatDate(invoice.issue_date) + '</td>\
                             <td>' + invoice.customer_po_number + '</td>\
                             <td>' + invoice.entity.entity + '</td>\
@@ -131,8 +184,39 @@
                                 </div>\
                             </div>\</td>\
                     </tr>');
-                    });
-                    $('#total_amount').text(USDollar.format(total_amount));
+            });
+            $('#total_amount').text(USDollar.format(total_amount));
+        }
+    }
+
+    function clearFilters() {
+        // Clear all input fields and trigger a search to show all results
+        showClients(clients);
+        issuedFromDateInput.value = "";
+        issuedToDateInput.value = "";
+        searchTextInput.value = "";
+
+        displayResults(invoices);
+    }
+
+    $(document).ready(function() {
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        fetchInvoices();
+
+        function fetchInvoices() {
+            $.ajax({
+                type: "GET",
+                url: "fetchInvoices",
+                dataType: "json",
+                success: function(response) {
+                    invoices = response.invoices;
+                    displayResults(invoices);
                 }
             });
         }
