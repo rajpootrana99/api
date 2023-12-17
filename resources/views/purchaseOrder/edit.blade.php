@@ -202,8 +202,8 @@
         html = '<tr class="item" >';
         html += '<td><select class="select2 form-control select-estimate" name="items[' + number + '][quote_id]" id="estimate_id_' + number + '" onchange="quoteInsert()"  style="width: 100%; height:30px;" data-placeholder="Select Cost Code"><option value="0">Select Cost Code</option></select></td>';
         html += '<td><input type="text" style="height: 30px" name="items[' + number + '][description]" id="description_' + number + '" class="form-control" /></td>';
-        html += '<td><input type="text" style="height: 30px" name="items[' + number + '][qty]" id="qty_' + number + '" onchange="calculateCost()" class="form-control qty" /></td>';
-        html += '<td><input type="text" style="height: 30px" name="items[' + number + '][order_unit_price]" id="order_unit_price_' + number + '" onchange="calculateCost()" class="form-control price" /></td>';
+        html += '<td><input type="text" style="height: 30px" name="items[' + number + '][qty]" id="qty_' + number + '" onkeyup="calculateCost()" class="form-control qty" /></td>';
+        html += '<td><input type="text" style="height: 30px" name="items[' + number + '][order_unit_price]" id="order_unit_price_' + number + '" onkeyup="calculateCost()" class="form-control price" /></td>';
         html += '<td><input type="text" style="height: 30px" name="items[' + number + '][order_total_amount]" id="order_total_amount_' + number + '" readonly class="form-control amount" /></td>';
         html += '<td><select class="select2 form-control" name="items[' + number + '][tax]" id="tax_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Tax Code"><option value="10">GST 10%</option></select></td>';
         if (number > 1) {

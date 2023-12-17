@@ -28,7 +28,7 @@
                                         <div class="form-group row">
                                             <label for="entity_id" class="col-sm-12 col-form-label text-left">Customer<strong>*</strong></label>
                                             <div class="col-sm-12">
-                                                <select class="select2 pl-1 form-control" name="entity_id" id="entity_id" style="width: 100%; height:30px !important;">
+                                                <select class="select2 pl-1 form-control" name="entity_id" onchange="fetchJobs()" id="entity_id" style="width: 100%; height:30px !important;">
                                                     <option value="" selected disabled>Select Customer</option>
                                                 </select>
                                                 <span class="text-danger error-text entity_id_error"></span>
@@ -169,7 +169,7 @@
     var job = "{{ $job ? $job : '' }}";
     var itemsCount = 1;
     var selectedJob;
-    fetchJobs();
+
     fetchClientEntities();
     fetchNotes();
     itemsDynamicField(itemsCount);
@@ -187,8 +187,8 @@
         html += '<td><select class="select2 form-control select-estimate" name="items[' + number + '][quote_id]" id="estimate_id_' + number + '" onchange="quoteInsert()"  style="width: 100%; height:30px;" data-placeholder="Select Cost Code"><option value="0">Select Cost Code</option></select></td>';
         html += '<td><input type="text" style="height: 30px" name="items[' + number + '][description]" id="description_' + number + '" class="form-control" /></td>';
         html += '<td><select class="select2 form-control" name="items[' + number + '][account]" id="account_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Account"><option value="Maintenance Income">Maintenance Income</option><option value="Construction Income">Construction Income</option><option value="Management Income">Management Income</option></select></td>';
-        html += '<td><input type="text" style="height: 30px" name="items[' + number + '][qty]" id="qty_' + number + '" onchange="calculateCost()" class="form-control qty" /></td>';
-        html += '<td><input type="text" style="height: 30px" name="items[' + number + '][rate]" id="rate_' + number + '" onchange="calculateCost()" class="form-control rate" /></td>';
+        html += '<td><input type="text" style="height: 30px" name="items[' + number + '][qty]" id="qty_' + number + '" min="0" onkeyup="calculateCost()" class="form-control qty" /></td>';
+        html += '<td><input type="text" style="height: 30px" name="items[' + number + '][rate]" id="rate_' + number + '" min="0" onkeyup="calculateCost()" class="form-control rate" /></td>';
         html += '<td><input type="text" style="height: 30px" name="items[' + number + '][amount]" id="amount_' + number + '" readonly class="form-control amount" /></td>';
         html += '<td><select class="select2 form-control" name="items[' + number + '][tax]" id="tax_' + number + '" onchange="calculateCost()" style="width: 100%; height:30px;" data-placeholder="Select Tax Code"><option value="10">GST 10%</option></select></td>';
         html += '<td><input type="text" style="height: 30px" name="items[' + number + '][total]" id="total_' + number + '" readonly class="form-control total" /></td>';
@@ -260,7 +260,9 @@
                     disabled: true
                 }));
                 $.each(response.jobs, function(key, job) {
-                    task_id.append($("<option />").val(job.id).text(job.id + ' - ' + job.title + ' : ' + job.site.site));
+                    if (job.entity_id == $('#entity_id').val()) {
+                        task_id.append($("<option />").val(job.id).text(job.id + ' - ' + job.title + ' : ' + job.site.site));
+                    }
                 });
                 if (job) {
                     task_id.val(job.id).change();
@@ -300,6 +302,7 @@
                 $('#rate_' + itemsCount).val(quote.rate);
                 $('#amount_' + itemsCount).val(quote.amount);
                 $('#total_' + itemsCount).val(quote.amount_inc_gst);
+                calculateCost();
             }
         });
     }

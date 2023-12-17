@@ -198,8 +198,8 @@
         html += '<td><select class="select2 form-control select-estimate" name="items[' + number + '][quote_id]" id="estimate_id_' + number + '" onchange="quoteInsert()"  style="width: 100%; height:30px;" data-placeholder="Select Cost Code"><option value="0">Select Cost Code</option></select></td>';
         html += '<td><input type="text" style="height: 30px" name="items[' + number + '][description]" id="description_' + number + '" class="form-control" /></td>';
         html += '<td><select class="select2 form-control" name="items[' + number + '][account]" id="account_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Account"><option value="Maintenance Income">Maintenance Income</option><option value="Construction Income">Construction Income</option><option value="Management Income">Management Income</option></select></td>';
-        html += '<td><input type="text" style="height: 30px" name="items[' + number + '][qty]" id="qty_' + number + '" onchange="calculateCost()" class="form-control qty" /></td>';
-        html += '<td><input type="text" style="height: 30px" name="items[' + number + '][rate]" id="rate_' + number + '" onchange="calculateCost()" class="form-control rate" /></td>';
+        html += '<td><input type="text" style="height: 30px" name="items[' + number + '][qty]" id="qty_' + number + '" onkeyup="calculateCost()" class="form-control qty" /></td>';
+        html += '<td><input type="text" style="height: 30px" name="items[' + number + '][rate]" id="rate_' + number + '" onkeyup="calculateCost()" class="form-control rate" /></td>';
         html += '<td><input type="text" style="height: 30px" name="items[' + number + '][amount]" id="amount_' + number + '" readonly class="form-control amount" /></td>';
         html += '<td><select class="select2 form-control" name="items[' + number + '][tax]" id="tax_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Tax Code"><option value="10">GST 10%</option></select></td>';
         html += '<td><input type="text" style="height: 30px" name="items[' + number + '][total]" id="total_' + number + '" readonly class="form-control total" /></td>';
