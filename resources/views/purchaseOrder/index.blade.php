@@ -26,7 +26,7 @@
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label for="supplier_id">Select Supplier</label>
-                                <select class="select2 form-control" name="supplier_id" id="supplier_id">
+                                <select class="select2 form-control" onchange="search()" name="entity_id" id="entity_id">
                                     <option value="" disabled selected>Select Supplier</option>
                                 </select>
                             </div>
@@ -50,7 +50,7 @@
                             </div>
                         </div>
                     </div>
-                    <strong><a href="" style="float:right; margin-left: 10px">Reset</a></strong>
+                    <strong><a href="javascript:void(0)" style="float:right; margin-left: 10px" onclick="clearFilters()">Reset</a></strong>
                 </div><!--end card-header-->
                 <div class="card-body">
                     <p href="" style="float:right; margin-left: 10px"><strong>Total Amount $0.00</strong></p>
@@ -94,25 +94,79 @@
         currency: 'USD',
     });
 
-    $(document).ready(function() {
+    var purchaseOrders, suppliers;
 
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    fetchSupplierEntities();
+
+    function fetchSupplierEntities() {
+        $.ajax({
+            type: "GET",
+            url: "/fetchSupplierEntities",
+            dataType: "json",
+            success: function(response) {
+                clients = response.entities;
+                showSuppliers(clients);
             }
         });
+    }
 
-        fetchPurchaseOrders();
+    function showSuppliers(clients) {
+        var entity_id = $('#entity_id');
+        $('#entity_id').children().remove().end();
+        entity_id.append($("<option />").text('Select Supplier').prop({
+            selected: true,
+            disabled: true
+        }));
+        $.each(clients, function(key, entity) {
+            entity_id.append($("<option />").val(entity.id).text(entity.entity));
+        });
+    }
 
-        function fetchPurchaseOrders() {
+    const supplierDropdown = document.getElementById("entity_id");
+    const issuedFromDateInput = document.getElementById("issued_from");
+    const issuedToDateInput = document.getElementById("issued_to");
+    const searchTextInput = document.getElementById("search_text");
+
+    issuedFromDateInput.addEventListener("change", search);
+    issuedToDateInput.addEventListener("change", search);
+    searchTextInput.addEventListener("keyup", search);
+
+    function search() {
+        // Get selected client
+        const selectedSupplier = supplierDropdown;
+
+        // Get date values for Issued From and Issued To
+        const issuedFromDate = issuedFromDateInput.value;
+        const issuedToDate = issuedToDateInput.value;
+
+        // Get search text
+        const searchText = searchTextInput.value.toLowerCase();
+
+        // Convert date inputs to Date objects
+        const fromDate = new Date(issuedFromDate);
+        const toDate = new Date(issuedToDate);
+
+        // Filter the data based on the selected client, date range, and search text
+        var filterpurchaseOrders = [];
+        $.each(purchaseOrders, function(key, purchaseOrder) {
+            const issuedDate = new Date(purchaseOrder.date);
+            if ((selectedSupplier.selectedIndex == 0 || purchaseOrder.entity_id == selectedSupplier.value) &&
+                (!issuedFromDate || issuedDate >= fromDate) &&
+                (!issuedToDate || issuedDate <= toDate) &&
+                (purchaseOrder.task.title.toLowerCase().includes(searchText))) {
+                filterpurchaseOrders.push(purchaseOrder);
+            }
+        });
+        // Display the filtered results
+        displayResults(filterpurchaseOrders);
+    }
+
+    function displayResults(results) {
+        // Display the results
+        if (results.length >= 0) {
             var total_amount = 0;
-            $.ajax({
-                type: "GET",
-                url: "fetchPurchaseOrders",
-                dataType: "json",
-                success: function(response) {
-                    $('tbody').html("");
-                    $.each(response.purchaseOrders, function(key, purchaseOrder) {
+            $('tbody').html("");
+                    $.each(results, function(key, purchaseOrder) {
                         total_amount += parseFloat(purchaseOrder.sub_total);
                         $('tbody').append('<tr>\
                             <td>' + formatDate(purchaseOrder.date) + '</td>\
@@ -135,6 +189,38 @@
                         </tr>');
                         $('#total_amount').text(USDollar.format(total_amount));
                     });
+            $('#total_amount').text(USDollar.format(total_amount));
+        }
+    }
+
+    function clearFilters() {
+        // Clear all input fields and trigger a search to show all results
+        showSuppliers(clients);
+        issuedFromDateInput.value = "";
+        issuedToDateInput.value = "";
+        searchTextInput.value = "";
+
+        displayResults(purchaseOrders);
+    }
+
+    $(document).ready(function() {
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        fetchPurchaseOrders();
+
+        function fetchPurchaseOrders() {
+            $.ajax({
+                type: "GET",
+                url: "fetchPurchaseOrders",
+                dataType: "json",
+                success: function(response) {
+                    purchaseOrders = response.purchaseOrders;
+                    displayResults(purchaseOrders)
                 }
             });
         }
