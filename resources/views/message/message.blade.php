@@ -16,6 +16,7 @@
     style="border: 0.5px solid #F0F0F0;border-radius:10px;margin:16px 0;">
     </iframe>
 
+    {{-- @include('Chatify::pages.app') --}}
 @endsection
 
 

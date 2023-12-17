@@ -408,7 +408,7 @@ function IDinfo(id) {
         $(".messenger-infoView-btns .delete-conversation").show();
         $(".messenger-infoView-shared").show();
         // fetch messages
-        fetchMessages(id, true);
+        fetchMessages(id, $(".messenger-list-item[data-task].m-list-active").attr("data-task"), true);
         // focus on messaging input
         messageInput.focus();
         // update info in view
@@ -452,6 +452,7 @@ function sendMessage() {
     formData.append("id", getMessengerId());
     formData.append("temporaryMsgId", tempID);
     formData.append("_token", csrfToken);
+    formData.append("task_id", $(".messenger-list-item[data-task].m-list-active").attr("data-task"));
     $.ajax({
       url: $("#message-form").attr("action"),
       method: "POST",
@@ -492,7 +493,7 @@ function sendMessage() {
           console.error(data.error_msg);
         } else {
           // update contact item
-          updateContactItem(getMessengerId());
+          updateContactItem(getMessengerId(), $(".messenger-list-item[data-task].m-list-active").attr("data-task"));
           // temporary message card
           const tempMsgCardElement = messagesContainer.find(
             `.message-card[data-id=${data.tempID}]`
@@ -540,7 +541,7 @@ function setMessagesLoading(loading = false) {
   }
   messagesLoading = loading;
 }
-function fetchMessages(id, newFetch = false) {
+function fetchMessages(id, task_id, newFetch = false) {
   if (newFetch) {
     messagesPage = 1;
     noMoreMessages = false;
@@ -554,6 +555,7 @@ function fetchMessages(id, newFetch = false) {
       data: {
         _token: csrfToken,
         id: id,
+        task_id: task_id,
         page: messagesPage,
       },
       dataType: "JSON",
@@ -644,6 +646,8 @@ channel.bind("messaging", function (data) {
       .remove();
   }
 
+//   $(`.messenger-list-item[data-task='${data.task_id}']`).click()
+
   playNotificationSound(
     "new_message",
     !(data.from_id == getMessengerId() && data.to_id == auth_id)
@@ -677,7 +681,7 @@ clientListenChannel.bind("client-seen", function (data) {
 clientListenChannel.bind("client-contactItem", function (data) {
   if (data.to == auth_id) {
     if (data.update) {
-      updateContactItem(data.from);
+      updateContactItem(data.from, $(".messenger-list-item[data-task].m-list-active").attr("data-task"));
     } else {
       console.error("Can not update contact item!");
     }
@@ -775,6 +779,7 @@ function sendContactItemUpdates(status) {
   return clientSendChannel.trigger("client-contactItem", {
     from: auth_id, // Me
     to: getMessengerId(), // Messenger
+    task_id: $(".messenger-list-item[data-task].m-list-active").attr("data-task"),
     update: status,
   });
 }
@@ -991,7 +996,7 @@ function getContacts(entityID) {
  * Update contact item
  *-------------------------------------------------------------
  */
-function updateContactItem(user_id) {
+function updateContactItem(user_id, taskID) {
   if (user_id != auth_id) {
     $.ajax({
       url: url + "/updateContacts",
@@ -999,6 +1004,7 @@ function updateContactItem(user_id) {
       data: {
         _token: csrfToken,
         user_id,
+        task_id: taskID
       },
       dataType: "JSON",
       success: (data) => {
@@ -1087,7 +1093,7 @@ function getSharedPhotos(user_id) {
   $.ajax({
     url: url + "/shared",
     method: "POST",
-    data: { _token: csrfToken, user_id: user_id },
+    data: { _token: csrfToken, user_id: user_id, task_id: $(".messenger-list-item[data-task].m-list-active").attr("data-task") },
     dataType: "JSON",
     success: (data) => {
       $(".shared-photos-list").html(data.shared);
@@ -1118,6 +1124,11 @@ function setSearchLoading(loading = false) {
   searchLoading = loading;
 }
 function messengerSearch(input) {
+
+    if ($(".messenger-list-item[data-task].m-list-active").length == 0) {
+        $(".search-records").html('<p class="message-hint center-el"><span>Select Task First.</span></p>');
+        return
+    }
   if (input != searchTempVal) {
     searchPage = 1;
     noMoreDataSearch = false;
@@ -1132,7 +1143,7 @@ function messengerSearch(input) {
     $.ajax({
       url: url + "/search",
       method: "GET",
-      data: { _token: csrfToken, input: input, page: searchPage },
+      data: { _token: csrfToken, input: input, page: searchPage, entity_id: $(".messenger-list-item[data-task].m-list-active").attr("data-entity")},
       dataType: "JSON",
       success: (data) => {
         setSearchLoading(false);
@@ -1689,7 +1700,7 @@ $(document).ready(function () {
   actionOnScroll(
     ".m-body.messages-container",
     function () {
-      fetchMessages(getMessengerId());
+      fetchMessages(getMessengerId(),$(".messenger-list-item[data-task].m-list-active").attr("data-task"));
     },
     true
   );

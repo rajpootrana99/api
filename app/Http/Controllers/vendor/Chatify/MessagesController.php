@@ -1,8 +1,9 @@
 <?php
 
-namespace Chatify\Http\Controllers;
+namespace App\Http\Controllers\vendor\Chatify;
 
 use App\Models\Task;
+// use Chatify\Facades\ChatifyMessenger as Chatify;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -10,11 +11,15 @@ use Illuminate\Support\Facades\Response;
 use App\Models\User;
 use App\Models\ChMessage as Message;
 use App\Models\ChFavorite as Favorite;
-use Chatify\Facades\ChatifyMessenger as Chatify;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use Illuminate\Support\Str;
+// use App\Facades\CustomChatifyMessenger as Chatify;
+use App\Facades\CustomChatifyMessenger as Chatify;
+// ChatifyMessenger
+
+
 class MessagesController extends Controller
 {
     protected $perPage = 30;
@@ -27,6 +32,7 @@ class MessagesController extends Controller
      */
     public function pusherAuth(Request $request)
     {
+
         return Chatify::pusherAuth(
             $request->user(),
             Auth::user(),
@@ -96,6 +102,7 @@ class MessagesController extends Controller
      */
     public function send(Request $request)
     {
+        // return response()->json($request, 200);
         // default variables
         $error = (object)[
             'status' => 0,
@@ -130,8 +137,11 @@ class MessagesController extends Controller
             }
         }
 
+
+
         if (!$error->status) {
             $message = Chatify::newMessage([
+                'task_id' => $request["task_id"],
                 'from_id' => Auth::user()->id,
                 'to_id' => $request['id'],
                 'body' => htmlentities(trim($request['message']), ENT_QUOTES, 'UTF-8'),
@@ -143,6 +153,7 @@ class MessagesController extends Controller
             $messageData = Chatify::parseMessage($message);
             if (Auth::user()->id != $request['id']) {
                 Chatify::push("private-chatify.".$request['id'], 'messaging', [
+                    'task_id' => $request["task_id"],
                     'from_id' => Auth::user()->id,
                     'to_id' => $request['id'],
                     'message' => Chatify::messageCard($messageData, true)
@@ -167,7 +178,7 @@ class MessagesController extends Controller
      */
     public function fetch(Request $request)
     {
-        $query = Chatify::fetchMessagesQuery($request['id'])->latest();
+        $query = Chatify::fetchMessagesQuery([$request['id'],$request['task_id']])->latest();
         $messages = $query->paginate($request->per_page ?? $this->perPage);
         $totalMessages = $messages->total();
         $lastPage = $messages->lastPage();
@@ -260,7 +271,7 @@ class MessagesController extends Controller
     {
         $entity_id = $request->input("entityID");
         // $entity_id =
-        // return
+        // return $entity_id;
         // get all users that received/sent message from/to [Auth user]
         $users = Message::join('users', function ($join) {
             $join->on('ch_messages.from_id', '=', 'users.id')
@@ -271,30 +282,22 @@ class MessagesController extends Controller
                     ->orWhere('ch_messages.to_id', Auth::user()->id);
             })
             ->where('users.id', '!=', Auth::user()->id)
-            ->where('users.entity_id', '==', $entity_id)
+            ->where('users.entity_id', '=', $entity_id)
             ->select('users.*', DB::raw('MAX(ch_messages.created_at) as max_created_at'))
-            ->orderBy('max_created_at', 'desc')
+            ->orderBy('max_created_at0', 'desc')
             ->groupBy(
-                'users.id',
-                'users.entity_id',
-                'users.role',
-                'users.name',
-                'users.email',
-                'users.address',
-                'users.phone',
-                'users.password',
-                'users.is_approved',
-                'users.image'
+                'users.id'
             )
-            ->paginate($request->per_page ?? $this->perPage);
+             ->paginate($request->per_page ?? $this->perPage);
 
-        $this->info($users);
-        $usersList = $users->items();
-
+        // $users = User::query()->
+        // $this->info($users);
+        // $usersList = $users->items();
+return response()->json(["users"=>$users],200);
         if (count($usersList) > 0) {
             $contacts = '';
             foreach ($usersList as $user) {
-                $contacts .= Chatify::getContactItem($user);
+                $contacts .= Chatify::getContactItem([$user, $request->input("taskID")]);
             }
         } else {
             $contacts = '<p class="message-hint center-el"><span>Your contact list is empty</span></p>';
@@ -324,7 +327,7 @@ class MessagesController extends Controller
                 'message' => 'User not found!',
             ], 401);
         }
-        $contactItem = Chatify::getContactItem($user);
+        $contactItem = Chatify::getContactItem([$user, $request['task_id']]);
 
         // send the response
         return Response::json([
@@ -388,8 +391,21 @@ class MessagesController extends Controller
         $getRecords = null;
         $input = trim(filter_var($request['input']));
         $records = User::where('id','!=',Auth::user()->id)
-                    ->where('name', 'LIKE', "%{$input}%")
-                    ->paginate($request->per_page ?? $this->perPage);
+                ->where('entity_id','=', $request->input("entity_id"))
+                // ->orWhere('entity_id','=', "NULL")
+                ->where('name', 'LIKE', "%{$input}%")
+                ->paginate($request->per_page ?? $this->perPage);
+
+        $admins = User::where('id','!=',Auth::user()->id)->get()->where('entity_id','=', "NULL")->all();
+                    // ->where("entity_id", "=", "NULL");
+        return response()->json(["admins"=>$admins], 200);
+        // return response()->json($records, 200);
+        //IF USER IS NOT ADMIN then admin can also appear at search
+        if(Auth::user()->entity_id == NULL){
+
+        }
+
+        return response()->json($records, 200);
         foreach ($records->items() as $record) {
             $getRecords .= view('Chatify::layouts.listItem', [
                 'get' => 'search_item',
@@ -415,7 +431,7 @@ class MessagesController extends Controller
      */
     public function sharedPhotos(Request $request)
     {
-        $shared = Chatify::getSharedPhotos($request['user_id']);
+        $shared = Chatify::getSharedPhotos([$request['user_id'],$request['task_id']]);
         $sharedPhotos = null;
 
         // shared with its template
