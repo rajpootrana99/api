@@ -71,6 +71,7 @@ class FileExplorerController extends Controller
 
                 $temp = [
                     "fileRoute" => $this->isDir($file) ? $file : route("explorer.download", base64_encode($file)),
+                    "viewRoute" => $this->isDir($file) ? $file : route("explorer.getOrView", base64_encode($file)),
                     "encodedRoute" => base64_encode($file),
                     "path" => $file,
                     "name" => $searchName,

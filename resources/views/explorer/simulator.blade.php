@@ -9,19 +9,19 @@
 
 <div class="container-fluid">
     @if ($currentPath == "explorer")
-        <!-- Page-Title -->
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="page-title-box">
-                    <div class="row">
-                        <div class="col">
-                            <h4 class="page-title">Explorer</h4>
-                        </div><!--end col-->
-                    </div><!--end row-->
-                </div><!--end page-title-box-->
-            </div><!--end col-->
-        </div><!--end row-->
-        <!-- end page title end breadcrumb -->
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="page-title">Explorer</h4>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end page-title-box-->
+        </div><!--end col-->
+    </div><!--end row-->
+    <!-- end page title end breadcrumb -->
     @endif
 
     <div class="row">
@@ -228,50 +228,50 @@
             <form id="editFileFolderForm" onsubmit="saveEditedData(); return false">
 
                 <div class="modal-body">
-                        <input type="hidden" name="fileFolderPath" id="fileFolderPath">
+                    <input type="hidden" name="fileFolderPath" id="fileFolderPath">
 
-                        <div class="form-group ">
-                            <label for="editFileFolderName" id="editFileFolderNameLabel" >Folder Name</label>
-                            <input type="text" class="form-control" id="editFileFolderName" required value="">
+                    <div class="form-group ">
+                        <label for="editFileFolderName" id="editFileFolderNameLabel">Folder Name</label>
+                        <input type="text" class="form-control" id="editFileFolderName" required value="">
+                    </div>
+
+                    <div class="form-group ">
+                        <label for="editFileFolderType" id="editFileFolderTypeLabel">Type</label>
+                        <input type="text" class="form-control" disabled id="editFileFolderType" value="">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editFileFolderSequence" id="editFileFolderSequenceLabel" class="mt-2">Sequence</label>
+                        <input type="number" class="form-control" id="editFileFolderSequence" value="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editFileFolderParentFolder" id="editFileFolderParentFolderLabel" class="mt-2">Parent Folder</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="editFileFolderParentFolder" disabled value="">
+                            <span class="input-group-append">
+                                <button class="btn btn-secondary" type="button" onclick="loadFolderTree()" data-toggle="modal" data-target="#selectFolder">Change</button>
+                            </span>
                         </div>
+                    </div>
 
-                        <div class="form-group ">
-                            <label for="editFileFolderType" id="editFileFolderTypeLabel" >Type</label>
-                            <input type="text" class="form-control" disabled id="editFileFolderType" value="">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="editFileFolderSequence" id="editFileFolderSequenceLabel" class="mt-2">Sequence</label>
-                            <input type="number" class="form-control" id="editFileFolderSequence" value="0">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="editFileFolderParentFolder" id="editFileFolderParentFolderLabel" class="mt-2">Parent Folder</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="editFileFolderParentFolder" disabled value="">
-                                <span class="input-group-append">
-                                    <button class="btn btn-secondary" type="button" onclick="loadFolderTree()" data-toggle="modal" data-target="#selectFolder" >Change</button>
-                                </span>
+                    <div class="form-group">
+                        <div class="col-sm-10">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="editShareWithSuppliers" data-parsley-multiple="groups" data-parsley-mincheck="2">
+                                <label class="custom-control-label" for="editShareWithSuppliers">Share with Suppliers</label>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <div class="col-sm-10">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="editShareWithSuppliers" data-parsley-multiple="groups" data-parsley-mincheck="2">
-                                    <label class="custom-control-label" for="editShareWithSuppliers">Share with Suppliers</label>
-                                </div>
+                    <div class="form-group">
+                        <div class="col-sm-10">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="editShareWithClients" data-parsley-multiple="groups" data-parsley-mincheck="2">
+                                <label class="custom-control-label" for="editShareWithClients">Share with Clients</label>
                             </div>
                         </div>
-
-                        <div class="form-group">
-                            <div class="col-sm-10">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="editShareWithClients" data-parsley-multiple="groups" data-parsley-mincheck="2">
-                                    <label class="custom-control-label" for="editShareWithClients">Share with Clients</label>
-                                </div>
-                            </div>
-                        </div>
+                    </div>
 
                 </div><!--end modal-body-->
                 <div class="modal-footer">
@@ -283,7 +283,7 @@
     </div><!--end modal-dialog-->
 </div>
 
-<div class="modal fade" id="uploadFile"  data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="uploadFile" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header bg-primary">
@@ -310,7 +310,7 @@
                         <label for="uploadFileOwner" class="mt-2" id="uploadFileOwnerLabel">Owner</label>
                         <div class="input-group has-validation">
                             <select class="form-select form-control" name="uploadFileOwner" id="uploadFileOwner" required>
-                                <option  value="" disabled selected >Select Owner</option>
+                                <option value="" disabled selected>Select Owner</option>
                             </select>
                             <span class="input-group-append">
                                 <button class="btn btn-light" style="    font-size: x-large;" type="button">
@@ -348,7 +348,7 @@
                         <label for="uploadFileStatus" class="mt-2" id="uploadFileStatusLabel">Status</label>
                         <div class="input-group has-validation">
                             <select class="form-select form-control" name="uploadFileStatus" id="uploadFileStatus" required>
-                                <option value="" disabled  selected>Select Status</option>
+                                <option value="" disabled selected>Select Status</option>
                             </select>
                             <span class="input-group-append">
                                 <button class="btn btn-light" style="    font-size: x-large;" type="button">
@@ -364,7 +364,7 @@
                     <div class="form-group">
                         <label for="uploadFileFolder" id="uploadFileFolderLabel" class="mt-2">Folder</label>
                         <select class="form-select form-control" name="uploadFileFolder" id="uploadFileFolder" required>
-                            <option value="" disabled  selected>Select Folder</option>
+                            <option value="" disabled selected>Select Folder</option>
                         </select>
                         <div class="invalid-feedback">
                             Please select atleast one folder.
@@ -398,8 +398,7 @@
                     <div class="form-group">
                         <div class="col-sm-10">
                             <div class="custom-control custom-checkbox mt-2">
-                                <input type="checkbox" class="custom-control-input" name="uploadFileOptions[]" id="uploadFileInduction"
-                                    data-parsley-multiple="groups" data-parsley-mincheck="2">
+                                <input type="checkbox" class="custom-control-input" name="uploadFileOptions[]" id="uploadFileInduction" data-parsley-multiple="groups" data-parsley-mincheck="2">
                                 <label class="custom-control-label" for="uploadFileInduction">
                                     Induction (Must read during induction (WHS only))
                                 </label>
@@ -410,8 +409,7 @@
                     <div class="form-group">
                         <div class="col-sm-10">
                             <div class="custom-control custom-checkbox mt-1">
-                                <input type="checkbox" class="custom-control-input" name="uploadFileOptions[]" id="uploadFileShared"
-                                    data-parsley-multiple="groups" data-parsley-mincheck="2">
+                                <input type="checkbox" class="custom-control-input" name="uploadFileOptions[]" id="uploadFileShared" data-parsley-multiple="groups" data-parsley-mincheck="2">
                                 <label class="custom-control-label" for="uploadFileShared">
                                     Shared (Checked means All personnel can view. Unchecked means only your employees can view.)
                                 </label>
@@ -422,8 +420,7 @@
                     <div class="form-group">
                         <div class="col-sm-10">
                             <div class="custom-control custom-checkbox mt-1">
-                                <input type="checkbox" class="custom-control-input" name="uploadFileOptions[]"  id="uploadFileQuote"
-                                    data-parsley-multiple="groups" data-parsley-mincheck="2">
+                                <input type="checkbox" class="custom-control-input" name="uploadFileOptions[]" id="uploadFileQuote" data-parsley-multiple="groups" data-parsley-mincheck="2">
                                 <label class="custom-control-label" for="uploadFileQuote">
                                     Quote Package Document
                                 </label>
@@ -451,23 +448,23 @@
                     <span aria-hidden="true"><i class="la la-times text-white"></i></span>
                 </button>
             </div><!--end modal-header-->
-                <div class="modal-body">
-                    <div class="form-group">
-                        <div id="selectFolderTree"></div>
-                    </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div id="selectFolderTree"></div>
+                </div>
 
 
-                </div><!--end modal-body-->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-                    <button type="button" id="selectFolderButton" class="btn btn-primary btn-sm">Select</button>
-                </div><!--end modal-footer-->
+            </div><!--end modal-body-->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" id="selectFolderButton" class="btn btn-primary btn-sm">Select</button>
+            </div><!--end modal-footer-->
             </form>
         </div><!--end modal-content-->
     </div><!--end modal-dialog-->
 </div>
 
-<div class="modal fade" id="createFolder"tabindex="-1" role="dialog" aria-labelledby="createFolderLabel" aria-hidden="true">
+<div class="modal fade" id="createFolder" tabindex="-1" role="dialog" aria-labelledby="createFolderLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header bg-primary">
@@ -479,7 +476,7 @@
             <form onsubmit="createFolder(); return false" id="createFolderForm">
                 <div class="modal-body">
                     <div class="form-group ">
-                        <label for="createFolderName" id="createFolderNameLabel" >Folder Name</label>
+                        <label for="createFolderName" id="createFolderNameLabel">Folder Name</label>
                         <input type="text" class="form-control" id="createFolderName" required value="">
                     </div>
                 </div><!--end modal-body-->
@@ -492,7 +489,7 @@
     </div><!--end modal-dialog-->
 </div>
 
-<div class="modal fade" id="loaderContainer" tabindex="-1" role="dialog"  data-backdrop="static" data-keyboard="false" aria-modal="true" aria-hidden="true">
+<div class="modal fade" id="loaderContainer" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-modal="true" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="loader_content">
             <div class="progress" style="height: 18px;">
@@ -511,42 +508,38 @@
     let editIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>';
     let uploadIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-upload-cloud"><polyline points="16 16 12 12 8 16"></polyline><line x1="12" y1="12" x2="12" y2="21"></line><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path><polyline points="16 16 12 12 8 16"></polyline></svg>';
     let trashIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>';
+    let downloadIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>';
 
     let root_path = "{{$currentPath}}"
     let navigationStack = null;
     let csrf = "{{csrf_token()}}"
 
 
-    function updateNavigation()
-        {
-            let breadcrumb = document.getElementsByClassName("breadcrumb")[0]
-            root_path = root_path.toWellFormed()
-            let pathArray = root_path.split("/");
-            // console.log(pathArray)
-            navigationStack = new Array();
-            let storagePathString = "";
-            let breadString = "";
-            for (let i = 0; i < pathArray.length; i++)
-            {
-                if( i == 0  ) storagePathString += pathArray[i];
-                else storagePathString += "/"+pathArray[i];
+    function updateNavigation() {
+        let breadcrumb = document.getElementsByClassName("breadcrumb")[0]
+        root_path = root_path.toWellFormed()
+        let pathArray = root_path.split("/");
+        // console.log(pathArray)
+        navigationStack = new Array();
+        let storagePathString = "";
+        let breadString = "";
+        for (let i = 0; i < pathArray.length; i++) {
+            if (i == 0) storagePathString += pathArray[i];
+            else storagePathString += "/" + pathArray[i];
 
-                navigationStack.push(storagePathString);
-                if ( i < pathArray.length-1 )
-                {
-                    breadString += '<li class="breadcrumb-item">'+
-                                        '<a class="black-text" onclick="navigateTo(\''+btoa(storagePathString)+'\')" href="Javascript:void(0);"> '+ pathArray[i][0].toUpperCase() + (pathArray[i].length > 1 ? pathArray[i].substring(1, pathArray[i].length) : "") +' </a>'+
-                                        '<i class="fas fa-angle-double-right mx-2" aria-hidden="true"></i>'+
-                                        '</li>';
-                }
-                else if( i == pathArray.length-1 )
-                {
-                    breadString += '<li class="breadcrumb-item active"> '+ pathArray[i][0].toUpperCase() + (pathArray[i].length > 1 ? pathArray[i].substring(1, pathArray[i].length) : "") +' </li>'
-                }
+            navigationStack.push(storagePathString);
+            if (i < pathArray.length - 1) {
+                breadString += '<li class="breadcrumb-item">' +
+                    '<a class="black-text" onclick="navigateTo(\'' + btoa(storagePathString) + '\')" href="Javascript:void(0);"> ' + pathArray[i][0].toUpperCase() + (pathArray[i].length > 1 ? pathArray[i].substring(1, pathArray[i].length) : "") + ' </a>' +
+                    '<i class="fas fa-angle-double-right mx-2" aria-hidden="true"></i>' +
+                    '</li>';
+            } else if (i == pathArray.length - 1) {
+                breadString += '<li class="breadcrumb-item active"> ' + pathArray[i][0].toUpperCase() + (pathArray[i].length > 1 ? pathArray[i].substring(1, pathArray[i].length) : "") + ' </li>'
             }
-            breadcrumb.innerHTML = breadString;
         }
-        updateNavigation();
+        breadcrumb.innerHTML = breadString;
+    }
+    updateNavigation();
 
 
     $(document).ready(function() {
@@ -562,7 +555,7 @@
             processing: true,
             select: true,
             data: null,
-            drawCallback: function (settings) {
+            drawCallback: function(settings) {
                 $(".tooltip").remove()
 
                 console.log("table has be redrawn")
@@ -570,11 +563,11 @@
                 var toolbar = document.querySelector("#explorer_datatable_wrapper > .row > div");
                 let toolbar_html = ""
                 toolbar_html = "<div class='btn-group' role='group'>"
-                if( root_path.split("/").length >= 5 ) {
+                if (root_path.split("/").length >= 5) {
                     // toolbar_html += '<button type="button" data-toggle="modal" data-target="#createFolder" style="font-weight:bold;" class="btn btn-warning" style="" title="New Folder"><i class="fa fa-plus"></i> New Folder </button>'
                 }
-                if( root_path.split("/").length > 1 ) {
-                    toolbar_html += '<button type="button" data-toggle="modal" data-target="#uploadFile" onclick="loadUploadFolderInfo(\''+ btoa(root_path) +'\')" class="btn btn-dark" title="Upload Files in Current Folder" ><i class="fas fa-cloud"></i> Upload Files</button>'
+                if (root_path.split("/").length > 1) {
+                    toolbar_html += '<button type="button" data-toggle="modal" data-target="#uploadFile" onclick="loadUploadFolderInfo(\'' + btoa(root_path) + '\')" class="btn btn-dark" title="Upload Files in Current Folder" ><i class="fas fa-cloud"></i> Upload Files</button>'
                 }
                 toolbar_html += "</div>"
                 toolbar.innerHTML = toolbar_html;
@@ -585,24 +578,23 @@
                 }, 200);
             },
             ajax: {
-                    url: "{{ route("explorer.get") }}",
-                    type: "POST",
-                    data: function (params) {
-                        params.path = root_path
-                        // params.query = ""
-                        params._token = "{{csrf_token()}}"
-                    }
+                url: "{{ route('explorer.get') }}",
+                type: "POST",
+                data: function(params) {
+                    params.path = root_path
+                    // params.query = ""
+                    params._token = "{{csrf_token()}}"
+                }
             },
 
 
-            columns: [
-                {
+            columns: [{
                     data: null,
-                    render: function (data, type, row) {
+                    render: function(data, type, row) {
                         // console.log(data)
 
                         DATA = data
-                        if(DATA.ifFileCount > 0){
+                        if (DATA.ifFileCount > 0) {
                             return '<i class="bi bi-plus-square btn-light" title="Has Files"></i>';
                         }
                         return ' ';
@@ -610,43 +602,44 @@
                 },
                 {
                     data: 'Name',
-                    render: function (data, type, row) {
+                    render: function(data, type, row) {
                         // console.log(data)
-                        let iconDesc = DATA.type == "File Folder" ? "bi-folder-fill" : ("bi-filetype-"+DATA.type.toLowerCase());
-                        let routeDesc = DATA.type == "File Folder" ? "href=\"Javascript:void(0);\" onclick=\"navigateTo('"+DATA.encodedRoute+"')\"" : "href='"+DATA.fileRoute+"' download ";
-                        let temp = '<a  ' + routeDesc + ' style="display: flex;align-items:center;column-gap:5%">'+
-                            '<i class="bi '+ iconDesc +' h2"></i>'+
-                           "<span class='text-truncate' data-toggle='tooltip' data-placement='top' title data-original-title='"+ atob(DATA.encodedRoute) +"'> "+ ( DATA.searchResult == "true" ? DATA.name+"<div class='text-muted'>"+atob(DATA.encodedRoute)+"</div>" : DATA.name ) +"</span>"+
-                        "</a>";
+                        let iconDesc = DATA.type == "File Folder" ? "bi-folder-fill" : ("bi-filetype-" + DATA.type.toLowerCase());
+                        let routeDesc = DATA.type == "File Folder" ? "href=\"Javascript:void(0);\" onclick=\"navigateTo('" + DATA.encodedRoute + "')\"" : "href='" + DATA.viewRoute + "' target='_blank'";
+                        let temp = '<a  ' + routeDesc + ' style="display: flex;align-items:center;column-gap:5%">' +
+                            '<i class="bi ' + iconDesc + ' h2"></i>' +
+                            "<span class='text-truncate' data-toggle='tooltip' data-placement='top' title data-original-title='" + atob(DATA.encodedRoute) + "'> " + (DATA.searchResult == "true" ? DATA.name + "<div class='text-muted'>" + atob(DATA.encodedRoute) + "</div>" : DATA.name) + "</span>" +
+                            "</a>";
                         // console.log(temp)
                         return temp;
                     },
                 },
                 {
                     data: 'Type',
-                    render: function (data, type, row) {
+                    render: function(data, type, row) {
                         // console.log(data)
                         return DATA.type;
                     },
                 },
                 {
                     data: 'Size',
-                    render: function (data, type, row) {
+                    render: function(data, type, row) {
                         return DATA.size;
                     },
                 },
                 {
                     data: 'Date Modified',
-                    render: function (data, type, row) {
+                    render: function(data, type, row) {
                         return DATA.dateModified;
                     },
                 },
                 {
                     data: null,
-                    render: function (data, type, row) {
+                    render: function(data, type, row) {
 
-                        return ( root_path.split("/").length < 5 && DATA.type == "File Folder" ? '' : '<button data-toggle="modal" data-target="#editFileFolder" onclick="loadEditingData(\''+ data.encodedRoute +'\')" class="btn btn-light folder_action_button" data-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Edit">'+ editIcon +'</button>') +
-                        ( root_path.split("/").length < 5 && DATA.type == "File Folder" ? '' : '<button class="btn btn-light folder_action_button" onclick="deleteFileFolder(\''+ data.encodedRoute +'\')" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete">'+ trashIcon +'</button>')
+                        return (root_path.split("/").length < 5 && DATA.type == "File Folder" ? '' : '<button data-toggle="modal" data-target="#editFileFolder" onclick="loadEditingData(\'' + data.encodedRoute + '\')" class="btn btn-light folder_action_button" data-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Edit">' + editIcon + '</button>') +
+                            (root_path.split("/").length < 5 && DATA.type == "File Folder" ? '' : '<button class="btn btn-light folder_action_button" onclick="deleteFileFolder(\'' + data.encodedRoute + '\')" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete">' + trashIcon + '</button>') +
+                            (DATA.type == "File Folder" ? '' : '<a class="btn btn-light folder_action_button" href="' + DATA.fileRoute + '" download ' + ' data-toggle="tooltip" data-placement="top" title="" data-original-title="Download">' + downloadIcon + '</a>')
 
                         ;
 
@@ -661,161 +654,162 @@
 
     })
 
-    function navigateTo(path)
-    {
+    function navigateTo(path) {
         root_path = atob(path);
         table.ajax.reload(null, false)
         updateNavigation()
         console.log("reached 1");
     }
 
-    function loadUploadFileInputDialog()
-    {
+    function loadUploadFileInputDialog() {
         $("#uploadFilesContainer")[0].innerHTML = '<input id="uploadFiles" name="uploadFiles[]" type="file" multiple>'
         $("#uploadFiles").fileinput({
-                // maxFileSize: 2000,
-                // maxFilesNum: 10,
-                // theme: "fas",
-                msgFilerequired: false,
-                required: true,
-                hideThumbnailContent: false,
-                showBrowse: false,
-                showUpload: false,
-                showPreview: true,
-                showRemove: true,
-                browseOnZoneClick: true,
-                overwriteInitial: true,
-                initialPreviewShowDelete: true,
-                removeFromPreviewOnError: true,
-                dropZoneTitleClass: 'file-drop-zone-title ',
-                dropZoneClickTitle: "",
-                dropZoneTitle: '<i class="bi bi-cloud-upload" style="font-size: 4em;"></i><div style="font-size: 0.8em;">Drag and drop file here or click</div>'
-            });
+            // maxFileSize: 2000,
+            // maxFilesNum: 10,
+            // theme: "fas",
+            msgFilerequired: false,
+            required: true,
+            hideThumbnailContent: false,
+            showBrowse: false,
+            showUpload: false,
+            showPreview: true,
+            showRemove: true,
+            browseOnZoneClick: true,
+            overwriteInitial: true,
+            initialPreviewShowDelete: true,
+            removeFromPreviewOnError: true,
+            dropZoneTitleClass: 'file-drop-zone-title ',
+            dropZoneClickTitle: "",
+            dropZoneTitle: '<i class="bi bi-cloud-upload" style="font-size: 4em;"></i><div style="font-size: 0.8em;">Drag and drop file here or click</div>'
+        });
     }
 
 
-    function loadUploadFolderInfo(file)
-    {
+    function loadUploadFolderInfo(file) {
         var form = document.getElementById("uploadFileForm");
-        $('#uploadFileForm').trigger("reset");
+        $('#uploadFileForm')[0].reset();
+        $('#uploadFileForm').removeClass("was-validated");
+        // $('#uploadFileForm').bootstrapValidator('resetForm', true);
+
         loadUploadFileInputDialog()
 
-        $.ajax("{{route('explorer.getUploadFolderInfo',"")}}" + "/" + file,{
-                type: "GET",
-                // data: formData,
-                success: function (data, status, xhr) {
-                    if( !!data.uploadFolderPath ){
-                        // showToast("Files uploaded successfully in folder \""+ atob(data.uploadFolderPath) + "\".", "success")
-                        // storing path
-                            $("#uploadFolderPath").val(file)
-                            //filling owners
-                            let input = document.getElementById("uploadFileOwner");
-                            input.innerHTML = '<option  value="" disabled selected >Select Owner</option>';
-                            for (let i = 0; i < data.owner.length; i++) {
-                                let temp = '<option value="'+(i+1)+'" >'+ data.owner[i] +'</option>';
-                                input.innerHTML += temp
-                            }
-                            //filling groups
-                            input = document.getElementById("uploadFileGroup");
-                            input.innerHTML = '<option  value="" disabled selected >Select Group</option>';
-                            for (let i = 0; i < data.group.length; i++) {
-                                let temp = '<option value="'+(i+1)+'" >'+ data.group[i] +'</option>';
-                                input.innerHTML += temp
-                            }
-                            //filling status
-                            input = document.getElementById("uploadFileStatus");
-                            input.innerHTML = '<option  value="" disabled selected >Select Status</option>';
-                            for (let i = 0; i < data.status.length; i++) {
-                                let temp = '<option value="'+(i+1)+'" >'+ data.status[i] +'</option>';
-                                input.innerHTML += temp
-                            }
-                            //filling folder
-                            input = document.getElementById("uploadFileFolder");
-                            input.innerHTML = '<option  value="" disabled selected >Select Folder</option>';
-                            for (let i = 0; i < data.folder.length; i++) {
-                                let temp = '<option value="'+(i+1)+'" >'+ data.folder[i] +'</option>';
-                                input.innerHTML += temp
-                            }
-
-
-
+        $.ajax("{{route('explorer.getUploadFolderInfo','')}}" + "/" + file, {
+            type: "GET",
+            // data: formData,
+            success: function(data, status, xhr) {
+                if (!!data.uploadFolderPath) {
+                    // showToast("Files uploaded successfully in folder \""+ atob(data.uploadFolderPath) + "\".", "success")
+                    // storing path
+                    $("#uploadFolderPath").val(file)
+                    //filling owners
+                    let input = document.getElementById("uploadFileOwner");
+                    input.innerHTML = '<option  value="" disabled selected >Select Owner</option>';
+                    for (let i = 0; i < data.owner.length; i++) {
+                        let temp = '<option value="' + (i + 1) + '" >' + data.owner[i] + '</option>';
+                        input.innerHTML += temp
                     }
-                    else {
-                        showToast("Unable to load folder \""+ atob(file) +"\" data. Try Later!", "danger")
-                        $("#uploadFileClose").click()
+                    //filling groups
+                    input = document.getElementById("uploadFileGroup");
+                    input.innerHTML = '<option  value="" disabled selected >Select Group</option>';
+                    for (let i = 0; i < data.group.length; i++) {
+                        let temp = '<option value="' + (i + 1) + '" >' + data.group[i] + '</option>';
+                        input.innerHTML += temp
                     }
-                },
-                error: function (xhr, textStatus, errorMessage) {
-                    showToast("Unable to load folder \""+ atob(file) +"\" data. Check your network connection or try again", "danger")
+                    //filling status
+                    input = document.getElementById("uploadFileStatus");
+                    input.innerHTML = '<option  value="" disabled selected >Select Status</option>';
+                    for (let i = 0; i < data.status.length; i++) {
+                        let temp = '<option value="' + (i + 1) + '" >' + data.status[i] + '</option>';
+                        input.innerHTML += temp
+                    }
+                    //filling folder
+                    input = document.getElementById("uploadFileFolder");
+                    input.innerHTML = '<option  value="" disabled selected >Select Folder</option>';
+                    for (let i = 0; i < data.folder.length; i++) {
+                        let temp = '<option value="' + (i + 1) + '" >' + data.folder[i] + '</option>';
+                        input.innerHTML += temp
+                    }
+
+
+
+                } else {
+                    showToast("Unable to load folder \"" + atob(file) + "\" data. Try Later!", "danger")
                     $("#uploadFileClose").click()
-                },
-            })
+                }
+            },
+            error: function(xhr, textStatus, errorMessage) {
+                showToast("Unable to load folder \"" + atob(file) + "\" data. Check your network connection or try again", "danger")
+                $("#uploadFileClose").click()
+            },
+        })
 
-        $("#uploadFileForm").on('submit', function (e, v) {
-            if(this.checkValidity()) uploadFiles()
+        $("#uploadFileForm").on('submit', function(e, v) {
+            if (this.checkValidity()) uploadFiles()
         })
     }
 
-    function uploadFiles()
-    {
+    function uploadFiles() {
         var form = document.getElementById("uploadFileForm");
         var formData = new FormData(form);
 
         var folderPath = atob($("#uploadFolderPath").val());
-        $.ajax("{{route('explorer.uploadFiles')}}",{
-                type: "POST",
-                data: formData,
-                processData: false,
-                contentType: false,
-                xhr: function (params) {
-                    var xhr = new window.XMLHttpRequest()
+        $.ajax("{{route('explorer.uploadFiles')}}", {
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            xhr: function(params) {
+                var xhr = new window.XMLHttpRequest()
 
-                    document.querySelector(".loader_metadata").innerText = "";
-                    document.querySelector(".progress > div").style = "width: 0%";
+                document.querySelector(".loader_metadata").innerText = "";
+                document.querySelector(".progress > div").style = "width: 0%";
 
-                    xhr.upload.addEventListener("progress", function (event) {
-                        const formattedNumber = (value) => new Intl.NumberFormat('en', { minimumFractionDigits: 0, maximumFractionDigits: 1 }).format(value)
+                xhr.upload.addEventListener("progress", function(event) {
+                    const formattedNumber = (value) => new Intl.NumberFormat('en', {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 1
+                    }).format(value)
 
-                        let message = "Uploading Files (0 MB/"+ formattedNumber(event.loaded / (1024*1024)) +" MB) 0%"
+                    let message = "Uploading Files (0 MB/" + formattedNumber(event.loaded / (1024 * 1024)) + " MB) 0%"
 
-                        if (event.lengthComputable) {
-                            var totalSize = event.total;
-                            var loaded = event.loaded;
-                            let percentage = parseInt(loaded / totalSize * 100);
-                            message = "Uploading Files (" + formattedNumber(loaded / (1024*1024)) + " MB/" + formattedNumber(totalSize / (1024*1024)) + " MB) " + percentage + "%"
+                    if (event.lengthComputable) {
+                        var totalSize = event.total;
+                        var loaded = event.loaded;
+                        let percentage = parseInt(loaded / totalSize * 100);
+                        message = "Uploading Files (" + formattedNumber(loaded / (1024 * 1024)) + " MB/" + formattedNumber(totalSize / (1024 * 1024)) + " MB) " + percentage + "%"
 
 
-                            console.log(message)
+                        console.log(message)
 
-                            document.querySelector("#loader_bar").style = "width: " + percentage + "%;";
-                        }
-
-                        document.querySelector(".loader_metadata").innerText = message;
-                        $("#loaderContainer").modal("show")
-
-                    }, false)
-                    return xhr;
-                },
-                success: function (data, status, xhr) {
-                    if( data == "true" ){
-                        showToast("Uploaded Files successfully in folder \""+ folderPath + "\".", "success")
-                        navigateTo(btoa(folderPath))
+                        document.querySelector("#loader_bar").style = "width: " + percentage + "%;";
+                        // if (percentage >= 100.0) $("#loaderContainer").modal("hide")
                     }
-                    else showToast("Cannot Upload Files in \""+ (folderPath) +"\". Try Later!", "danger")
 
-                    $("#loaderContainer").modal("hide")
-                    $("#uploadFileClose").click()
-                },
-                error: function (xhr, textStatus, errorMessage) {
-                    showToast("Cannot Upload Files in \""+ (folderPath) +"\". Check your network connection or try again", "danger")
-                },
-            })
+                    document.querySelector(".loader_metadata").innerText = message;
+                    $("#loaderContainer").modal("show")
+                }, false)
+
+                return xhr;
+            },
+            success: function(data, status, xhr) {
+                if (data == "true") {
+                    showToast("Uploaded Files successfully in folder \"" + folderPath + "\".", "success")
+                    navigateTo(btoa(folderPath))
+                } else showToast("Cannot Upload Files in \"" + (folderPath) + "\". Try Later!", "danger")
+
+                $("#loaderContainer").modal("hide")
+                $("#uploadFileClose").click()
+            },
+            error: function(xhr, textStatus, errorMessage) {
+                showToast("Cannot Upload Files in \"" + (folderPath) + "\". Check your network connection or try again", "danger")
+            },
+        })
 
 
 
 
 
-            // $('#event_result').html('Selected: ' + r.join(', '));
+        // $('#event_result').html('Selected: ' + r.join(', '));
     }
 
     let editFileFolderObject = {
@@ -830,48 +824,49 @@
         share_with_clients: null,
     };
 
-    function loadFolderTree()
-    {
+    function loadFolderTree() {
 
         // $treeRoot = btoa()
         $('#selectFolderTree').jstree({
             'core': {
                 'data': {
-                    'url': '{{route("explorer.getFolderTree")}}'+ "/explorer" +'',
+                    'url': '{{route("explorer.getFolderTree")}}' + "/explorer" + '',
                     'dataType': 'json',
                 }
             }
         });
 
         $('#selectFolderTree')
-        // listen for event
-        .on('changed.jstree', function (e, data) {
-            var i, j, r = [];
-            for(i = 0, j = data.selected.length; i < j; i++) {
-                r.push(data.instance.get_node(data.selected[i]).text);
-            }
+            // listen for event
+            .on('changed.jstree', function(e, data) {
+                var i, j, r = [];
+                for (i = 0, j = data.selected.length; i < j; i++) {
+                    r.push(data.instance.get_node(data.selected[i]).text);
+                }
 
-            editFileFolderObject.newParentFolderPath = data.node.id;
-            // console.log(newParentFolderPath)
-            // $('#event_result').html('Selected: ' + r.join(', '));
-        })
-        // create the instance
-        .jstree();
+                editFileFolderObject.newParentFolderPath = data.node.id;
+                // console.log(newParentFolderPath)
+                // $('#event_result').html('Selected: ' + r.join(', '));
+            })
+            // create the instance
+            .jstree();
 
 
-        $('#selectFolderButton').on('click', function (e, data) {
-          $('#editFileFolderParentFolder').val(editFileFolderObject.newParentFolderPath)
+        $('#selectFolderButton').on('click', function(e, data) {
+            $('#editFileFolderParentFolder').val(editFileFolderObject.newParentFolderPath)
             $('#selectFolderClose').click()
         })
 
     }
 
-    function loadEditingData(file)
-    {
-        $.ajax("{{route('explorer.getEditData')}}",{
+    function loadEditingData(file) {
+        $.ajax("{{route('explorer.getEditData')}}", {
             type: "POST",
-            data: { file: file, _token : csrf },
-            success: function (data, status, xhr) {
+            data: {
+                file: file,
+                _token: csrf
+            },
+            success: function(data, status, xhr) {
                 editFileFolderObject.name = data.name
                 editFileFolderObject.path = data.path
                 editFileFolderObject.type = data.type
@@ -884,55 +879,55 @@
                 $('#editFileFolderSequence').val(0)
                 $('#editFileFolderParentFolder').val(data.parentPath)
             },
-            error: function (xhr, textStatus, errorMessage) {
-                showToast("Cannot retireive file/folder info \""+ atob(file) +"\". Check your network connection or try again", "danger")
+            error: function(xhr, textStatus, errorMessage) {
+                showToast("Cannot retireive file/folder info \"" + atob(file) + "\". Check your network connection or try again", "danger")
             },
         })
 
     }
 
-    function saveEditedData()
-    {
+    function saveEditedData() {
 
-            editFileFolderObject.name =  $('#editFileFolderName').val()
-            editFileFolderObject.sequence = $('#editFileFolderSequence').val()
-            editFileFolderObject.newParentFolderPath = $('#editFileFolderParentFolder').val()
-            editFileFolderObject._token = csrf
+        editFileFolderObject.name = $('#editFileFolderName').val()
+        editFileFolderObject.sequence = $('#editFileFolderSequence').val()
+        editFileFolderObject.newParentFolderPath = $('#editFileFolderParentFolder').val()
+        editFileFolderObject._token = csrf
 
-            $.ajax("{{route('explorer.saveEditedData')}}",{
-                type: "POST",
-                data: editFileFolderObject,
-                success: function (data, status, xhr) {
-                    if( data == "true" ){
-                        showToast("\""+ editFileFolderObject.path + "\" has been edited successfully", "success")
-                        navigateTo(btoa(root_path))
-                    }
-                    else showToast("Cannot Edit \""+ editFileFolderObject.path +"\". Try Later!", "danger")
-                },
-                error: function (xhr, textStatus, errorMessage) {
-                    showToast("Cannot Edit \""+ editFileFolderObject.path +"\". Check your network connection or try again", "danger")
-                },
-            })
+        $.ajax("{{route('explorer.saveEditedData')}}", {
+            type: "POST",
+            data: editFileFolderObject,
+            success: function(data, status, xhr) {
+                if (data == "true") {
+                    showToast("\"" + editFileFolderObject.path + "\" has been edited successfully", "success")
+                    navigateTo(btoa(root_path))
+                } else showToast("Cannot Edit \"" + editFileFolderObject.path + "\". Try Later!", "danger")
+            },
+            error: function(xhr, textStatus, errorMessage) {
+                showToast("Cannot Edit \"" + editFileFolderObject.path + "\". Check your network connection or try again", "danger")
+            },
+        })
 
-            $("#editFileFolderClose").click()
-            // $('#event_result').html('Selected: ' + r.join(', '));
+        $("#editFileFolderClose").click()
+        // $('#event_result').html('Selected: ' + r.join(', '));
 
     }
 
-    function createFolder()
-    {
-        $.ajax("{{route('explorer.createFolder')}}",{
+    function createFolder() {
+        $.ajax("{{route('explorer.createFolder')}}", {
             type: "POST",
-            data: { name: $("#createFolderName").val(), path: root_path, _token : csrf },
-            success: function (data, status, xhr) {
-                if( data == "true" ){
-                    showToast("Folder \""+ $("#createFolderName").val() + "\" has been created successfully", "success")
-                    navigateTo(btoa(root_path))
-                }
-                else showToast("Cannot Create folder \""+ $("#createFolderName").val() +"\". Try Later!", "danger")
+            data: {
+                name: $("#createFolderName").val(),
+                path: root_path,
+                _token: csrf
             },
-            error: function (xhr, textStatus, errorMessage) {
-                showToast("Cannot create folder \""+ $("#createFolderName").val() +"\". Check your network connection or try again", "danger")
+            success: function(data, status, xhr) {
+                if (data == "true") {
+                    showToast("Folder \"" + $("#createFolderName").val() + "\" has been created successfully", "success")
+                    navigateTo(btoa(root_path))
+                } else showToast("Cannot Create folder \"" + $("#createFolderName").val() + "\". Try Later!", "danger")
+            },
+            error: function(xhr, textStatus, errorMessage) {
+                showToast("Cannot create folder \"" + $("#createFolderName").val() + "\". Check your network connection or try again", "danger")
             },
         })
 
@@ -940,135 +935,142 @@
 
     }
 
-    function deleteFileFolder(file)
-    {
-        $.ajax("{{route('explorer.delete')}}",{
+    function deleteFileFolder(file) {
+        $.ajax("{{route('explorer.delete')}}", {
             type: "POST",
-            data: { file: file, _token : csrf },
-            success: function (data, status, xhr) {
-                if( data == "true" ){
-                    showToast("\""+atob(file) + "\" has been deleted successfully", "success")
-                    navigateTo(btoa(root_path))
-                }
-                else showToast("Cannot Delete \""+ atob(file) +"\". Try Later!", "danger")
+            data: {
+                file: file,
+                _token: csrf
             },
-            error: function (xhr, textStatus, errorMessage) {
-                showToast("Cannot delete \""+ atob(file) +"\". Check your network connection or try again", "danger")
+            success: function(data, status, xhr) {
+                if (data == "true") {
+                    showToast("\"" + atob(file) + "\" has been deleted successfully", "success")
+                    navigateTo(btoa(root_path))
+                } else showToast("Cannot Delete \"" + atob(file) + "\". Try Later!", "danger")
+            },
+            error: function(xhr, textStatus, errorMessage) {
+                showToast("Cannot delete \"" + atob(file) + "\". Check your network connection or try again", "danger")
             },
         })
 
     }
 
 
-    function showToast(text, type)
-    {
+    function showToast(text, type) {
         let types = {
             success: ["#03d87f", "#fff"],
             danger: ["#f5325c", "#fff"],
         }
         Toastify({
-        text: text,
-        duration: 3000,
-        close: true,
-        gravity: "top", // `top` or `bottom`
-        position: "right", // `left`, `center` or `right`
-        stopOnFocus: true, // Prevents dismissing of toast on hover
-        style: {
-            background: types[type][0],
-            color: types[type][1]
-        }
+            text: text,
+            duration: 3000,
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: "right", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+                background: types[type][0],
+                color: types[type][1]
+            }
         }).showToast();
     }
-
-
-
-
 </script>
 
 <script defer>
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (() => {
-    'use strict'
+        'use strict'
 
-    // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    const forms = document.querySelectorAll('.needs-validation')
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll('.needs-validation')
 
-    // Loop over them and prevent submission
-    Array.from(forms).forEach(form => {
-        form.addEventListener('submit', event => {
-        if (!form.checkValidity()) {
-            event.preventDefault()
-            event.stopPropagation()
-        }
+        // Loop over them and prevent submission
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
 
 
-        form.classList.add('was-validated')
+                form.classList.add('was-validated')
 
-        // if(form.checkValidity() && form.id == "#uploadFileForm") uploadFiles()
+                // if(form.checkValidity() && form.id == "#uploadFileForm") uploadFiles()
 
-        }, false)
-    })
+            }, false)
+        })
     })()
 </script>
 <style>
-    .breadcrumb{
+    .breadcrumb {
         font-size: 1.15em;
         padding: 0
     }
-    .breadcrumb * i{
+
+    .breadcrumb * i {
         display: flex;
         align-items: center;
     }
-    .breadcrumb-item::before{
+
+    .breadcrumb-item::before {
         display: none !important
     }
 
-    .nav-buttons{
+    .nav-buttons {
         padding: 0.1rem .5rem;
     }
 
-    .nav-buttons > i{
+    .nav-buttons>i {
         font-size: 1.2em;
     }
 
-    .table{
+    .table {
         border: 1px solid #1717170d;
         border-radius: 3px;
         font-family: inherit;
         font-size: inherit
     }
-    .table * td{
+
+    .table * td {
         padding: 10px
     }
-    .table * th{
+
+    .table * th {
         padding: 10px
     }
-    tr * th:nth-child(1), td:nth-child(1){
+
+    tr * th:nth-child(1),
+    td:nth-child(1) {
         width: 1%
     }
-    tr > td:nth-child(1), th:nth-child(1) > svg{
+
+    tr>td:nth-child(1),
+    th:nth-child(1)>svg {
         width: 15px;
     }
-    .table .thead-light th{
+
+    .table .thead-light th {
         /* background-color: #1717170d; */
     }
-    .folder_action_button{
+
+    .folder_action_button {
         margin-right: 5px;
     }
-    .folder_action_button > svg{
+
+    .folder_action_button>svg {
         width: 17px;
     }
 
-    .file-drop-zone{
+    .file-drop-zone {
         /* height: 260px; */
         overflow-x: auto;
     }
 
-    .file-preview-thumbnails{
+    .file-preview-thumbnails {
         display: flex;
     }
 
-    .file-drop-zone-title{
+    .file-drop-zone-title {
         display: flex;
         flex-direction: column;
         height: 100%;
@@ -1078,7 +1080,7 @@
     }
 
 
-    .kv-file-zoom{
+    .kv-file-zoom {
         display: none
     }
 
@@ -1087,7 +1089,7 @@
     }
 
 
-    #loaderContainer{
+    #loaderContainer {
         overflow-x: hidden;
         /* display: flex; */
         z-index: 1100;
@@ -1095,7 +1097,7 @@
         backdrop-filter: brightness(0.5);
     }
 
-    .loader_content{
+    .loader_content {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -1107,12 +1109,13 @@
         /* width: 300px; */
         height: 200px;
     }
-    .progress{
+
+    .progress {
         width: 100%;
         background-color: #d3d6d9;
     }
 
-    .loader_metadata{
+    .loader_metadata {
         padding-left: 20px;
         padding-right: 20px;
         font-size: 1em;
