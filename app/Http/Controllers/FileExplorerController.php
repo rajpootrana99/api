@@ -37,9 +37,9 @@ class FileExplorerController extends Controller
     public function getFileFolders(Request $request)
     {
         $currentPath = $request->input("path", "explorer");
-        $query = $request->input("search","");
+        $query = $request->input("search", "");
 
-        if( strlen($query["value"]) == 0)   $fileFolders = $this->fetchFileFolders($currentPath, false);
+        if (strlen($query["value"]) == 0)   $fileFolders = $this->fetchFileFolders($currentPath, false);
         else $fileFolders = $this->fetchFileFolders($currentPath, true);
 
 
@@ -57,18 +57,16 @@ class FileExplorerController extends Controller
 
 
         // $index = ;
-        for ($i = 0; $i < $recordsTotal; $i++)
-        {
+        for ($i = 0; $i < $recordsTotal; $i++) {
             $file = $fileFolders[$i];
 
-            $searchName = $this->isDir($file) ? $this->getFolderName($file) : File::name($file).".".File::extension($file);
-            $type = $this->isDir($file) ? "File Folder" : Str::upper(File::extension($file))." File";
-            $dateModified = $this->getTimeToDate(filemtime(storage_path($this->globalPath.$file)));
+            $searchName = $this->isDir($file) ? $this->getFolderName($file) : File::name($file) . "." . File::extension($file);
+            $type = $this->isDir($file) ? "File Folder" : Str::upper(File::extension($file)) . " File";
+            $dateModified = $this->getTimeToDate(filemtime(storage_path($this->globalPath . $file)));
             $size = $this->isDir($file) ? "" : $this->getSizeAbbrev(Storage::size($file));
 
             // echo $searchName."<br>".str_contains($searc, $searchName)."<br>";
-            if (Str::contains($searchName, $query["value"], true) || Str::contains($type, $query["value"], true) || Str::contains($size, $query["value"], true) || str_contains($dateModified, $query["value"]))
-            {
+            if (Str::contains($searchName, $query["value"], true) || Str::contains($type, $query["value"], true) || Str::contains($size, $query["value"], true) || str_contains($dateModified, $query["value"])) {
                 // if( $index == ((int)($request->input("start")) + (int)($request->input("length"))) )
 
                 $temp = [
@@ -76,7 +74,7 @@ class FileExplorerController extends Controller
                     "encodedRoute" => base64_encode($file),
                     "path" => $file,
                     "name" => $searchName,
-                    "ifFileCount" => $this->isDir($file) ? ( sizeof(Storage::files($file)) + sizeof(Storage::directories($file)) ) : 0,
+                    "ifFileCount" => $this->isDir($file) ? (sizeof(Storage::files($file)) + sizeof(Storage::directories($file))) : 0,
                     "size" => $size,
                     "type" => $type,
                     "dateModified" => $dateModified,
@@ -90,7 +88,6 @@ class FileExplorerController extends Controller
 
                 // ++$index;
             }
-
         }
         $response["draw"] = $request->input("draw");
         $response["recordsTotal"] = $recordsTotal;
@@ -100,6 +97,36 @@ class FileExplorerController extends Controller
         return response()->json($response);
     }
 
+    public static function getFileLink($host, $file)
+    {
+        $encoded_path = base64_encode("app/" . $file);
+        return $host . "/getOrView/" . $encoded_path;
+    }
+
+    public function getOrView(Request $request, $file = "Dasda")
+    {
+        // $file = $request->input("file",null);
+        echo $file;
+        $file = base64_decode($file);
+        // $file = s;
+        // $file[strlen($file)-1] = "";
+        $FILE = File::get(storage_path($this->globalPath . $file));
+
+        // die;
+        ob_end_clean();
+
+        return response()->make($FILE, 200, [
+            "Content-Type" => File::mimeType(storage_path($this->globalPath . $file)),
+        ]);
+        // $fileName = File::name($file) . "." . File::extension($file);
+        // return response(storage_path($this->globalPath . $file));
+        // return response(storage_path($this->globalPath . $file), 200, [
+        //     "Content-Type" => File::mimeType(storage_path($this->globalPath . $file)),
+        //     // 'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
+        //     // 'Content-Length' => filesize(storage_path($this->globalPath . $file)),
+        // ]);
+        // return response()->download();
+    }
 
     public function download(Request $request, $file = "Dasda")
     {
@@ -109,16 +136,16 @@ class FileExplorerController extends Controller
 
         // $file = s;
         // $file[strlen($file)-1] = "";
-        echo storage_path($this->globalPath.$file);
+        echo storage_path($this->globalPath . $file);
 
         // die;
         ob_end_clean();
 
-        $fileName = File::name($file).".".File::extension($file);
-        return response()->download(storage_path($this->globalPath.$file), $fileName, [
-            "Content-Type" => File::mimeType(storage_path($this->globalPath.$file)),
+        $fileName = File::name($file) . "." . File::extension($file);
+        return response()->download(storage_path($this->globalPath . $file), $fileName, [
+            "Content-Type" => File::mimeType(storage_path($this->globalPath . $file)),
             'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
-            'Content-Length' => filesize(storage_path($this->globalPath.$file)),
+            'Content-Length' => filesize(storage_path($this->globalPath . $file)),
         ]);
     }
 
@@ -128,10 +155,9 @@ class FileExplorerController extends Controller
         // $file = base64_decode($file);
 
         $response = null;
-        try{
-            $response = $this->isDir($file) ? File::deleteDirectory(storage_path($this->globalPath.$file)) : File::delete([storage_path($this->globalPath.$file)]);
-        }
-        catch(Exception $e){
+        try {
+            $response = $this->isDir($file) ? File::deleteDirectory(storage_path($this->globalPath . $file)) : File::delete([storage_path($this->globalPath . $file)]);
+        } catch (Exception $e) {
             return "false";
         }
 
@@ -145,11 +171,10 @@ class FileExplorerController extends Controller
         // $file = base64_decode($file);
 
         $response = false;
-        try{
-            if(!File::exists(storage_path($this->globalPath.$path."/".$name)))
-                $response = File::makeDirectory(storage_path($this->globalPath.$path."/".$name));
-        }
-        catch(Exception $e){
+        try {
+            if (!File::exists(storage_path($this->globalPath . $path . "/" . $name)))
+                $response = File::makeDirectory(storage_path($this->globalPath . $path . "/" . $name));
+        } catch (Exception $e) {
             return "false";
         }
 
@@ -159,13 +184,13 @@ class FileExplorerController extends Controller
     public function createEntity($entity)
     {
         $entityPath = "explorer";
-        $createRequest = new Request([ "path" => $entityPath , "name" => $entity]);
-        if( $this->createFolder($createRequest) == "true" ) //returns true if created otherwise false as string
+        $createRequest = new Request(["path" => $entityPath, "name" => $entity]);
+        if ($this->createFolder($createRequest) == "true") //returns true if created otherwise false as string
         {
-            $relativeEntityPath = $entityPath."/".$entity;
+            $relativeEntityPath = $entityPath . "/" . $entity;
 
-            $this->createFolder(new Request([ "path" => $relativeEntityPath , "name" => "Documentation"]));
-            $this->createFolder(new Request([ "path" => $relativeEntityPath , "name" => "Correspondence"]));
+            $this->createFolder(new Request(["path" => $relativeEntityPath, "name" => "Documentation"]));
+            $this->createFolder(new Request(["path" => $relativeEntityPath, "name" => "Correspondence"]));
             // $this->createFolder(new Request([ "path" => $relativeEntityPath , "name" => "Sites"]));
             return "true";
         }
@@ -182,14 +207,14 @@ class FileExplorerController extends Controller
 
     public function createSite($entity, $site)
     {
-        $sitePath = "explorer/".$entity;
-        $createRequest = new Request([ "path" => $sitePath , "name" => $site]);
-        if( $this->createFolder($createRequest) == "true") //returns true if created otherwise false as string
+        $sitePath = "explorer/" . $entity;
+        $createRequest = new Request(["path" => $sitePath, "name" => $site]);
+        if ($this->createFolder($createRequest) == "true") //returns true if created otherwise false as string
         {
-            $siteAbsolutePath = $sitePath."/".$site;
-            $this->createFolder(new Request([ "path" => $siteAbsolutePath , "name" => "Images"]));
-            $this->createFolder(new Request([ "path" => $siteAbsolutePath , "name" => "Plans"]));
-            $this->createFolder(new Request([ "path" => $siteAbsolutePath , "name" => "Safety"]));
+            $siteAbsolutePath = $sitePath . "/" . $site;
+            $this->createFolder(new Request(["path" => $siteAbsolutePath, "name" => "Images"]));
+            $this->createFolder(new Request(["path" => $siteAbsolutePath, "name" => "Plans"]));
+            $this->createFolder(new Request(["path" => $siteAbsolutePath, "name" => "Safety"]));
             // $this->createFolder(new Request([ "path" => $siteAbsolutePath , "name" => "Tasks"]));
         }
         return "false";
@@ -197,14 +222,14 @@ class FileExplorerController extends Controller
 
     public function createTask($entity, $site, $task)
     {
-        $taskPath = "explorer/".$entity."/".$site;
-        $createRequest = new Request([ "path" => $taskPath , "name" => $task]);
-        if( $this->createFolder($createRequest) == "true" ) //returns true if created otherwise false as string
+        $taskPath = "explorer/" . $entity . "/" . $site;
+        $createRequest = new Request(["path" => $taskPath, "name" => $task]);
+        if ($this->createFolder($createRequest) == "true") //returns true if created otherwise false as string
         {
-            $taskAbsolutePath = $taskPath."/".$task;
-            $this->createFolder(new Request([ "path" => $taskAbsolutePath , "name" => "Images"]));
-            $this->createFolder(new Request([ "path" => $taskAbsolutePath , "name" => "Orders"]));
-            $this->createFolder(new Request([ "path" => $taskAbsolutePath , "name" => "Safety"]));
+            $taskAbsolutePath = $taskPath . "/" . $task;
+            $this->createFolder(new Request(["path" => $taskAbsolutePath, "name" => "Images"]));
+            $this->createFolder(new Request(["path" => $taskAbsolutePath, "name" => "Orders"]));
+            $this->createFolder(new Request(["path" => $taskAbsolutePath, "name" => "Safety"]));
         }
         return "false";
     }
@@ -233,8 +258,8 @@ class FileExplorerController extends Controller
             "uploadFolderPath" => base64_encode($file), //this is actual folder where the files will be uploaded
             "owner" => ["Insite Building Group", "Twin Site", "Char Site"],
             "group" => ["DOCUMENTS/ORDER", "DOCUMENTS/BUDGET", "DOCUMENTS/SPECS"],
-            "status"=> ["Applicable", "Not Applicable"],
-            "folder"=> ["Plans/Budget","Plans/Specs"],
+            "status" => ["Applicable", "Not Applicable"],
+            "folder" => ["Plans/Budget", "Plans/Specs"],
         ];
 
         return response()->json($response);
@@ -246,9 +271,8 @@ class FileExplorerController extends Controller
         $files = $request->file("uploadFiles");
 
 
-        foreach ($files as $file)
-        {
-            $file->move(storage_path($this->globalPath.$uploadPath), $file->getClientOriginalName());
+        foreach ($files as $file) {
+            $file->move(storage_path($this->globalPath . $uploadPath), $file->getClientOriginalName());
         }
 
         return "true";
@@ -268,8 +292,8 @@ class FileExplorerController extends Controller
         // $file = base64_decode($file);
 
 
-        $searchName = $this->isDir($file) ? $this->getFolderName($file) : File::name($file).".".File::extension($file);
-        $parentPath = str_replace("/".$searchName, "", $file);
+        $searchName = $this->isDir($file) ? $this->getFolderName($file) : File::name($file) . "." . File::extension($file);
+        $parentPath = str_replace("/" . $searchName, "", $file);
 
         $temp = [
             "encodedRoute" => base64_encode($file),
@@ -294,22 +318,19 @@ class FileExplorerController extends Controller
         $oldParentPath = $request->input("oldParentFolderPath");
         $newParentPath = $request->input("newParentFolderPath");
 
-        try{
+        try {
             // if( $oldParentPath != $newParentPath )
             {
-                if( $isDir ){
-                    Storage::move( $path, $newParentPath."/".$name );
-                }
-                else Storage::move( $path, $newParentPath."/".$name.".".$type );
+                if ($isDir) {
+                    Storage::move($path, $newParentPath . "/" . $name);
+                } else Storage::move($path, $newParentPath . "/" . $name . "." . $type);
             }
             return "true";
-        }
-        catch(\Exception $e){
+        } catch (\Exception $e) {
             return $e->getMessage();
         }
 
         return "false";
-
     }
 
     // GET FILE AND FOLDER JSON TREE
@@ -379,13 +400,15 @@ class FileExplorerController extends Controller
     }
 
     // IS DIRECTORY
-    private function isDir($path){
-        return File::isDirectory(storage_path($this->globalPath.$path));
+    private function isDir($path)
+    {
+        return File::isDirectory(storage_path($this->globalPath . $path));
     }
 
     // IS FILE
-    private function isFile($path){
-        return File::isFile(storage_path($this->globalPath.$path));
+    private function isFile($path)
+    {
+        return File::isFile(storage_path($this->globalPath . $path));
     }
 
     // FETCH FOLDER LAST MODIFIED TIME
@@ -402,7 +425,7 @@ class FileExplorerController extends Controller
     private function getFolderName($path)
     {
         $folderNames = explode("/", $path);
-        return $folderNames[count($folderNames) -1];
+        return $folderNames[count($folderNames) - 1];
     }
 
     // FETCH FOLDER SIZE WITH ALL FILES
@@ -421,12 +444,12 @@ class FileExplorerController extends Controller
     // FETCH APPROPRIATE ABBREVIATION OF FILE FOLDER SIZE
     private function getSizeAbbrev($size_in_bytes)
     {
-        if ( $size_in_bytes < 1024 ) return $size_in_bytes." Bytes"; // checking whether less than 1024 bytes
-        elseif( $size_in_bytes < pow(1024, 2) ) return round($size_in_bytes/pow(1024,1), 2)." KB"; //checking whether equal to an MB or not
-        elseif( $size_in_bytes < pow(1024, 3) ) return round($size_in_bytes/pow(1024,2), 2)." MB"; //checking whether equal to an GB or not
-        elseif( $size_in_bytes < pow(1024, 4) ) return round($size_in_bytes/pow(1024,3), 2)." GB"; //checking whether equal to an TB or not
+        if ($size_in_bytes < 1024) return $size_in_bytes . " Bytes"; // checking whether less than 1024 bytes
+        elseif ($size_in_bytes < pow(1024, 2)) return round($size_in_bytes / pow(1024, 1), 2) . " KB"; //checking whether equal to an MB or not
+        elseif ($size_in_bytes < pow(1024, 3)) return round($size_in_bytes / pow(1024, 2), 2) . " MB"; //checking whether equal to an GB or not
+        elseif ($size_in_bytes < pow(1024, 4)) return round($size_in_bytes / pow(1024, 3), 2) . " GB"; //checking whether equal to an TB or not
 
-        return round($size_in_bytes/pow(1024,4), 2)." TB"; //at last return in TB
+        return round($size_in_bytes / pow(1024, 4), 2) . " TB"; //at last return in TB
     }
 
 

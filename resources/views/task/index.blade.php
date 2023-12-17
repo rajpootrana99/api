@@ -101,7 +101,7 @@
                 <div class="row">
                     <div class="col-12 text-center">
                         <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-                            <div class="carousel-inner" id="item_gallery_carousel">
+                            <div class="carousel-inner" id="item_gallery_carousel" style="height: 60vh;">
 
                             </div>
                             <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
@@ -268,9 +268,9 @@
                 if (item.item_galleries.length == 0) {
                     file = 'No image or video file exists';
                 } else if (getFileExtension(item.item_galleries[0].image) === 'mp4' || getFileExtension(item.item_galleries[0].image) === 'mkv' || getFileExtension(item.item_galleries[0].image) === 'mov') {
-                    file = '<video width="200px" height="100px" controls><source src="' + item.item_galleries[0].image + '" type="video/ogg"></video>'
-                } else if (getFileExtension(item.item_galleries[0].image) === 'png' || getFileExtension(item.item_galleries[0].image) === 'jpg' || getFileExtension(item.item_galleries[0].image) === 'jpeg') {
-                    file = '<img src="' + item.item_galleries[0].image + '" width="200px" height="100px" alt="" class="rounded float-left ml-3 mb-3">';
+                    file = '<video width="200px" height="100px" controls><source src="' + "getOrView/" + btoa(item.item_galleries[0].image) + '" type="video/ogg"></video>'
+                } else if (getFileExtension(item.item_galleries[0].image) === 'png' || getFileExtension(item.item_galleries[0].image) === 'jpg' || getFileExtension(item.item_galleries[0].image) === 'jpeg' || true) {
+                    file = '<img src="' + "getOrView/" + btoa(item.item_galleries[0].image) + '" width="200px" height="100px" alt="" class="rounded float-left ml-3 mb-3">';
                 } else {
                     file = 'No image or video file exists';
                 }
@@ -284,7 +284,7 @@
                     <td>' + item.id + '</td>\
                     <td>' + item.description + '</td>\
                     <td>' + client + '</td>\
-                    <td><button value="' + item.id + '" style="border: none; background-color: none" class="view_galery">' + file + '</button></td>\
+                    <td><button value="' + item.id + '" style="border: none; background-color: none" class="view_galery btn btn-dark">' + "View Gallery Items" + '</button></td>\
                     <td>' + priority + '</td>\
                     <td>' + status + '</td>\
                     <td>' + task.progress + '</td>\
@@ -332,24 +332,26 @@
                 url: "fetchItemGalleries/" + item_id,
                 dataType: "json",
                 success: function(response) {
+                    console.log(response);
                     var file;
                     var active = ""
                     $('#viewGallery').modal('show');
                     $('#item_gallery_carousel').children().remove().end();
                     $.each(response.item.item_galleries, function(key, gallery) {
+
                         if (getFileExtension(gallery.image) === 'mp4' || getFileExtension(gallery.image) === 'mkv' || getFileExtension(gallery.image) === 'mov') {
-                            file = '<video class="d-block w-100" height="400px" controls><source src="' + gallery.image + '" type="video/ogg"></video>'
-                        } else if (getFileExtension(gallery.image) === 'png' || getFileExtension(gallery.image) === 'jpg' || getFileExtension(gallery.image) === 'jpeg') {
-                            file = '<img height="400px" src="' + gallery.image + '" class="d-block w-100" alt="">';
+                            file = '<video class="d-block w-100" height="400px" controls><source src="' + "getOrView/" + btoa(gallery.image) + '" type="video/ogg"></video>'
+                        } else if (getFileExtension(gallery.image) === 'png' || getFileExtension(gallery.image) === 'jpg' || getFileExtension(gallery.image) === 'jpeg' || true) {
+                            file = '<img height="400px" src="' + "getOrView/" + btoa(gallery.image) + '" class="d-block w-100" alt="" style="width: 80% !important;height: max-content;">';
                         } else {
                             file = 'No image or video file exists';
                         }
                         if (key == 0) {
-                            active = "active"
+                            active = "active";
                         } else {
                             active = " "
                         }
-                        $('#item_gallery_carousel').append('<div class="carousel-item ' + active + '">' + file + '</div>');
+                        $('#item_gallery_carousel').append('<div class="carousel-item ' + active + ' " style="overflow-y:scroll;overflow-x:hidden;height:-webkit-fill-available;">' + file + '</div>');
                     });
                 }
             });
@@ -450,4 +452,12 @@
 
     });
 </script>
+<style>
+    .carousel-item.active,
+    .carousel-item-next,
+    .carousel-item-prev {
+        display: flex;
+        justify-content: center;
+    }
+</style>
 @endsection

@@ -36,12 +36,18 @@ class TaskController extends Controller
         ]);
     }
 
-    public function fetchItemGalleries($item)
+    public function fetchItemGalleries(Request $request, $item)
     {
         $item = Item::with('itemGalleries')->where('id', $item)->first();
+        // $correct = array();
+        // foreach ($item as $item) {
+        //     // print_r($item);
+        //     array_push($correct, FileExplorerController::getFileLink($request->getHttpHost(), $item->image));
+        // }
         return response()->json([
             'status' => true,
             'item' => $item,
+            // 'correct' => $correct,
         ]);
     }
 
@@ -106,6 +112,15 @@ class TaskController extends Controller
 
         $task = Task::create($request->all());
 
+        $taskName = $request->input('title') . " (" . $task->id . ")";
+        $entity = Entity::find($request->input('entity_id'));
+        $siteName = Site::find($request->input('site_id'))->site;
+        $manager = new FileExplorerController();
+        if ($entity->type == "Client") {
+            $entityName = $entity->entity;
+            $manager->createTask($entityName, $siteName, $taskName);
+        }
+
         foreach ($request->items as $itemData) {
             $item = Item::create([
                 'user_id' => $task->user_id,
@@ -116,27 +131,17 @@ class TaskController extends Controller
             if ($itemData['image']) {
                 foreach ($itemData['image'] as $image) {
                     $itemGallery = new ItemGallery();
-                    $destinationPath = 'item_images/';
+                    $taskAbsolutePath = storage_path("app/explorer/$entityName/$siteName/$taskName/Images/");
+                    // $destinationPath = 'item_images/';
                     $filename = $image->getClientOriginalName();
-                    $image->move($destinationPath, $filename);
-                    $fullPath = $destinationPath . $filename;
+                    $image->move($taskAbsolutePath, $filename);
+                    $fullPath = "explorer/$entityName/$siteName/$taskName/Images/" . $filename;
                     $itemGallery->item_id = $item->id;
                     $itemGallery->image = $fullPath;
                     $itemGallery->save();
                 }
             }
         }
-
-        //directory with task name in respected entity
-        $taskName = $request->input('title')." (".$task->id.")";
-        $entity = Entity::find($request->input('entity_id'));
-        $siteName = Site::find($request->input('site_id'))->site;
-        $manager = new FileExplorerController();
-        if ($entity->type == "Client") {
-            $entityName = $entity->entity;
-            $manager->createTask($entityName, $siteName, $taskName);
-        }
-
 
         return redirect()->route('task.index');
     }
@@ -155,8 +160,8 @@ class TaskController extends Controller
         $task = Task::find($task);
 
         $taskId = $task->id;
-        $taskOldName = $task->title." (".$taskId.")";
-        $taskNewName = $request->input("title")." (".$taskId.")";
+        $taskOldName = $task->title . " (" . $taskId . ")";
+        $taskNewName = $request->input("title") . " (" . $taskId . ")";
 
         $task->update($request->all());
 
