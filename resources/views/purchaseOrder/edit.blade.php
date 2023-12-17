@@ -205,7 +205,7 @@
         html += '<td><input type="text" style="height: 30px" name="items[' + number + '][qty]" id="qty_' + number + '" onkeyup="calculateCost()" class="form-control qty" /></td>';
         html += '<td><input type="text" style="height: 30px" name="items[' + number + '][order_unit_price]" id="order_unit_price_' + number + '" onkeyup="calculateCost()" class="form-control price" /></td>';
         html += '<td><input type="text" style="height: 30px" name="items[' + number + '][order_total_amount]" id="order_total_amount_' + number + '" readonly class="form-control amount" /></td>';
-        html += '<td><select class="select2 form-control" name="items[' + number + '][tax]" id="tax_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Tax Code"><option value="10">GST 10%</option></select></td>';
+        html += '<td><select class="select2 form-control tax" name="items[' + number + '][tax]" id="tax_' + number + '" style="width: 100%; height:30px;" onchange="calculateCost()" data-placeholder="Select Tax Code"><option value="10">GST 10%</option><option value="0">N/A</option></select></td>';
         if (number > 1) {
             html += '<td><button style="border: none; background-color: #fff" name="addItems" id="addItems"><i class="fa fa-plus-circle"></i></button></td>';
             html += '<td><button style="border: none; background-color: #fff" name="removeItems" id="removeItems"><i class="fa fa-minus-circle"></i></button></td></tr>';
@@ -319,6 +319,7 @@
         $('#qty_' + i).val(quotes[key].pivot.qty);
         $('#order_unit_price_' + i).val(quotes[key].pivot.rate);
         $('#order_total_amount_' + i).val(quotes[key].pivot.amount);
+        $('#tax_' + i).val(quotes[key].pivot.tax).change();
     })
 
     function quoteInsert() {
@@ -358,8 +359,9 @@
         document.querySelectorAll(".item").forEach((item) => {
             const quantity = parseInt(item.querySelector(".qty").value) ? parseInt(item.querySelector(".qty").value) : 0;
             const price = parseFloat(item.querySelector(".price").value) ? parseFloat(item.querySelector(".price").value) : 0;
+            const taxVal = parseFloat(item.querySelector(".tax").value) ? parseFloat(item.querySelector(".tax").value) : 0;
             subtotal += quantity * price
-            const itemTax = ((quantity * price) / 100) * 10;
+            const itemTax = ((quantity * price) / 100) * taxVal;
             tax += itemTax;
             total = subtotal + tax;
             const amount = quantity * price;
