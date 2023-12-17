@@ -45,7 +45,7 @@
                                         <div class="form-group row">
                                             <label for="message" class="col-sm-12 col-form-label text-left">Site Address</label>
                                             <div class="col-sm-12">
-                                                <textarea class="form-control" rows="2" name="site_address" id="site_address"></textarea>
+                                                <textarea class="form-control" readonly rows="2" name="site_address" id="site_address"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -258,10 +258,15 @@
                     selected: true,
                     disabled: true
                 }));
+                var selectedJob;
                 $.each(response.jobs, function(key, job) {
+                    if (quotes[0].task.id == job.id) {
+                        selectedJob = job;
+                    }
                     task_id.append($("<option />").val(job.id).text(job.id + ' - ' + job.title + ' : ' + job.site.site));
                 });
                 task_id.val(quotes[0].task.id).change();
+                $('#site_address').val(selectedJob.site.site_address)
             }
         });
     }
