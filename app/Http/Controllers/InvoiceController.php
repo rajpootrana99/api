@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Entity;
 use App\Models\Invoice;
+use App\Models\InvoiceGallery;
 use App\Models\Quote;
+use App\Models\Site;
 use App\Models\Task;
 use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Mail;
@@ -39,7 +42,7 @@ class InvoiceController extends Controller
     public function create()
     {
         $invoice = Invoice::latest()->first();
-        $job = Task::find(0);
+        $job = Task::where(['id' => 0])->get();
         if ($invoice) {
             $invoiceNo = $invoice->id + 1;
         } else {
@@ -63,17 +66,38 @@ class InvoiceController extends Controller
         $invoice = Invoice::create($request->all());
 
         foreach ($request->items as $itemData) {
-            $quote = Quote::find($itemData['quote_id']);
-            $invoice->quotes()->attach($quote, [
-                'description' => $itemData['description'],
-                'account' => $itemData['account'],
-                'qty' => $itemData['qty'],
-                'rate' => $itemData['rate'],
-                'amount' => $itemData['amount'],
-                'tax' => $itemData['tax'],
-                'total' => $itemData['total']
-            ]);
+            if ($itemData['description'] != null) {
+                $quote = Quote::find($itemData['quote_id']);
+                $invoice->quotes()->attach($quote, [
+                    'description' => $itemData['description'],
+                    'account' => $itemData['account'],
+                    'qty' => $itemData['qty'],
+                    'rate' => $itemData['rate'],
+                    'amount' => $itemData['amount'],
+                    'tax' => $itemData['tax'],
+                    'total' => $itemData['total']
+                ]);
+            }
         }
+
+        $task = Task::find($invoice->task_id);
+        $taskName = $task->title . " (" . $task->id . ")";
+        $entityName = Entity::find($task->entity_id)->entity;
+        $siteName = Site::find($task->site_id)->site;
+
+        if ($request->image) {
+            foreach ($request->image as $image) {
+                $invoiceGallery = new InvoiceGallery();
+                $invoiceAbsolutePath = storage_path("app/explorer/$entityName/$siteName/$taskName/Safety/");
+                $filename = $image->getClientOriginalName();
+                $image->move($invoiceAbsolutePath, $filename);
+                $fullPath = "explorer/$entityName/$siteName/$taskName/Images/" . $filename;
+                $invoiceGallery->invoice_id = $invoice->id;
+                $invoiceGallery->image = $fullPath;
+                $invoiceGallery->save();
+            }
+        }
+
         return redirect()->route('invoice.index');
     }
 

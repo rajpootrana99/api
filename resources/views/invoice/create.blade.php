@@ -117,6 +117,14 @@
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="form-group row">
+                                            <label for="fileInput" id="fileListLabel">
+                                                <div id="fileList">
+                                                    <p>Click to select files</p>
+                                                </div>
+                                            </label>
+                                            <input type="file" id="fileInput" name="image[]" multiple>
+                                        </div>
+                                        <div class="form-group row">
                                             <label for="note_id" class="col-sm-12 col-form-label text-left">Note to Customer</label>
                                             <div class="col-sm-12">
                                                 <select class="select2 pl-1 form-control" name="note_id" onchange="fetchNote()" id="note_id" style="width: 100%; height:30px !important;">
@@ -165,7 +173,166 @@
     </div> <!-- end row -->
 </div>
 
+<style>
+    #fileInput {
+        display: none;
+    }
+
+    #fileListLabel {
+        display: block;
+        margin-top: 20px;
+        border: 1px dashed #333;
+        border-radius: 15px;
+        background-color: #f5f5f5;
+        color: #333;
+        width: 100%;
+        height: 150px;
+        overflow-y: auto;
+        cursor: pointer;
+    }
+
+    #fileList {
+        padding: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        
+    }
+
+    #fileList.has-files {
+        justify-content: flex-start;
+        
+    }
+
+    .file-preview {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        margin: 10px;
+        padding: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+
+    .file-preview:hover {
+        background-color: #f9f9f9;
+        transform: translateY(-5px);
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .file-thumbnail {
+        width: 100px;
+        height: 100px;
+        overflow: hidden;
+        border-radius: 50%;
+    }
+
+    .file-thumbnail img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+
+    .remove-icon {
+        color: orange;
+        cursor: pointer;
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        font-size: 1rem;
+        transform: scale(1);
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .remove-icon:hover {
+        transform: scale(1.2);
+    }
+</style>
+
 <script>
+
+    //file uploader code starts here
+    const fileInput = document.getElementById('fileInput');
+    const fileListLabel = document.getElementById('fileListLabel');
+    const fileList = document.getElementById('fileList');
+    fileInput.addEventListener('change', () => {
+        const files = fileInput.files;
+        if (files.length > 0) {
+            fileListLabel.classList.add('has-files'); // Add a class to style the file list
+            fileListLabel.querySelector('p').style.display = 'none'; // Hide the paragraph
+
+            // Create columns to display images in three columns
+            for (let i = 0; i < 3; i++) {
+                const column = document.createElement('div');
+                column.classList.add('column');
+
+                for (let j = i; j < files.length; j += 3) {
+                    const file = files[j];
+
+                    // Create a preview container
+                    const filePreview = document.createElement('div');
+                    filePreview.classList.add('file-preview');
+
+                    // Create an image thumbnail
+                    const thumbnail = document.createElement('div');
+                    thumbnail.classList.add('file-thumbnail');
+                    const img = document.createElement('img');
+                    img.src = URL.createObjectURL(file);
+                    img.classList.add('file-thumbnail-img');
+                    thumbnail.appendChild(img);
+
+                    // Create a remove icon
+                    const removeIcon = document.createElement('span');
+                    removeIcon.classList.add('remove-icon');
+                    removeIcon.textContent = '❌';
+
+                    removeIcon.addEventListener('click', (e) => {
+                        e.stopPropagation(); // Prevent event propagation
+                        filePreview.remove();
+                        fileInput.value = ''; // Clear the input
+                        if (fileInput.files.length === 0) {
+                            fileListLabel.classList.remove('has-files'); // Remove styling class
+                        }
+                        // Add your code to remove the image here
+                    });
+
+                    // Append elements to the preview container
+                    filePreview.appendChild(thumbnail);
+                    filePreview.appendChild(removeIcon);
+
+                    // Append the preview container to the column
+                    column.appendChild(filePreview);
+                }
+
+                // Append the column to the file list
+                fileList.appendChild(column);
+            }
+            const filePreviews = document.querySelectorAll('.file-preview');
+            filePreviews.forEach((preview, index) => {
+                preview.addEventListener('click', (e) => {
+                    e.preventDefault(); // Prevent opening file explorer
+                });
+
+                const thumbnail = preview.querySelector('.file-thumbnail');
+                const removeIcon = preview.querySelector('.remove-icon');
+
+                thumbnail.addEventListener('click', (e) => {
+                    e.preventDefault(); // Prevent opening file explorer
+                });
+
+                removeIcon.addEventListener('click', (e) => {
+                    e.preventDefault(); // Prevent opening file explorer
+                });
+            });
+        }
+    });
+
+    // file uploader code ends here\
+
     var job = <?php echo $job ?>;
     var itemsCount = 1;
     var selectedJob;
@@ -264,8 +431,9 @@
                         task_id.append($("<option />").val(job.id).text(job.id + ' - ' + job.title + ' : ' + job.site.site));
                     }
                 });
-                if (job) {
-                    task_id.val(job.id).change();
+
+                if (job.length > 0) {
+                    task_id.val(job[0].id).change();
                 }
             }
         });
@@ -286,8 +454,8 @@
                 $.each(response.entities, function(key, entity) {
                     entity_id.append($("<option />").val(entity.id).text(entity.entity));
                 });
-                if (job) {
-                    entity_id.val(job.entity_id).change();
+                if (job.length > 0) {
+                    entity_id.val(job[0].entity_id).change();
                 }
             }
         });

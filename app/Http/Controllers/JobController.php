@@ -70,7 +70,7 @@ class JobController extends Controller
             } else {
                 $invoiceNo = 1;
             }
-            $job = Task::find($job);
+            $job = Task::where(['id' => $job])->get();
             return view('invoice.create', ['invoiceNo' => $invoiceNo, 'job' => $job]);
         }
     }
