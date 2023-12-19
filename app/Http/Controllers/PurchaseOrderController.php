@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Entity;
 use App\Models\PurchaseItem;
 use App\Models\PurchaseOrder;
+use App\Models\PurchaseOrderGallery;
 use App\Models\Quote;
+use App\Models\Site;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -61,22 +64,43 @@ class PurchaseOrderController extends Controller
         $purchaseOrder = PurchaseOrder::create($request->all());
 
         foreach ($request->items as $itemData) {
-            $quote = Quote::find($itemData['quote_id']);
-            $purchaseOrder->quotes()->attach($quote, [
-                'description' => $itemData['description'],
-                'qty' => $itemData['qty'],
-                'rate' => $itemData['order_unit_price'],
-                'amount' => $itemData['order_total_amount'],
-                'tax' => $itemData['tax'],
-                'total' => $itemData['order_total_amount'] + (($itemData['order_total_amount'] / 100) * $itemData['tax'])
-            ]);
-            if ($quote) {
-                $quote->update([
-                    'order_unit_price' => $itemData['order_unit_price'],
-                    'order_total_amount' => $itemData['order_total_amount'],
+            if ($itemData['description'] != null) {
+                $quote = Quote::find($itemData['quote_id']);
+                $purchaseOrder->quotes()->attach($quote, [
+                    'description' => $itemData['description'],
+                    'qty' => $itemData['qty'],
+                    'rate' => $itemData['order_unit_price'],
+                    'amount' => $itemData['order_total_amount'],
+                    'tax' => $itemData['tax'],
+                    'total' => $itemData['order_total_amount'] + (($itemData['order_total_amount'] / 100) * $itemData['tax'])
                 ]);
+                if ($quote) {
+                    $quote->update([
+                        'order_unit_price' => $itemData['order_unit_price'],
+                        'order_total_amount' => $itemData['order_total_amount'],
+                    ]);
+                }
             }
         }
+
+        $task = Task::find($purchaseOrder->task_id);
+        $taskName = $task->title . " (" . $task->id . ")";
+        $entityName = Entity::find($task->entity_id)->entity;
+        $siteName = Site::find($task->site_id)->site;
+
+        if ($request->image) {
+            foreach ($request->image as $image) {
+                $purchaseOrderGallery = new PurchaseOrderGallery();
+                $purchaseOrderAbsolutePath = storage_path("app/explorer/$entityName/$siteName/$taskName/Orders/");
+                $filename = $image->getClientOriginalName();
+                $image->move($purchaseOrderAbsolutePath, $filename);
+                $fullPath = "explorer/$entityName/$siteName/$taskName/Images/" . $filename;
+                $purchaseOrderGallery->purchase_order_id = $purchaseOrder->id;
+                $purchaseOrderGallery->image = $fullPath;
+                $purchaseOrderGallery->save();
+            }
+        }
+
         return redirect()->route('purchaseOrder.index');
     }
 

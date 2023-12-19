@@ -51,5 +51,8 @@ class Invoice extends Model
         return $this->belongsToMany(Quote::class)->withPivot('description', 'account', 'qty', 'rate', 'amount', 'tax', 'total');
     }
 
+    public function invoiceGalleries(){
+        return $this->hasMany(InvoiceGallery::class);
+    }
 
 }

@@ -51,4 +51,8 @@ class PurchaseOrder extends Model
         return $this->belongsToMany(Quote::class)->withPivot('description', 'qty', 'rate', 'amount', 'tax', 'total');
     }
 
+    public function purchaseOrderGalleries(){
+        return $this->hasMany(PurchaseOrderGallery::class);
+    }
+
 }
