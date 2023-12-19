@@ -112,6 +112,21 @@ class EstimateController extends Controller
         }
     }
 
+    public function editSubHeader($subHeader){
+        $subHeader = subHeader::with('header')->find($subHeader);
+        if ($subHeader) {
+            return response()->json([
+                'status' => true,
+                'subHeader' => $subHeader,
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Sub Header not found'
+            ]);
+        }
+    }
+
     /**
      * Update the specified resource in storage.
      *

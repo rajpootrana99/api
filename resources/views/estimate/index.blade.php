@@ -21,6 +21,7 @@
                 <div class="card-header">
                     <div class="card-title mt-4">
                         <a data-toggle="modal" data-target="#addEstimate" id="addEstimateButton" class="btn btn-primary" style="float:right;margin-left: 10px"><i class="fa fa-plus"></i> New Estimate </a>
+                        <a data-toggle="modal" data-target="#addSubHeader" id="addSubHeaderButton" class="btn btn-primary" style="float:right;margin-left: 10px"><i class="fa fa-plus"></i> New Sub Header </a>
                     </div>
                 </div><!--end card-header-->
                 <div class="card-body">
@@ -67,16 +68,13 @@
                                 <span class="text-danger error-text header_id_error"></span>
                             </div>
                         </div>
-                        <div class="col-lg-10">
+                        <div class="col-lg-12">
                             <div class="form-group">
                                 <select class="select2 pl-1 form-control" name="sub_header_id" id="sub_header_id" style="width: 100%; height:30px !important;">
                                     <option value selected disabled>Select header first</option>
                                 </select>
                                 <span class="text-danger error-text sub_header_id_error"></span>
                             </div>
-                        </div>
-                        <div class="col-lg-2">
-                            <a data-toggle="modal" data-target="#addSubHeader" id="addSubHeaderButton" class="align-middle text-danger font-weight-bold" style="cursor:pointer;">Add New</a>
                         </div>
                         <div class="col-lg-12">
                             <div class="form-group">
@@ -122,6 +120,47 @@
                             <div class="form-group">
                                 <input class="form-control" type="text" name="sub_header" id="sub_header" placeholder="Enter Sub Header" style="width: 100%; height:30px;">
                                 <span class="text-danger error-text sub_header_error"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div><!--end row-->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                </div><!--end modal-footer-->
+            </form>
+        </div>
+    </div><!--end modal-content-->
+</div>
+
+<div class="modal fade" id="editSubHeader" tabindex="-1" role="dialog" aria-labelledby="editSubHeaderLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h6 class="modal-title m-0 text-white" id="editSubHeaderLabel"></h6>
+                <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="la la-times text-white"></i></span>
+                </button>
+            </div><!--end modal-header-->
+            <form method="post" id="editSubHeaderForm">
+                @csrf
+                <input type="hidden" id="sub_header_id" name="sub_header_id">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <select class="select2 pl-1 form-control" name="header_id" id="edit_subHeader_id" style="width: 100%; height:30px !important;">
+
+                                </select>
+                                <span class="text-danger error-text header_id_update_error"></span>
+                            </div>
+                        </div>
+                        <input type="hidden" name="cost_code" id="edit_cost_code">
+                        <input type="hidden" name="code" id="edit_code">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <input class="form-control" type="text" name="sub_header" id="edit_sub_header" placeholder="Enter Sub Header" style="width: 100%; height:30px;">
+                                <span class="text-danger error-text sub_header_update_error"></span>
                             </div>
                         </div>
                     </div>
@@ -254,7 +293,8 @@
                                 <td><strong>' + header.major_code + '</strong></td>\
                                 <td><strong>' + subHeader.cost_code + '</strong></td>\
                                 <td><strong>' + subHeader.sub_header + '</strong></td>\
-                                <td colspan="2"><strong>' + subHeader.cost_code + '___' + subHeader.sub_header + '</strong></td>\
+                                <td><strong>' + subHeader.cost_code + '___' + subHeader.sub_header + '</strong></td>\
+                                <td><button value="' + subHeader.id + '" style="border: none; background-color: transparent" class="edit_subHeader_btn"><i class="fa fa-edit"></i></button></td>\
                             </tr>');
                             $.each(subHeader.estimates, function(key, estimate) {
                                 $('tbody').append('<tr>\
@@ -439,6 +479,53 @@
                     } else {
                         console.log(response)
                         $('#editEstimateLabel').text('Estimate ID ' + response.estimate.id);
+                        $('#estimate_id').val(response.estimate.id);
+                        var header_id = $('#edit_header_id');
+                        $('#edit_header_id').children().remove().end();
+                        header_id.append($("<option />").text('Select Header').prop({
+                            selected: true,
+                            disabled: true
+                        }));
+                        $.each(headers, function(key, header) {
+                            header_id.append($("<option />").val(header.id).text(header.header));
+                        });
+                        $('#edit_header_id').val(response.estimate.sub_header.header_id).change();
+                        $('#edit_major_code').val(response.estimate.sub_header.header.major_code);
+                        $('#edit_cost_code').val(response.estimate.sub_header.cost_code);
+                        var edit_sub_header_id = $('#edit_sub_header_id');
+                        $('#edit_sub_header_id').children().remove().end();
+                        edit_sub_header_id.append($("<option />").text('Select Sub Header').prop({
+                            selected: true,
+                            disabled: true
+                        }));
+                        $.each(headers, function(key, header) {
+                            if (header.id == response.estimate.sub_header.header_id) {
+                                $.each(header.sub_headers, function(key, sub_header) {
+                                    edit_sub_header_id.append($("<option />").val(sub_header.id).text(sub_header.sub_header));
+                                })
+                            }
+                        });
+                        $('#edit_sub_header_id').val(response.estimate.sub_header_id).change();
+                        $('#edit_item').val(response.estimate.item);
+                    }
+                }
+            });
+        });
+
+        $(document).on('click', '.edit_subHeader_btn', function(e) {
+            e.preventDefault();
+            var sub_header_id = $(this).val();
+            $('#editSubHeader').modal('show');
+            $(document).find('span.error-text').text('');
+            $.ajax({
+                type: "GET",
+                url: 'subHeader/' + sub_header_id + '/edit',
+                success: function(response) {
+                    if (response.status == false) {
+                        $('#editSubHeader').modal('hide');
+                    } else {
+                        console.log(response)
+                        $('#editSubHeaderLabel').text('Estimate ID ' + response.estimate.id);
                         $('#estimate_id').val(response.estimate.id);
                         var header_id = $('#edit_header_id');
                         $('#edit_header_id').children().remove().end();
