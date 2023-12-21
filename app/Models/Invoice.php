@@ -15,6 +15,7 @@ class Invoice extends Model
         'customer_po_number',
         'issue_date',
         'due_date',
+        'sent_date',
         'amount_are',
         'note',
         'sub_total',

@@ -14,6 +14,7 @@ class PurchaseOrder extends Model
         'task_id',
         'date',
         'site_start',
+        'sent_date',
         'amount_are',
         'note',
         'site_address',
