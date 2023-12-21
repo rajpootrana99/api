@@ -152,6 +152,21 @@ class EstimateController extends Controller
         }
     }
 
+    public function updateSubHeader(Request $request, $subHeader){
+        $validator = Validator::make($request->all(), [
+            'header_id' => ['required'],
+            'sub_header' => ['required'],
+        ]);
+        if (!$validator->passes()) {
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
+        $subHeader = SubHeader::find($subHeader);
+        $subHeader->update($request->all());
+        if ($subHeader){
+            return response()->json(['status' => 1, 'message' => 'Sub Header Updated Successfully']);
+        }
+    }
+
     /**
      * Remove the specified resource from storage.
      *

@@ -125,6 +125,7 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
     Route::get('/fetchHeaders', [EstimateController::class, 'fetchHeaders'])->name('header.get');
     Route::get('/fetchSubHeaders/{header}', [EstimateController::class, 'fetchSubHeaders'])->name('subheader.get');
     Route::get('/subHeader/{subHeader}/edit', [EstimateController::class, 'editSubHeader'])->name('subheader.edit');
+    Route::patch('/subHeader/{subHeader}', [EstimateController::class, 'updateSubHeader'])->name('subheader.update');
 
 
     //PURCHASE ORDER ROUTES

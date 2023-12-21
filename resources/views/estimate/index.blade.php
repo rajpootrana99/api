@@ -144,7 +144,8 @@
             </div><!--end modal-header-->
             <form method="post" id="editSubHeaderForm">
                 @csrf
-                <input type="hidden" id="sub_header_id" name="sub_header_id">
+                @method('PATCH')
+                <input type="hidden" id="updated_sub_header_id" name="sub_header_id">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-lg-12">
@@ -368,6 +369,25 @@
             });
         });
 
+        $(document).on('change', '#edit_subHeader_id', function(e) {
+            e.preventDefault();
+            $.each(headers, function(key, header) {
+                if ($('#edit_subHeader_id').val() == header.id) {
+                    var code;
+                    var cost_code;
+                    if (header.sub_headers.length == 0) {
+                        code = header.code + 1;
+                        cost_code = '5-' + code.toString().padStart(4, '0');
+                    } else {
+                        code = header.sub_headers[header.sub_headers.length - 1].code + 1;
+                        cost_code = '5-' + code.toString().padStart(4, '0');
+                    }
+                    $('#edit_code').val(code)
+                    $('#edit_cost_code').val(cost_code)
+                }
+            });
+        });
+
         $(document).on('click', '#addEstimateButton', function(e) {
             e.preventDefault();
             $('#addEstimate').modal('show');
@@ -453,7 +473,6 @@
                     } else {
                         $('#addSubHeaderForm')[0].reset();
                         $('#addSubHeader').modal('hide');
-                        $('#addEstimate').modal('show');
                         showToast(response.message, "success");
                         fetchEstimates();
                     }
@@ -525,10 +544,10 @@
                         $('#editSubHeader').modal('hide');
                     } else {
                         console.log(response)
-                        $('#editSubHeaderLabel').text('Estimate ID ' + response.estimate.id);
-                        $('#estimate_id').val(response.estimate.id);
-                        var header_id = $('#edit_header_id');
-                        $('#edit_header_id').children().remove().end();
+                        $('#editSubHeaderLabel').text('Sub Header ID ' + response.subHeader.id);
+                        $('#updated_sub_header_id').val(response.subHeader.id);
+                        var header_id = $('#edit_subHeader_id');
+                        $('#edit_subHeader_id').children().remove().end();
                         header_id.append($("<option />").text('Select Header').prop({
                             selected: true,
                             disabled: true
@@ -536,25 +555,48 @@
                         $.each(headers, function(key, header) {
                             header_id.append($("<option />").val(header.id).text(header.header));
                         });
-                        $('#edit_header_id').val(response.estimate.sub_header.header_id).change();
-                        $('#edit_major_code').val(response.estimate.sub_header.header.major_code);
-                        $('#edit_cost_code').val(response.estimate.sub_header.cost_code);
-                        var edit_sub_header_id = $('#edit_sub_header_id');
-                        $('#edit_sub_header_id').children().remove().end();
-                        edit_sub_header_id.append($("<option />").text('Select Sub Header').prop({
-                            selected: true,
-                            disabled: true
-                        }));
-                        $.each(headers, function(key, header) {
-                            if (header.id == response.estimate.sub_header.header_id) {
-                                $.each(header.sub_headers, function(key, sub_header) {
-                                    edit_sub_header_id.append($("<option />").val(sub_header.id).text(sub_header.sub_header));
-                                })
-                            }
-                        });
-                        $('#edit_sub_header_id').val(response.estimate.sub_header_id).change();
-                        $('#edit_item').val(response.estimate.item);
+                        $('#edit_subHeader_id').val(response.subHeader.header_id).change();
+                        $('#edit_sub_header').val(response.subHeader.sub_header);
+                        $('#edit_cost_code').val(response.subHeader.cost_code);
+                        $('#edit_code').val(response.subHeader.code);
                     }
+                }
+            });
+        });
+
+        $(document).on('submit', '#editSubHeaderForm', function(e) {
+            e.preventDefault();
+            const sub_header_id = $('#updated_sub_header_id').val();
+            let EditFormData = new FormData($('#editSubHeaderForm')[0]);
+            $.ajax({
+                type: "post",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf_token"]').attr('content'),
+                    '_method': 'patch'
+                },
+                url: "subHeader/" + sub_header_id,
+                data: EditFormData,
+                contentType: false,
+                processData: false,
+                beforeSend: function() {
+                    $(document).find('span.error-text').text('');
+                },
+                success: function(response) {
+                    if (response.status == 0) {
+                        $('#editSubHeader').modal('show')
+                        $.each(response.error, function(prefix, val) {
+                            $('span.' + prefix + '_update_error').text(val[0]);
+                        });
+                    } else {
+                        $('#editSubHeaderForm')[0].reset();
+                        $('#editSubHeader').modal('hide');
+                        showToast(response.message, "success");
+                        fetchEstimates();
+                    }
+                },
+                error: function(error) {
+                    console.log(error)
+                    $('#editEstimate').modal('show');
                 }
             });
         });
@@ -595,7 +637,7 @@
                     $('#editEstimate').modal('show');
                 }
             });
-        })
+        });
 
     });
 </script>
