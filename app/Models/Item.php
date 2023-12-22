@@ -13,7 +13,6 @@ class Item extends Model
         'user_id',
         'description',
         'priority',
-        'progress'
     ];
 
     public function getPriorityAttribute($attribute)
@@ -28,19 +27,6 @@ class Item extends Model
             2 => 'High',
             1 => 'Medium',
             0 => 'Low',
-        ];
-    }
-
-    public function getProgressAttribute($attribute)
-    {
-        return $this->progressOptions()[$attribute] ?? 0;
-    }
-
-    public function progressOptions()
-    {
-        return [
-            1 => 'Order',
-            0 => 'Quote',
         ];
     }
 

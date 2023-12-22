@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('task_id')->nullable();
             $table->string('date')->nullable();
             $table->string('site_start')->nullable();
+            $table->date('sent_date')->nullable();
             $table->integer('amount_are')->nullable();
             $table->string('site_address')->nullable();
             $table->string('note')->nullable();

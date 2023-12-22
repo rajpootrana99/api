@@ -86,13 +86,39 @@ class EnquiryController extends Controller
      */
     public function update(Request $request, $enquiry)
     {
-        // $enquiry = Task::find($enquiry);
+        $validator = Validator::make($request->all(), [
+            'title' => ['required', 'unique:tasks,title,NULL,id,site_id,' . $request->input('site_id') . ',entity_id,' . $request->input('entity_id')],
+            'requested_completion' => ['required'],
+            'enquiry_status' => ['required'],
+            'quote_type' => ['required'],
+        ]);
+        if (!$validator->passes()) {
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        }
+        $enquiry = Task::find($enquiry);
 
-        // $enquiryOldName = $enquiry->title;
-        // $enquiryNewName = $request->input("title");
+        $enquiryId = $enquiry->id;
+        $enquiryOldName = $enquiry->title." (".$enquiryId.")";
+        $enquiryNewName = $request->input("title")." (".$enquiryId.")";
 
         $enquiry->update($request->all());
 
+        if ($enquiry) {
+
+            //Change task name in all places
+            $siteName = Site::find($enquiry->site_id)->site;
+            $entity = Entity::find($enquiry->entity_id);
+            $manager = new FileExplorerController();
+            $entityName = $entity->entity;
+            if ($entity->type == "Client") {
+                $manager->saveEditedData(new Request([
+                    "name" => $enquiryNewName,
+                    "path" => "explorer/" . $entityName . "/" . $siteName . "/" . $enquiryOldName,
+                    "isDir" => true,
+                    "newParentFolderPath" => "explorer/" . $entityName . "/" . $siteName,
+                ]));
+            }
+        }
         //Change task name in all places
         // $siteName = Site::find($enquiry->site_id)->site;
         // $entityName = Entity::find($enquiry->entity_id)->entity;

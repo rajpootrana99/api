@@ -15,6 +15,7 @@ class Invoice extends Model
         'customer_po_number',
         'issue_date',
         'due_date',
+        'sent_date',
         'amount_are',
         'note',
         'sub_total',
@@ -51,5 +52,8 @@ class Invoice extends Model
         return $this->belongsToMany(Quote::class)->withPivot('description', 'account', 'qty', 'rate', 'amount', 'tax', 'total');
     }
 
+    public function invoiceGalleries(){
+        return $this->hasMany(InvoiceGallery::class);
+    }
 
 }

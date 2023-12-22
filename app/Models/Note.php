@@ -10,14 +10,17 @@ class Note extends Model
     use HasFactory;
 
     protected $fillable = [
-        'note'
+        'note',
+        'note_type',
     ];
 
-    public function purchaseOrders(){
+    public function purchaseOrders()
+    {
         return $this->hasMany(PurchaseOrder::class);
     }
 
-    public function invoices(){
+    public function invoices()
+    {
         return $this->hasMany(Invoice::class);
     }
 }

@@ -63,28 +63,16 @@
                                             <th>Phone</th>
                                             <th>Email</th>
                                             <th>PCBU / Admin</th>
+                                            <th>Orders</th>
+                                            <th>Accounts</th>
                                             <th>Contact</th>
                                             <th>User Group</th>
                                             <th>App Onboarding</th>
                                             <th>Reset Password</th>
-                                            <th width="3%"></th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        @foreach($entity->users as $user)
-                                        <tr>
-                                            <td>{{$user->name}}</td>
-                                            <td>{{$user->role}}</td>
-                                            <td>{{$user->phone}}</td>
-                                            <td>{{$user->email}}</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td>Contractor</td>
-                                            <td><button class="btn btn-primary"><i class="fas fa-mobile-alt"></i> SMS App</button></td>
-                                            <td><button class="btn btn-primary"><i class="far fa-envelope"></i> Password</button></td>
-                                            <td></td>
-                                        </tr>
-                                        @endforeach
+                                    <tbody class="personnel_tab">
+
                                     </tbody>
                                 </table><!--end /table-->
                             </div><!--end /tableresponsive-->
@@ -106,13 +94,18 @@
                                 <div class="form-group row" style="margin-bottom: 0px !important;">
                                     <label for="example-text-input" class="col-sm-2 col-form-label text-right">Registered Name:</label>
                                     <div class="col-sm-8">
-                                        <input class="form-control" type="text" value="" id="example-text-input" style="width: 100%; height:30px;">
+                                        <input class="form-control" type="text" value="{{$entity->entity}}" id="example-text-input" style="width: 100%; height:30px;">
                                     </div>
                                 </div>
                                 <div class="form-group row" style="margin-bottom: 0px !important;">
                                     <label for="example-text-input" class="col-sm-2 col-form-label text-right">Trading Type:</label>
                                     <div class="col-sm-8">
-                                        <input class="form-control" type="text" value="{{$entity->entity}}" id="example-text-input" style="width: 100%; height:30px;">
+                                        <select class="select2 pl-1 form-control" name="trading_type" id="trading_type" style="width: 100%; height:30px;">
+                                            <option value="" disabled selected>Select Trading Type</option>
+                                            <option value="0" {{ 'Company' == $entity->trading_type ? 'selected' : ''}}>Company</option>
+                                            <option value="1" {{ 'Trust' == $entity->trading_type ? 'selected' : ''}}>Trust</option>
+                                            <option value="2" {{ 'Sole Trader' == $entity->trading_type ? 'selected' : ''}}>Sole Trader</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group row" style="margin-bottom: 0px !important;">
@@ -586,9 +579,68 @@
 
     };
 
+    let orderentityuserflag, accountentityuserflag = false;
+
+    function orderChange(e, user_id) {
+        if (orderentityuserflag === true) {
+            var orders = e.value;
+            var user_id = user_id;
+            let formData = new FormData();
+            formData.append('orders', orders);
+            formData.append('user_id', user_id);
+            $.ajax({
+                type: "post",
+                url: "/changeOrder",
+                data: formData,
+                contentType: false,
+                processData: false,
+                beforeSend: function() {
+                    $(document).find('span.error-text').text('');
+                },
+                success: function(response) {
+                    showToast(response.message, "success");
+                    event.preventDefault();
+                },
+                error: function(error) {
+
+                }
+            });
+        } else {
+            orderentityuserflag = true;
+        }
+    };
+
+    function accountChange(e, user_id) {
+        if (accountentityuserflag === true) {
+            var accounts = e.value;
+            var user_id = user_id;
+            let formData = new FormData();
+            formData.append('accounts', accounts);
+            formData.append('user_id', user_id);
+            $.ajax({
+                type: "post",
+                url: "/changeAccount",
+                data: formData,
+                contentType: false,
+                processData: false,
+                beforeSend: function() {
+                    $(document).find('span.error-text').text('');
+                },
+                success: function(response) {
+                    showToast(response.message, "success");
+                    event.preventDefault();
+                },
+                error: function(error) {
+
+                }
+            });
+        } else {
+            accountentityuserflag = true;
+        }
+    };
+
     $(document).ready(function() {
         var tradeTypes = <?php echo $entity->tradeTypes->pluck('id'); ?>;
-        console.log(tradeTypes);
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -625,35 +677,51 @@
             });
         }
 
-        // fetchEntities();
+        fetchEntityUsers();
 
-        // function fetchEntities() {
-        //     $.ajax({
-        //         type: "GET",
-        //         url: "fetchEntities",
-        //         dataType: "json",
-        //         success: function(response) {
-        //             $('tbody').html("");
-        //             $.each(response.entities, function(key, entity) {
-        //                 $('tbody').append('<tr>\
-        //                     <td>' + entity.id + '</td>\
-        //                     <td>' + entity.type + '</td>\
-        //                     <td>' + entity.entity + '</td>\
-        //                     <td>' + entity.abn + '</td>\
-        //                     <td>' + entity.email + '</td>\
-        //                     <td>' + entity.address + '</td>\
-        //                     <td>' + entity.primary_phone + '</td>\
-        //                     <td>' + entity.mobile + '</td>\
-        //                     <td>' + entity.fax + '</td>\
-        //                     <td>' + entity.director + '</td>\
-        //                     <td>' + entity.trade + '</td>\
-        //                     <td>' + entity.abbrev + '</td>\
-        //                     <td><button value="' + entity.id + '" style="border: none; background-color: #fff" class="edit_btn"><i class="fa fa-edit"></i></button></td>\
-        //             </tr>');
-        //             });
-        //         }
-        //     });
-        // }
+        function fetchEntityUsers() {
+            $.ajax({
+                type: "GET",
+                url: '/fetchEntityUsers/' + <?php echo $entity->id ?>,
+                dataType: "json",
+                success: function(response) {
+                    $('tbody').html("");
+                    $.each(response.users, function(key, user) {
+                        let orderSelect = 0;
+                        let accountSelect = 0;
+                        if (user.orders === "Yes") {
+                            orderSelect = 1;
+                        }
+                        if (user.accounts === "Yes") {
+                            accountSelect = 1;
+                        }
+                        $('.personnel_tab').append('<tr>\
+                            <td>' + user.name + '</td>\
+                            <td>' + user.role + '</td>\
+                            <td>' + user.phone + '</td>\
+                            <td>' + user.email + '</td>\
+                            <td></td>\
+                            <td><select onchange="orderChange(this,' + user.id + ')" class="select2 pl-1 form-control orders_' + user.id + '" name="orders" id="orders_' + user.id + '" style="width:70px;">\
+                                    <option value="" disabled>Select Order</option>\
+                                    <option value="0">No</option>\
+                                    <option value="1">Yes</option>\
+                                </select></td>\
+                            <td><select onchange="accountChange(this,' + user.id + ')" class="select2 pl-1 form-control accounts_' + user.id + '" name="accounts" id="accounts_' + user.id + '" style="width:70px;" >\
+                                    <option value="" disabled>Select Account</option>\
+                                    <option value="0">No</option>\
+                                    <option value="1">Yes</option>\
+                                </select></td>\
+                            <td></td>\
+                            <td>Contractor</td>\
+                            <td><button class="btn btn-primary" style="width:100px"><i class="fas fa-mobile-alt"></i> SMS App</button></td>\
+                            <td><button class="btn btn-primary" style="width:100px"><i class="far fa-envelope"></i> Password</button></td>\
+                        </tr>');
+                        $('.orders_' + user.id).val(orderSelect).change();
+                        $('.accounts_' + user.id).val(accountSelect).change();
+                    });
+                }
+            });
+        }
 
 
         $(document).on('click', '#addEntityButton', function(e) {

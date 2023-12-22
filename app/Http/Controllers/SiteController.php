@@ -144,9 +144,9 @@ class SiteController extends Controller
         if( $entity->type == "Client" ){
             $manager->saveEditedData(new Request([
                 "name" => $siteNewName,
-                "path" => "explorer/".$entity->entity."/Sites/".$siteOldName,
+                "path" => "explorer/".$entity->entity."/".$siteOldName,
                 "isDir" => true,
-                "newParentFolderPath" => "explorer/".$entity->entity."/Sites",
+                "newParentFolderPath" => "explorer/".$entity->entity,
             ]));
         }
 

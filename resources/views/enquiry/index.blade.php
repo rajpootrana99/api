@@ -103,8 +103,30 @@
                         <input type="hidden" name="task_id" id="task_id">
                         <div class="col-lg-12">
                             <div class="form-group">
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" placeholder="Enter Title" name="title" id="title">
+                                <span class="text-danger error-text title_update_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <input class="form-control" style="width: 100%; height:30px;" type="text" name="requested_completion" id="requested_completion" onfocus="(this.type='date')" onblur="(this.type='text')" placeholder="Requested Completion Date">
+                                <span class="text-danger error-text requested_completion_update_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <select class="select2 pl-1 form-control" name="quote_type" id="quote_type" style="width: 100%; height:30px !important;">
+                                    <option value="" selected disabled>Select Quote Type</option>
+                                    <option value="0">Cost Plus</option>
+                                    <option value="1">Do & Charge</option>
+                                </select>
+                                <span class="text-danger error-text quote_type_update_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
                                 <select class="select2 pl-1 form-control edit_enquiry_status" name="enquiry_status" id="edit_enquiry_status" style="width: 100%; height:30px !important;">
-                                    <option value="" selected disabled>Select Status</option>
+                                    <option value="" selected disabled>Select Enquiry Status</option>
                                     <option value="0">Pending</option>
                                     <option value="1">Quoting</option>
                                     <option value="2">Submitted</option>
@@ -128,12 +150,13 @@
 
 <script>
     let USDollar = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
+        style: 'currency',
+        currency: 'USD',
     });
 
     $(document).ready(function() {
-
+        var total_quoted_price_ex_gst = 0;
+        var total_profit = 0;
         var enquiries;
 
         $.ajaxSetup({
@@ -144,7 +167,7 @@
 
         fetchEnquiries();
 
-        $("#search-input").keyup(function(){
+        $("#search-input").keyup(function() {
             $('tbody').html("");
             var val = $.trim(this.value);
             if (val.length == 0) {
@@ -152,46 +175,44 @@
             }
             if (val) {
                 val = val.toLowerCase();
-                $.each(enquiries, function(_,enquiry) {
-                    if (enquiry.site.site.toLowerCase().indexOf(val) != -1) {
+                $.each(enquiries, function(_, enquiry) {
+                    if (enquiry.title.toLowerCase().indexOf(val) != -1 || enquiry.entity.entity.toLowerCase().indexOf(val) != -1) {
                         viewEnquiries(enquiry);
                     }
                 });
             }
         });
 
-        function showEnquiries(enquiries){
-            $('tbody').html("");   
-            var total_quoted_price_ex_gst = 0;
-            var total_profit = 0;            
+        function showEnquiries(enquiries) {
+            $('tbody').html("");
             $.each(enquiries, function(key, enquiry) {
-                if($('#view_status').val() == 0){
-                    if(enquiry.enquiry_status == 'Pending'){     
+                if ($('#view_status').val() == 0) {
+                    if (enquiry.enquiry_status == 'Pending') {
                         viewEnquiries(enquiry);
                     }
                 }
-                if($('#view_status').val() == 1){
-                    if(enquiry.enquiry_status == 'Quoting'){
+                if ($('#view_status').val() == 1) {
+                    if (enquiry.enquiry_status == 'Quoting') {
                         viewEnquiries(enquiry);
                     }
                 }
-                if($('#view_status').val() == 2){
-                    if(enquiry.enquiry_status == 'Submitted'){
+                if ($('#view_status').val() == 2) {
+                    if (enquiry.enquiry_status == 'Submitted') {
                         viewEnquiries(enquiry);
                     }
                 }
-                if($('#view_status').val() == 3){
-                    if(enquiry.enquiry_status == 'Won'){
+                if ($('#view_status').val() == 3) {
+                    if (enquiry.enquiry_status == 'Won') {
                         viewEnquiries(enquiry);
                     }
                 }
-                if($('#view_status').val() == 4){
-                    if(enquiry.enquiry_status == 'Lost'){
+                if ($('#view_status').val() == 4) {
+                    if (enquiry.enquiry_status == 'Lost') {
                         viewEnquiries(enquiry);
                     }
                 }
-                if($('#view_status').val() == 5){
-                    if(enquiry.enquiry_status == 'Cancelled'){
+                if ($('#view_status').val() == 5) {
+                    if (enquiry.enquiry_status == 'Cancelled') {
                         viewEnquiries(enquiry);
                     }
                 }
@@ -200,8 +221,8 @@
             $('#total_profit').html(USDollar.format(total_profit));
         }
 
-        function viewEnquiries(enquiry){
-            var status = '';  
+        function viewEnquiries(enquiry) {
+            var status = '';
             if (enquiry.enquiry_status === "Quoting") {
                 status = '<span class="badge badge-info">' + enquiry.enquiry_status + '</span>';
             } else if (enquiry.enquiry_status === "Submitted") {
@@ -225,8 +246,8 @@
             total_quoted_price_ex_gst += quoted_price_ex_gst;
             total_profit += profit;
             var name = "No Client";
-            if (enquiry.contact_id != null) {
-                name = enquiry.contact.user.name;
+            if (enquiry.user_id != null) {
+                name = enquiry.user.name;
             }
             $('tbody').append('<tr>\
                 <td>' + enquiry.id + '</td>\
@@ -237,7 +258,7 @@
                 <td>' + USDollar.format(quoted_price_ex_gst) + '</td>\
                 <td>' + USDollar.format(profit) + '</td>\
                 <td>' + name + '</td>\
-                <td>' + enquiry.requested_completion + '</td>\
+                <td>' + formatDate(enquiry.requested_completion) + '</td>\
                 <td>' + enquiry.quote_type + '</td>\
                 <td><div class="dropdown d-inline-block" style="float:right;">\
                     <a class="dropdown-toggle arrow-none" id="dLabel11" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">\
@@ -245,7 +266,7 @@
                     </a>\
                     <div style="z-index: 1 !important;" class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel11">\
                         <button value="' + enquiry.id + '" style="border: none; background-color: #fff" class="edit_btn dropdown-item">Edit</button>\
-                        <a class="dropdown-item" href="/convertToJob/'+enquiry.id+'">Convert to Job</a>\
+                        <a class="dropdown-item" href="/convertToJob/' + enquiry.id + '">Convert to Job</a>\
                         <a class="dropdown-item" href="/quote/' + enquiry.id + '/edit/">Quote</a>\
                         <a class="dropdown-item" href="#">Chat</a>\
                     </div>\
@@ -260,12 +281,16 @@
                 dataType: "json",
                 success: function(response) {
                     enquiries = response.enquiries;
+                    total_quoted_price_ex_gst = 0;
+                    total_profit = 0;
                     showEnquiries(enquiries);
                 }
             });
         }
 
         $(document).on('change', '#view_status', function(e) {
+            total_quoted_price_ex_gst = 0;
+            total_profit = 0;
             showEnquiries(enquiries);
         });
 
@@ -281,7 +306,7 @@
                     if (response.status == false) {
                         $('#editEnquiry').modal('hide');
                     } else {
-                        var status = 0;
+                        var status, quote_type = 0;
                         if (response.task.enquiry_status == 'Pending') {
                             status = 0;
                         }
@@ -300,8 +325,17 @@
                         if (response.task.enquiry_status == 'Cancelled') {
                             status = 5;
                         }
+                        if(response.task.quote_type == 'Cost Plus'){
+                            quote_type = 0;
+                        }
+                        if(response.task.quote_type == 'Do & Charge'){
+                            quote_type = 1;
+                        }
                         $('#task_id').val(task_id);
                         $('.edit_enquiry_status').val(status).change();
+                        $('#quote_type').val(quote_type).change();
+                        $('#title').val(response.task.title);
+                        $('#requested_completion').val(response.task.requested_completion);
                         $('#editEnquiryLabel').text(response.task.title);
                     }
                 }

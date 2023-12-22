@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('items', function (Blueprint $table) {
+        Schema::create('purchase_order_galleries', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('task_id');
-            $table->unsignedBigInteger('user_id');
-            $table->string('description')->nullable();
-            $table->integer('priority')->nullable()->default(0);
+            $table->unsignedBigInteger('purchase_order_id');
+            $table->string('image');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('items');
+        Schema::dropIfExists('purchase_order_galleries');
     }
 };

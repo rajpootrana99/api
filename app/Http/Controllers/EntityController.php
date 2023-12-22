@@ -57,7 +57,7 @@ class EntityController extends Controller
 
     public function fetchClientEntities()
     {
-        $entities = Entity::with('contacts.user', 'users')->where(['type' => 0])->get();
+        $entities = Entity::with('users.sites')->where(['type' => 0])->get();
         if (count($entities) > 0) {
             return response()->json([
                 'status' => true,
@@ -70,6 +70,36 @@ class EntityController extends Controller
             ]);
         }
     }
+
+    public function fetchEntityUsers($entity)
+    {
+        $users = User::where(['entity_id' => $entity])->get();
+        return response()->json([
+            'status' => true,
+            'users' => $users,
+        ]);
+    }
+
+    public function changeOrder(Request $request)
+    {
+        $user = User::find($request->user_id);
+        $user->update(['orders' => $request->orders]);
+        return response()->json([
+            'status' => true,
+            'message' => 'Orders against User updated successfully'
+        ]);
+    }
+
+    public function changeAccount(Request $request)
+    {
+        $user = User::find($request->user_id);
+        $user->update(['accounts' => $request->accounts]);
+        return response()->json([
+            'status' => true,
+            'message' => 'Accounts against User updated successfully'
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -105,7 +135,7 @@ class EntityController extends Controller
         $entityName = $request->input('entity');
         $manager = new FileExplorerController();
         if ($entity) {
-            if( $entity_type == 0 ) $manager->createEntity($entityName);
+            if ($entity_type == 0) $manager->createEntity($entityName);
 
             return response()->json([
                 'status' => 1,
@@ -129,7 +159,7 @@ class EntityController extends Controller
             'entity' => $entity,
             'jobs' => $jobs,
             'contacts' => $contacts,
-            'currentPath' => "explorer/".$entity->entity
+            'currentPath' => "explorer/" . $entity->entity
         ]);
     }
 
@@ -189,7 +219,7 @@ class EntityController extends Controller
 
         if ($entity) {
 
-            if( $entity_type == "Client" ){
+            if ($entity_type == "Client") {
                 $manager->saveEditedData(new Request([
                     "name" => $newEntityName,
                     "isDir" => true,
@@ -218,8 +248,8 @@ class EntityController extends Controller
             $name = $entity->entity;
             $type = $entity->type;
             $entity->delete();
-            if($type == "Client"){
-                $entityPath = "explorer/".$name;
+            if ($type == "Client") {
+                $entityPath = "explorer/" . $name;
                 $manager = new FileExplorerController();
                 $manager->deleteFileFolder(new Request(["file" => base64_encode($entityPath)]));
             }

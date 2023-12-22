@@ -44,6 +44,7 @@ Route::middleware(['auth', 'verified', 'role:Admin|Client|Supplier'])->group(fun
     Route::resource('explorer', FileExplorerController::class);
     Route::post('/getFileFolders', [FileExplorerController::class, "getFileFolders"])->name("explorer.get");
     Route::get('/download/{file}', [FileExplorerController::class, 'download'])->name('explorer.download');
+    Route::get('/getOrView/{file}', [FileExplorerController::class, 'getOrView'])->name('explorer.getOrView');
     Route::post('/delete', [FileExplorerController::class, 'deleteFileFolder'])->name('explorer.delete');
     Route::post('/edit', [FileExplorerController::class, 'getEditData'])->name('explorer.getEditData');
     Route::get('/tree/{path?}', [FileExplorerController::class, 'getFolderTree'])->name('explorer.getFolderTree');
@@ -64,6 +65,9 @@ Route::middleware(['auth', 'verified', 'role:Admin|Client|Supplier'])->group(fun
     Route::post('/removeTradeType', [EntityController::class, 'removeTradeType'])->name('entity.removeTradeType');
     Route::get('/fetchSupplierEntities', [EntityController::class, 'fetchSupplierEntities'])->name('supplierEntity.get');
     Route::get('/fetchClientEntities', [EntityController::class, 'fetchClientEntities'])->name('clientEntity.get');
+    Route::get('/fetchEntityUsers/{entity}', [EntityController::class, 'fetchEntityUsers'])->name('entityUser.get');
+    Route::post('/changeOrder', [EntityController::class, 'changeOrder'])->name('entity.changeOrder');
+    Route::post('/changeAccount', [EntityController::class, 'changeAccount'])->name('entity.changeAccount');
 
     // SITE ROUTES
     Route::resource('site', SiteController::class);
@@ -125,6 +129,8 @@ Route::middleware(['auth', 'verified', 'role:Admin|Client|Supplier'])->group(fun
     Route::post('addSubHeader', [EstimateController::class, 'addSubHeader'])->name('subheader.post');
     Route::get('/fetchHeaders', [EstimateController::class, 'fetchHeaders'])->name('header.get');
     Route::get('/fetchSubHeaders/{header}', [EstimateController::class, 'fetchSubHeaders'])->name('subheader.get');
+    Route::get('/subHeader/{subHeader}/edit', [EstimateController::class, 'editSubHeader'])->name('subheader.edit');
+    Route::patch('/subHeader/{subHeader}', [EstimateController::class, 'updateSubHeader'])->name('subheader.update');
 
 
     //PURCHASE ORDER ROUTES
@@ -141,7 +147,8 @@ Route::middleware(['auth', 'verified', 'role:Admin|Client|Supplier'])->group(fun
     Route::get('/fetchNotes', [NoteController::class, 'fetchNotes'])->name('note.get');
 
     //Email Send
-    Route::get('/sendEmail/{invoice}', [InvoiceController::class, 'sendEmail'])->name('invoice.sendEmail');
+    Route::get('/emailInvoice/{invoice}', [InvoiceController::class, 'emailInvoice'])->name('invoice.emailInvoice');
+    Route::get('/emailPurchaseOrder/{purchaseOrder}', [PurchaseOrderController::class, 'emailPurchaseOrder'])->name('purchaseOrder.emailPurchaseOrder');
 });
 
 require __DIR__ . '/auth.php';

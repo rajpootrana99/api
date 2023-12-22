@@ -8,6 +8,7 @@ use App\Models\Job;
 use App\Models\Site;
 use App\Models\Task;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -25,7 +26,7 @@ class JobController extends Controller
 
     public function fetchJobs()
     {
-        $jobs = Task::with('quotes.estimate.subheader.header', 'site', 'user', 'entity')->where(['type' => 2])->get();
+        $jobs = Task::with('quotes.estimate.subheader.header', 'site', 'user', 'entity', 'invoices')->where(['type' => 2])->get();
         return response()->json([
             'jobs' => $jobs,
         ]);
@@ -49,24 +50,6 @@ class JobController extends Controller
      */
     public function store(Request $request)
     {
-        // $validator = Validator::make($request->all(), [
-        //     'site_id' => ['required', 'integer'],
-        //     'description' => ['required', 'string', 'min:3'],
-        // ]);
-        // if (!$validator->passes()) {
-        //     return response()->json([
-        //         'status' => 0,
-        //         'error' => $validator->errors()->toArray()
-        //     ]);
-        // }
-
-        // $job = Job::create($request->all());
-        // if ($job) {
-        //     return response()->json([
-        //         'status' => 1,
-        //         'message' => 'Job Added Successfully'
-        //     ]);
-        // }
     }
 
     /**
@@ -80,18 +63,16 @@ class JobController extends Controller
         $invoice = Invoice::with('quotes.estimate.subHeader.header', 'entity', 'task.site', 'task.quotes.estimate.subHeader.header')->where(['task_id' => $job])->first();
         if ($invoice) {
             return view('invoice.invoice', ['invoice' => $invoice]);
-        }
-        else{
+        } else {
             $invoice = Invoice::latest()->first();
-            if($invoice){
+            if ($invoice) {
                 $invoiceNo = $invoice->id + 1;
-            }
-            else{
+            } else {
                 $invoiceNo = 1;
             }
-            return view('invoice.create', ['invoiceNo' => $invoiceNo]);
+            $job = Task::where(['id' => $job])->get();
+            return view('invoice.create', ['invoiceNo' => $invoiceNo, 'job' => $job]);
         }
-
     }
 
     /**
@@ -118,13 +99,28 @@ class JobController extends Controller
      */
     public function update(Request $request, $job)
     {
-        // $job= Task::find($job);
+        $job = Task::find($job);
 
-        // $jobOldName = $job->title;
-        // $jobNewName = $request->input("title");
+        $jobId = $job->id;
+        $jobOldName = $job->title." (".$jobId.")";
+        $jobNewName = $request->input("title")." (".$jobId.")";
 
         $job->update($request->all());
 
+
+        //Change task name in all places
+        $siteName = Site::find($job->site_id)->site;
+        $entity = Entity::find($job->entity_id);
+        $manager = new FileExplorerController();
+        $entityName = $entity->entity;
+        if ($entity->type == "Client") {
+            $manager->saveEditedData(new Request([
+                "name" => $jobNewName,
+                "path" => "explorer/" . $entityName . "/" . $siteName . "/" . $jobOldName,
+                "isDir" => true,
+                "newParentFolderPath" => "explorer/" . $entityName . "/" . $siteName,
+            ]));
+        }
         //Change task name in all places
         // $siteName = Site::find($job->site_id)->site;
         // $entityName = Entity::find($job->entity_id)->entity;
@@ -154,7 +150,7 @@ class JobController extends Controller
         //     }
         // }
 
-        if($job){
+        if ($job) {
             return response()->json([
                 'status' => true,
                 'message' => 'Job updated succesfully'
@@ -189,13 +185,14 @@ class JobController extends Controller
     {
         $task = Task::find($task);
         $enquiry_status = 0;
-        if($task->type == 'Enquiry'){
+        if ($task->type == 'Enquiry') {
             $enquiry_status = 3;
         }
         $task->update([
             'enquiry_status' => $enquiry_status,
             'status' => 1,
             'type' => 2,
+            'job_created_at' => Carbon::now(),
         ]);
 
         //creating folder under site's enquiry folder with the name of the task turning to enuiry

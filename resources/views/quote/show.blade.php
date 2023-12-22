@@ -66,13 +66,12 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td colspan="4"><strong>Total</strong></td>
-                                        <td id="total_qty"></td>
-                                        <td id="total_rate"></td>
+                                        <td colspan="6"><strong>Total</strong></td>
                                         <td id="total_budget"></td>
                                         <td id="total_value_ordered"></td>
                                         <td id="total_balance"></td>
-                                        <td colspan="2"></td>
+                                        <td></td>
+                                        <td id="total_movement"></td>
                                     </tr>
                                 </tfoot>
                             </table><!--end /table-->
@@ -132,8 +131,7 @@
                 dataType: "json",
                 success: function(response) {
                     $('tbody').html("");
-                    var total_qty = 0;
-                    var total_rate = 0;
+                    var total_movement = 0;
                     var total_budget = 0;
                     var total_balance = 0;
                     var total_value_ordered = 0;
@@ -165,8 +163,7 @@
                             $.each(response.quotes, function(key, quote) {
                                 let balance = 0;
                                 if (subHeader.cost_code === quote.estimate.sub_header.cost_code) {
-                                    total_qty += quote.qty;
-                                    total_rate += quote.rate;
+                                    total_movement += quote.movement;
                                     total_budget += quote.order_total_amount;
                                     balance = quote.amount - quote.order_total_amount;
                                     total_balance += balance;
@@ -192,8 +189,7 @@
                             });
                         })
                     });
-                    $('#total_qty').html(total_qty);
-                    $('#total_rate').html(USDollar.format(total_rate));
+                    $('#total_movement').html(USDollar.format(total_movement));
                     $('#total_budget').html(USDollar.format(total_budget));
                     $('#total_value_ordered').html(USDollar.format(total_value_ordered));
                     $('#total_balance').html(USDollar.format(total_balance));
@@ -209,8 +205,7 @@
                 dataType: "json",
                 success: function(response) {
                     $('tbody').html("");
-                    var total_qty = 0;
-                    var total_rate = 0;
+                    var total_movement = 0;
                     var total_budget = 0;
                     var total_balance = 0;
                     var total_value_ordered = 0;
@@ -252,8 +247,7 @@
                                             <td colspan="2"></td>\
                                         </tr>');
                                     }
-                                    total_qty += quote.qty;
-                                    total_rate += quote.rate;
+                                    total_movement += quote.movement;
                                     total_budget += quote.amount;
                                     balance = quote.amount - quote.order_total_amount;
                                     total_balance += balance;
@@ -279,8 +273,7 @@
                             });
                         })
                     });
-                    $('#total_qty').html(total_qty);
-                    $('#total_rate').html(USDollar.format(total_rate));
+                    $('#total_movement').html(USDollar.format(total_movement));
                     $('#total_budget').html(USDollar.format(total_budget));
                     $('#total_value_ordered').html(USDollar.format(total_value_ordered));
                     $('#total_balance').html(USDollar.format(total_balance));
@@ -396,25 +389,5 @@
             });
         });
     });
-
-
-    function showToast(text, type) {
-        let types = {
-            success: ["#03d87f", "#fff"],
-            danger: ["#f5325c", "#fff"],
-        }
-        Toastify({
-            text: text,
-            duration: 3000,
-            close: true,
-            gravity: "top", // `top` or `bottom`
-            position: "right", // `left`, `center` or `right`
-            stopOnFocus: true, // Prevents dismissing of toast on hover
-            style: {
-                background: types[type][0],
-                color: types[type][1]
-            }
-        }).showToast();
-    }
 </script>
 @endsection

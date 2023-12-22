@@ -24,18 +24,18 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <select class="select2 pl-1 form-control" name="site_id" id="site_id" style="width: 100%; height:30px;">
+                                    <select class="select2 pl-1 form-control" name="entity_id" id="entity_id" style="width: 100%; height:30px;">
 
                                     </select>
-                                    <span class="text-danger error-text site_id_error"></span>
+                                    <span class="text-danger error-text entity_id_error"></span>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <select class="select2 pl-1 form-control" name="entity_id" id="entity_id" onchange="fetchUsers()" style="width: 100%; height:30px;">
-
+                                    <select class="select2 pl-1 form-control" name="site_id" id="site_id" style="width: 100%; height:30px;">
+                                        <option value disabled selected>Select Entity First</option>
                                     </select>
-                                    <span class="text-danger error-text entity_id_error"></span>
+                                    <span class="text-danger error-text site_id_error"></span>
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -47,12 +47,12 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <select class="select2 pl-1 form-control" name="user_id" id="user_id" style="width: 100%; height:30px;">
-
+                                        <option value disabled selected>Select Site First</option>
                                     </select>
                                     <span class="text-danger error-text user_id_error"></span>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <div class="form-group">
                                     <input class="form-control" style="width: 100%; height:30px;" type="text" name="requested_completion" id="requested_completion" onfocus="(this.type='date')" onblur="(this.type='text')" placeholder="Requested Completion Date">
                                     <span class="text-danger error-text requested_completion_error"></span>
@@ -69,6 +69,16 @@
                                     <span class="text-danger error-text status_error"></span>
                                 </div>
                             </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <select class="select2 pl-1 form-control" name="progress" id="progress" style="width: 100%; height:30px !important;">
+                                        <option value="" selected disabled>Select Progress</option>
+                                        <option value="0">Quote</option>
+                                        <option value="1">Order</option>
+                                    </select>
+                                    <span class="text-danger error-text progress_error"></span>
+                                </div>
+                            </div>
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header">
@@ -82,8 +92,6 @@
                                                         <th width="3%">#</th>
                                                         <th width="30%">Description</th>
                                                         <th width="10%">Priority</th>
-                                                        <!-- <th width="20%">Status</th> -->
-                                                        <th width="20%">Progress</th>
                                                         <th width="20%">Gallery</th>
                                                         <th width="3%"><i class="fa fa-plus-circle"></i></th>
                                                         <th width="3%"><i class="fa fa-minus-circle"></i></th>
@@ -108,7 +116,7 @@
     </div> <!-- end row -->
 </div>
 
-<div class="modal fade" id="filesModal"  data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="filesModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" style="max-width: 701px;" role="document">
         <div class="modal-content">
             <div class="modal-header bg-primary">
@@ -121,83 +129,88 @@
 
                 {{ csrf_field() }} --}}
 
-                <div class="modal-body">
+            <div class="modal-body">
 
 
-                    <div class="form-group">
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" id="image_files_text" placeholder="No Images Selected" disabled>
-                            <div class="input-group-append">
-                                <label class="btn btn-secondary" for="images_1" onclick="loadImagesContainer(this)" id="file_select_button">Select or Add Images</label>
-                            </div>
+                <div class="form-group">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="image_files_text" placeholder="No Images Selected" disabled>
+                        <div class="input-group-append">
+                            <label class="btn btn-secondary" for="images_1" onclick="loadImagesContainer(this)" id="file_select_button">Select or Add Images</label>
                         </div>
                     </div>
+                </div>
 
-                    <div class="form-group">
-                        <div class="justify-content-between align-items-center" style="display:flex;padding-bottom: 5px;" id="image_modal_action_tab">
-                            <div class="h5">Actions</div>
-                            <div class="" btn-group role="group">
-                                <button onclick="removeSelectedImages(this)" type="button" class="btn btn-secondary" style="display: inline-flex;align-items:center;gap:5px;">
-                                    <i style="width:20px" data-feather="trash-2"></i> Remove Images
-                                </button>
-                                <button onclick="selectImageAll()" id="select_all_image_btn" type="button" class="btn btn-primary" style="display: inline-flex;align-items:center;gap:5px;">
-                                    <i style="width:18px" data-feather="check-square"></i> Select All
-                                </button>
-                            </div>
+                <div class="form-group">
+                    <div class="justify-content-between align-items-center" style="display:flex;padding-bottom: 5px;" id="image_modal_action_tab">
+                        <div class="h5">Actions</div>
+                        <div class="" btn-group role="group">
+                            <button onclick="removeSelectedImages(this)" type="button" class="btn btn-secondary" style="display: inline-flex;align-items:center;gap:5px;">
+                                <i style="width:20px" data-feather="trash-2"></i> Remove Images
+                            </button>
+                            <button onclick="selectImageAll()" id="select_all_image_btn" type="button" class="btn btn-primary" style="display: inline-flex;align-items:center;gap:5px;">
+                                <i style="width:18px" data-feather="check-square"></i> Select All
+                            </button>
                         </div>
-                        <div class="images_container">
-                            {{-- <div class="image_item_container">
+                    </div>
+                    <div class="images_container">
+                        {{-- <div class="image_item_container">
                                 <img src="{{asset('item_images/fotor-ai-20230430224722.jpg')}}" class="item_image" alt="" srcset="">
-                                <div class="item_name">fotor-ai-20230430224722.jpg</div>
-                                <div class="item_controls">
-                                    <button class="btn btn-light folder_action_button" onclick="" title="Delete this image">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                                    </button>
-                                </div>
-                            </div> --}}
-
-                            <a class="user-avatar image_item" href="javascript:void(0);">
-                                <input type="checkbox" id="image_1" class="form-check-input selectable_image">
-                                <label for="image_1">
-                                    <img src="{{asset('item_images/ethical traveler.png')}}" alt="user"  class="thumb-xxl rounded">
-                                </label>
-                            </a>
-
-                            <a class="user-avatar image_item" href="javascript:void(0);">
-                                <input type="checkbox" id="image_2" class="form-check-input selectable_image">
-                                <label for="image_2">
-                                    <img src="{{asset('item_images/ethical traveler.png')}}" alt="user"  class="thumb-xxl rounded">
-                                </label>
-                            </a>
-                            <a class="user-avatar image_item" href="javascript:void(0);">
-                                <input type="checkbox" id="image_3" class="form-check-input selectable_image">
-                                <label for="image_3">
-                                    <img src="{{asset('item_images/ethical traveler.png')}}" alt="user"  class="thumb-xxl rounded">
-                                </label>
-                            </a>
-
-                            <a class="user-avatar image_item" href="javascript:void(0);">
-                                <input type="checkbox" id="image_4" class="form-check-input selectable_image">
-                                <label for="image_4">
-                                    <img src="{{asset('item_images/ethical traveler.png')}}" alt="user"  class="thumb-xxl rounded">
-                                </label>
-                            </a>
-
+                        <div class="item_name">fotor-ai-20230430224722.jpg</div>
+                        <div class="item_controls">
+                            <button class="btn btn-light folder_action_button" onclick="" title="Delete this image">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2">
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                                </svg>
+                            </button>
                         </div>
-                    </div>
+                    </div> --}}
+
+                    <a class="user-avatar image_item" href="javascript:void(0);">
+                        <input type="checkbox" id="image_1" class="form-check-input selectable_image">
+                        <label for="image_1">
+                            <img src="{{asset('item_images/ethical traveler.png')}}" alt="user" class="thumb-xxl rounded">
+                        </label>
+                    </a>
+
+                    <a class="user-avatar image_item" href="javascript:void(0);">
+                        <input type="checkbox" id="image_2" class="form-check-input selectable_image">
+                        <label for="image_2">
+                            <img src="{{asset('item_images/ethical traveler.png')}}" alt="user" class="thumb-xxl rounded">
+                        </label>
+                    </a>
+                    <a class="user-avatar image_item" href="javascript:void(0);">
+                        <input type="checkbox" id="image_3" class="form-check-input selectable_image">
+                        <label for="image_3">
+                            <img src="{{asset('item_images/ethical traveler.png')}}" alt="user" class="thumb-xxl rounded">
+                        </label>
+                    </a>
+
+                    <a class="user-avatar image_item" href="javascript:void(0);">
+                        <input type="checkbox" id="image_4" class="form-check-input selectable_image">
+                        <label for="image_4">
+                            <img src="{{asset('item_images/ethical traveler.png')}}" alt="user" class="thumb-xxl rounded">
+                        </label>
+                    </a>
 
                 </div>
-                <!--end modal-body-->
-                <div class="modal-footer">
-                    <button  class="btn btn-secondary btn-sm" data-dismiss="modal" onclick="reset_dialog()">Cancel</button>
-                    <button  class="btn btn-primary btn-sm" data-dismiss="modal" onclick="reset_dialog()">Done</button>
-                </div><!--end modal-footer-->
-            {{-- </form> --}}
-        </div><!--end modal-content-->
-    </div><!--end modal-dialog-->
+            </div>
+
+        </div>
+        <!--end modal-body-->
+        <div class="modal-footer">
+            <button class="btn btn-secondary btn-sm" data-dismiss="modal" onclick="reset_dialog()">Cancel</button>
+            <button class="btn btn-primary btn-sm" data-dismiss="modal" onclick="reset_dialog()">Done</button>
+        </div><!--end modal-footer-->
+        {{-- </form> --}}
+    </div><!--end modal-content-->
+</div><!--end modal-dialog-->
 </div>
 <style>
-    .images_container{
+    .images_container {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
@@ -209,11 +222,13 @@
         gap: 10px;
         overflow-y: auto;
     }
-    .images_container > .image_item *{
+
+    .images_container>.image_item * {
         cursor: pointer;
         margin: 0;
     }
-    .images_container > a{
+
+    .images_container>a {
         display: flex;
         justify-content: end;
         position: relative;
@@ -223,18 +238,21 @@
         box-shadow: 0 3rem 6rem rgba(0, 0, 0, .1);
         transition: 0.2s all ease-out;
     }
-    .images_container > a:hover {
+
+    .images_container>a:hover {
         transform: translateY(-.5%);
         box-shadow: 0 4rem 8rem rgba(0, 0, 0, .2);
         transition: 0.2s all ease-in;
 
     }
-    .images_container * img{
+
+    .images_container * img {
         object-fit: cover;
         width: 150px;
         height: 150px;
     }
-    .images_container * .selectable_image{
+
+    .images_container * .selectable_image {
         position: absolute;
         display: flex;
         border: none;
@@ -242,7 +260,8 @@
         z-index: 10;
         transition: 0.1s all ease-out;
     }
-    .selectable_image:checked + label{
+
+    .selectable_image:checked+label {
         filter: brightness(0.5);
         transition: 0.1s all ease-in;
     }
@@ -257,49 +276,45 @@
     let image_check = document.getElementById("select_all_image_btn")
     let select_or_add_button = document.getElementById("file_select_button")
     let images_container = document.getElementsByClassName("images_container")[0]
-    let reset_dialog = ()=>{
-                $("#image_files_text").val("")
-                images_container.innerHTML = ""
-                storedFiles = null
-                storedFiles = new DataTransfer()
-                urlsArray = Array()
-            }
+    let reset_dialog = () => {
+        $("#image_files_text").val("")
+        images_container.innerHTML = ""
+        storedFiles = null
+        storedFiles = new DataTransfer()
+        urlsArray = Array()
+    }
 
-    function loadImagesContainer(id)
-    {
+    function loadImagesContainer(id) {
         // CHECKING AND DISPLAYING PREVIOUS SELECTED FILES
         let file_input = document.getElementById(id)
 
 
         $("#image_modal_action_tab").addClass("d-none")
 
-
         //Show How Many Files Selected
-        console.log("File Input:\t"+file_input)
-        if(file_input == null) {
+        console.log("File Input:\t" + file_input)
+        if (file_input == null) {
             return;
         }
 
-        if( file_input.files.length == 0 && storedFiles.files.length == 0) {
+        if (file_input.files.length == 0 && storedFiles.files.length == 0) {
             reset_dialog()
             return;
-        }
-        else {
+        } else {
 
             images_container.innerHTML = "";
             file_input.files.forEach(file => {
                 let duplicateFlag = false;
-                for (let i=0; i < storedFiles.files.length; i++) {
+                for (let i = 0; i < storedFiles.files.length; i++) {
                     temp = storedFiles.files[i]
-                    if ( temp.name == file.name ) {
+                    if (temp.name == file.name) {
                         duplicateFlag = true
                     }
                 }
-                if ( !duplicateFlag ) storedFiles.items.add(file)
+                if (!duplicateFlag) storedFiles.items.add(file)
             });
             file_input.files = storedFiles.files;
             $("#image_files_text").val(file_input.files.length + " Images Selected")
-
 
             //show all images
             // Create All Selected Images URLs
@@ -307,7 +322,7 @@
             for (let i = 0; i < storedFiles.files.length; i++) {
                 image_file = storedFiles.files[i]
                 let url = URL.createObjectURL(image_file)
-                urlsArray.push( url );
+                urlsArray.push(url);
 
                 let imagePath = url;
                 let image_item = `<a class="user-avatar image_item" href="javascript:void(0);">
@@ -325,16 +340,14 @@
 
             // now after images are loaded revoke the urls to save memory space
             setTimeout(() => {
-                urlsArray.forEach((element)=>{
+                urlsArray.forEach((element) => {
                     URL.revokeObjectURL(element)
                 })
             }, 500);
         }
-
-
     }
 
-    function removeSelectedImages(remove_button){
+    function removeSelectedImages(remove_button) {
         let file_input = document.getElementById(select_or_add_button.getAttribute("for"))
 
         let all_checks = document.querySelectorAll(".images_container * input[type='checkbox']");
@@ -346,7 +359,7 @@
             }
         }
 
-        if ( image_check.classList.contains("active") ) {
+        if (image_check.classList.contains("active")) {
             image_check.classList.remove("active")
         }
 
@@ -354,24 +367,22 @@
         loadImagesContainer(select_or_add_button.getAttribute("for"))
     }
 
-    function selectImageAll(){
-        let click_on_images = (flag)=>{
-            $(".images_container * input[type='checkbox']").each(function (index, element) {
+    function selectImageAll() {
+        let click_on_images = (flag) => {
+            $(".images_container * input[type='checkbox']").each(function(index, element) {
                 element.checked = flag
             });
         }
-        if ( image_check.classList.contains("active") ) {
+        if (image_check.classList.contains("active")) {
             click_on_images(false)
             image_check.classList.remove("active")
-        }
-        else {
+        } else {
             click_on_images(true)
             image_check.classList.add("active")
         }
     }
 
-    function showFilesModal(input_id)
-    {
+    function showFilesModal(input_id) {
         select_or_add_button.setAttribute("for", input_id)
 
         loadImagesContainer(input_id)
@@ -379,36 +390,49 @@
         $("#filesModal").modal("show");
     }
 
-    function fetchUsers(){
+    function fetchUsers() {
+        let site_id = $('#site_id').val();
         let entity_id = $('#entity_id').val();
         var user_id = $('#user_id');
         $('#user_id').children().remove().end();
         $.each(entities, function(key, entity) {
-            if(entity.id == entity_id){
-                console.log(entity);
-                user_id.append($("<option />").text('Requested By').prop({selected: true, disabled: true}));
+            if (entity.id == entity_id) {
+                user_id.append($("<option />").text('Requested By').prop({
+                    selected: true,
+                    disabled: true
+                }));
                 $.each(entity.users, function(key, user) {
-                    user_id.append($("<option />").val(user.id).text(user.name));
+                    $.each(user.sites, function(key, site) {
+                        if (site.id == site_id) {
+                            user_id.append($("<option />").val(user.id).text(user.name));
+                        }
+                    });
                 });
             }
         });
     }
 
     function fetchSites() {
-            $.ajax({
-                type: "GET",
-                url: "/fetchSites",
-                dataType: "json",
-                success: function(response) {
-                    var site_id = $('#site_id');
-                    $('#site_id').children().remove().end();
-                    site_id.append($("<option />").text('Select Site').prop({selected: true, disabled: true}));
-                    $.each(response.sites, function(site) {
-                        site_id.append($("<option />").val(response.sites[site].id).text(response.sites[site].site));
-                    });
-                }
-            });
-        }
+        $.ajax({
+            type: "GET",
+            url: "/fetchSites",
+            dataType: "json",
+            success: function(response) {
+                let entity_id = $('#entity_id').val();
+                var site_id = $('#site_id');
+                $('#site_id').children().remove().end();
+                site_id.append($("<option />").text('Select Site').prop({
+                    selected: true,
+                    disabled: true
+                }));
+                $.each(response.sites, function(key, site) {
+                    if (site.entity_id == entity_id) {
+                        site_id.append($("<option />").val(site.id).text(site.site));
+                    }
+                });
+            }
+        });
+    }
     $(document).ready(function() {
 
         var itemsCount = 1;
@@ -419,8 +443,6 @@
             html += '<td>' + number + '</td>';
             html += '<td><input type="text" style="height: 30px" name="items[' + number + '][description]" id="description_' + number + '" class="form-control" /></td>';
             html += '<td><select class="select2 form-control" name="items[' + number + '][priority]" id="priority_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Priority"><option value="0">Low</option><option value="1">Medium</option><option value="2">High</option><option value="3">Urgent</option></select></td>';
-            // html += '<td><select class="select2 form-control" name="items[' + number + '][status]" id="status_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Status"><option value="0">Pending</option><option value="1">Quoting</option><option value="2">Awaiting Approval</option><option value="3">Scheduled</option><option value="4">Complete</option><option value="5">Invoiced</option><option value="6">Cancelled</option></select></td>';
-            html += '<td><select class="select2 form-control" name="items[' + number + '][progress]" id="progress_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Progress"><option value="0">Quote</option><option value="1">Order</option></select></td>';
             html += '<td><label onclick="showFilesModal(\'images_' + number + '\')" class="btn btn-light" title="Select or Change Images">Select or Change Images</label> <div class="custom-file d-none"><input onchange="loadImagesContainer(\'images_' + number + '\')" type="file" multiple class="custom-file-input" style="width: 100%; height:30px;" name="items[' + number + '][image][]" id="images_' + number + '"><label class="custom-file-label" for="image">Choose file</label></div></td>';
             if (number > 1) {
                 html += '<td><button style="border: none; background-color: #fff" name="addItems" id="addItems"><i class="fa fa-plus-circle"></i></button></td>';
@@ -430,7 +452,6 @@
                 html += '<td><button style="border: none; background-color: #fff" name="addItems" id="addItems"><i class="fa fa-plus-circle"></i></button></td>';
                 html += '<td></td></tr>';
                 $('#itemsDetailTableBody').html(html);
-
             }
         }
 
@@ -452,10 +473,17 @@
             }
         });
 
-        fetchSites();
         fetchClientEntities();
 
+        $(document).on('change', '#entity_id', function(e) {
+            e.preventDefault();
+            fetchSites();
+        });
 
+        $(document).on('change', '#site_id', function(e) {
+            e.preventDefault();
+            fetchUsers();
+        });
 
         function fetchClientEntities() {
             $.ajax({
@@ -466,7 +494,10 @@
                     entities = response.entities;
                     var entity_id = $('#entity_id');
                     $('#entity_id').children().remove().end();
-                    entity_id.append($("<option />").text('Select Entity').prop({selected: true, disabled: true}));
+                    entity_id.append($("<option />").text('Select Entity').prop({
+                        selected: true,
+                        disabled: true
+                    }));
                     $.each(response.entities, function(key) {
                         entity_id.append($("<option />").val(response.entities[key].id).text(response.entities[key].entity));
                     });

@@ -39,7 +39,7 @@
                             </div>
                         </div>
                         <div class="custom-control custom-checkbox col-sm-3" style="display:flex; padding:8px;float:left;margin-left: 30px">
-                            <input type="checkbox" class="custom-control-input" id="customCheck02" >
+                            <input type="checkbox" class="custom-control-input" id="customCheck02">
                             <label class="custom-control-label" for="customCheck02">Hide Archived Items</label>
                         </div>
                         <div class="form-group col-sm-4">
@@ -101,7 +101,7 @@
                 <div class="row">
                     <div class="col-12 text-center">
                         <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-                            <div class="carousel-inner" id="item_gallery_carousel">
+                            <div class="carousel-inner" id="item_gallery_carousel" style="height: 60vh;">
 
                             </div>
                             <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
@@ -177,7 +177,7 @@
             return filename.split('.').pop();
         }
 
-        function showTasks(tasks){
+        function showTasks(tasks) {
             $('#task-section').html("");
             $.each(tasks, function(key, task) {
                 var options = new Array();
@@ -189,18 +189,18 @@
                     i = i + 1;
                 });
                 console.log($('#view_status').val)
-                if($('#view_status').val() == 0){
-                    if(task.status == 'Pending'){
+                if ($('#view_status').val() == 0) {
+                    if (task.status == 'Pending') {
                         viewTasks(task);
                     }
                 }
-                if($('#view_status').val() == 1){
-                    if(task.status == 'Approved'){
+                if ($('#view_status').val() == 1) {
+                    if (task.status == 'Approved') {
                         viewTasks(task);
                     }
                 }
-                if($('#view_status').val() == 2){
-                    if(task.status == 'Cancelled'){
+                if ($('#view_status').val() == 2) {
+                    if (task.status == 'Cancelled') {
                         viewTasks(task);
                     }
                 }
@@ -208,7 +208,7 @@
             });
         }
 
-        function viewTasks(task){
+        function viewTasks(task) {
             $('#task-section').append('<div class="accordion" id="accordionExample">\
                 <div class="card border mb-1 shadow-none">\
                     <div class="card-header rounded-0" id="heading_' + task.id + '">\
@@ -221,8 +221,8 @@
                             </a>\
                             <div style="z-index: 1 !important;" class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel11">\
                                 <button value="' + task.id + '" style="border: none; background-color: #fff" class="edit_btn dropdown-item">Edit</button>\
-                                <a class="dropdown-item" href="/convertToEnquiry/'+task.id+'">Convert to Enquiry</a>\
-                                <a class="dropdown-item" href="/convertToJob/'+task.id+'">Convert to Job</a>\
+                                <a class="dropdown-item" href="/convertToEnquiry/' + task.id + '">Convert to Enquiry</a>\
+                                <a class="dropdown-item" href="/convertToJob/' + task.id + '">Convert to Job</a>\
                                 <a class="dropdown-item" href="#">Chat</a>\
                             </div>\
                         </div>\
@@ -268,9 +268,9 @@
                 if (item.item_galleries.length == 0) {
                     file = 'No image or video file exists';
                 } else if (getFileExtension(item.item_galleries[0].image) === 'mp4' || getFileExtension(item.item_galleries[0].image) === 'mkv' || getFileExtension(item.item_galleries[0].image) === 'mov') {
-                    file = '<video width="200px" height="100px" controls><source src="' + item.item_galleries[0].image + '" type="video/ogg"></video>'
-                } else if (getFileExtension(item.item_galleries[0].image) === 'png' || getFileExtension(item.item_galleries[0].image) === 'jpg' || getFileExtension(item.item_galleries[0].image) === 'jpeg') {
-                    file = '<img src="' + item.item_galleries[0].image + '" width="200px" height="100px" alt="" class="rounded float-left ml-3 mb-3">';
+                    file = '<video width="200px" height="100px" controls><source src="' + "getOrView/" + btoa(item.item_galleries[0].image) + '" type="video/ogg"></video>'
+                } else if (getFileExtension(item.item_galleries[0].image) === 'png' || getFileExtension(item.item_galleries[0].image) === 'jpg' || getFileExtension(item.item_galleries[0].image) === 'jpeg' || true) {
+                    file = '<img src="' + "getOrView/" + btoa(item.item_galleries[0].image) + '" width="200px" height="100px" alt="" class="rounded float-left ml-3 mb-3">';
                 } else {
                     file = 'No image or video file exists';
                 }
@@ -284,15 +284,15 @@
                     <td>' + item.id + '</td>\
                     <td>' + item.description + '</td>\
                     <td>' + client + '</td>\
-                    <td><button value="' + item.id + '" style="border: none; background-color: none" class="view_galery">' + file + '</button></td>\
+                    <td><button value="' + item.id + '" style="border: none; background-color: none" class="view_galery btn btn-dark">' + "View Gallery Items" + '</button></td>\
                     <td>' + priority + '</td>\
                     <td>' + status + '</td>\
-                    <td>' + item.progress + '</td>\
+                    <td>' + task.progress + '</td>\
                 </tr>')
             });
         }
 
-        $("#search-input").keyup(function(){
+        $("#search-input").keyup(function() {
             $('#task-section').html("");
             var val = $.trim(this.value);
             if (val.length == 0) {
@@ -300,7 +300,7 @@
             }
             if (val) {
                 val = val.toLowerCase();
-                $.each(tasks, function(_,task) {
+                $.each(tasks, function(_, task) {
                     if (task.title.toLowerCase().indexOf(val) != -1) {
                         viewTasks(task);
                     }
@@ -332,24 +332,26 @@
                 url: "fetchItemGalleries/" + item_id,
                 dataType: "json",
                 success: function(response) {
+                    console.log(response);
                     var file;
                     var active = ""
                     $('#viewGallery').modal('show');
                     $('#item_gallery_carousel').children().remove().end();
                     $.each(response.item.item_galleries, function(key, gallery) {
+
                         if (getFileExtension(gallery.image) === 'mp4' || getFileExtension(gallery.image) === 'mkv' || getFileExtension(gallery.image) === 'mov') {
-                            file = '<video class="d-block w-100" height="400px" controls><source src="' + gallery.image + '" type="video/ogg"></video>'
-                        } else if (getFileExtension(gallery.image) === 'png' || getFileExtension(gallery.image) === 'jpg' || getFileExtension(gallery.image) === 'jpeg') {
-                            file = '<img height="400px" src="' + gallery.image + '" class="d-block w-100" alt="">';
+                            file = '<video class="d-block w-100" height="400px" controls><source src="' + "getOrView/" + btoa(gallery.image) + '" type="video/ogg"></video>'
+                        } else if (getFileExtension(gallery.image) === 'png' || getFileExtension(gallery.image) === 'jpg' || getFileExtension(gallery.image) === 'jpeg' || true) {
+                            file = '<img height="400px" src="' + "getOrView/" + btoa(gallery.image) + '" class="d-block w-100" alt="" style="width: 80% !important;height: max-content;">';
                         } else {
                             file = 'No image or video file exists';
                         }
                         if (key == 0) {
-                            active = "active"
+                            active = "active";
                         } else {
                             active = " "
                         }
-                        $('#item_gallery_carousel').append('<div class="carousel-item ' + active + '">' + file + '</div>');
+                        $('#item_gallery_carousel').append('<div class="carousel-item ' + active + ' " style="overflow-y:scroll;overflow-x:hidden;height:-webkit-fill-available;">' + file + '</div>');
                     });
                 }
             });
@@ -450,4 +452,12 @@
 
     });
 </script>
+<style>
+    .carousel-item.active,
+    .carousel-item-next,
+    .carousel-item-prev {
+        display: flex;
+        justify-content: center;
+    }
+</style>
 @endsection

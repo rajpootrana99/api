@@ -14,6 +14,7 @@ class PurchaseOrder extends Model
         'task_id',
         'date',
         'site_start',
+        'sent_date',
         'amount_are',
         'note',
         'site_address',
@@ -49,6 +50,10 @@ class PurchaseOrder extends Model
 
     public function quotes(){
         return $this->belongsToMany(Quote::class)->withPivot('description', 'qty', 'rate', 'amount', 'tax', 'total');
+    }
+
+    public function purchaseOrderGalleries(){
+        return $this->hasMany(PurchaseOrderGallery::class);
     }
 
 }

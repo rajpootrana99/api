@@ -25,7 +25,9 @@ return new class extends Migration
             $table->integer('job_status')->nullable()->default(0);
             $table->integer('is_enquiry')->nullable()->default(0);
             $table->integer('quote_type')->nullable()->default(0);
+            $table->integer('progress')->nullable()->default(0);
             $table->date('requested_completion')->nullable();
+            $table->date('job_created_at')->nullable();
             $table->timestamps();
         });
     }

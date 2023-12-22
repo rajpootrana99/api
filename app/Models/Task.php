@@ -21,6 +21,7 @@ class Task extends Model
         'is_enquiry',
         'quote_type',
         'requested_completion',
+        'job_created_at',
     ];
 
     public function getTypeAttribute($attribute)
@@ -76,7 +77,8 @@ class Task extends Model
     public function jobStatusOptions()
     {
         return [
-            3 => 'Complete',
+            4 => 'Complete',
+            3 => 'Invoiced',
             2 => 'In Progress',
             1 => 'Scheduled',
             0 => 'Pending',
@@ -93,6 +95,19 @@ class Task extends Model
         return [
             1 => 'Do & Charge',
             0 => 'Cost Plus',
+        ];
+    }
+
+    public function getProgressAttribute($attribute)
+    {
+        return $this->progressOptions()[$attribute] ?? 0;
+    }
+
+    public function progressOptions()
+    {
+        return [
+            1 => 'Order',
+            0 => 'Quote',
         ];
     }
 
@@ -126,11 +141,13 @@ class Task extends Model
         return $this->hasMany(Quote::class);
     }
 
-    public function purchaseOrders(){
+    public function purchaseOrders()
+    {
         return $this->hasMany(PurchaseOrder::class);
     }
 
-    public function invoices(){
+    public function invoices()
+    {
         return $this->hasMany(Invoice::class);
     }
 }

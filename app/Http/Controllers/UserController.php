@@ -90,8 +90,8 @@ class UserController extends Controller
         $entity = Entity::find($request->entity_id);
         if($entity->type == 'Client'){
             $user->assignRole('Client');
-            $manager = new FileExplorerController();
-            $manager->createClient($entity->entity, $request->fname . ' ' . $request->lname);
+            // $manager = new FileExplorerController();
+            // $manager->createClient($entity->entity, $request->fname . ' ' . $request->lname);
         }
         else{
             $user->assignRole('Supplier');
@@ -207,14 +207,14 @@ class UserController extends Controller
         if($entity->type == "Client"){
             $user->assignRole('Client');
             //Change user name in all places
-            $entityName = $entity->entity;
-            $manager = new FileExplorerController();
-            $manager->saveEditedData(new Request([
-                "name" => $userNewName,
-                "path" => "explorer/".$entityName."/Clients"."/".$userOldName,
-                "isDir" => true,
-                "newParentFolderPath" => "explorer/".$entityName."/Clients",
-            ]));
+            // $entityName = $entity->entity;
+            // $manager = new FileExplorerController();
+            // $manager->saveEditedData(new Request([
+            //     "name" => $userNewName,
+            //     "path" => "explorer/".$entityName."/Clients"."/".$userOldName,
+            //     "isDir" => true,
+            //     "newParentFolderPath" => "explorer/".$entityName."/Clients",
+            // ]));
         }
         else{
             $user->assignRole('Supplier');
