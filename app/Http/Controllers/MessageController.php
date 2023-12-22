@@ -2,18 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Entity;
 use App\Models\Message;
 use App\Models\Task;
 use App\Models\Token;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Response;
+use stdClass;
+
 
 class MessageController extends Controller
 {
     public function index()
     {
-        return view('message.index');
+        return view('message.message');
     }
 
     public function fetchPeoples()
@@ -24,6 +28,8 @@ class MessageController extends Controller
             'users' => $users,
         ]);
     }
+
+
 
     public function fetchMessages($sender)
     {

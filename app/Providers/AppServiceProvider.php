@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\CustomChatifyMessengerOriginal;
 use App\Models\Entity;
 use App\Models\Site;
 use App\Models\Task;
@@ -20,6 +21,9 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         //
+        $this->app->bind('CustomChatifyMessenger',function(){
+            return new CustomChatifyMessengerOriginal();
+       });
     }
 
     /**

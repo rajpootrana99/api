@@ -10,6 +10,8 @@
     <meta content="" name="author" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
+    @yield("chatify_head")
+
     <!-- App favicon -->
     <link rel="shortcut icon" href="assets/images/favicon.ico">
 
@@ -172,6 +174,8 @@
     <script src="{{ asset('assets/plugins/datatables/responsive.bootstrap4.min.js') }}"></script>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+    @yield('chatify_footer')
 </body>
 
 </html>

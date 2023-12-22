@@ -30,7 +30,7 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
         $user = User::where('email', $request->email)->where('password', Hash::check($request->password, 'password'))->first();
         $role = $user->getRoleNames()->first();
-        if ($role == 'Admin') {
+        if ($role == 'Admin' || $role == 'Client' || $role == 'Supplier') {
             return redirect()->intended(RouteServiceProvider::HOME);
         }
     }

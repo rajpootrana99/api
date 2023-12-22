@@ -17,8 +17,8 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\TraderTypeController;
+use App\Http\Controllers\vendor\Chatify\MessagesController;
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -38,7 +38,7 @@ Route::get('/unathorized', function () {
     return view('unathorized');
 })->name('unathorized');
 
-Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:Admin|Client|Supplier'])->group(function () {
 
     // EXPLORER ROUTES
     Route::resource('explorer', FileExplorerController::class);
@@ -89,6 +89,11 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
     Route::get('/fetchMessages/{sender}', [MessageController::class, 'fetchMessages'])->name('message.get');
     Route::get('/fetchTaskMessages/{task}', [MessageController::class, 'fetchTaskMessages']);
     Route::post('/send-message', [MessageController::class, 'sendMessage']);
+
+
+    Route::get('/getTasks', [MessagesController::class, 'getTasks']);
+    Route::get('/getUnseenTaskMessages', [MessagesController::class, 'unseenTaskMessages']);
+
 
     // NOTIFICATION ROUTES
     Route::resource('notification', NotificationController::class);

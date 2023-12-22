@@ -211,6 +211,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        'CustomChatifyMessenger' => App\Facades\CustomChatifyMessenger::class,
     ])->toArray(),
 
 ];
