@@ -1,7 +1,7 @@
 @include('Chatify::layouts.headLinks')
 <div class="messenger">
     {{-- ----------------------Tasks lists side---------------------- --}}
-    <div class="messenger-listView {{ !!$id ? 'conversation-active' : '' }} messenger-task">
+    <div class="messenger-listView conversation-active messenger-task">
         {{-- Header and search bar --}}
         <div class="m-header">
             <nav>
@@ -62,7 +62,7 @@
                 </div>
                 {{-- header buttons --}}
                 <nav class="m-header-right">
-                    <a href="#" class="add-to-favorite"><i class="fas fa-star"></i></a>
+                    {{-- <a href="#" class="add-to-favorite"><i class="fas fa-star"></i></a> --}}
                     <a href="/"><i class="fas fa-home"></i></a>
                     <a href="#" class="show-infoSide"><i class="fas fa-info-circle"></i></a>
                 </nav>
@@ -124,10 +124,10 @@
         {{-- ---------------- [ User Tab ] ---------------- --}}
         <div class="show messenger-tab users-tab app-scroll" data-view="users">
             {{-- Favorites --}}
-            <div class="favorites-section">
+            {{-- <div class="favorites-section">
                 <p class="messenger-title"><span>Favorites</span></p>
                 <div class="messenger-favorites app-scroll-hidden"></div>
-            </div>
+            </div> --}}
             {{-- Saved Messages --}}
             <p class="messenger-title"><span>Your Space</span></p>
             {!! view('Chatify::layouts.listItem', ['get' => 'saved']) !!}
@@ -147,14 +147,13 @@
     </div>
 
     {{-- ---------------------- Info side ---------------------- --}}
-    {{-- <div class="messenger-infoView app-scroll"> --}}
-        {{-- nav actions --}}
-        {{-- <nav>
+    <div class="messenger-infoView app-scroll" style="display: none;">
+        <nav>
             <p>User Details</p>
             <a href="#"><i class="fas fa-times"></i></a>
         </nav>
         {!! view('Chatify::layouts.info')->render() !!}
-    </div> --}}
+    </div>
 </div>
 
 @include('Chatify::layouts.modals')

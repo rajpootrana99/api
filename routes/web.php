@@ -17,8 +17,8 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\TraderTypeController;
+use App\Http\Controllers\vendor\Chatify\MessagesController;
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -87,7 +87,8 @@ Route::middleware(['auth', 'verified', 'role:Admin|Client|Supplier'])->group(fun
     Route::post('/send-message', [MessageController::class, 'sendMessage']);
 
 
-    Route::get('/getTasks', [MessageController::class, 'getTasks']);
+    Route::get('/getTasks', [MessagesController::class, 'getTasks']);
+    Route::get('/getUnseenTaskMessages', [MessagesController::class, 'unseenTaskMessages']);
 
 
     // NOTIFICATION ROUTES

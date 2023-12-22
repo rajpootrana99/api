@@ -16,6 +16,46 @@ class CustomChatifyMessengerOriginal extends ChatifyMessenger{
 
 
     /**
+     * Get user with avatar (formatted).
+     *
+     * @param Collection $user
+     * @return Collection
+     */
+    public function getUserWithAvatar($user)
+    {
+        if ($user->avatar == 'avatar.png' && config('chatify.gravatar.enabled')) {
+            $imageSize = config('chatify.gravatar.image_size');
+            $imageset = config('chatify.gravatar.imageset');
+            $user->avatar = 'https://www.gravatar.com/avatar/' . md5(strtolower(trim($user->email))) . '?s=' . $imageSize . '&d=' . $imageset;
+        } else {
+            $user->avatar = preg_replace("/(localhost)/", app('request')->getHttpHost(), self::getUserAvatarUrl($user->avatar));
+        }
+        return $user;
+    }
+
+    /**
+     * Make messages between the sender [Auth user] and
+     * the receiver [User id] as seen.
+     *
+     * @param int $user_id
+     * @return bool
+     */
+    public function makeSeen($user_task_id)
+    {
+        Message::Where("task_id", $user_task_id[1])
+                ->where('from_id', $user_task_id[0])
+                ->where('to_id', Auth::user()->id)
+                ->where('seen', 0)
+                ->update(['seen' => 1]);
+        return 1;
+    }
+
+    public function countUnseenTaskMessages($task_id)
+    {
+        return Message::where('task_id', $task_id)->where('to_id', Auth::user()->id)->where('seen', 0)->count();
+    }
+
+    /**
      * Count Unseen messages
      *
      * @param int $user_id
@@ -24,6 +64,30 @@ class CustomChatifyMessengerOriginal extends ChatifyMessenger{
     public function countUnseenMessages($user_task)
     {
         return Message::where('task_id', $user_task[1])->where('from_id', $user_task[0])->where('to_id', Auth::user()->id)->where('seen', 0)->count();
+    }
+
+
+    /**
+     * Default fetch messages query between a Sender and Receiver.
+     *
+     * @param mixed $user_id
+     * @return Message|\Illuminate\Database\Eloquent\Builder
+     */
+    public function fetchMessagesQuery($user_task)
+    {
+        // return "Working";
+        return Message::where('task_id', Auth::user()->id == $user_task[1] ? null : $user_task[1])
+                ->where(function ($query) use ($user_task) {
+                    $query->where(function ($query) use ($user_task) {
+                      $query->where('from_id', Auth::user()->id)
+                            ->where('to_id', $user_task[0]);
+                  })
+                  ->orWhere(function ($query) use ($user_task) {
+                      $query->where('from_id', $user_task[0])
+                            ->where('to_id', Auth::user()->id);
+                  });
+                })
+                  ;
     }
 
 
@@ -36,6 +100,7 @@ class CustomChatifyMessengerOriginal extends ChatifyMessenger{
      */
     public function getLastMessageQuery($user_task)
     {
+        // return "Working";
         return $this->fetchMessagesQuery([$user_task[0],$user_task[1]])->latest()->first();
     }
 
@@ -52,6 +117,7 @@ class CustomChatifyMessengerOriginal extends ChatifyMessenger{
         try {
             // get last message
             $lastMessage = $this->getLastMessageQuery([$user_and_task_id[0]->id, $user_and_task_id[1]]);
+
             // Get Unseen messages counter
             $unseenCounter = $this->countUnseenMessages([$user_and_task_id[0]->id, $user_and_task_id[1]]);
             if ($lastMessage) {
@@ -94,18 +160,6 @@ class CustomChatifyMessengerOriginal extends ChatifyMessenger{
         return $images;
     }
 
-
-    /**
-     * Default fetch messages query between a Sender and Receiver.
-     *
-     * @param int $user_id
-     * @return Message|\Illuminate\Database\Eloquent\Builder
-     */
-    public function fetchMessagesQuery($user_task)
-    {
-        return Message::where('task_id', $user_task[1])->where('from_id', Auth::user()->id)->where('to_id', $user_task[0])
-                    ->orWhere('from_id', $user_task[0])->where('to_id', Auth::user()->id);
-    }
 
     /**
      * create a new message to database

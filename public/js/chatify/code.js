@@ -75,7 +75,7 @@ function updateSelectedContact(user_id) {
   $(document).find(".messenger-list-item[data-contact]").removeClass("m-list-active");
   $(document)
     .find(
-      ".messenger-list-item[data-contact=" + (user_id || getMessengerId()) + "]"
+      ".messenger-list-item[data-contact=" + (user_id) + "]"
     )
     .addClass("m-list-active");
 }
@@ -492,6 +492,8 @@ function sendMessage() {
           errorMessageCard(tempID);
           console.error(data.error_msg);
         } else {
+            updateTaskItem($(".messenger-list-item[data-task].m-list-active").attr("data-task"), true)
+
           // update contact item
           updateContactItem(getMessengerId(), $(".messenger-list-item[data-task].m-list-active").attr("data-task"));
           // temporary message card
@@ -635,23 +637,29 @@ initClientChannel();
 
 // Listen to messages, and append if data received
 channel.bind("messaging", function (data) {
-  if (data.from_id == getMessengerId() && data.to_id == auth_id) {
-    $(".messages").find(".message-hint").remove();
-    messagesContainer.find(".messages").append(data.message);
-    scrollToBottom(messagesContainer);
-    makeSeen(true);
-    // remove unseen counter for the user from the contacts list
-    $(".messenger-list-item[data-contact=" + getMessengerId() + "]")
-      .find("tr>td>b")
-      .remove();
-  }
+    // getTasks();
+    // // if (
+    // //     $(`.messenger-list-item[data-task='${data.task_id}}'].m-list-active`)
+    // //         .length == 0
+    // // )
 
-//   $(`.messenger-list-item[data-task='${data.task_id}']`).click()
+    if (data.from_id == getMessengerId() && data.to_id == auth_id) {
+        $(".messages").find(".message-hint").remove();
+        messagesContainer.find(".messages").append(data.message);
+        scrollToBottom(messagesContainer);
+        makeSeen(true);
+        // remove unseen counter for the user from the contacts list
+        $(".messenger-list-item[data-contact=" + getMessengerId() + "]")
+            .find("tr>td>b")
+            .remove();
+    }
 
-  playNotificationSound(
-    "new_message",
-    !(data.from_id == getMessengerId() && data.to_id == auth_id)
-  );
+    //   $(`.messenger-list-item[data-task='${data.task_id}']`).click()
+
+    playNotificationSound(
+        "new_message",
+        !(data.from_id == getMessengerId() && data.to_id == auth_id)
+    );
 });
 
 // listen to typing indicator
@@ -681,7 +689,16 @@ clientListenChannel.bind("client-seen", function (data) {
 clientListenChannel.bind("client-contactItem", function (data) {
   if (data.to == auth_id) {
     if (data.update) {
-      updateContactItem(data.from, $(".messenger-list-item[data-task].m-list-active").attr("data-task"));
+        if($(`.messenger-list-item[data-task='${data.task_id}']`).length == 1)
+        {
+            updateTaskItem(data.task_id, false)
+            if ($(`.messenger-list-item[data-task='${data.task_id}'].m-list-active`).length != 0) {
+                updateContactItem(data.from, $(".messenger-list-item[data-task].m-list-active").attr("data-task"));
+            }
+        }
+        else{
+            getTasks()
+        }
     } else {
       console.error("Can not update contact item!");
     }
@@ -743,6 +760,30 @@ function isTyping(status) {
   });
 }
 
+
+function updateTaskItem(task_id, condition)
+{
+    console.log("UPDATING:\t"+task_id)
+    $.ajax({
+        url: "/getUnseenTaskMessages",
+        method: "GET",
+        data: { _token: csrfToken, task_id: task_id },
+        dataType: "JSON",
+        success: (data) => {
+            console.log(data)
+            $(`.messenger-list-item[data-task='${task_id}'] * b`).remove()
+            $(`.messenger-list-item[data-task='${task_id}'] * p`).append(data.unseenString)
+
+            if( data.total != 0 || condition )
+            {
+                let html = $(`.messenger-list-item[data-task='${task_id}']`)[0]
+                $(`.messenger-list-item[data-task='${task_id}']`).remove()
+                $(".listOfTasks").prepend(html)
+            }
+        }
+      });
+}
+
 /**
  *-------------------------------------------------------------
  * Trigger seen event
@@ -752,18 +793,28 @@ function makeSeen(status) {
   if (document?.hidden) {
     return;
   }
+  if( $(".messenger-list-item[data-task].m-list-active").length == 0 ){
+    return;
+  }
+
   // remove unseen counter for the user from the contacts list
   $(".messenger-list-item[data-contact=" + getMessengerId() + "]")
     .find("tr>td>b")
     .remove();
   // seen
+  let taskID = $(".messenger-list-item[data-task].m-list-active").attr("data-task");
+
   $.ajax({
     url: url + "/makeSeen",
     method: "POST",
-    data: { _token: csrfToken, id: getMessengerId() },
+    data: { _token: csrfToken, id: getMessengerId(), task_id: taskID },
     dataType: "JSON",
+    success: function (params) {
+        updateTaskItem(taskID, false)
+    }
   });
   return clientSendChannel.trigger("client-seen", {
+    task_id: $(".messenger-list-item[data-task].m-list-active").attr("data-task"),
     from_id: auth_id, // Me
     to_id: getMessengerId(), // Messenger
     seen: status,
@@ -877,17 +928,41 @@ function listTaskItemLoading(items) {
 
 /**
  *-------------------------------------------------------------
+ * Reset Messenger Context
+ *-------------------------------------------------------------
+ */
+function resetMessenger() {
+    $(".header-avatar").css(
+        "background-image",
+        ''
+      );
+    $(".m-header-messaging .user-name").text("Maintenance");
+    $(".messenger-users-search").val("")
+    $(".messenger-tab[data-view='search'] > .search-records").html("")
+
+    $(".messages-container > .messages").html('<p class="message-hint center-el"><span>Please select a chat to start messaging</span></p>')
+    $(".messenger-sendCard").hide();
+    $(".add-to-favorite").hide()
+    $(".listOfContacts").html("")
+    setMessengerId(0)
+}
+
+/**
+ *-------------------------------------------------------------
  * Get tasks
  *-------------------------------------------------------------
  */
  $("body").on("click", ".messenger-list-item[data-task]", function () {
+
+    resetMessenger()
+
     $(".messenger-list-item[data-task]").removeClass("m-list-active");
     $(this).addClass("m-list-active");
     const taskID = $(this).attr("data-task");
     const entityID = $(this).attr("data-entity");
 
     $(".listOfContacts").html("");
-    getContacts(entityID)
+    getContacts(entityID, taskID)
     // routerPush(document.title, `${url}/${userID}`);
     // updateSelectedContact(userID);
   });
@@ -895,6 +970,7 @@ function listTaskItemLoading(items) {
  let tasksPage = 1;
  let tasksLoading = false;
  let noMoreTasks = false;
+ let taskTempVal = "";
  function setTasksLoading(loading = false) {
    if (!loading) {
      $(".listOfTasks").find(".loading-tasks").remove();
@@ -906,8 +982,17 @@ function listTaskItemLoading(items) {
    tasksLoading = loading;
  }
  function getTasks(input = "") {
+
+    if ( taskTempVal != input ) {
+        tasksPage = 1;
+        tasksLoading = false;
+        noMoreTasks = false;
+    }
+
+    taskTempVal = input;
+    let selectedTaskID = $(".messenger-list-item[data-task].m-list-active").length > 0 ? $(".messenger-list-item[data-task].m-list-active").attr("data-task") : 0;
    if (!tasksLoading && !noMoreTasks) {
-     setTasksLoading(true);
+    //  setTasksLoading(true);
      $.ajax({
        url: "/getTasks",
        method: "GET",
@@ -915,11 +1000,15 @@ function listTaskItemLoading(items) {
        dataType: "JSON",
        success: (data) => {
          setTasksLoading(false);
-
-        $(".listOfTasks").html(data.tasks);
-        //  } else {
-        //    $(".listOfTasks").append(data.tasks);
-        //  }
+        if( $(`.messenger-list-item[data-task='${selectedTaskID}'].m-list-active`).length == 0 ){
+            resetMessenger()
+        }
+         if( tasksPage < 2 ){
+            $(".listOfTasks").html(data.tasks);
+         }
+        else {
+           $(".listOfTasks").append(data.tasks);
+         }
         //  updateSelectedContact();
          // update data-action required with [responsive design]
          cssMediaQueries();
@@ -928,7 +1017,7 @@ function listTaskItemLoading(items) {
          if (!noMoreTasks) tasksPage += 1;
        },
        error: (error) => {
-         setTasksLoading(false);
+        //  setTasksLoading(false);
          console.error(error);
        },
      });
@@ -948,6 +1037,7 @@ function listTaskItemLoading(items) {
  * Get contacts
  *-------------------------------------------------------------
  */
+let selectedTask = 0;
 let contactsPage = 1;
 let contactsLoading = false;
 let noMoreContacts = false;
@@ -961,13 +1051,21 @@ function setContactsLoading(loading = false) {
   }
   contactsLoading = loading;
 }
-function getContacts(entityID) {
+function getContacts(entityID, taskID) {
+
+    if (parseInt(taskID) != selectedTask) {
+        contactsPage = 1;
+        contactsLoading = false;
+        noMoreContacts = false;
+    }
+    selectedEntity = parseInt(entityID);
+    selectedTask = parseInt(taskID);
   if (!contactsLoading && !noMoreContacts) {
     setContactsLoading(true);
     $.ajax({
       url: url + "/getContacts",
       method: "GET",
-      data: { _token: csrfToken, page: contactsPage, entityID: entityID },
+      data: { _token: csrfToken, page: contactsPage, entityID: entityID, taskID: taskID },
       dataType: "JSON",
       success: (data) => {
         setContactsLoading(false);
@@ -1126,14 +1224,22 @@ function setSearchLoading(loading = false) {
 function messengerSearch(input) {
 
     if ($(".messenger-list-item[data-task].m-list-active").length == 0) {
-        $(".search-records").html('<p class="message-hint center-el"><span>Select Task First.</span></p>');
-        return
+        $(".search-records").html(
+            '<p class="message-hint center-el"><span>Select Task First.</span></p>'
+        );
+        return;
     }
+  if (input == "" && $(".search-records > .messenger-list-item").length == 0) {
+    searchPage = 1;
+    noMoreDataSearch = false;
+    searchLoading = false;
+  }
   if (input != searchTempVal) {
     searchPage = 1;
     noMoreDataSearch = false;
     searchLoading = false;
   }
+
   searchTempVal = input;
   if (!searchLoading && !noMoreDataSearch) {
     if (searchPage < 2) {
@@ -1407,7 +1513,7 @@ $(document).ready(function () {
     $(".messenger-list-item[data-contact]").removeClass("m-list-active");
     $(this).addClass("m-list-active");
     const userID = $(this).attr("data-contact");
-    routerPush(document.title, `${url}/${userID}`);
+    // routerPush(document.title, `${url}/${userID}`);
     updateSelectedContact(userID);
   });
 
@@ -1417,7 +1523,7 @@ $(document).ready(function () {
   });
 
   // make favorites card dragable on click to slide.
-  hScroller(".messenger-favorites");
+//   hScroller(".messenger-favorites");
 
   // click action for list item [user/group]
   $("body").on("click", ".messenger-list-item[data-contact]", function () {
@@ -1438,7 +1544,7 @@ $(document).ready(function () {
     setMessengerId(uid);
     IDinfo(uid);
     updateSelectedContact(uid);
-    routerPush(document.title, `${url}/${uid}`);
+    // routerPush(document.title, `${url}/${uid}`);
   });
 
   // list view buttons
@@ -1446,7 +1552,7 @@ $(document).ready(function () {
     $(".messenger-listView").hide();
   });
   $(".show-listView").on("click", function () {
-    routerPush(document.title, `${url}/`);
+    // routerPush(document.title, `${url}/`);
     $(".messenger-listView").show();
   });
 
@@ -1555,9 +1661,12 @@ $(document).ready(function () {
   // Search input on focus
   $(".messenger-users-search").on("focus", function () {
     $(".messenger-tab[data-view='users']").hide();
+    console.log("search focused")
+    debouncedSearch();
     $('.messenger-tab[data-view="search"]').show();
   });
   $(".messenger-users-search").on("blur", function () {
+    console.log("search blurred")
     setTimeout(function () {
       $(".messenger-tab[data-view='search']").hide();
       $('.messenger-tab[data-view="users"]').show();
@@ -1570,7 +1679,7 @@ $(document).ready(function () {
   }, 500);
   $(".messenger-users-search").on("keyup", function (e) {
     const value = $(this).val();
-    if ($.trim(value).length > 0) {
+    if ($.trim(value).length >= 0) {
       $(".messenger-users-search").trigger("focus");
       debouncedSearch();
     } else {
@@ -1706,11 +1815,16 @@ $(document).ready(function () {
   );
   //Contacts pagination
   actionOnScroll(".messenger-tab.users-tab", function () {
-    getContacts();
+    getContacts($(".messenger-list-item[data-task].m-list-active").attr("data-entity"), $(".messenger-list-item[data-task].m-list-active").attr("data-task"));
   });
   //Search pagination
   actionOnScroll(".messenger-tab.search-tab", function () {
     messengerSearch($(".messenger-users-search").val());
+  });
+
+  //Search Tasks pagination
+  actionOnScroll(".messenger-tab.tasks-tab", function () {
+    getTasks($(".messenger-task-search").val());
   });
 });
 

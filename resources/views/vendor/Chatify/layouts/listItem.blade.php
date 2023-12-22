@@ -31,7 +31,7 @@ $lastMessageBody = strlen($lastMessageBody) > 30 ? mb_substr($lastMessageBody, 0
                 <span class="activeStatus"></span>
             @endif
         <div class="avatar av-m"
-        style="background-image: url('{{ $user->avatar }}');">
+        style="background-image: url('{{$user->avatar}}');">
         </div>
         </td>
         {{-- center side --}}
@@ -70,7 +70,7 @@ $lastMessageBody = strlen($lastMessageBody) > 30 ? mb_substr($lastMessageBody, 0
         "Approved" => ["primary", "check-circle", "--success"]
 ];
 @endphp
-<table class="messenger-list-item" data-task="{{ $task->id }}" data-entity="{{ $entity->id }}">
+<table class="messenger-list-item" data-task="{{ $task->id }}" data-entity="{{ $entity->id }}" data-site="{{ $site->id }}">
     <tr data-action="0">
         {{-- Avatar side --}}
         <td style="position: relative">
@@ -82,12 +82,14 @@ $lastMessageBody = strlen($lastMessageBody) > 30 ? mb_substr($lastMessageBody, 0
         {{-- center side --}}
         <td>
         <span>
-            <span class="text-muted text-truncate" style="width: 60%;display: inline-block;">{{$entity->entity}}</span>
-            <span style="float: inline-end;"> {{$task->status}} </span>
+            <span class="text-muted text-truncate" style="width: 100%;display: inline-block;">
+                {{$entity->entity}} > {{ $site->site }}
+            </span>
         </span>
-        <p class="text-truncate ">
+        <p class="text-truncate " >
             {{$task->title}}
 
+            {!! $unseen !!}
         </p>
 
         <span>
@@ -120,7 +122,7 @@ $lastMessageBody = strlen($lastMessageBody) > 30 ? mb_substr($lastMessageBody, 0
 
 {{-- -------------------- Shared photos Item -------------------- --}}
 @if($get == 'sharedPhoto')
-<div class="shared-photo chat-image" style="background-image: url('{{ $image }}')"></div>
+<div class="shared-photo chat-image" style="background-image: url('{{ preg_replace("/(localhost)/", app('request')->getHttpHost(), $image) }}')"></div>
 @endif
 
 
