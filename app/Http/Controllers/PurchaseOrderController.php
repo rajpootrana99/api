@@ -211,7 +211,7 @@ class PurchaseOrderController extends Controller
 
     public function emailPurchaseOrder($purchaseOrder){
         $purchaseOrder = PurchaseOrder::with('quotes.estimate.subHeader.header', 'entity', 'task.site', 'task.quotes.estimate.subHeader.header', 'purchaseOrderGalleries')->find($purchaseOrder);
-        $purchaseOrder->upadate([
+        $purchaseOrder->update([
             'sent_date' => Carbon::now(),
         ]);
         $users = User::where(['entity_id' => $purchaseOrder->entity_id])->where(['orders' => 1])->get();

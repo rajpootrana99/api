@@ -189,7 +189,7 @@ class InvoiceController extends Controller
     public function emailInvoice($invoice)
     {
         $invoice = Invoice::with('quotes.estimate.subHeader.header', 'entity', 'task.site', 'task.quotes.estimate.subHeader.header', 'invoiceGalleries')->find($invoice);
-        $invoice->upadate([
+        $invoice->update([
             'sent_date' => Carbon::now(),
         ]);
         $users = User::where(['entity_id' => $invoice->entity_id])->where(['accounts' => 1])->get();
