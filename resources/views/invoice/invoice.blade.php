@@ -150,7 +150,6 @@
                         <div class="float-right d-print-none">
                             <a href="javascript:window.print()" class="btn btn-soft-info btn-sm">Print</a>
                             <a id="emailInvoice" class="btn btn-soft-primary btn-sm">Email</a>
-                            <!-- href="{{ route('invoice.emailInvoice', ['invoice' => $invoice->id]) }}" -->
                         </div>
                     </div><!--end col-->
                 </div><!--end row-->
@@ -217,9 +216,9 @@
                 url: '/emailInvoice/' + invoice_id,
                 success: function(response) {
                     if (response.status == false) {
-                        showToast(response.message, 'danger');
+                        showToast(response.message, "danger");
                     } else {
-                        showToast(response.message, 'success');
+                        showToast(response.message, "success");
                     }
                 }
             });

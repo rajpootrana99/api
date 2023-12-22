@@ -149,7 +149,7 @@
                     <div class="col-lg-12 col-xl-6">
                         <div class="float-right d-print-none">
                             <a href="javascript:window.print()" class="btn btn-soft-info btn-sm">Print</a>
-                            <a href="{{ route('purchaseOrder.emailPurchaseOrder', ['purchaseOrder' => $purchaseOrder->id]) }}" class="btn btn-soft-primary btn-sm">Email</a>
+                            <a id ="emailPurchaseOrder" class="btn btn-soft-primary btn-sm">Email</a>
                         </div>
                     </div><!--end col-->
                 </div><!--end row-->
@@ -188,6 +188,42 @@
 
             return formattedDate;
         }
+
+        function showToast(text, type) {
+            let types = {
+                success: ["#03d87f", "#fff"],
+                danger: ["#f5325c", "#fff"],
+            }
+            Toastify({
+                text: text,
+                duration: 3000,
+                close: true,
+                gravity: "top", // `top` or `bottom`
+                position: "right", // `left`, `center` or `right`
+                stopOnFocus: true, // Prevents dismissing of toast on hover
+                style: {
+                    background: types[type][0],
+                    color: types[type][1]
+                }
+            }).showToast();
+        }
+
+        $(document).on('click', '#emailPurchaseOrder', function(e) {
+            e.preventDefault();
+            const purchaseOrder_id = purchaseOrder.id;
+            $.ajax({
+                type: "GET",
+                url: '/emailPurchaseOrder/' + purchaseOrder_id,
+                success: function(response) {
+                    if (response.status == false) {
+                        showToast(response.message, "danger");
+                    } else {
+                        showToast(response.message, "success");
+                    }
+                }
+            });
+        });
+
     </script>
     <!-- jQuery  -->
     <script src="{{ asset('assets/js/jquery.min.js')}}"></script>
