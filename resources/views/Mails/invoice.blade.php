@@ -201,7 +201,7 @@
             </div>
             <div class="i_col w_15">
               <p>Sub Total</p>
-              <p>Tax 10%</p>
+              <p>Tax</p>
             </div>
             <div class="i_col w_15">
               <p>${{ $invoice->sub_total }}</p>
@@ -212,7 +212,7 @@
             <div class="i_col w_50">
             </div>
             <div class="i_col w_50 grand_total">
-              <p><span>GRAND TOTAL:</span>
+              <p><span>TOTAL:</span>
                 <span>${{ $invoice->total }}</span>
               </p>
             </div>

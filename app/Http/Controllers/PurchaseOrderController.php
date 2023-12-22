@@ -7,9 +7,14 @@ use App\Models\PurchaseItem;
 use App\Models\PurchaseOrder;
 use App\Models\PurchaseOrderGallery;
 use App\Models\Quote;
+
+use Illuminate\Mail\Message;
 use App\Models\Site;
 use App\Models\Task;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class PurchaseOrderController extends Controller
@@ -202,5 +207,33 @@ class PurchaseOrderController extends Controller
         $jobs = Task::with('quotes.estimate.subheader.header', 'site', 'user', 'entity')->where(['type' => 2])->get();
         $quotes = Quote::with('task')->whereIn('id', $request->quote_id)->get();
         return view('purchaseOrder.add', ['quotes' => $quotes, 'purchaseNo' => $purchaseNo, 'jobs' => $jobs]);
+    }
+
+    public function emailPurchaseOrder($purchaseOrder){
+        $purchaseOrder = PurchaseOrder::with('quotes.estimate.subHeader.header', 'entity', 'task.site', 'task.quotes.estimate.subHeader.header', 'purchaseOrderGalleries')->find($purchaseOrder);
+        $purchaseOrder->upadate([
+            'sent_date' => Carbon::now(),
+        ]);
+        $users = User::where(['entity_id' => $purchaseOrder->entity_id])->where(['orders' => 1])->get();
+        if(count($users) > 0){
+            foreach ($users as $user) {
+                $email = $user->email;
+                Mail::send('Mails.purchaseOrder', ['purchaseOrder' => $purchaseOrder], function (Message $message) use ($email) {
+                    $message->to($email);
+                    $message->subject('Purchase Order Detail');
+                });
+    
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Email send Successfully',
+                ]);
+            }
+        }
+        else{
+            return response()->json([
+                'status' => false,
+                'message' => 'No ordering contact exist',
+            ]); 
+        }
     }
 }

@@ -8,6 +8,8 @@ use App\Models\InvoiceGallery;
 use App\Models\Quote;
 use App\Models\Site;
 use App\Models\Task;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
@@ -184,17 +186,32 @@ class InvoiceController extends Controller
         //
     }
 
-    public function sendEmail($invoice)
+    public function emailInvoice($invoice)
     {
-        $invoice = Invoice::with('quotes.estimate.subHeader.header', 'entity', 'task.site', 'task.quotes.estimate.subHeader.header')->find($invoice);
-        $email = $invoice->entity->email;
-        Mail::send('Mails.invoice', ['invoice' => $invoice], function (Message $message) use ($email) {
-            $message->to($email);
-            $message->subject('Invoice Detail');
-        });
-
-        return response()->json([
-            'message' => 'Email send Successfully',
+        $invoice = Invoice::with('quotes.estimate.subHeader.header', 'entity', 'task.site', 'task.quotes.estimate.subHeader.header', 'invoiceGalleries')->find($invoice);
+        $invoice->upadate([
+            'sent_date' => Carbon::now(),
         ]);
+        $users = User::where(['entity_id' => $invoice->entity_id])->where(['accounts' => 1])->get();
+        if(count($users) > 0){
+            foreach ($users as $user) {
+                $email = $user->email;
+                Mail::send('Mails.invoice', ['invoice' => $invoice], function (Message $message) use ($email) {
+                    $message->to($email);
+                    $message->subject('Invoice Detail');
+                });
+    
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Email send Successfully',
+                ]);
+            }
+        }
+        else{
+            return response()->json([
+                'status' => false,
+                'message' => 'No account contact exist',
+            ]); 
+        }  
     }
 }

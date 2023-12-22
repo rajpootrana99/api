@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('customer_po_number')->nullable();
             $table->string('issue_date')->nullable();
             $table->string('due_date')->nullable();
-            $table->string('sent_date')->nullable();
+            $table->date('sent_date')->nullable();
             $table->integer('amount_are')->nullable();
             $table->string('note')->nullable();
             $table->unsignedBigInteger('sub_total')->nullable();
