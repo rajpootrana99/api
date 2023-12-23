@@ -16,6 +16,32 @@ class CustomChatifyMessengerOriginal extends ChatifyMessenger{
 
 
     /**
+     * Delete Conversation
+     *
+     * @param int $user_task_id
+     * @return boolean
+     */
+    public function deleteConversation($user_task_id)
+    {
+        try {
+            foreach ($this->fetchMessagesQuery($user_task_id)->get() as $msg) {
+                // delete file attached if exist
+                if (isset($msg->attachment)) {
+                    $path = config('chatify.attachments.folder').'/'.json_decode($msg->attachment)->new_name;
+                    if (self::storage()->exists($path)) {
+                        self::storage()->delete($path);
+                    }
+                }
+                // delete from database
+                $msg->delete();
+            }
+            return 1;
+        } catch (Exception $e) {
+            return 0;
+        }
+    }
+
+    /**
      * Get user with avatar (formatted).
      *
      * @param Collection $user
@@ -76,7 +102,7 @@ class CustomChatifyMessengerOriginal extends ChatifyMessenger{
     public function fetchMessagesQuery($user_task)
     {
         // return "Working";
-        return Message::where('task_id', Auth::user()->id == $user_task[1] ? null : $user_task[1])
+        return Message::where('task_id', Auth::user()->id == $user_task[0] ? null : $user_task[1])
                 ->where(function ($query) use ($user_task) {
                     $query->where(function ($query) use ($user_task) {
                       $query->where('from_id', Auth::user()->id)
@@ -114,16 +140,20 @@ class CustomChatifyMessengerOriginal extends ChatifyMessenger{
      */
     public function getContactItem($user_and_task_id)
     {
+        // return "Working ". implode($user_and_task_id);
         try {
             // get last message
             $lastMessage = $this->getLastMessageQuery([$user_and_task_id[0]->id, $user_and_task_id[1]]);
-
+            // return $lastMessage;
             // Get Unseen messages counter
             $unseenCounter = $this->countUnseenMessages([$user_and_task_id[0]->id, $user_and_task_id[1]]);
+            // return $unseenCounter;
             if ($lastMessage) {
                 $lastMessage->created_at = $lastMessage->created_at->toIso8601String();
                 $lastMessage->timeAgo = $lastMessage->created_at->diffForHumans();
+                // return $lastMessage;
             }
+            // return $lastMessage;
             return view('Chatify::layouts.listItem', [
                 'get' => 'users',
                 'user' => $this->getUserWithAvatar($user_and_task_id[0]),

@@ -84,11 +84,12 @@ Route::middleware(['auth', 'verified', 'role:Admin|Client|Supplier'])->group(fun
     Route::get('/fetchItemGalleries/{item}', [TaskController::class, 'fetchItemGalleries'])->name('itemGallery.get');
 
     // MESSAGE ROUTES
-    Route::resource('message', MessageController::class);
-    Route::get('/fetchPeoples', [MessageController::class, 'fetchPeoples'])->name('people.get');
-    Route::get('/fetchMessages/{sender}', [MessageController::class, 'fetchMessages'])->name('message.get');
-    Route::get('/fetchTaskMessages/{task}', [MessageController::class, 'fetchTaskMessages']);
-    Route::post('/send-message', [MessageController::class, 'sendMessage']);
+    // Route::resource('message', MessageController::class);
+    Route::get('/message/{task?}', [MessageController::class, 'index'])->name('message.index');
+    // Route::get('/fetchPeoples', [MessageController::class, 'fetchPeoples'])->name('people.get');
+    // Route::get('/fetchMessages/{sender}', [MessageController::class, 'fetchMessages'])->name('message.get');
+    // Route::get('/fetchTaskMessages/{task}', [MessageController::class, 'fetchTaskMessages']);
+    // Route::post('/send-message', [MessageController::class, 'sendMessage']);
 
 
     Route::get('/getTasks', [MessagesController::class, 'getTasks']);

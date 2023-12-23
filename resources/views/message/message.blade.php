@@ -7,7 +7,7 @@
 @section('content')
 
     <iframe
-    src="{{route('chat')}}"
+    src="{{route('chat')}}/{{$task_id}}"
     width="100%"
     height="600px"
     sandbox="allow-same-origin allow-scripts allow-popups allow-forms"

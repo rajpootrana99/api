@@ -47,11 +47,14 @@ class MessagesController extends Controller
      * @param int $task_id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function index( $task_id = null)
+    public function index( $task_id = null )
     {
+        $task = Task::find($task_id);
+        // return $task == null ? 0 : 1;
         $messenger_color = Auth::user()->messenger_color;
         return view('Chatify::pages.app', [
-            'id' => $task_id ?? 0,
+            'task_id' => $task == null ? 0 : $task->id,
+            'entity_id' => $task == null ? 0 : $task->entity_id,
             'messengerColor' => $messenger_color ? $messenger_color : Chatify::getFallbackColor(),
             'dark_mode' => Auth::user()->dark_mode < 1 ? 'light' : 'dark',
         ]);
@@ -341,7 +344,7 @@ class MessagesController extends Controller
     public function getContacts(Request $request)
     {
 
-        $entity_id = $request->input("entityID");
+        // $entity_id = $request->input("entityID");
 
         // if ( Auth::user()->role == "NULL" )
 
@@ -373,13 +376,16 @@ class MessagesController extends Controller
         // return response()->json(["users"=>$usersList],200);
 
         // return $users[0]->id;
-        if (sizeof($usersList) > 0) {
-            // return $user;
 
-            $contacts = '';
+        $contacts = '';
+        if (sizeof($usersList) > 0) {
+            // return $users;
+
+
             foreach ($usersList as $user) {
                 // return $user;
                 $contacts .= Chatify::getContactItem([$user, $request->input("taskID")]);
+                // return "SasA";
                 // return $contacts;
             }
         } else {
@@ -387,7 +393,7 @@ class MessagesController extends Controller
         }
 
         return Response::json([
-            // 'users' => $users,
+            'users' => $users,
             'contacts' => $contacts,
             'total' => $users->total() ?? 0,
             'last_page' => $users->lastPage() ?? 1,
@@ -575,7 +581,7 @@ class MessagesController extends Controller
     public function deleteConversation(Request $request)
     {
         // delete
-        $delete = Chatify::deleteConversation($request['id']);
+        $delete = Chatify::deleteConversation([$request['id'],$request['task_id']]);
 
         // send the response
         return Response::json([
