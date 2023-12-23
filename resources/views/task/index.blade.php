@@ -223,7 +223,7 @@
                                 <button value="' + task.id + '" style="border: none; background-color: #fff" class="edit_btn dropdown-item">Edit</button>\
                                 <a class="dropdown-item" href="/convertToEnquiry/' + task.id + '">Convert to Enquiry</a>\
                                 <a class="dropdown-item" href="/convertToJob/' + task.id + '">Convert to Job</a>\
-                                <a class="dropdown-item" href="#">Chat</a>\
+                                <a class="dropdown-item" href="/message/'+task.id+'">Chat</a>\
                             </div>\
                         </div>\
                     </div>\

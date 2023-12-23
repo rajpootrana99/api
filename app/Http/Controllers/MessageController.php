@@ -15,9 +15,9 @@ use stdClass;
 
 class MessageController extends Controller
 {
-    public function index()
+    public function index($task_id = "")
     {
-        return view('message.message');
+        return view('message.message',["task_id"=>$task_id]);
     }
 
     public function fetchPeoples()
