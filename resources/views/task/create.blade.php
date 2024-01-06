@@ -153,61 +153,20 @@
                             </button>
                         </div>
                     </div>
-                    <div class="images_container">
-                        {{-- <div class="image_item_container">
-                                <img src="{{asset('item_images/fotor-ai-20230430224722.jpg')}}" class="item_image" alt="" srcset="">
-                        <div class="item_name">fotor-ai-20230430224722.jpg</div>
-                        <div class="item_controls">
-                            <button class="btn btn-light folder_action_button" onclick="" title="Delete this image">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2">
-                                    <polyline points="3 6 5 6 21 6"></polyline>
-                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                    <line x1="10" y1="11" x2="10" y2="17"></line>
-                                    <line x1="14" y1="11" x2="14" y2="17"></line>
-                                </svg>
-                            </button>
-                        </div>
-                    </div> --}}
+                    <div class="images_container" >
 
-                    <a class="user-avatar image_item" href="javascript:void(0);">
-                        <input type="checkbox" id="image_1" class="form-check-input selectable_image">
-                        <label for="image_1">
-                            <img src="{{asset('item_images/ethical traveler.png')}}" alt="user" class="thumb-xxl rounded">
-                        </label>
-                    </a>
-
-                    <a class="user-avatar image_item" href="javascript:void(0);">
-                        <input type="checkbox" id="image_2" class="form-check-input selectable_image">
-                        <label for="image_2">
-                            <img src="{{asset('item_images/ethical traveler.png')}}" alt="user" class="thumb-xxl rounded">
-                        </label>
-                    </a>
-                    <a class="user-avatar image_item" href="javascript:void(0);">
-                        <input type="checkbox" id="image_3" class="form-check-input selectable_image">
-                        <label for="image_3">
-                            <img src="{{asset('item_images/ethical traveler.png')}}" alt="user" class="thumb-xxl rounded">
-                        </label>
-                    </a>
-
-                    <a class="user-avatar image_item" href="javascript:void(0);">
-                        <input type="checkbox" id="image_4" class="form-check-input selectable_image">
-                        <label for="image_4">
-                            <img src="{{asset('item_images/ethical traveler.png')}}" alt="user" class="thumb-xxl rounded">
-                        </label>
-                    </a>
-
+                    </div>
                 </div>
-            </div>
 
-        </div>
-        <!--end modal-body-->
-        <div class="modal-footer">
-            <button class="btn btn-secondary btn-sm" data-dismiss="modal" onclick="reset_dialog()">Cancel</button>
-            <button class="btn btn-primary btn-sm" data-dismiss="modal" onclick="reset_dialog()">Done</button>
-        </div><!--end modal-footer-->
+            </div>
+            <!--end modal-body-->
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm" data-dismiss="modal" onclick="reset_dialog()">Cancel</button>
+                <button class="btn btn-primary btn-sm" data-dismiss="modal" onclick="reset_dialog()">Done</button>
+            </div><!--end modal-footer-->
         {{-- </form> --}}
-    </div><!--end modal-content-->
-</div><!--end modal-dialog-->
+        </div><!--end modal-content-->
+    </div><!--end modal-dialog-->
 </div>
 <style>
     .images_container {
@@ -221,6 +180,21 @@
         height: 350px;
         gap: 10px;
         overflow-y: auto;
+    }
+
+    .image_dragged_over_container{
+        display: flex;
+        width: -webkit-fill-available;
+        align-items: center;
+        border-radius: 5px;
+        /* border: 1px solid lightgray; */
+        padding: 0px;
+        background-color: rgba(0,0,0,0.1);
+        font-size: 16px;
+        font-family: monospace;
+        font-weight: bold;
+        justify-content: center;
+        position: relative;
     }
 
     .images_container>.image_item * {
@@ -283,6 +257,62 @@
         storedFiles = new DataTransfer()
         urlsArray = Array()
     }
+
+    //DRAGGING CODE HERE
+    let highlight_drag_box = `<div class="image_dragged_over_container">
+                                Drag and Drop Here.....
+                            </div>`;
+    let dragged =
+
+    images_container.addEventListener("dragover", (event) => {
+        event.preventDefault();
+    }, false);
+
+    images_container.addEventListener("dragenter", (event) => {
+        // console.log(event.target)
+
+        event.stopPropagation();
+        event.preventDefault();
+        console.log("element entered");
+        if ($(".images_container > .image_dragged_over_container").length == 0) {
+            $(".images_container").html(highlight_drag_box);
+        }
+    },false);
+
+    images_container.addEventListener("dragleave", (event) => {
+
+        //if the leaving element is its own child then it is still in drag and drop container
+        if ($(`.images_container .${event.fromElement.className}`).length == 1 ) {
+            return
+        }
+
+        event.stopPropagation();
+        event.preventDefault();
+        if (event.target === images_container) {
+            if ($(".images_container > .image_dragged_over_container").length == 1) {
+                console.log("element leaving");
+                loadImagesContainer(select_or_add_button.getAttribute("for"));
+            }
+        }
+    },false);
+
+    images_container.addEventListener("drop", (event) => {
+
+        // preventing from behaving like default in browsers, openeing  as hyperlink
+        event.preventDefault();
+
+        // let the dropped files or images in our case are
+        let files_dropped = event.dataTransfer.files;
+        // files_dropped.forEach(file => {
+        //     storedFiles.items.add(file);
+        // })
+        let file_input = document.getElementById(select_or_add_button.getAttribute("for"))
+
+        file_input.files = files_dropped;
+        console.log(file_input.files);
+        loadImagesContainer(select_or_add_button.getAttribute("for"));
+    },false);
+
 
     function loadImagesContainer(id) {
         // CHECKING AND DISPLAYING PREVIOUS SELECTED FILES
