@@ -153,9 +153,12 @@
     <script src="https://cdn.socket.io/4.4.0/socket.io.min.js" integrity="sha384-1fOn6VtTq3PWwfsOrk45LnYcGosJwzMHv+Xh/Jx5303FVOXzEnw0EpLv30mtjmlj" crossorigin="anonymous"></script>
 
     {{-- EXPLORER REQUIRED SCRIPTS BELOW ALL --}}
-    <script src="{{ asset('assets/plugins/treeview/jstree.min.js') }}"></script>
-    <script src="{{ asset('assets/js/popper.min.js') }}"></script>
-    <script src="{{ asset('assets/js/waves.js') }}"></script>
+    @if (Request::url() != route('task.create'))
+        <script src="{{ asset('assets/plugins/treeview/jstree.min.js') }}"></script>
+        <script src="{{ asset('assets/js/popper.min.js') }}"></script>
+        <script src="{{ asset('assets/js/waves.js') }}"></script>
+    @endif
+
 
     <!-- Required datatable js -->
     <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
