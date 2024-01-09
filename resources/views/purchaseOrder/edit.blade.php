@@ -8,7 +8,7 @@
             <div class="page-title-box">
                 <div class="row">
                     <div class="col">
-                        <h4 class="page-title">Create Purchase Order</h4>
+                        <h4 class="page-title">Edit Purchase Order</h4>
                     </div><!--end col-->
                 </div><!--end row-->
             </div><!--end page-title-box-->

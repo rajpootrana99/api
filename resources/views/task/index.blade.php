@@ -220,10 +220,10 @@
                                 <i class="las la-ellipsis-v font-20 text-muted"></i>\
                             </a>\
                             <div style="z-index: 1 !important;" class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel11">\
-                                <button value="' + task.id + '" style="border: none; background-color: #fff" class="edit_btn dropdown-item">Edit</button>\
+                                <a class="dropdown-item" href="task/' + task.id + '/edit">Edit</a>\
                                 <a class="dropdown-item" href="/convertToEnquiry/' + task.id + '">Convert to Enquiry</a>\
                                 <a class="dropdown-item" href="/convertToJob/' + task.id + '">Convert to Job</a>\
-                                <a class="dropdown-item" href="/message/'+task.id+'">Chat</a>\
+                                <a class="dropdown-item" href="/message/' + task.id + '">Chat</a>\
                             </div>\
                         </div>\
                     </div>\

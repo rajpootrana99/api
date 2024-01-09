@@ -148,11 +148,8 @@ class TaskController extends Controller
 
     public function edit($task)
     {
-        $task = Task::find($task);
-        return response()->json([
-            'status' => true,
-            'task' => $task,
-        ]);
+        $task = Task::with('items.itemGalleries')->find($task);
+        return view('task.edit', ['task' => $task]);
     }
 
     public function update(Request $request, $task)
