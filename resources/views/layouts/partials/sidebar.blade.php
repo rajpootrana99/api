@@ -49,6 +49,7 @@
             <li>
                 <a href="{{ route('message.index')}}"><i data-feather="message-square" class="align-self-center menu-icon"></i><span>Chat</span></a>
             </li>
+            @can('Manage Settings')
             <li>
                 <a href="javascript: void(0);"> <i data-feather="settings" class="align-self-center menu-icon"></i><span>Settings</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                 <ul class="nav-second-level" aria-expanded="false">
@@ -60,6 +61,7 @@
                     <li class="nav-item"><a class="nav-link" href="{{ route('notification.index')}}"><i class="ti-comment-alt"></i>Notifications</a></li>
                 </ul>
             </li>
+            @endcan
         </ul>
     </div>
 </div>

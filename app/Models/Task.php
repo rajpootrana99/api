@@ -77,10 +77,11 @@ class Task extends Model
     public function jobStatusOptions()
     {
         return [
-            4 => 'Complete',
+            5 => 'Cancelled',
+            4 => 'On Hold',
             3 => 'Invoiced',
-            2 => 'In Progress',
-            1 => 'Scheduled',
+            2 => 'Complete',
+            1 => 'Ordered',
             0 => 'Pending',
         ];
     }

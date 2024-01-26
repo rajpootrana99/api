@@ -32,13 +32,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/index', function () {
     return view('index');
-})->middleware(['auth', 'verified', 'role:Admin'])->name('index');
+})->middleware(['auth', 'verified', 'role:Admin|Manager|Accounts'])->name('index');
 
 Route::get('/unathorized', function () {
     return view('unathorized');
 })->name('unathorized');
 
-Route::middleware(['auth', 'verified', 'role:Admin|Client|Supplier'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:Admin|Manager|Accounts'])->group(function () {
 
     // EXPLORER ROUTES
     Route::resource('explorer', FileExplorerController::class);
@@ -52,11 +52,6 @@ Route::middleware(['auth', 'verified', 'role:Admin|Client|Supplier'])->group(fun
     Route::post('/create', [FileExplorerController::class, 'createFolder'])->name('explorer.createFolder');
     Route::get('/getUploadFolderInfo/{file}', [FileExplorerController::class, 'getUploadFolderInfo'])->name('explorer.getUploadFolderInfo');
     Route::post('/upload', [FileExplorerController::class, 'uploadFiles'])->name('explorer.uploadFiles');
-
-    // USER ROUTES
-    Route::resource('user', UserController::class);
-    Route::get('/fetchUsers', [UserController::class, 'fetchUsers'])->name('user.get');
-    Route::get('/approveUser/{user}', [UserController::class, 'approveUser'])->name('user.approve');
 
     // ENTITY ROUTES
     Route::resource('entity', EntityController::class);
@@ -72,10 +67,6 @@ Route::middleware(['auth', 'verified', 'role:Admin|Client|Supplier'])->group(fun
     // SITE ROUTES
     Route::resource('site', SiteController::class);
     Route::get('/fetchSites', [SiteController::class, 'fetchSites'])->name('site.get');
-
-    // TRADE TYPE ROUTES
-    Route::resource('tradeType', TraderTypeController::class);
-    Route::get('/fetchTradeTypes', [TraderTypeController::class, 'fetchTradeTypes'])->name('tradeType.get');
 
     // TASK ROUTES
     Route::resource('task', TaskController::class);
@@ -94,11 +85,6 @@ Route::middleware(['auth', 'verified', 'role:Admin|Client|Supplier'])->group(fun
 
     Route::get('/getTasks', [MessagesController::class, 'getTasks']);
     Route::get('/getUnseenTaskMessages', [MessagesController::class, 'unseenTaskMessages']);
-
-
-    // NOTIFICATION ROUTES
-    Route::resource('notification', NotificationController::class);
-    Route::get('/fetchNotifications', [NotificationController::class, 'fetchNotifications'])->name('notification.get');
 
     // CONTACT ROUTES
     Route::resource('contact', ContactController::class);
@@ -120,6 +106,27 @@ Route::middleware(['auth', 'verified', 'role:Admin|Client|Supplier'])->group(fun
     Route::get('/fetchQuotes/{task}', [QuoteController::class, 'fetchQuotes']);
     Route::get('/captureSaving/{task}', [QuoteController::class, 'captureSaving'])->name('captureSaving.get');
 
+    //PURCHASE ORDER ROUTES
+    Route::resource('purchaseOrder', PurchaseOrderController::class);
+    Route::post('/purchaseOrder/add', [PurchaseOrderController::class, 'add'])->name('purchaseOrder.add');
+    Route::get('/fetchPurchaseOrders', [PurchaseOrderController::class, 'fetchPurchaseOrders'])->name('purchaseOrder.get');
+
+    // INVOICE ROUTES
+    Route::resource('invoice', InvoiceController::class);
+    Route::get('/fetchInvoices', [InvoiceController::class, 'fetchInvoices'])->name('invoice.get');
+
+    //Email Send
+    Route::get('/emailInvoice/{invoice}', [InvoiceController::class, 'emailInvoice'])->name('invoice.emailInvoice');
+    Route::get('/emailPurchaseOrder/{purchaseOrder}', [PurchaseOrderController::class, 'emailPurchaseOrder'])->name('purchaseOrder.emailPurchaseOrder');
+});
+
+Route::middleware(['auth', 'verified', 'role:Manager'])->group(function () {
+
+    // USER ROUTES
+    Route::resource('user', UserController::class);
+    Route::get('/fetchUsers', [UserController::class, 'fetchUsers'])->name('user.get');
+    Route::get('/approveUser/{user}', [UserController::class, 'approveUser'])->name('user.approve');
+
     // SITE USER ROUTES
     Route::resource('site-user', SiteUserController::class);
     Route::get('/fetchSiteUsers', [SiteUserController::class, 'fetchSiteUsers'])->name('site-user.get');
@@ -133,23 +140,17 @@ Route::middleware(['auth', 'verified', 'role:Admin|Client|Supplier'])->group(fun
     Route::get('/subHeader/{subHeader}/edit', [EstimateController::class, 'editSubHeader'])->name('subheader.edit');
     Route::patch('/subHeader/{subHeader}', [EstimateController::class, 'updateSubHeader'])->name('subheader.update');
 
-
-    //PURCHASE ORDER ROUTES
-    Route::resource('purchaseOrder', PurchaseOrderController::class);
-    Route::post('/purchaseOrder/add', [PurchaseOrderController::class, 'add'])->name('purchaseOrder.add');
-    Route::get('/fetchPurchaseOrders', [PurchaseOrderController::class, 'fetchPurchaseOrders'])->name('purchaseOrder.get');
-
-    // INVOICE ROUTES
-    Route::resource('invoice', InvoiceController::class);
-    Route::get('/fetchInvoices', [InvoiceController::class, 'fetchInvoices'])->name('invoice.get');
+    // TRADE TYPE ROUTES
+    Route::resource('tradeType', TraderTypeController::class);
+    Route::get('/fetchTradeTypes', [TraderTypeController::class, 'fetchTradeTypes'])->name('tradeType.get');
 
     //NOTE ROUTES
     Route::resource('note',  NoteController::class);
     Route::get('/fetchNotes', [NoteController::class, 'fetchNotes'])->name('note.get');
 
-    //Email Send
-    Route::get('/emailInvoice/{invoice}', [InvoiceController::class, 'emailInvoice'])->name('invoice.emailInvoice');
-    Route::get('/emailPurchaseOrder/{purchaseOrder}', [PurchaseOrderController::class, 'emailPurchaseOrder'])->name('purchaseOrder.emailPurchaseOrder');
+    // NOTIFICATION ROUTES
+    Route::resource('notification', NotificationController::class);
+    Route::get('/fetchNotifications', [NotificationController::class, 'fetchNotifications'])->name('notification.get');
 });
 
 require __DIR__ . '/auth.php';

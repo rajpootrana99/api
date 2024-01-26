@@ -28,10 +28,11 @@
                                         <select class="select2 pl-1 form-control" id="view_status" style="width: 100%; height:30px !important;">
                                             <option value="" disabled>Select View</option>
                                             <option value="0">Pending</option>
-                                            <option value="1">Scheduled</option>
-                                            <option value="2">In Progress</option>
-                                            <option value="3">Complete</option>
-                                            <option value="4">Invoiced</option>
+                                            <option value="1">Ordered</option>
+                                            <option value="2">Complete</option>
+                                            <option value="3">Invoiced</option>
+                                            <option value="4">On Hold</option>
+                                            <option value="5">Cancelled</option>
                                         </select>
                                     </div>
                                 </div>
@@ -115,10 +116,11 @@
                                 <select class="select2 pl-1 form-control edit_job_status" name="job_status" id="edit_job_status" style="width: 100%; height:30px !important;">
                                     <option value="" selected disabled>Select Status</option>
                                     <option value="0">Pending</option>
-                                    <option value="1">Scheduled</option>
-                                    <option value="2">In Progress</option>
+                                    <option value="1">Ordered</option>
+                                    <option value="2">Complete</option>
                                     <option value="3">Invoiced</option>
-                                    <option value="4">Complete</option>
+                                    <option value="4">On Hold</option>
+                                    <option value="5">Cancelled</option>
                                 </select>
                                 <span class="text-danger error-text job_status_update_error"></span>
                             </div>
@@ -185,13 +187,13 @@
                     }
                 }
                 if ($('#view_status').val() == 1) {
-                    if (job.job_status == 'Scheduled') {
+                    if (job.job_status == 'Ordered') {
                         console.log(job)
                         viewJobs(job);
                     }
                 }
                 if ($('#view_status').val() == 2) {
-                    if (job.job_status == 'In Progress') {
+                    if (job.job_status == 'Complete') {
                         console.log(job)
                         viewJobs(job);
                     }
@@ -203,7 +205,13 @@
                     }
                 }
                 if ($('#view_status').val() == 4) {
-                    if (job.job_status == 'Complete') {
+                    if (job.job_status == 'On Hold') {
+                        console.log(job)
+                        viewJobs(job);
+                    }
+                }
+                if ($('#view_status').val() == 5) {
+                    if (job.job_status == 'Cancelled') {
                         console.log(job)
                         viewJobs(job);
                     }
@@ -227,14 +235,16 @@
                 invoiced += parseFloat(invoice.sub_total);
             })
             var status = '';
-            if (job.job_status === "Scheduled") {
+            if (job.job_status === "Ordered") {
                 status = '<span class="badge badge-primary">' + job.job_status + '</span>';
             } else if (job.job_status === "Complete") {
                 status = '<span class="badge badge-success">' + job.job_status + '</span>';
             } else if (job.job_status === "Invoiced") {
                 status = '<span class="badge badge-info">' + job.job_status + '</span>';
-            } else if (job.job_status === "In Progress") {
+            } else if (job.job_status === "On Hold") {
                 status = '<span class="badge badge-warning">' + job.job_status + '</span>';
+            } else if (job.job_status === "Cancelled") {
+                status = '<span class="badge badge-danger">' + job.job_status + '</span>';
             } else {
                 status = '<span class="badge badge-secondary">' + job.job_status + '</span>';
             }
@@ -316,17 +326,20 @@
                         if (response.task.job_status == 'Pending') {
                             status = 0;
                         }
-                        if (response.task.job_status == 'Scheduled') {
+                        if (response.task.job_status == 'Ordered') {
                             status = 1;
                         }
-                        if (response.task.job_status == 'In Progress') {
+                        if (response.task.job_status == 'Complete') {
                             status = 2;
                         }
                         if (response.task.job_status == 'Invoiced') {
                             status = 3;
                         }
-                        if (response.task.job_status == 'Complete') {
+                        if (response.task.job_status == 'On Hold') {
                             status = 4;
+                        }
+                        if (response.task.job_status == 'Cancelled') {
+                            status = 5;
                         }
                         $('#task_id').val(task_id);
                         $('.edit_job_status').val(status).change();
