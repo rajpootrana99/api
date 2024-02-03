@@ -366,6 +366,7 @@
                 images_container.innerHTML += image_item;
             }
 
+
             $("#image_modal_action_tab").removeClass("d-none")
 
             // now after images are loaded revoke the urls to save memory space

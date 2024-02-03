@@ -109,6 +109,7 @@ class FileExplorerController extends Controller
         // $file = $request->input("file",null);
         echo $file;
         $file = base64_decode($file);
+        // return $file;
         // $file = s;
         // $file[strlen($file)-1] = "";
         $FILE = File::get(storage_path($this->globalPath . $file));
@@ -118,6 +119,7 @@ class FileExplorerController extends Controller
 
         return response()->make($FILE, 200, [
             "Content-Type" => File::mimeType(storage_path($this->globalPath . $file)),
+            "Content-Length" => File::size(storage_path($this->globalPath. $file))
         ]);
         // $fileName = File::name($file) . "." . File::extension($file);
         // return response(storage_path($this->globalPath . $file));

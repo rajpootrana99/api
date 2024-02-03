@@ -220,7 +220,7 @@
                                 <i class="las la-ellipsis-v font-20 text-muted"></i>\
                             </a>\
                             <div style="z-index: 1 !important;" class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel11">\
-                                <a class="dropdown-item" href="task/' + task.id + '/edit">Edit</a>\
+                                <a class="dropdown-item" href="/task/' + task.id + '/edit">Edit</a>\
                                 <a class="dropdown-item" href="/convertToEnquiry/' + task.id + '">Convert to Enquiry</a>\
                                 <a class="dropdown-item" href="/convertToJob/' + task.id + '">Convert to Job</a>\
                                 <a class="dropdown-item" href="/message/' + task.id + '">Chat</a>\
@@ -270,7 +270,7 @@
                 } else if (getFileExtension(item.item_galleries[0].image) === 'mp4' || getFileExtension(item.item_galleries[0].image) === 'mkv' || getFileExtension(item.item_galleries[0].image) === 'mov') {
                     file = '<video width="200px" height="100px" controls><source src="' + "getOrView/" + btoa(item.item_galleries[0].image) + '" type="video/ogg"></video>'
                 } else if (getFileExtension(item.item_galleries[0].image) === 'png' || getFileExtension(item.item_galleries[0].image) === 'jpg' || getFileExtension(item.item_galleries[0].image) === 'jpeg' || true) {
-                    file = '<img src="' + "getOrView/" + btoa(item.item_galleries[0].image) + '" width="200px" height="100px" alt="" class="rounded float-left ml-3 mb-3">';
+                    file = '<img src="'+ "/getOrView/" + btoa(item.item_galleries[0].image) + '" width="200px" height="100px" alt="" class="rounded float-left ml-3 mb-3">';
                 } else {
                     file = 'No image or video file exists';
                 }
@@ -315,7 +315,7 @@
         function fetchTasks() {
             $.ajax({
                 type: "GET",
-                url: "fetchTasks",
+                url: "/fetchTasks",
                 dataType: "json",
                 success: function(response) {
                     tasks = response.tasks;
@@ -329,7 +329,7 @@
             var item_id = $(this).val();
             $.ajax({
                 type: "GET",
-                url: "fetchItemGalleries/" + item_id,
+                url: "/fetchItemGalleries/" + item_id,
                 dataType: "json",
                 success: function(response) {
                     console.log(response);
@@ -342,7 +342,7 @@
                         if (getFileExtension(gallery.image) === 'mp4' || getFileExtension(gallery.image) === 'mkv' || getFileExtension(gallery.image) === 'mov') {
                             file = '<video class="d-block w-100" height="400px" controls><source src="' + "getOrView/" + btoa(gallery.image) + '" type="video/ogg"></video>'
                         } else if (getFileExtension(gallery.image) === 'png' || getFileExtension(gallery.image) === 'jpg' || getFileExtension(gallery.image) === 'jpeg' || true) {
-                            file = '<img height="400px" src="' + "getOrView/" + btoa(gallery.image) + '" class="d-block w-100" alt="" style="width: 80% !important;height: max-content;">';
+                            file = '<img height="400px" src="'+ "/getOrView/" + btoa(gallery.image) + '" class="d-block w-100" alt="" style="width: 80% !important;height: max-content;">';
                         } else {
                             file = 'No image or video file exists';
                         }
@@ -370,7 +370,7 @@
 
             $.ajax({
                 type: 'delete',
-                url: 'task/' + task_id,
+                url: '/task/' + task_id,
                 dataType: 'json',
                 success: function(response) {
                     if (response.status == 0) {
@@ -390,7 +390,7 @@
             $(document).find('span.error-text').text('');
             $.ajax({
                 type: "GET",
-                url: 'task/' + task_id + '/edit',
+                url: '/task/' + task_id + '/edit',
                 success: function(response) {
                     if (response.status == false) {
                         $('#editTask').modal('hide');
@@ -424,7 +424,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf_token"]').attr('content'),
                     '_method': 'patch'
                 },
-                url: "task/" + task_id,
+                url: "/task/" + task_id,
                 data: EditFormData,
                 contentType: false,
                 processData: false,

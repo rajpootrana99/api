@@ -149,6 +149,8 @@ class TaskController extends Controller
     public function edit($task)
     {
         $task = Task::with('items.itemGalleries')->find($task);
+        // return $task;
+        // base64
         return view('task.edit', ['task' => $task]);
     }
 
@@ -156,11 +158,13 @@ class TaskController extends Controller
     {
         $task = Task::find($task);
 
+        // return response()->json(['task' => $task->items()]);
         $taskId = $task->id;
         $taskOldName = $task->title . " (" . $taskId . ")";
         $taskNewName = $request->input("title") . " (" . $taskId . ")";
 
         $task->update($request->all());
+
 
 
 
@@ -171,6 +175,18 @@ class TaskController extends Controller
             $entity = Entity::find($task->entity_id);
             $manager = new FileExplorerController();
             $entityName = $entity->entity;
+
+
+
+            //deleting existing items and item galleries entries against task
+            foreach($task->items() as $item){
+                ItemGallery::where("item_id", $item->id)->delete();
+            }
+            Item::where("task_id", $task->id)->delete();
+
+            $manager->deleteFileFolder(new Request(["file"=> "explorer/$entityName/$siteName/$taskNewName/Images/"]));
+            $manager->createFolder(new Request(["name"=> "Images", "path"=> "explorer/$entityName/$siteName/$taskNewName"]));
+
             if ($entity->type == "Client") {
                 $manager->saveEditedData(new Request([
                     "name" => $taskNewName,
@@ -178,6 +194,31 @@ class TaskController extends Controller
                     "isDir" => true,
                     "newParentFolderPath" => "explorer/" . $entityName . "/" . $siteName,
                 ]));
+            }
+
+
+            foreach ($request->items as $itemData) {
+                $item = Item::create([
+                    'user_id' => $task->user_id,
+                    'task_id' => $task->id,
+                    'description' => $itemData['description'],
+                    'priority' => $itemData['priority'],
+                ]);
+
+
+                if ($itemData['image']) {
+                    foreach ($itemData['image'] as $image) {
+                        $itemGallery = new ItemGallery();
+                        $taskAbsolutePath = storage_path("app/explorer/$entityName/$siteName/$taskNewName/Images/");
+                        // $destinationPath = 'item_images/';
+                        $filename = $image->getClientOriginalName();
+                        $image->move($taskAbsolutePath, $filename);
+                        $fullPath = "explorer/$entityName/$siteName/$taskNewName/Images/" . $filename;
+                        $itemGallery->item_id = $item->id;
+                        $itemGallery->image = $fullPath;
+                        $itemGallery->save();
+                    }
+                }
             }
 
 

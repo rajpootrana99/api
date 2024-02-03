@@ -240,9 +240,11 @@
         filter: brightness(0.5);
         transition: 0.1s all ease-in;
     }
+
 </style>
 <script defer>
     var entities;
+
 
 
     // IMAGE UPLOADING MODAL HANDLERS HERE
@@ -324,17 +326,21 @@
 
         //Show How Many Files Selected
         console.log("File Input:\t" + file_input)
+        // console.log(file_input.files)
         if (file_input == null) {
+            // console.log("null reached")
             return;
         }
 
         if (file_input.files.length == 0 && storedFiles.files.length == 0) {
+            // console.log("no files currently")
             reset_dialog()
             return;
         } else {
-
+            // console.log(file_input.files)
             images_container.innerHTML = "";
             file_input.files.forEach(file => {
+                // console.log(file)
                 let duplicateFlag = false;
                 for (let i = 0; i < storedFiles.files.length; i++) {
                     temp = storedFiles.files[i]
@@ -344,6 +350,7 @@
                 }
                 if (!duplicateFlag && file.type.search("image") != -1) storedFiles.items.add(file)
             });
+
             file_input.files = storedFiles.files;
             $("#image_files_text").val(file_input.files.length + " Images Selected")
 
@@ -353,6 +360,7 @@
             for (let i = 0; i < storedFiles.files.length; i++) {
                 image_file = storedFiles.files[i]
                 let url = URL.createObjectURL(image_file)
+                // console.log(url)
                 urlsArray.push(url);
 
                 let imagePath = url;
@@ -414,6 +422,14 @@
     }
 
     function showFilesModal(input_id) {
+
+        //dont pursue if images are loading
+        if ($("#label_"+input_id.replace("images", "image")).hasClass("disabled"))
+        {
+            showToast("Wait Images Are Loading...", "danger")
+            return;
+        }
+
         select_or_add_button.setAttribute("for", input_id)
 
         loadImagesContainer(input_id)
@@ -470,7 +486,11 @@
             }
         });
     }
+
+    let promise = null
     $(document).ready(function() {
+
+
         const status = 0;
         if (task.status == 'Approved') {
             status = 1;
@@ -484,12 +504,65 @@
         }
         $('#status').val(status).change();
         $('#progress').val(progress).change();
-        var itemsCount = 1;
-        itemsDynamicField(itemsCount);
+        var itemsCount = items.length; //initially editable
+        //itemsDynamicField(itemsCount);
+        setItemsAndImages()
+        // Feeding Image Files into Items Input Tags
+
+        async function setItemsAndImages() {
+            await items.forEach(function(item, index){
+
+                itemsDetailDynamicField(index+1);
+                $("#label_image_"+(index+1)).addClass("disabled")
+                createAndAddFiles(item["item_galleries"], index+1)
+            })
+
+        }
+
+
+        async function createAndAddFiles(images_paths, item_index){
+            // retirieve image blob by image path through server
+            let responses = await Promise.all(images_paths.map(e=>fetch("/getOrView/" + btoa(e.image))))
+            let item_file_tag = document.getElementById(`images_${item_index}`)
+            // console.log(images_paths)
+            // console.log(responses)
+
+            let files = new DataTransfer();
+            let total_images = images_paths.length
+            await responses.forEach(function(response, index){
+                let blob_promise = response.blob();
+                // console.log(blob_promise)
+                blob_promise.then(blob=>{
+                    // console.log(blob)
+
+                    let path = images_paths[index].image
+                    let filename = path.split("/")[path.split("/").length - 1]
+                    let extension = filename.split(".")[filename.split(".").length - 1]
+                    let name = filename.split(".")[0]
+
+                    let file = new File([blob], name+"."+extension, {type: blob.type})
+
+                    // console.log("Index "+ item_index + ":" + file.name)
+
+                    files.items.add(file)
+
+                    // console.log("Index "+ item_index + ":" + files.files.length)
+
+
+                    // console.log("Item Index " + item_index + ":" + (files.files.length == total_images))
+                    if(files.files.length == total_images) {
+                        item_file_tag.files = files.files
+                        $("#label_image_"+item_index).removeClass("disabled");
+                    }
+                })
+            })
+        }
+
 
         function itemsDynamicField(number) {
             $.each(items, function(key, item) {
                 itemsDetailDynamicField(number);
+
                 number++;
                 itemsCount++;
             })
@@ -500,7 +573,7 @@
             html += '<td>' + number + '</td>';
             html += '<td><input type="text" style="height: 30px" name="items[' + number + '][description]" id="description_' + number + '" class="form-control" /></td>';
             html += '<td><select class="select2 form-control" name="items[' + number + '][priority]" id="priority_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Priority"><option value="0">Low</option><option value="1">Medium</option><option value="2">High</option><option value="3">Urgent</option></select></td>';
-            html += '<td><label onclick="showFilesModal(\'images_' + number + '\')" class="btn btn-light" title="Select or Change Images">Select or Change Images</label> <div class="custom-file d-none"><input accept="image/*" onchange="loadImagesContainer(\'images_' + number + '\')" type="file" multiple class="custom-file-input" style="width: 100%; height:30px;" name="items[' + number + '][image][]" id="images_' + number + '"><label class="custom-file-label" for="image">Choose file</label></div></td>';
+            html += '<td><label id="label_image_'+ number +'" onclick="showFilesModal(\'images_' + number + '\')" class="btn btn-light" title="Select or Change Images">Select or Change Images</label> <div class="custom-file d-none"><input accept="image/*" onchange="loadImagesContainer(\'images_' + number + '\')" type="file" multiple class="custom-file-input" style="width: 100%; height:30px;" name="items[' + number + '][image][]" id="images_' + number + '"><label class="custom-file-label" for="image">Choose file</label></div></td>';
             if (number > 1) {
                 html += '<td><button style="border: none; background-color: #fff" name="addItems" id="addItems"><i class="fa fa-plus-circle"></i></button></td>';
                 html += '<td><button style="border: none; background-color: #fff" name="removeItems" id="removeItems"><i class="fa fa-minus-circle"></i></button></td></tr>';
