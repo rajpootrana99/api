@@ -491,14 +491,14 @@
     $(document).ready(function() {
 
 
-        const status = 0;
+        let status = 0;
         if (task.status == 'Approved') {
             status = 1;
         }
         if (task.status == 'Cancelled') {
             status = 2;
         }
-        const progress = 0;
+        let progress = 0;
         if (task.progress == 'Order') {
             progress = 1;
         }
