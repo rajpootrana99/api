@@ -163,7 +163,7 @@ class TaskController extends Controller
         $taskOldName = $task->title . " (" . $taskId . ")";
         $taskNewName = $request->input("title") . " (" . $taskId . ")";
 
-        $task->update($request->all());
+        
 
 
 
@@ -184,9 +184,11 @@ class TaskController extends Controller
             }
             Item::where("task_id", $task->id)->delete();
 
-            $manager->deleteFileFolder(new Request(["file"=> "explorer/$entityName/$siteName/$taskNewName/Images/"]));
-            $manager->createFolder(new Request(["name"=> "Images", "path"=> "explorer/$entityName/$siteName/$taskNewName"]));
+            $manager->deleteFileFolder(new Request(["file"=> "explorer/$entityName/$siteName/$taskOldName/Images/"]));
+            $manager->createFolder(new Request(["name"=> "Images", "path"=> "explorer/$entityName/$siteName/$taskOldName"]));
 
+            $task->update($request->all());
+            
             if ($entity->type == "Client") {
                 $manager->saveEditedData(new Request([
                     "name" => $taskNewName,
