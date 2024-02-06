@@ -196,12 +196,12 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: space-around;
-        
+
     }
 
     #fileList.has-files {
         justify-content: flex-start;
-        
+
     }
 
     .file-preview {
@@ -351,8 +351,8 @@
 
     function itemsDynamicField(number) {
         html = '<tr class="item" >';
-        html += '<td><select class="select2 form-control select-estimate" name="items[' + number + '][quote_id]" id="estimate_id_' + number + '" onchange="quoteInsert()"  style="width: 100%; height:30px;" data-placeholder="Select Cost Code"><option value="0">Select Cost Code</option></select></td>';
-        html += '<td><input type="text" style="height: 30px" name="items[' + number + '][description]" id="description_' + number + '" class="form-control" /></td>';
+        html += '<td><select class="select2 form-control select-estimate" name="items[' + number + '][quote_id]" id="estimate_id_' + number + '" onchange="quoteInsert()"  style="width: 100%; height:30px;" data-placeholder="Select Cost Code" required></select></td>';
+        html += '<td><input type="text" style="height: 30px" name="items[' + number + '][description]" id="description_' + number + '" class="form-control" required /></td>';
         html += '<td><select class="select2 form-control" name="items[' + number + '][account]" id="account_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Account"><option value="Maintenance Income">Maintenance Income</option><option value="Construction Income">Construction Income</option><option value="Management Income">Management Income</option></select></td>';
         html += '<td><input type="text" style="height: 30px" name="items[' + number + '][qty]" id="qty_' + number + '" min="0" onkeyup="calculateCost()" class="form-control qty" /></td>';
         html += '<td><input type="text" style="height: 30px" name="items[' + number + '][rate]" id="rate_' + number + '" min="0" onkeyup="calculateCost()" class="form-control rate" /></td>';
@@ -374,12 +374,24 @@
         e.preventDefault();
         itemsCount++;
         itemsDynamicField(itemsCount);
-        fetchEstimates()
+        $('#tax_' + itemsCount).select2({
+        placeholder: "Select Tax Code",
+        })
+        $('#account_' + itemsCount).select2({
+        placeholder: "Select Account",
+        })
+        $('#estimate_id_' + itemsCount).select2({
+        tag: true,
+        placeholder: "Select Cost Code",
+        })
+
+        if($("#task_id").val() != null)
+            fetchEstimates()
     });
     $(document).on('click', '#removeItems', function(e) {
         e.preventDefault();
-        itemsCount--;
         $(this).closest("tr").remove();
+        itemsCount--;
         calculateCost();
     });
 
@@ -403,6 +415,7 @@
                 $.each(response.notes, function(key, note) {
                     note_id.append($("<option />").val(note.id).text(note.note));
                 });
+
             }
         });
     }
@@ -485,11 +498,13 @@
                 $('#estimate_id_' + itemsCount).children().remove().end();
                 $('#estimate_id_' + itemsCount).append($("<option />").text('Select Cost Code').prop({
                     selected: true,
-                    disabled: true
+                    disabled: true,
+                    value: ""
                 }));
                 $.each(job.quotes, function(key, quote) {
                     $('#estimate_id_' + itemsCount).append($("<option />").val(quote.id).text(quote.estimate.subheader.cost_code + '___' + quote.estimate.item));
                 });
+
             }
         });
     }
