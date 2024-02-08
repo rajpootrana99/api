@@ -32,13 +32,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/index', function () {
     return view('index');
-})->middleware(['auth', 'verified', 'role:Admin|Manager|Accounts'])->name('index');
+})->middleware(['auth', 'verified', 'role:Admin|Super Admin|Manager|Accounts'])->name('index');
 
 Route::get('/unathorized', function () {
     return view('unathorized');
 })->name('unathorized');
 
-Route::middleware(['auth', 'verified', 'role:Admin|Manager|Accounts'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:Admin|Super Admin|Manager|Accounts'])->group(function () {
 
     // EXPLORER ROUTES
     Route::resource('explorer', FileExplorerController::class);
@@ -93,6 +93,7 @@ Route::middleware(['auth', 'verified', 'role:Admin|Manager|Accounts'])->group(fu
     // JOB ROUTES
     Route::resource('job', JobController::class);
     Route::get('/fetchJobs', [JobController::class, 'fetchJobs'])->name('job.get');
+    Route::get('/showInvoice/{job}', [JobController::class, 'showInvoice'])->name('showInvoice.get');
     Route::get('/convertToJob/{task}', [JobController::class, 'convertToJob'])->name('convertJob.get');
     Route::get('/editInvoice/{task}', [QuoteController::class, 'editInvoice'])->name('invoice.edit');
 
@@ -120,7 +121,7 @@ Route::middleware(['auth', 'verified', 'role:Admin|Manager|Accounts'])->group(fu
     Route::get('/emailPurchaseOrder/{purchaseOrder}', [PurchaseOrderController::class, 'emailPurchaseOrder'])->name('purchaseOrder.emailPurchaseOrder');
 });
 
-Route::middleware(['auth', 'verified', 'role:Manager'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:Manager|Super Admin'])->group(function () {
 
     // USER ROUTES
     Route::resource('user', UserController::class);

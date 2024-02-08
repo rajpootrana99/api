@@ -37,9 +37,9 @@
             <li>
                 <a href="{{ route('entity.index')}}"><i data-feather="users" class="align-self-center menu-icon"></i><span>Entities</span></a>
             </li>
-            <li>
+            <!-- <li>
                 <a href="{{ route('contact.index')}}"><i data-feather="phone" class="align-self-center menu-icon"></i><span>Contact</span></a>
-            </li>
+            </li> -->
             <li>
                 <a href="{{ route('site.index')}}"><i data-feather="globe" class="align-self-center menu-icon"></i><span>Sites</span></a>
             </li>

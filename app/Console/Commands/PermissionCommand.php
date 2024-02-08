@@ -91,6 +91,9 @@ class PermissionCommand extends Command
         foreach ($permissions as $permission) {
             Permission::updateOrCreate(['name' => $permission['name']], $permission);
         }
+        $superAdmin = Role::where('name', 'Super Admin')->first();
+        $superAdmin->givePermissionTo(Permission::all());
+
         $manager = Role::where('name', 'Manager')->first();
         $manager->givePermissionTo(Permission::all());
 

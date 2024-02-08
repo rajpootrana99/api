@@ -25,14 +25,14 @@ class UserTableSeeder extends Seeder
             'password' => Hash::make('password'),
         ]);
 
+        Role::create(['name' => 'Super Admin']);
         Role::create(['name' => 'Admin']);
-        Role::create(['name' => 'Contact']);
         Role::create(['name' => 'User']);
         Role::create(['name' => 'Client']);
         Role::create(['name' => 'Supplier']);
         Role::create(['name' => 'Manager']);
         Role::create(['name' => 'Accounts']);
 
-        $user->assignRole('Admin');
+        $user->assignRole('Super Admin');
     }
 }

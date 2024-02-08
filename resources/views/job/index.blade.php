@@ -264,7 +264,7 @@
             $('tbody').append('<tr>\
                 <td>' + job.id + '</td>\
                 <td>' + job.site.site + '</td>\
-                <td>' + job.title + '</td>\
+                <td><a href="job/' + job.id + '">' + job.title + '</a></td>\
                 <td> </td>\
                 <td>' + status + '</td>\
                 <td>' + job.entity.entity + '</td>\
@@ -284,7 +284,7 @@
                         <a class="dropdown-item" href="/quote/' + job.id + '">Budget</a>\
                         <a class="dropdown-item" href="/quote/' + job.id + '/edit/">Quote</a>\
                         <a class="dropdown-item" href="#">Chat</a>\
-                        <a class="dropdown-item" target="_blank" href="job/' + job.id + '">Invoice</a>\
+                        <a class="dropdown-item" target="_blank" href="showInvoice/' + job.id + '">Invoice</a>\
                     </div>\
                 </div>\</td>\
             </tr>');
