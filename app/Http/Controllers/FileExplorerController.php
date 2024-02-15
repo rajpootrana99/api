@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use DateTime;
 use File;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Str;
 
@@ -154,8 +155,14 @@ class FileExplorerController extends Controller
 
     public function deleteFileFolder(Request $request)
     {
-        $file = base64_decode($request->input('file'));
-        // $file = base64_decode($file);
+        $file = $request->input('file', null);
+        if($file == null){
+            $file = $request->input("key", null);
+            if($file == null){
+                return;
+            }
+        }
+        $file = base64_decode($file);
 
         $response = null;
         try {
@@ -283,6 +290,94 @@ class FileExplorerController extends Controller
         // print_r($request);
     }
 
+    // Kerajee File Input GET IMAGES Asynchronously
+    public function kerajeeGetImages(Request $request)
+    {
+        $folderPath = base64_decode($request->input("uploadFolderPath"));
+
+        $initialPreview = [];
+        $initialPreviewConfig = [];
+
+        $files = Storage::files($folderPath);
+        foreach ($files as $file) {
+            if(! Str::of(strtolower(File::extension($file)))->test("/((png)|(jpg)|(jpeg)|(gif))/")) continue;
+
+            $filePath = base64_encode( $file );
+            $fileName = File::name($file) . "." . File::extension($file);
+            $fileSize = Storage::size($file);
+            $fileViewLink = route("explorer.getOrView", $filePath);
+            $fileDeleteLink = route("explorer.delete");
+
+
+            $initialPreview[] = $fileViewLink;
+            $initialPreviewConfig[] = [
+                "caption" => $fileName,
+                "size" => $fileSize,
+                "url" => $fileDeleteLink,
+                "downloadUrl" => $fileViewLink,
+                "key" => $filePath,
+                "exif" => null
+            ];
+        }
+
+        return response()->json([
+            "initialPreview" => $initialPreview,
+            "initialPreviewConfig" => $initialPreviewConfig,
+            "initialPreviewAsData" => true
+        ]);
+    }
+    // Kerajee File Input Upload Asynchronously
+    public function kerajeeUploadImages(Request $request)
+    {
+        $uploadPath = base64_decode($request->input("uploadFolderPath"));
+        $files = $request->file("uploadImages");
+
+
+        $initialPreview = [];
+        $initialPreviewConfig = [];
+        $errors = [];
+        foreach ($files as $file) {
+            $filePath = base64_encode( $uploadPath."/".$file->getClientOriginalName() );
+            $fileName = $file->getClientOriginalName();
+            $fileSize = $file->getSize();
+            $fileViewLink = route("explorer.getOrView", $filePath);
+            $fileDeleteLink = route("explorer.delete");
+
+
+
+            if(File::exists(storage_path($this->globalPath.$uploadPath."/".$file->getClientOriginalName())))
+            {
+                $errors[] = "File '$fileName' already exists.";
+                break;
+            }
+
+
+            $initialPreview[] = $fileViewLink;
+            $initialPreviewConfig[] = [
+                "caption" => $fileName,
+                "size" => $fileSize,
+                "url" => $fileDeleteLink,
+                "downloadUrl" => $fileViewLink,
+                "key" => $filePath,
+                "exif" => null
+            ];
+            // uploading file
+            try {
+                $file->move(storage_path($this->globalPath . $uploadPath), $file->getClientOriginalName());
+            } catch (Exception $th) {
+                $errors[] = "File '$fileName' upload failed.";
+                break;
+            }
+
+        }
+
+        return response()->json([
+            "initialPreview" => $initialPreview,
+            "initialPreviewConfig" => $initialPreviewConfig,
+            "initialPreviewAsData" => true,
+            "error" => $errors,
+        ]);
+    }
     /**
      * Show the form for editing the specified resource.
      *

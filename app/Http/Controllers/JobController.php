@@ -60,8 +60,15 @@ class JobController extends Controller
      */
     public function show($job)
     {
-        $job = Task::with('quotes.estimate.subheader.header', 'site', 'user', 'entity', 'invoices')->find($job);
-        return view('job.show', ['job' => $job]);
+        $job = Task::with('quotes.estimate.subheader.header', 'items', 'items.itemGalleries', 'site', 'user', 'entity', 'invoices')->find($job);
+        // return response()->json([
+        //     'job' => $job,
+        //     'currentPath' => "explorer/".$job->entity->entity."/".$job->site->site."/".$job->title." (".$job->id.")"
+        // ]);
+        return view('job.show', [
+            'job' => $job,
+            'currentPath' => "explorer/".$job->entity->entity."/".$job->site->site."/".$job->title." (".$job->id.")"
+        ]);
     }
 
     public function showInvoice($job){
@@ -72,7 +79,7 @@ class JobController extends Controller
             $invoice = Invoice::latest()->first();
             if ($invoice) {
                 $invoiceNo = $invoice->id + 1;
-            } else { 
+            } else {
                 $invoiceNo = 1;
             }
             $job = Task::where(['id' => $job])->get();

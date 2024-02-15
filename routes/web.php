@@ -52,6 +52,9 @@ Route::middleware(['auth', 'verified', 'role:Admin|Super Admin|Manager|Accounts'
     Route::post('/create', [FileExplorerController::class, 'createFolder'])->name('explorer.createFolder');
     Route::get('/getUploadFolderInfo/{file}', [FileExplorerController::class, 'getUploadFolderInfo'])->name('explorer.getUploadFolderInfo');
     Route::post('/upload', [FileExplorerController::class, 'uploadFiles'])->name('explorer.uploadFiles');
+    Route::post('/kerajeeUpload', [FileExplorerController::class, 'kerajeeUploadImages'])->name('explorer.uploadImages');
+    Route::get('/kerajeeGetImages', [FileExplorerController::class, 'kerajeeGetImages'])->name('explorer.kerajeeGetImages');
+
 
     // ENTITY ROUTES
     Route::resource('entity', EntityController::class);

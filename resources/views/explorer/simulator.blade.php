@@ -43,6 +43,31 @@
                     </div>
                 </div><!--end card-header--> --}}
                 <div class="card-body">
+
+                    <div class="modal align-items-center" data-backdrop="false" style="
+                    width: max-content;
+                    height: 100%;
+                    position: fixed;
+                    right: 35px;
+                    left: unset;" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h6 class="modal-title m-0" id="imageModalLabel">Select or Change Images</h6>
+                                    <button type="button" onclick="closeImageModal()" class="close " id="imageModalClose" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true"><i class="fa fa-times h4"></i></span>
+                                    </button>
+                                </div><!--end modal-header-->
+                                <div class="modal-body d-flex align-items-center">
+
+                                    <img style="max-height: 450px" src="http://127.0.0.1:8000/getOrView/ZXhwbG9yZXIvRmFjZWJvb2svQmFocmlhIFRvd24gV2FsYS9FU1BOICgxKS9mb3JfcHJvZmlsZV8xLmpwZw==" alt="" srcset="" class="img-fluid">
+
+                                </div>
+                                <!--end modal-body-->
+                                {{-- </form> --}}
+                            </div><!--end modal-content-->
+                        </div><!--end modal-dialog-->
+                    </div>
                     <div class="table-responsive mb-0 fixed-solution">
                         <table id="explorer_datatable" class="table dt-responsive nowrap mb-0 table-sm" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                             <thead class="thead-light">
@@ -605,7 +630,7 @@
                     render: function(data, type, row) {
                         // console.log(data)
                         let iconDesc = DATA.type == "File Folder" ? "bi-folder-fill" : ("bi-filetype-" + DATA.type.toLowerCase());
-                        let routeDesc = DATA.type == "File Folder" ? "href=\"Javascript:void(0);\" onclick=\"navigateTo('" + DATA.encodedRoute + "')\"" : "href='" + DATA.viewRoute + "' target='_blank'";
+                        let routeDesc = DATA.type == "File Folder" ? "href=\"Javascript:void(0);\" onclick=\"navigateTo('" + DATA.encodedRoute + "')\"" : "href=\"javascript:void(0);\" onclick=\"openImageModal(this, '"+DATA.viewRoute+"')\"";
                         let temp = '<a  ' + routeDesc + ' style="display: flex;align-items:center;column-gap:5%">' +
                             '<i class="bi ' + iconDesc + ' h2"></i>' +
                             "<span class='text-truncate' data-toggle='tooltip' data-placement='top' title data-original-title='" + atob(DATA.encodedRoute) + "'> " + (DATA.searchResult == "true" ? DATA.name + "<div class='text-muted'>" + atob(DATA.encodedRoute) + "</div>" : DATA.name) + "</span>" +
@@ -654,6 +679,19 @@
 
     })
 
+    function openImageModal(element, src)
+    {
+        let file = element.innerText;
+        $("#imageModal * .modal-title").html(file)
+        $("#imageModal * img")[0].src = src
+        $("#imageModal").addClass("d-flex")
+        $("#imageModal").show()
+
+    }
+    function closeImageModal(){
+        $("#imageModal").removeClass("d-flex")
+        $("#imageModal").hide()
+    }
     function navigateTo(path) {
         root_path = atob(path);
         table.ajax.reload(null, false)
