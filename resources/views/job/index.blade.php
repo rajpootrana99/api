@@ -283,7 +283,7 @@
                         <button value="' + job.id + '" style="border: none; background-color: #fff" class="edit_btn dropdown-item">Edit</button>\
                         <a class="dropdown-item" href="/quote/' + job.id + '">Budget</a>\
                         <a class="dropdown-item" href="/quote/' + job.id + '/edit/">Quote</a>\
-                        <a class="dropdown-item" href="#">Chat</a>\
+                        <a class="dropdown-item" href="/message/' + job.id + '">Chat</a>\
                         <a class="dropdown-item" target="_blank" href="showInvoice/' + job.id + '">Invoice</a>\
                     </div>\
                 </div>\</td>\

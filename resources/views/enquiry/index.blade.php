@@ -268,7 +268,7 @@
                         <button value="' + enquiry.id + '" style="border: none; background-color: #fff" class="edit_btn dropdown-item">Edit</button>\
                         <a class="dropdown-item" href="/convertToJob/' + enquiry.id + '">Convert to Job</a>\
                         <a class="dropdown-item" href="/quote/' + enquiry.id + '/edit/">Quote</a>\
-                        <a class="dropdown-item" href="#">Chat</a>\
+                        <a class="dropdown-item" href="/message/' + enquiry.id + '">Chat</a>\
                     </div>\
                 </div>\</td>\
             </tr>');
