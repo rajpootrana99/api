@@ -573,7 +573,7 @@
             html += '<td>' + number + '</td>';
             html += '<td><input type="text" style="height: 30px" name="items[' + number + '][description]" id="description_' + number + '" class="form-control" /></td>';
             html += '<td><select class="select2 form-control" name="items[' + number + '][priority]" id="priority_' + number + '" style="width: 100%; height:30px;" data-placeholder="Select Priority"><option value="0">Low</option><option value="1">Medium</option><option value="2">High</option><option value="3">Urgent</option></select></td>';
-            html += '<td><label id="label_image_'+ number +'" onclick="showFilesModal(\'images_' + number + '\')" class="btn btn-light" title="Select or Change Images">Select or Change Images</label> <div class="custom-file d-none"><input accept="image/*" onchange="loadImagesContainer(\'images_' + number + '\')" type="file" multiple class="custom-file-input" style="width: 100%; height:30px;" name="items[' + number + '][image][]" id="images_' + number + '"><label class="custom-file-label" for="image">Choose file</label></div></td>';
+            html += '<td><img width="50px" id="thumb-img_'+ number +'" class="p-1"/><label id="label_image_'+ number +'" onclick="showFilesModal(\'images_' + number + '\')" class="btn btn-light" title="Select or Change Images">Select or Change Images</label> <div class="custom-file d-none"><input accept="image/*" onchange="loadImagesContainer(\'images_' + number + '\')" type="file" multiple class="custom-file-input" style="width: 100%; height:30px;" name="items[' + number + '][image][]" id="images_' + number + '"><label class="custom-file-label" for="image">Choose file</label></div></td>';
             if (number > 1) {
                 html += '<td><button style="border: none; background-color: #fff" name="addItems" id="addItems"><i class="fa fa-plus-circle"></i></button></td>';
                 html += '<td><button style="border: none; background-color: #fff" name="removeItems" id="removeItems"><i class="fa fa-minus-circle"></i></button></td></tr>';
@@ -649,6 +649,9 @@
             } else {
                 $('#priority_' + i).val(3).change();
             }
+            console.log(items[key])
+            console.log(items[key].item_galleries[1].image)
+            $('#thumb-img_' + i).attr('src', "/getOrView/" + btoa(items[key].item_galleries[0].image));
         });
     });
 </script>
