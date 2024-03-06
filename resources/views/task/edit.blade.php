@@ -529,6 +529,10 @@
 
             let files = new DataTransfer();
             let total_images = images_paths.length
+            if (total_images == 0) {
+                $("#label_image_"+item_index).removeClass("disabled");
+                return
+            }
             await responses.forEach(function(response, index){
                 let blob_promise = response.blob();
                 // console.log(blob_promise)
