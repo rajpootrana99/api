@@ -27,7 +27,8 @@
                                     <div class="col-sm-8">
                                         <select class="select2 pl-1 form-control" id="view_status" style="width: 100%; height:30px !important;">
                                             <option value="" disabled>Select View</option>
-                                            <option selected value="0">Pending</option>
+                                            <option selected value="6">In Progress</option>
+                                            <option value="0">Pending</option>
                                             <option value="1">Quoting</option>
                                             <option value="2">Submitted</option>
                                             <option value="3">Won</option>
@@ -118,7 +119,7 @@
                                 <select class="select2 pl-1 form-control" name="quote_type" id="quote_type" style="width: 100%; height:30px !important;">
                                     <option value="" selected disabled>Select Quote Type</option>
                                     <option value="0">Cost Plus</option>
-                                    <option value="1">Do & Charge</option>
+                                    <option value="1">Fixed Quote</option>
                                 </select>
                                 <span class="text-danger error-text quote_type_update_error"></span>
                             </div>
@@ -213,6 +214,11 @@
                 }
                 if ($('#view_status').val() == 5) {
                     if (enquiry.enquiry_status == 'Cancelled') {
+                        viewEnquiries(enquiry);
+                    }
+                }
+                if ($('#view_status').val() == 6) {
+                    if (enquiry.enquiry_status == 'Pending' || enquiry.enquiry_status == 'Quoting') {
                         viewEnquiries(enquiry);
                     }
                 }

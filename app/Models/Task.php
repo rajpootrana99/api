@@ -94,7 +94,7 @@ class Task extends Model
     public function quoteTypeOptions()
     {
         return [
-            1 => 'Do & Charge',
+            1 => 'Fixed Quote',
             0 => 'Cost Plus',
         ];
     }

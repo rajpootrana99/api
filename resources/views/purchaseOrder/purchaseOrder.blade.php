@@ -79,7 +79,7 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th>Item</th>
-                                        <th>Description</th>
+                                        <th width="40%">Description</th>
                                         <th>No of Units</th>
                                         <th>Unit Price</th>
                                         <th>Amount</th>
@@ -93,7 +93,7 @@
                                         <td>
                                             <p class="mb-0">{{ $quote->estimate->subHeader->cost_code }}___{{ $quote->estimate->item }}</p>
                                         </td>
-                                        <td>{{ $quote->description }}<br>{{ $quote->pivot->description }}</td>
+                                        <td>{{ $quote->pivot->description }}</td>
                                         <td>{{ $quote->pivot->qty }}</td>
                                         <td>${{ $quote->pivot->rate }}</td>
                                         <td>${{ $quote->pivot->amount }}</td>

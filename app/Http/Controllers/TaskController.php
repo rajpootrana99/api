@@ -128,7 +128,7 @@ class TaskController extends Controller
                 'description' => $itemData['description'],
                 'priority' => $itemData['priority'],
             ]);
-            if ($itemData['image']) {
+            if (isset($itemData['image'])) {
                 foreach ($itemData['image'] as $image) {
                     $itemGallery = new ItemGallery();
                     $taskAbsolutePath = storage_path("app/explorer/$entityName/$siteName/$taskName/Images/");
@@ -157,26 +157,16 @@ class TaskController extends Controller
     public function update(Request $request, $task)
     {
         $task = Task::find($task);
-
-        // return response()->json(['task' => $task->items()]);
+        $task->update($request->all());
         $taskId = $task->id;
         $taskOldName = $task->title . " (" . $taskId . ")";
         $taskNewName = $request->input("title") . " (" . $taskId . ")";
-
-        
-
-
-
-
         if ($task) {
-
             //Change task name in all places
             $siteName = Site::find($task->site_id)->site;
             $entity = Entity::find($task->entity_id);
             $manager = new FileExplorerController();
             $entityName = $entity->entity;
-
-
 
             //deleting existing items and item galleries entries against task
             foreach($task->items() as $item){
@@ -208,7 +198,7 @@ class TaskController extends Controller
                 ]);
 
 
-                if ($itemData['image']) {
+                if (isset($itemData['image'])) {
                     foreach ($itemData['image'] as $image) {
                         $itemGallery = new ItemGallery();
                         $taskAbsolutePath = storage_path("app/explorer/$entityName/$siteName/$taskNewName/Images/");
@@ -223,11 +213,7 @@ class TaskController extends Controller
                 }
             }
 
-
-            return response()->json([
-                'status' => true,
-                'message' => 'Task updated succesfully'
-            ]);
+            return redirect()->route('task.index');
         }
     }
 }
