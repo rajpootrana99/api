@@ -218,8 +218,8 @@
                     }
                 }
                 if ($('#view_status').val() == 6) {
-                    if (enquiry.enquiry_status == 'Pending' || enquiry.enquiry_status == 'Ordered' || enquiry.enquiry_status == 'Complete') {
-                        viewEnquiries(enquiry);
+                    if (job.job_status == 'Pending' || job.job_status == 'Ordered' || job.job_status == 'Complete') {
+                        viewJobs(job);
                     }
                 }
             });
