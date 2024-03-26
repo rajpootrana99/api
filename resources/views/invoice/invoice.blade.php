@@ -46,7 +46,7 @@
                     </div>
                     <div class="col-md-6 mt-3">
                         <div class="float-right">
-                            <img src="{{ asset('assets/images/logo.jpg')}}" alt="logo-small" class="logo-sm mr-1" width="150px">
+                            <img src="{{ asset('assets/images/logo-rmbg.png')}}" alt="logo-small" class="logo-sm mr-1" width="150px">
                             <h6 class="mb-0"><strong>Phone: </strong>{{ $invoice->entity->primary_phone }}</h6>
                             <h6 class="mb-0"><strong>Email: </strong>{{ $invoice->entity->email }}</h6>
                             <h6 class="mb-0"><strong>ABN: </strong>{{ $invoice->entity->abn }}</h6><br><br>
