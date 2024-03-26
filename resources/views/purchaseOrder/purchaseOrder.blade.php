@@ -83,8 +83,6 @@
                                         <th>No of Units</th>
                                         <th>Unit Price</th>
                                         <th>Amount</th>
-                                        <th>Tax</th>
-                                        <th>Total</th>
                                     </tr><!--end tr-->
                                 </thead>
                                 <tbody>
@@ -97,8 +95,6 @@
                                         <td>{{ $quote->pivot->qty }}</td>
                                         <td>${{ $quote->pivot->rate }}</td>
                                         <td>${{ $quote->pivot->amount }}</td>
-                                        <td>{{ $quote->pivot->tax }}%</td>
-                                        <td>${{ $quote->pivot->total }}</td>
                                     </tr><!--end tr-->
                                     @endforeach
 
@@ -108,8 +104,6 @@
                                         <td class="border-0"></td>
                                         <td class="border-0"></td>
                                         <td class="border-0 font-14"><b id="subtotal">${{ $purchaseOrder->sub_total }}</b></td>
-                                        <td class="border-0"></td>
-                                        <td class="border-0"></td>
                                     </tr><!--end tr-->
                                     <tr>
                                         <th class="border-0"></th>
@@ -117,8 +111,6 @@
                                         <td class="border-0"></td>
                                         <td class="border-0"></td>
                                         <td class="border-0 font-14"><b id="tax">${{ $purchaseOrder->tax }}</b></td>
-                                        <td class="border-0"></td>
-                                        <td class="border-0"></td>
                                     </tr><!--end tr-->
                                     <tr class="bg-white text-black">
                                         <th class="border-0"></th>
@@ -126,8 +118,6 @@
                                         <td class="border-0"></td>
                                         <td class="border-0"></td>
                                         <td class="border-0 font-14 text-dark"><b id="total">${{ $purchaseOrder->total }}</b></td>
-                                        <td class="border-0"></td>
-                                        <td class="border-0"></td>
                                     </tr><!--end tr-->
                                 </tbody>
                             </table><!--end table-->
