@@ -27,6 +27,7 @@
                                     <div class="col-sm-8">
                                         <select class="select2 pl-1 form-control" id="view_status" style="width: 100%; height:30px !important;">
                                             <option value="" disabled>Select View</option>
+                                            <option selected value="6">In Progress</option>
                                             <option value="0">Pending</option>
                                             <option value="1">Ordered</option>
                                             <option value="2">Complete</option>
@@ -60,7 +61,7 @@
                                     <th>Suppliers</th>
                                     <th>Job Status</th>
                                     <th>Owner</th>
-                                    <th>Completed Date</th>
+                                    <th>Requested Completed Date</th>
                                     <th>Days in Progress</th>
                                     <th>Total Sell Price</th>
                                     <th>Profit</th>
@@ -214,6 +215,11 @@
                     if (job.job_status == 'Cancelled') {
                         console.log(job)
                         viewJobs(job);
+                    }
+                }
+                if ($('#view_status').val() == 6) {
+                    if (enquiry.enquiry_status == 'Pending' || enquiry.enquiry_status == 'Ordered' || enquiry.enquiry_status == 'Complete') {
+                        viewEnquiries(enquiry);
                     }
                 }
             });
