@@ -7,6 +7,7 @@ use App\Http\Controllers\EstimateController;
 use App\Http\Controllers\FileExplorerController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\JobNoteController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SiteUserController;
@@ -99,6 +100,10 @@ Route::middleware(['auth', 'verified', 'role:Admin|Super Admin|Manager|Accounts'
     Route::get('/showInvoice/{job}', [JobController::class, 'showInvoice'])->name('showInvoice.get');
     Route::get('/convertToJob/{task}', [JobController::class, 'convertToJob'])->name('convertJob.get');
     Route::get('/editInvoice/{task}', [QuoteController::class, 'editInvoice'])->name('invoice.edit');
+
+    // Job Note Route
+    Route::resource('jobNote', JobNoteController::class);
+    Route::get('/fetchJobNotes', [JobNoteController::class, 'fetchJobNotes'])->name('jobNote.get');
 
     // ENQUIRY ROUTES
     Route::resource('enquiry', EnquiryController::class);

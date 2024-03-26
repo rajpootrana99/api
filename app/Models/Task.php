@@ -151,4 +151,8 @@ class Task extends Model
     {
         return $this->hasMany(Invoice::class);
     }
+
+    public function jobNotes(){
+        return $this->hasMany(JobNote::class);
+    }
 }

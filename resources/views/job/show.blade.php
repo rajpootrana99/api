@@ -40,16 +40,47 @@
                     <div class="tab-content">
                         <div class="tab-pane p-3 active" id="details" role="tabpanel">
                         <div class="row">
-                                <div class="col-6">
-                                    <span class="row"><strong>Site :  </strong>  {{ $job->site->site }}</span>
-                                    <span class="row"><strong>Address :  </strong>  {{ $job->site->site_address }}</span>
-                                    <span class="row"><strong>Description :  </strong>  {{ $job->title }}</span>
-                                    <span class="row"><strong>Owner :  </strong>  {{ $job->entity->entity }}</span>
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <div class="card-title">Job Details</div>
+                                        </div>
+                                        <div class="card-body">
+                                            <span class="row"><strong>Site :  </strong>  {{ $job->site->site }}</span>
+                                            <span class="row"><strong>Address :  </strong>  {{ $job->site->site_address }}</span>
+                                            <span class="row"><strong>Description :  </strong>  {{ $job->title }}</span>
+                                            <span class="row"><strong>Owner :  </strong>  {{ $job->entity->entity }}</span>
+                                        </div>
+                                    </div>                 
                                 </div>
-                                <div class="col-6">
-                                    <h4 class="text-center">Notes</h4>
-                                    <div class="form-group row justify-center" style="margin-bottom: 0px !important;">
-                                        <input class="form-control" type="text" id="example-text-input" style="width: 100%; height:30px;">
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <div class="card-title">Notes</div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <form id="addJobNoteForm" enctype="multipart/form-data">
+                                                        @method('POST')
+                                                        @csrf
+                                                        <input type="hidden" name="task_id" value="{{ $job->id }}">
+                                                        <div class="form-group justify-center">
+                                                            <input class="form-control" type="text" id="description" name="description" placeholder="Enter Description" style="width: 100%; height:30px;">
+                                                            <span class="text-danger error-text description_error"></span>
+                                                        </div>
+                                                        <div class="form-group justify-center">
+                                                            <div class="custom-file">
+                                                                <input type="file" class="custom-file-input" name="image_url" id="image_url">
+                                                                <label class="custom-file-label" id="label_for_image_url" for="image_url">Choose file</label>
+                                                            </div>
+                                                        </div>
+                                                            <button type="submit" style="float:right" class="btn btn-primary mt-2">Save</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <div id="JobNotesList"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -168,6 +199,63 @@
 
     $(document).ready(function () {
         fetchTaskFileImages()
+        fetchJobNotes(); 
+
+        function fetchJobNotes(){
+            $.ajax({
+                type: "GET",
+                url: "/fetchJobNotes",
+                dataType: "json",
+                success: function(response) {
+                    $('tbody').html("");
+                    $.each(response.jobNotes, function(key, jobNote) {
+                        var image = ""
+                        if(jobNote.image_url != " "){
+                            image = '<img class="img-fluid bg-light-alt" src="/'+jobNote.image_url+'" alt="Card image">'
+                        }
+                        $('#JobNotesList').append('<div class="card">'+image+'\
+                            <div class="card-header">\
+                                <h4 class="card-title">'+jobNote.description+'</h4>\
+                            </div>\
+                        </div>');
+                    });
+                    console.log(response);
+                }
+            });
+        }
+
+        $(document).on('submit', '#addJobNoteForm', function(e) {
+            e.preventDefault();
+            let formDate = new FormData($('#addJobNoteForm')[0]);
+            $.ajax({
+                type: "post",
+                url: "/jobNote",
+                data: formDate,
+                contentType: false,
+                processData: false,
+                beforeSend: function() {
+                    $(document).find('span.error-text').text('');
+                },
+                success: function(response) {
+                    if (response.status == 0) {
+                        $('#addNote').modal('show')
+                        $.each(response.error, function(prefix, val) {
+                            $('span.' + prefix + '_error').text(val[0]);
+                        });
+                    } else {
+                        $('#addJobNoteForm')[0].reset();
+                        $('#label_for_image_url').html('Choose file');
+                        showToast(response.message, "success");
+                        event.preventDefault();
+                        fetchJobNotes();
+                    }
+                },
+                error: function(error) {
+                    $('#addNote').modal('show')
+                }
+            });
+        });
+
     });
 
     // function removeSelectedImages() {
